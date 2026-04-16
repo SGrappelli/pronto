@@ -39,7 +39,7 @@ export default async function PublicBookingPage({ params }: { params: { slug: st
   ] = await Promise.all([
     supabase
       .from('services')
-      .select('id, name, description, price, duration_min, category')
+      .select('id, name, description, price, duration_min, category, capacity')
       .eq('business_id', business.id)
       .eq('is_active', true)
       .order('name'),

@@ -174,6 +174,7 @@ export type Database = {
           duration_min: number
           category: string | null
           is_active: boolean
+          capacity: number
           created_at: string
         }
         Insert: {
@@ -185,6 +186,7 @@ export type Database = {
           duration_min?: number
           category?: string | null
           is_active?: boolean
+          capacity?: number
           created_at?: string
         }
         Update: {
@@ -196,6 +198,7 @@ export type Database = {
           duration_min?: number
           category?: string | null
           is_active?: boolean
+          capacity?: number
           created_at?: string
         }
         Relationships: [
