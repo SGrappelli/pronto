@@ -107,6 +107,7 @@ export function ClientDetailView({ client: initial, appointments, currency, busi
 
   async function deleteClient() {
     await supabase.from('clients').delete().eq('id', client.id)
+    router.refresh()
     router.push('/crm')
   }
 
