@@ -97,8 +97,7 @@ export function InventoryDetailView({ item: initial, movements: initialMovements
 
   async function deleteItem() {
     await supabase.from('inventory_items').delete().eq('id', item.id)
-    router.refresh()
-    router.push('/inventory')
+    window.location.href = '/inventory'
   }
 
   async function addMovement() {
