@@ -1,49 +1,18 @@
 import { Metadata } from 'next'
 import { Check, Minus } from 'lucide-react'
+import { PricingCards } from './PricingCards'
 
 export const metadata: Metadata = {
   title: 'Pricing — Pronto',
   description: 'Simple, transparent pricing for every business size.',
 }
 
-const plans = [
-  {
-    name: 'Free',
-    price: '$0',
-    period: 'forever',
-    description: 'Perfect for trying Pronto out.',
-    highlight: false,
-    cta: 'Get started free',
-    href: '/register',
-  },
-  {
-    name: 'Starter',
-    price: '$19',
-    period: '/month',
-    description: 'For solo operators and small shops.',
-    highlight: false,
-    cta: 'Start Starter',
-    href: '/register',
-  },
-  {
-    name: 'Pro',
-    price: '$39',
-    period: '/month',
-    description: 'For growing teams with advanced needs.',
-    highlight: true,
-    badge: 'Most popular',
-    cta: 'Start Pro',
-    href: '/register',
-  },
-  {
-    name: 'Agency',
-    price: '$79',
-    period: '/month',
-    description: 'For agencies managing multiple locations.',
-    highlight: false,
-    cta: 'Start Agency',
-    href: '/register',
-  },
+// Used only for the feature comparison table header
+const planColumns = [
+  { name: 'Free',    highlight: false },
+  { name: 'Starter', highlight: false },
+  { name: 'Pro',     highlight: true  },
+  { name: 'Agency',  highlight: false },
 ]
 
 type FeatureValue = boolean | string
@@ -94,43 +63,8 @@ export default function PricingPage() {
           </p>
         </div>
 
-        {/* Plan cards */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
-          {plans.map((plan) => (
-            <div
-              key={plan.name}
-              className={`relative rounded-2xl border p-6 flex flex-col ${
-                plan.highlight
-                  ? 'border-blue-600 shadow-lg ring-2 ring-blue-600'
-                  : 'border-gray-200 shadow-sm'
-              }`}
-            >
-              {plan.badge && (
-                <span className="absolute -top-3 left-1/2 -translate-x-1/2 bg-blue-600 text-white text-xs font-semibold px-3 py-1 rounded-full">
-                  {plan.badge}
-                </span>
-              )}
-              <div className="mb-4">
-                <h2 className="text-lg font-bold text-gray-900">{plan.name}</h2>
-                <p className="text-sm text-gray-500 mt-1">{plan.description}</p>
-              </div>
-              <div className="mb-6">
-                <span className="text-4xl font-extrabold text-gray-900">{plan.price}</span>
-                <span className="text-sm text-gray-500 ml-1">{plan.period}</span>
-              </div>
-              <a
-                href={plan.href}
-                className={`mt-auto w-full text-center py-2.5 rounded-lg text-sm font-semibold transition-colors ${
-                  plan.highlight
-                    ? 'bg-blue-600 text-white hover:bg-blue-700'
-                    : 'border border-gray-300 text-gray-700 hover:bg-gray-50'
-                }`}
-              >
-                {plan.cta}
-              </a>
-            </div>
-          ))}
-        </div>
+        {/* Toggle + Plan cards (client component) */}
+        <PricingCards />
 
         {/* Feature comparison table */}
         <div className="overflow-x-auto rounded-2xl border border-gray-200 shadow-sm">
@@ -138,7 +72,7 @@ export default function PricingPage() {
             <thead>
               <tr className="border-b border-gray-200 bg-gray-50">
                 <th className="text-left px-6 py-4 font-semibold text-gray-700 w-1/3">Feature</th>
-                {plans.map((plan) => (
+                {planColumns.map((plan) => (
                   <th
                     key={plan.name}
                     className={`px-4 py-4 font-semibold text-center ${
@@ -180,9 +114,9 @@ export default function PricingPage() {
         <p className="text-center text-sm text-gray-500 mt-10">
           Prices shown in USD. Billing is handled securely by{' '}
           <span className="font-medium text-gray-700">Paddle</span>.
-          Annual plans include a 2-month discount. Questions?{' '}
-          <a href="mailto:support@trypronto.app" className="text-blue-600 hover:underline">
-            Contact us
+          {' '}Annual plans include a 2-month discount. Questions? Contact us at{' '}
+          <a href="mailto:hello@trypronto.app" className="text-blue-600 hover:underline">
+            hello@trypronto.app
           </a>
           .
         </p>
