@@ -99,7 +99,14 @@
     "step0": {
       "heading": "What type of business do you run?",
       "subheading": "We'll tailor the setup for you",
-      "continue": "Continue"
+      "continue": "Continue",
+      "slugLabel": "Your Pronto URL",
+      "slugHint": "Lowercase letters, numbers, and hyphens · 3–30 characters",
+      "slugChecking": "Checking…",
+      "slugAvailable": "Available ✓",
+      "slugTaken": "Already taken — try a different one",
+      "slugInvalid": "Use only a–z, 0–9, and hyphens (3–30 chars)",
+      "slugPreview": "Your booking page:"
     },
     "step1": {
       "heading": "Add your first service",

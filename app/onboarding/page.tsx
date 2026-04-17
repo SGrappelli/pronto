@@ -1,170 +1,37 @@
-'use client'
+import { createClient } from '@/lib/supabase/server'
+import { redirect } from 'next/navigation'
+import { OnboardingWizard } from './OnboardingWizard'
 
-import { useState } from 'react'
-import { completeOnboarding } from './actions'
-import { CheckCircle2, ChevronRight, Loader2 } from 'lucide-react'
-import { Button } from '@/components/ui/button'
-import { useTranslations } from 'next-intl'
+export default async function OnboardingPage() {
+  const supabase = createClient()
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user) redirect('/login')
 
-type Tab = 0 | 1 | 2
+  const { data: business } = await supabase
+    .from('businesses')
+    .select('id, slug, name, onboarding_completed')
+    .eq('owner_id', user.id)
+    .maybeSingle()
 
-export default function OnboardingPage() {
-  const t = useTranslations('onboarding')
-  const [step, setStep] = useState<Tab>(0)
-  const [bizType, setBizType] = useState('')
-  const [service, setService] = useState({ name: '', price: '', duration_min: '60' })
+  if (!business) redirect('/login')
 
-  // Business types where duration doesn't apply (retail/product-based)
-  const noDuration = ['cafe']
-  const showDuration = !noDuration.includes(bizType)
-  const [saving, setSaving] = useState(false)
-  const [error, setError] = useState('')
-
-  const businessTypes = [
-    { value: 'salon', label: t('businessTypes.salon') },
-    { value: 'barbershop', label: t('businessTypes.barbershop') },
-    { value: 'auto_repair', label: t('businessTypes.auto_repair') },
-    { value: 'cafe', label: t('businessTypes.cafe') },
-    { value: 'dental', label: t('businessTypes.dental') },
-    { value: 'fitness', label: t('businessTypes.fitness') },
-    { value: 'massage', label: t('businessTypes.massage') },
-    { value: 'other', label: t('businessTypes.other') },
-  ]
-
-  const steps = [
-    t('steps.businessType'),
-    t('steps.firstService'),
-    t('steps.notifications'),
-  ]
-
-  async function finish() {
-    setSaving(true)
-    setError('')
-    try {
-      await completeOnboarding({
-        bizType,
-        serviceName: service.name,
-        servicePrice: Number(service.price),
-        serviceDuration: showDuration ? (Number(service.duration_min) || 60) : 0,
-      })
-    } catch {
-      setError(t('step2.error'))
-      setSaving(false)
+  // Guard: already onboarded → go straight to dashboard
+  if (business.onboarding_completed) {
+    const isSaas = process.env.NEXT_PUBLIC_DEPLOYMENT_MODE === 'saas'
+    if (isSaas && business.slug) {
+      const rootDomain = process.env.NEXT_PUBLIC_ROOT_DOMAIN ?? 'trypronto.app'
+      redirect(`https://${business.slug}.${rootDomain}/dashboard`)
     }
+    redirect('/dashboard')
   }
 
+  const isSaas = process.env.NEXT_PUBLIC_DEPLOYMENT_MODE === 'saas'
+
   return (
-    <div className="min-h-screen bg-gray-50 flex items-center justify-center px-4">
-      <div className="w-full max-w-lg">
-        <div className="text-center mb-8">
-          <div className="text-2xl font-bold text-blue-600 mb-1">{t('logo')}</div>
-          <p className="text-sm text-gray-500">{t('intro')}</p>
-        </div>
-
-        {/* Steps indicator */}
-        <div className="flex items-center justify-center gap-3 mb-8">
-          {steps.map((s, i) => (
-            <div key={s} className="flex items-center gap-2">
-              <div className={`w-7 h-7 rounded-full flex items-center justify-center text-xs font-semibold transition-colors ${
-                i < step ? 'bg-green-500 text-white' : i === step ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-400'
-              }`}>
-                {i < step ? <CheckCircle2 className="w-4 h-4" /> : i + 1}
-              </div>
-              <span className={`text-xs font-medium hidden sm:block ${i === step ? 'text-gray-900' : 'text-gray-400'}`}>{s}</span>
-              {i < steps.length - 1 && <ChevronRight className="w-4 h-4 text-gray-300" />}
-            </div>
-          ))}
-        </div>
-
-        <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-8">
-          {step === 0 && (
-            <div>
-              <h2 className="text-lg font-semibold text-gray-900 mb-1">{t('step0.heading')}</h2>
-              <p className="text-sm text-gray-500 mb-6">{t('step0.subheading')}</p>
-              <div className="grid grid-cols-2 gap-3">
-                {businessTypes.map((bt) => (
-                  <button key={bt.value} onClick={() => setBizType(bt.value)}
-                    className={`p-4 rounded-xl border text-sm text-left transition-colors ${
-                      bizType === bt.value ? 'border-blue-500 bg-blue-50 text-blue-700 font-medium' : 'border-gray-200 hover:border-gray-300 text-gray-700'
-                    }`}>
-                    {bt.label}
-                  </button>
-                ))}
-              </div>
-              <Button className="w-full mt-6" onClick={() => setStep(1)} disabled={!bizType}>{t('step0.continue')}</Button>
-            </div>
-          )}
-
-          {step === 1 && (
-            <div>
-              <h2 className="text-lg font-semibold text-gray-900 mb-1">{t('step1.heading')}</h2>
-              <p className="text-sm text-gray-500 mb-6">{t('step1.subheading')}</p>
-              <div className="space-y-4">
-                <div>
-                  <label className="text-xs font-medium text-gray-500">{t('step1.serviceNameLabel')}</label>
-                  <input type="text" value={service.name} onChange={(e) => setService((s) => ({ ...s, name: e.target.value }))}
-                    placeholder={t('step1.serviceNamePlaceholder')}
-                    className="w-full mt-1 border border-gray-200 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
-                </div>
-                <div className={showDuration ? 'grid grid-cols-2 gap-3' : ''}>
-                  <div>
-                    <label className="text-xs font-medium text-gray-500">{t('step1.priceLabel')}</label>
-                    <input type="number" min={0} value={service.price} onChange={(e) => setService((s) => ({ ...s, price: e.target.value }))}
-                      placeholder="0"
-                      className="w-full mt-1 border border-gray-200 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
-                  </div>
-                  {showDuration && (
-                    <div>
-                      <label className="text-xs font-medium text-gray-500">{t('step1.durationLabel')}</label>
-                      <input type="number" min={5} value={service.duration_min} onChange={(e) => setService((s) => ({ ...s, duration_min: e.target.value }))}
-                        className="w-full mt-1 border border-gray-200 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
-                    </div>
-                  )}
-                </div>
-              </div>
-              <div className="flex gap-3 mt-6">
-                <Button variant="outline" onClick={() => setStep(0)}>{t('step1.back')}</Button>
-                <Button variant="ghost" onClick={() => setStep(2)}>{t('step1.skip')}</Button>
-                <Button className="flex-1" onClick={() => setStep(2)} disabled={!service.name || !service.price}>{t('step1.continue')}</Button>
-              </div>
-            </div>
-          )}
-
-          {step === 2 && (
-            <div>
-              <h2 className="text-lg font-semibold text-gray-900 mb-1">{t('step2.heading')}</h2>
-              <p className="text-sm text-gray-500 mb-6">{t('step2.subheading')}</p>
-              <div className="space-y-3">
-                <div className="flex items-center gap-3 p-4 rounded-xl bg-blue-50 border border-blue-100">
-                  <div className="text-2xl">✉️</div>
-                  <div>
-                    <div className="text-sm font-medium text-gray-900">{t('step2.emailChannel')}</div>
-                    <div className="text-xs text-gray-500">{t('step2.emailChannelSub')}</div>
-                  </div>
-                  <span className="ml-auto text-xs text-green-600 font-medium">{t('step2.emailChannelStatus')}</span>
-                </div>
-                <div className="flex items-center gap-3 p-4 rounded-xl border border-gray-200">
-                  <div className="text-2xl">📱</div>
-                  <div>
-                    <div className="text-sm font-medium text-gray-900">{t('step2.messengerChannel')}</div>
-                    <div className="text-xs text-gray-500">{t('step2.messengerChannelSub')}</div>
-                  </div>
-                  <span className="ml-auto text-xs text-gray-400">{t('step2.messengerChannelStatus')}</span>
-                </div>
-              </div>
-              {error && (
-                <div className="mt-4 bg-red-50 border border-red-200 text-red-700 text-sm rounded-lg px-4 py-3">{error}</div>
-              )}
-              <div className="flex gap-3 mt-6">
-                <Button variant="outline" onClick={() => setStep(1)} disabled={saving}>{t('step2.back')}</Button>
-                <Button className="flex-1" onClick={finish} disabled={saving}>
-                  {saving ? <span className="flex items-center gap-2"><Loader2 className="w-4 h-4 animate-spin" />{t('step2.settingUp')}</span> : t('step2.submit')}
-                </Button>
-              </div>
-            </div>
-          )}
-        </div>
-      </div>
-    </div>
+    <OnboardingWizard
+      initialSlug={business.slug ?? ''}
+      isSaas={isSaas}
+      rootDomain={process.env.NEXT_PUBLIC_ROOT_DOMAIN ?? 'trypronto.app'}
+    />
   )
 }

@@ -36,7 +36,6 @@ async function resolveTenant(subdomain: string): Promise<{ slug: string } | null
     tenantCacheTs.set(subdomain, now)
     return tenant
   } catch {
-    // On network error fall through — let the request continue normally
     return null
   }
 }
@@ -44,6 +43,7 @@ async function resolveTenant(subdomain: string): Promise<{ slug: string } | null
 export async function middleware(request: NextRequest) {
   const hostname = request.headers.get('host') ?? ''
   const rootDomain = process.env.NEXT_PUBLIC_ROOT_DOMAIN ?? 'trypronto.app'
+  const saasMode = process.env.NEXT_PUBLIC_DEPLOYMENT_MODE === 'saas'
 
   // ── Subdomain extraction ────────────────────────────────────────────────────
   let subdomain: string | null = null
@@ -53,7 +53,6 @@ export async function middleware(request: NextRequest) {
     subdomain = hostname.slice(0, hostname.length - rootDomain.length - 1)
   } else if (/^localhost(:\d+)?$/.test(hostname)) {
     // Local dev: simulate via NEXT_PUBLIC_TENANT_SLUG env var
-    // Add `127.0.0.1 test.localhost` to /etc/hosts, then set NEXT_PUBLIC_TENANT_SLUG=test
     subdomain = process.env.NEXT_PUBLIC_TENANT_SLUG ?? null
   }
 
@@ -62,17 +61,27 @@ export async function middleware(request: NextRequest) {
     const tenant = await resolveTenant(subdomain)
 
     if (!tenant) {
-      // Unknown subdomain — redirect to main site's 404
       return NextResponse.redirect(new URL(`https://${rootDomain}/not-found`))
     }
 
-    // Rewrite to the public booking page, keeping the original URL intact
-    const rewritten = request.nextUrl.clone()
-    rewritten.pathname = `/book/${tenant.slug}`
-    return NextResponse.rewrite(rewritten)
+    const { pathname } = request.nextUrl
+
+    // Root path → public booking page (no auth needed)
+    if (pathname === '/') {
+      const rewritten = request.nextUrl.clone()
+      rewritten.pathname = `/book/${tenant.slug}`
+      return NextResponse.rewrite(rewritten)
+    }
+
+    // All other paths (dashboard, pos, etc.) fall through to the auth middleware
+    // below. Cross-subdomain cookies (.trypronto.app domain) allow the session
+    // to carry over from the main domain registration.
   }
 
-  // ── Auth middleware (main domain / app subdomain only) ─────────────────────
+  // ── Auth middleware (main domain + tenant subdomain non-root paths) ─────────
+  const cookieDomain =
+    saasMode && rootDomain ? `.${rootDomain}` : undefined
+
   let supabaseResponse = NextResponse.next({ request })
 
   const supabase = createServerClient(
@@ -89,7 +98,10 @@ export async function middleware(request: NextRequest) {
           )
           supabaseResponse = NextResponse.next({ request })
           cookiesToSet.forEach(({ name, value, options }) =>
-            supabaseResponse.cookies.set(name, value, options)
+            supabaseResponse.cookies.set(name, value, {
+              ...options,
+              ...(cookieDomain ? { domain: cookieDomain } : {}),
+            })
           )
         },
       },
