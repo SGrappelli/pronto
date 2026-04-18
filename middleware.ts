@@ -82,7 +82,12 @@ export async function middleware(request: NextRequest) {
   const cookieDomain =
     saasMode && rootDomain ? `.${rootDomain}` : undefined
 
-  let supabaseResponse = NextResponse.next({ request })
+  // Expose the current pathname as a request header so Server Components
+  // (e.g. dashboard layout) can read it without a client-side hook.
+  const requestHeaders = new Headers(request.headers)
+  requestHeaders.set('x-pathname', request.nextUrl.pathname)
+
+  let supabaseResponse = NextResponse.next({ request: { headers: requestHeaders } })
 
   const supabase = createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,

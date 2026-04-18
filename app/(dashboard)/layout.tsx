@@ -23,13 +23,16 @@ export default async function DashboardLayout({
 
   if (!business) redirect('/onboarding')
 
-  // SaaS: if user lands on the main domain dashboard, send them to their subdomain.
-  // Covers both the fresh-onboarding case and users who bookmarked trypronto.app/dashboard.
+  // SaaS: if user is on the main domain, redirect to their subdomain preserving the path.
+  // Covers /dashboard, /settings, /pos, /crm, /inventory, /booking — any app route.
   const rootDomain = process.env.NEXT_PUBLIC_ROOT_DOMAIN
   if (rootDomain && business?.slug) {
-    const host = headers().get('host') ?? ''
+    const headersList = headers()
+    const host = headersList.get('host') ?? ''
     if (host === rootDomain || host === `www.${rootDomain}`) {
-      redirect(`https://${business.slug}.${rootDomain}/dashboard`)
+      // x-pathname is set by middleware on every request
+      const pathname = headersList.get('x-pathname') ?? '/dashboard'
+      redirect(`https://${business.slug}.${rootDomain}${pathname}`)
     }
   }
 
