@@ -5,6 +5,7 @@ import { redirect } from 'next/navigation'
 
 export async function completeOnboarding(data: {
   bizType: string
+  bizName?: string
   serviceName: string
   servicePrice: number
   serviceDuration: number
@@ -35,6 +36,7 @@ export async function completeOnboarding(data: {
     .from('businesses')
     .update({
       ...(data.bizType ? { type: data.bizType } : {}),
+      ...(data.bizName ? { name: data.bizName } : {}),
       ...(data.slug ? { slug: data.slug } : {}),
       onboarding_completed: true,
     })

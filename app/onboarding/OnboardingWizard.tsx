@@ -19,18 +19,29 @@ function normalizeSlug(value: string) {
     .replace(/^-/, '')
 }
 
+function nameToSlug(name: string) {
+  return name
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '')
+    .slice(0, 30)
+}
+
 interface Props {
   initialSlug: string
+  initialName: string
   isSaas: boolean
   rootDomain: string
 }
 
-export function OnboardingWizard({ initialSlug, isSaas, rootDomain }: Props) {
+export function OnboardingWizard({ initialSlug, initialName, isSaas, rootDomain }: Props) {
   const t = useTranslations('onboarding')
   const [step, setStep] = useState<Tab>(0)
+  const [bizName, setBizName] = useState(initialName)
   const [bizType, setBizType] = useState('')
   const [service, setService] = useState({ name: '', price: '', duration_min: '60' })
   const [slug, setSlug] = useState(initialSlug)
+  const [slugManuallyEdited, setSlugManuallyEdited] = useState(false)
   const [slugStatus, setSlugStatus] = useState<SlugStatus>(
     isSaas ? (SLUG_RE.test(initialSlug) ? 'checking' : 'idle') : 'idle'
   )
@@ -98,9 +109,19 @@ export function OnboardingWizard({ initialSlug, isSaas, rootDomain }: Props) {
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   const canContinueStep0 =
-    !!bizType && (!isSaas || slugStatus === 'available')
+    !!bizName.trim() && !!bizType && (!isSaas || slugStatus === 'available')
+
+  function handleBizNameChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const newName = e.target.value
+    setBizName(newName)
+    // Auto-generate slug from business name in SaaS mode (until manually edited)
+    if (isSaas && !slugManuallyEdited) {
+      setSlug(nameToSlug(newName))
+    }
+  }
 
   function handleSlugChange(e: React.ChangeEvent<HTMLInputElement>) {
+    setSlugManuallyEdited(true)
     setSlug(normalizeSlug(e.target.value))
   }
 
@@ -110,6 +131,7 @@ export function OnboardingWizard({ initialSlug, isSaas, rootDomain }: Props) {
     try {
       await completeOnboarding({
         bizType,
+        bizName: bizName.trim() || undefined,
         serviceName: service.name,
         servicePrice: Number(service.price),
         serviceDuration: showDuration ? (Number(service.duration_min) || 60) : 0,
@@ -164,11 +186,28 @@ export function OnboardingWizard({ initialSlug, isSaas, rootDomain }: Props) {
         </div>
 
         <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-8">
-          {/* ── Step 0: Business type (+ URL in SaaS) ─────────────────────── */}
+          {/* ── Step 0: Business name + type (+ URL in SaaS) ──────────────── */}
           {step === 0 && (
             <div>
               <h2 className="text-lg font-semibold text-gray-900 mb-1">{t('step0.heading')}</h2>
               <p className="text-sm text-gray-500 mb-6">{t('step0.subheading')}</p>
+
+              {/* Business name */}
+              <div className="mb-6">
+                <label className="text-xs font-medium text-gray-500 block mb-1">
+                  {t('step0.bizNameLabel')}
+                </label>
+                <input
+                  type="text"
+                  value={bizName}
+                  onChange={handleBizNameChange}
+                  placeholder={t('step0.bizNamePlaceholder')}
+                  maxLength={80}
+                  className="w-full border border-gray-200 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+              </div>
+
+              <p className="text-xs font-medium text-gray-500 mb-3">{t('step0.businessTypeLabel')}</p>
               <div className="grid grid-cols-2 gap-3">
                 {businessTypes.map((bt) => (
                   <button key={bt.value} onClick={() => setBizType(bt.value)}
