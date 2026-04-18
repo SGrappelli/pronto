@@ -54,9 +54,9 @@ export async function completeOnboarding(data: {
     })
   }
 
-  const isSaas = process.env.NEXT_PUBLIC_DEPLOYMENT_MODE === 'saas'
-  if (isSaas && finalSlug) {
-    const rootDomain = process.env.NEXT_PUBLIC_ROOT_DOMAIN ?? 'trypronto.app'
+  // If NEXT_PUBLIC_ROOT_DOMAIN is set we're running in SaaS mode → go to subdomain
+  const rootDomain = process.env.NEXT_PUBLIC_ROOT_DOMAIN
+  if (rootDomain && finalSlug) {
     redirect(`https://${finalSlug}.${rootDomain}/dashboard`)
   }
 

@@ -1,5 +1,6 @@
 import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
+import { headers } from 'next/headers'
 import { Sidebar } from '@/components/layout/sidebar'
 
 export default async function DashboardLayout({
@@ -21,6 +22,16 @@ export default async function DashboardLayout({
     .maybeSingle()
 
   if (!business) redirect('/onboarding')
+
+  // SaaS: if user lands on the main domain dashboard, send them to their subdomain.
+  // Covers both the fresh-onboarding case and users who bookmarked trypronto.app/dashboard.
+  const rootDomain = process.env.NEXT_PUBLIC_ROOT_DOMAIN
+  if (rootDomain && business?.slug) {
+    const host = headers().get('host') ?? ''
+    if (host === rootDomain || host === `www.${rootDomain}`) {
+      redirect(`https://${business.slug}.${rootDomain}/dashboard`)
+    }
+  }
 
   return (
     <div className="fixed inset-0 flex overflow-hidden bg-gray-50">
