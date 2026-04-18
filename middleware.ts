@@ -2,8 +2,6 @@ import { createServerClient } from '@supabase/ssr'
 import { NextResponse, type NextRequest } from 'next/server'
 
 // ── Tenant cache ─────────────────────────────────────────────────────────────
-// Module-level Map persists for the lifetime of the Edge worker (~warm requests).
-// Resets on cold start — that's acceptable; slugs are stable and DB is fast.
 const tenantCache = new Map<string, { slug: string } | null>()
 const tenantCacheTs = new Map<string, number>()
 const TENANT_TTL = 60_000 // 1 minute
@@ -49,10 +47,8 @@ export async function middleware(request: NextRequest) {
   let subdomain: string | null = null
 
   if (hostname.endsWith(`.${rootDomain}`)) {
-    // Production: salon-maya.trypronto.app → "salon-maya"
     subdomain = hostname.slice(0, hostname.length - rootDomain.length - 1)
   } else if (/^localhost(:\d+)?$/.test(hostname)) {
-    // Local dev: simulate via NEXT_PUBLIC_TENANT_SLUG env var
     subdomain = process.env.NEXT_PUBLIC_TENANT_SLUG ?? null
   }
 
@@ -66,24 +62,23 @@ export async function middleware(request: NextRequest) {
 
     const { pathname } = request.nextUrl
 
-    // Root path → public booking page (no auth needed)
+    // Root of subdomain → public booking page (no auth needed)
     if (pathname === '/') {
       const rewritten = request.nextUrl.clone()
       rewritten.pathname = `/book/${tenant.slug}`
       return NextResponse.rewrite(rewritten)
     }
 
-    // All other paths (dashboard, pos, etc.) fall through to the auth middleware
-    // below. Cross-subdomain cookies (.trypronto.app domain) allow the session
-    // to carry over from the main domain registration.
+    // All other paths fall through to the auth middleware below.
+    // Cross-subdomain cookies (.trypronto.app) allow the session to carry over.
   }
 
-  // ── Auth middleware (main domain + tenant subdomain non-root paths) ─────────
+  // ── Auth middleware ─────────────────────────────────────────────────────────
   const cookieDomain =
     saasMode && rootDomain ? `.${rootDomain}` : undefined
 
-  // Expose the current pathname as a request header so Server Components
-  // (e.g. dashboard layout) can read it without a client-side hook.
+  // Pass the current pathname to Server Components (e.g. dashboard layout)
+  // so they can redirect to the correct subdomain path.
   const requestHeaders = new Headers(request.headers)
   requestHeaders.set('x-pathname', request.nextUrl.pathname)
 
@@ -101,7 +96,8 @@ export async function middleware(request: NextRequest) {
           cookiesToSet.forEach(({ name, value }) =>
             request.cookies.set(name, value)
           )
-          supabaseResponse = NextResponse.next({ request })
+          // FIX: preserve requestHeaders (including x-pathname) when recreating response
+          supabaseResponse = NextResponse.next({ request: { headers: requestHeaders } })
           cookiesToSet.forEach(({ name, value, options }) =>
             supabaseResponse.cookies.set(name, value, {
               ...options,
@@ -115,7 +111,7 @@ export async function middleware(request: NextRequest) {
 
   const { pathname, searchParams } = request.nextUrl
 
-  // Перехватываем ?code= от Supabase email-подтверждения и перекидываем на callback
+  // Перехватываем ?code= от Supabase email-подтверждения
   const code = searchParams.get('code')
   if (code && pathname === '/') {
     const callbackUrl = request.nextUrl.clone()
@@ -125,7 +121,15 @@ export async function middleware(request: NextRequest) {
 
   const { data: { user } } = await supabase.auth.getUser()
 
-  // Protected routes
+  // FIX: authenticated user on root → dashboard
+  // Must be checked BEFORE the publicPaths early-return, otherwise `/` is always served as-is.
+  if (user && pathname === '/') {
+    const dashboardUrl = request.nextUrl.clone()
+    dashboardUrl.pathname = '/dashboard'
+    return NextResponse.redirect(dashboardUrl)
+  }
+
+  // Protected routes — redirect unauthenticated users to login
   const protectedPaths = ['/dashboard', '/pos', '/crm', '/inventory', '/booking', '/settings']
   const isProtected = protectedPaths.some((p) => pathname.startsWith(p))
 
@@ -136,17 +140,10 @@ export async function middleware(request: NextRequest) {
     return NextResponse.redirect(loginUrl)
   }
 
-  // Public routes — no redirect for anyone
+  // Public routes — serve as-is for unauthenticated users
   const publicPaths = ['/', '/pricing', '/terms', '/privacy', '/refund']
   if (publicPaths.includes(pathname)) {
     return supabaseResponse
-  }
-
-  // Авторизованного пользователя с главной → дашборд
-  if (user && pathname === '/') {
-    const dashboardUrl = request.nextUrl.clone()
-    dashboardUrl.pathname = '/dashboard'
-    return NextResponse.redirect(dashboardUrl)
   }
 
   // Redirect authenticated users away from auth pages
