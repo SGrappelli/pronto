@@ -97,8 +97,11 @@
       "other": "🏢 Other"
     },
     "step0": {
-      "heading": "What type of business do you run?",
+      "heading": "Tell us about your business",
       "subheading": "We'll tailor the setup for you",
+      "bizNameLabel": "Business name *",
+      "bizNamePlaceholder": "Maya's Salon",
+      "businessTypeLabel": "Type of business",
       "continue": "Continue",
       "slugLabel": "Your Pronto URL",
       "slugHint": "Lowercase letters, numbers, and hyphens · 3–30 characters",

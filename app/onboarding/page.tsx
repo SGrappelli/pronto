@@ -30,6 +30,7 @@ export default async function OnboardingPage() {
   return (
     <OnboardingWizard
       initialSlug={business.slug ?? ''}
+      initialName={business.name ?? ''}
       isSaas={isSaas}
       rootDomain={process.env.NEXT_PUBLIC_ROOT_DOMAIN ?? 'trypronto.app'}
     />
