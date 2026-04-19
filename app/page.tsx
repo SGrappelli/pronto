@@ -28,12 +28,15 @@ export const metadata: Metadata = {
     description:
       'Self-hosted POS, CRM, Booking and Omnichannel notifications. Zero commission. One command install.',
     images: [{ url: 'https://trypronto.app/og-image.png' }],
+    locale: 'en_US',
+    siteName: 'Pronto',
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Pronto — Free Open Source POS & CRM for Service Businesses',
     description:
       'Self-hosted POS, CRM, Booking and Omnichannel notifications. Zero commission. One command install.',
+    images: ['https://trypronto.app/og-image.png'],
   },
 }
 
@@ -100,6 +103,15 @@ const faqJsonLd = {
   ],
 }
 
+const organizationJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  name: 'Pronto',
+  url: 'https://trypronto.app',
+  logo: 'https://trypronto.app/logo.png',
+  sameAs: ['https://github.com/SGrappelli/pronto'],
+}
+
 export default function RootPage() {
   return (
     <div className={styles.page}>
@@ -110,6 +122,10 @@ export default function RootPage() {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }}
       />
 
       <nav className={styles.nav}>
@@ -146,7 +162,7 @@ export default function RootPage() {
         </section>
 
         {/* EVERYTHING IN ONE PLACE */}
-        <section className={`${styles.sec} ${styles.secGray}`}>
+        <section className={`${styles.sec} ${styles.secWhite}`}>
           <div className={styles.secHead}>
             <h2>Everything in one place</h2>
             <p>
@@ -155,43 +171,37 @@ export default function RootPage() {
             </p>
           </div>
           <div className={styles.bizTags}>
-            <span className={styles.bizTag}>Beauty salons</span>
-            <span className={styles.bizTag}>Barbershops</span>
-            <span className={styles.bizTag}>Auto repair shops</span>
-            <span className={styles.bizTag}>Cafes</span>
-            <span className={styles.bizTag}>Dental clinics</span>
-            <span className={styles.bizTag}>Fitness clubs</span>
-            <span className={styles.bizTag}>Massage &amp; spa</span>
-            <span className={styles.bizTag}>And any other service SMB</span>
+            <span className={`${styles.bizTag} ${styles.bt1}`}>Beauty salons</span>
+            <span className={`${styles.bizTag} ${styles.bt2}`}>Barbershops</span>
+            <span className={`${styles.bizTag} ${styles.bt3}`}>Auto repair shops</span>
+            <span className={`${styles.bizTag} ${styles.bt4}`}>Cafes</span>
+            <span className={`${styles.bizTag} ${styles.bt5}`}>Dental clinics</span>
+            <span className={`${styles.bizTag} ${styles.bt6}`}>Fitness clubs</span>
+            <span className={`${styles.bizTag} ${styles.bt7}`}>Massage &amp; spa</span>
+            <span className={`${styles.bizTag} ${styles.bt8}`}>And any other service SMB</span>
           </div>
           <div className={styles.featGrid}>
             <div className={styles.featCard}>
-              <div className={styles.featIcon}>🛒</div>
               <h4>POS / Checkout</h4>
               <p>Complete a sale in 3 clicks. Cash, card, transfer. Works fully offline.</p>
             </div>
             <div className={styles.featCard}>
-              <div className={styles.featIcon}>👥</div>
               <h4>CRM</h4>
               <p>Full client history — visits, spending, tags, birthday, notes.</p>
             </div>
             <div className={styles.featCard}>
-              <div className={styles.featIcon}>📦</div>
               <h4>Inventory</h4>
               <p>Track stock levels. Low-stock alerts via all notification channels.</p>
             </div>
             <div className={styles.featCard}>
-              <div className={styles.featIcon}>📅</div>
               <h4>Booking calendar</h4>
               <p>Week view, drag &amp; drop. No double-booking at database level.</p>
             </div>
             <div className={styles.featCard}>
-              <div className={styles.featIcon}>🔗</div>
               <h4>Online booking</h4>
               <p>Public page — clients book with just a name &amp; phone. No registration required.</p>
             </div>
             <div className={styles.featCard}>
-              <div className={styles.featIcon}>📱</div>
               <h4>PWA</h4>
               <p>Install on any device directly from the browser. Works offline.</p>
             </div>
@@ -199,7 +209,7 @@ export default function RootPage() {
         </section>
 
         {/* BUILT FOR SERVICE BUSINESSES */}
-        <section className={`${styles.sec} ${styles.secWhite}`}>
+        <section className={`${styles.sec} ${styles.secWarm}`}>
           <div className={styles.secHead}>
             <h2>Built for service businesses</h2>
             <p>Replacing Excel, manual reminders, and expensive platforms that own your clients.</p>
@@ -247,7 +257,7 @@ export default function RootPage() {
         </section>
 
         {/* OMNICHANNEL NOTIFICATIONS */}
-        <section className={`${styles.sec} ${styles.secGray}`}>
+        <section className={`${styles.sec} ${styles.secBlue}`}>
           <div className={styles.secHead}>
             <h2>Omnichannel notifications</h2>
             <p>
@@ -560,6 +570,7 @@ export default function RootPage() {
         <div className={styles.footerBrand}>
           Pronto<span>.</span>
         </div>
+        <div className={styles.footerCopy}>© 2026 Pronto. All rights reserved.</div>
         <div className={styles.footerLinks}>
           <Link href="/terms">Terms</Link>
           <Link href="/privacy">Privacy</Link>

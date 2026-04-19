@@ -16,9 +16,10 @@
   z-index: 100;
   background: rgba(255, 255, 255, 0.96);
   backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
   border-bottom: 1px solid #f0f0f0;
   padding: 0 48px;
-  height: 62px;
+  height: 64px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -40,12 +41,12 @@
 .navRight {
   display: flex;
   align-items: center;
-  gap: 20px;
+  gap: 24px;
 }
 
 .navLink {
-  font-size: 14px;
-  color: #6b7280;
+  font-size: 16px;
+  color: #374151;
   text-decoration: none;
   font-weight: 500;
 }
@@ -58,9 +59,9 @@
   background: #111;
   color: #fff;
   font-family: 'DM Sans', sans-serif;
-  font-size: 14px;
+  font-size: 15px;
   font-weight: 500;
-  padding: 9px 20px;
+  padding: 10px 22px;
   border-radius: 8px;
   border: none;
   cursor: pointer;
@@ -71,7 +72,7 @@
 .hero {
   padding: 88px 48px 80px;
   background: #fff;
-  border-bottom: 1px solid #f3f4f6;
+  border-bottom: 1px solid #f0f0f0;
   text-align: center;
 }
 
@@ -91,25 +92,20 @@
 
 .heroDesc {
   font-size: 19px;
-  color: #6b7280;
+  color: #374151;
   line-height: 1.65;
-  max-width: 100%;
 }
 
 /* SECTIONS */
 .sec {
   padding: 72px 48px;
-}
-
-.secGray {
-  background: #f9fafb;
   border-top: 1px solid #f0f0f0;
 }
 
-.secWhite {
-  background: #fff;
-  border-top: 1px solid #f0f0f0;
-}
+.secWhite { background: #fff; }
+.secMint  { background: #f0fdf4; }
+.secBlue  { background: #f0f7ff; }
+.secWarm  { background: #fdf8f0; }
 
 .secHead {
   text-align: center;
@@ -121,12 +117,12 @@
   font-weight: 700;
   letter-spacing: -0.5px;
   color: #0a0a0a;
-  margin-bottom: 12px;
+  margin-bottom: 14px;
 }
 
 .secHead p {
   font-size: 17px;
-  color: #6b7280;
+  color: #374151;
   line-height: 1.65;
 }
 
@@ -136,26 +132,33 @@
   letter-spacing: 1.5px;
   text-transform: uppercase;
   color: #9ca3af;
-  margin-bottom: 10px;
+  margin-bottom: 14px;
 }
 
 /* BUSINESS TAGS */
 .bizTags {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
-  margin-bottom: 36px;
+  gap: 9px;
+  margin-bottom: 40px;
   justify-content: center;
 }
 
 .bizTag {
   font-size: 14px;
-  background: #fff;
-  border: 1px solid #e5e7eb;
   border-radius: 20px;
-  padding: 6px 16px;
-  color: #6b7280;
+  padding: 7px 16px;
+  font-weight: 500;
 }
+
+.bt1 { background: #fef3c7; color: #92400e; border: 1px solid #fde68a; }
+.bt2 { background: #ede9fe; color: #5b21b6; border: 1px solid #ddd6fe; }
+.bt3 { background: #fee2e2; color: #991b1b; border: 1px solid #fecaca; }
+.bt4 { background: #dcfce7; color: #166534; border: 1px solid #bbf7d0; }
+.bt5 { background: #e0f2fe; color: #0c4a6e; border: 1px solid #bae6fd; }
+.bt6 { background: #fce7f3; color: #9d174d; border: 1px solid #fbcfe8; }
+.bt7 { background: #ffedd5; color: #9a3412; border: 1px solid #fed7aa; }
+.bt8 { background: #f1f5f9; color: #475569; border: 1px solid #e2e8f0; }
 
 /* FEATURE CARDS */
 .featGrid {
@@ -166,43 +169,22 @@
 
 .featCard {
   background: #fff;
-  border: 1px solid #e8e8e8;
+  border: 1px solid #e2e8f0;
   border-radius: 14px;
-  padding: 28px;
+  padding: 28px 26px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
 }
 
-.secGray .featCard {
-  background: #fff;
-}
-
-.secWhite .featCard {
-  background: #f9fafb;
-  box-shadow: none;
-}
-
-.featIcon {
-  width: 44px;
-  height: 44px;
-  border-radius: 10px;
-  background: #f3f4f6;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 16px;
-  font-size: 20px;
-}
-
 .featCard h4 {
-  font-size: 16px;
+  font-size: 19px;
   font-weight: 700;
-  margin-bottom: 8px;
-  color: #111;
+  margin-bottom: 10px;
+  color: #0a0a0a;
 }
 
 .featCard p {
-  font-size: 14px;
-  color: #6b7280;
+  font-size: 15px;
+  color: #374151;
   line-height: 1.65;
 }
 
@@ -210,19 +192,19 @@
 .painGrid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 20px;
+  gap: 18px;
 }
 
 .painCard {
   background: #fff;
-  border: 1px solid #e8e8e8;
+  border: 1px solid #e2e8f0;
   border-radius: 14px;
   padding: 24px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
 }
 
 .painFromLabel {
-  font-size: 11px;
+  font-size: 10px;
   color: #ef4444;
   font-weight: 700;
   letter-spacing: 1px;
@@ -232,7 +214,7 @@
 
 .painFromText {
   font-size: 15px;
-  color: #9ca3af;
+  color: #6b7280;
 }
 
 .painArrow {
@@ -243,7 +225,7 @@
 
 .painTo {
   font-size: 15px;
-  color: #111;
+  color: #0a0a0a;
   font-weight: 700;
 }
 
@@ -252,7 +234,7 @@
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
-  margin-bottom: 36px;
+  margin-bottom: 32px;
   justify-content: center;
 }
 
@@ -261,13 +243,13 @@
   align-items: center;
   gap: 7px;
   background: #fff;
-  border: 1px solid #e5e7eb;
+  border: 1px solid #e2e8f0;
   border-radius: 20px;
   padding: 8px 18px;
   font-size: 14px;
   font-weight: 500;
   color: #111;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
 }
 
 .channel.soon {
@@ -283,10 +265,10 @@
   flex-shrink: 0;
 }
 
-.dotGreen { background: #22c55e; }
-.dotBlue { background: #3b82f6; }
+.dotGreen  { background: #22c55e; }
+.dotBlue   { background: #3b82f6; }
 .dotPurple { background: #a855f7; }
-.dotGray { background: #9ca3af; }
+.dotGray   { background: #9ca3af; }
 
 .badgeSoon {
   font-size: 10px;
@@ -307,9 +289,9 @@
 
 .eventItem {
   background: #fff;
-  border: 1px solid #e8e8e8;
+  border: 1px solid #e2e8f0;
   border-radius: 14px;
-  padding: 24px 20px;
+  padding: 28px 20px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -321,7 +303,7 @@
   font-size: 28px;
   width: 56px;
   height: 56px;
-  background: #f3f4f6;
+  background: #f8fafc;
   border-radius: 14px;
   display: flex;
   align-items: center;
@@ -332,13 +314,13 @@
 .evText {
   font-size: 15px;
   font-weight: 700;
-  color: #111;
-  margin-bottom: 5px;
+  color: #0a0a0a;
+  margin-bottom: 6px;
 }
 
 .evSub {
   font-size: 13px;
-  color: #9ca3af;
+  color: #6b7280;
   line-height: 1.5;
 }
 
@@ -353,11 +335,11 @@
 .pathCard {
   border-radius: 16px;
   padding: 36px;
-  border: 1px solid #e8e8e8;
+  border: 1px solid #e2e8f0;
 }
 
 .pathCard.self {
-  background: #f9fafb;
+  background: #f8fafc;
 }
 
 .pathCard.cloud {
@@ -384,7 +366,7 @@
 
 .pathDesc {
   font-size: 15px;
-  color: #6b7280;
+  color: #374151;
   line-height: 1.65;
   margin-bottom: 28px;
 }
@@ -393,21 +375,20 @@
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 1px;
-  background: #e5e7eb;
+  background: #e2e8f0;
   border-radius: 12px;
   overflow: hidden;
-  border: 1px solid #e5e7eb;
+  border: 1px solid #e2e8f0;
   margin-bottom: 28px;
 }
 
 .shHlItem {
-  background: #fff;
-  padding: 20px 16px;
+  padding: 20px 14px;
   text-align: center;
 }
 
 .pathCard.self .shHlItem {
-  background: #f9fafb;
+  background: #f8fafc;
 }
 
 .pathCard.cloud .shHlItem {
@@ -454,7 +435,7 @@
 .pathPointText {
   font-size: 14px;
   color: #374151;
-  line-height: 1.55;
+  line-height: 1.6;
 }
 
 .pathPointText strong {
@@ -484,13 +465,17 @@
   font-family: 'DM Sans', sans-serif;
   font-size: 14px;
   font-weight: 500;
-  padding: 10px 20px;
+  padding: 11px 22px;
   border-radius: 8px;
   border: 1px solid #d1d5db;
   cursor: pointer;
   margin-right: 10px;
   text-decoration: none;
   display: inline-block;
+}
+
+.btnOutline:hover {
+  border-color: #111;
 }
 
 .btnPrimary {
@@ -507,21 +492,26 @@
   display: inline-block;
 }
 
+.btnPrimary:hover {
+  background: #1f2937;
+}
+
 /* TRIAL BANNER */
 .trialBanner {
   background: #fff;
   border: 1px solid #bbf7d0;
   border-radius: 12px;
-  padding: 18px 24px;
-  margin-bottom: 24px;
+  padding: 20px 26px;
+  margin-bottom: 26px;
   display: flex;
   align-items: center;
-  gap: 20px;
+  gap: 22px;
+  flex-wrap: wrap;
 }
 
 .trialBig {
   font-family: 'Bricolage Grotesque', sans-serif;
-  font-size: 36px;
+  font-size: 40px;
   font-weight: 800;
   color: #16a34a;
   white-space: nowrap;
@@ -532,11 +522,11 @@
   font-size: 15px;
   color: #166534;
   font-weight: 500;
-  margin-bottom: 3px;
+  margin-bottom: 4px;
 }
 
 .trialNote {
-  font-size: 12px;
+  font-size: 13px;
   color: #16a34a;
   opacity: 0.75;
 }
@@ -548,10 +538,10 @@
 
 .plansTitle {
   text-align: center;
-  font-size: 20px;
+  font-size: 22px;
   font-weight: 700;
   color: #0a0a0a;
-  margin-bottom: 20px;
+  margin-bottom: 22px;
   font-family: 'Bricolage Grotesque', sans-serif;
 }
 
@@ -564,7 +554,7 @@
 
 .plan {
   background: #fff;
-  border: 1px solid #e5e7eb;
+  border: 1px solid #e2e8f0;
   border-radius: 12px;
   padding: 24px;
   display: flex;
@@ -623,7 +613,7 @@
 
 .planLimit {
   font-size: 13px;
-  color: #9ca3af;
+  color: #6b7280;
   margin-bottom: 16px;
 }
 
@@ -636,7 +626,7 @@
 }
 
 .planFeats li {
-  color: #6b7280;
+  color: #374151;
   display: flex;
   align-items: center;
   gap: 6px;
@@ -695,18 +685,20 @@
 
 .faqA {
   font-size: 14px;
-  color: #6b7280;
+  color: #374151;
   line-height: 1.75;
 }
 
 /* FOOTER */
 .footer {
-  padding: 32px 48px;
+  padding: 28px 48px;
   border-top: 1px solid #f0f0f0;
   display: flex;
   justify-content: space-between;
   align-items: center;
   background: #fff;
+  flex-wrap: wrap;
+  gap: 12px;
 }
 
 .footerBrand {
@@ -719,6 +711,11 @@
 
 .footerBrand span {
   color: #16a34a;
+}
+
+.footerCopy {
+  font-size: 13px;
+  color: #9ca3af;
 }
 
 .footerLinks {
@@ -738,36 +735,39 @@
 
 /* RESPONSIVE */
 @media (max-width: 1024px) {
-  .nav { padding: 0 24px; }
-  .hero { padding: 64px 24px 56px; }
+  .nav    { padding: 0 24px; }
+  .hero   { padding: 64px 24px 56px; }
   .hero h1 { font-size: 46px; }
-  .sec { padding: 56px 24px; }
-  .faq { padding: 56px 24px; }
-  .footer { padding: 28px 24px; }
-  .featGrid { grid-template-columns: repeat(2, 1fr); }
-  .painGrid { grid-template-columns: repeat(2, 1fr); }
+  .sec    { padding: 56px 24px; }
+  .faq    { padding: 56px 24px; }
+  .footer { padding: 24px; }
+  .featGrid   { grid-template-columns: repeat(2, 1fr); }
+  .painGrid   { grid-template-columns: repeat(2, 1fr); }
   .eventsGrid { grid-template-columns: repeat(2, 1fr); }
-  .twoPaths { grid-template-columns: 1fr; }
-  .plans { grid-template-columns: repeat(2, 1fr); }
+  .twoPaths   { grid-template-columns: 1fr; }
+  .plans      { grid-template-columns: repeat(2, 1fr); }
   .shHighlights { grid-template-columns: repeat(2, 1fr); }
 }
 
 @media (max-width: 640px) {
-  .nav { padding: 0 16px; height: 56px; }
+  .nav    { padding: 0 16px; height: 56px; }
   .navLink.hideMob { display: none; }
-  .hero { padding: 52px 16px 44px; }
+  .hero   { padding: 52px 16px 44px; }
   .hero h1 { font-size: 34px; letter-spacing: -1px; }
   .heroDesc { font-size: 16px; }
-  .sec { padding: 44px 16px; }
+  .sec    { padding: 44px 16px; }
   .secHead h2 { font-size: 28px; }
-  .faq { padding: 44px 16px; }
-  .footer { flex-direction: column; gap: 16px; padding: 24px 16px; text-align: center; }
-  .footerLinks { flex-wrap: wrap; justify-content: center; gap: 16px; }
+  .secHead p  { font-size: 15px; }
+  .faq    { padding: 44px 16px; }
+  .footer { flex-direction: column; align-items: flex-start; gap: 16px; padding: 24px 16px; }
+  .footerLinks { flex-wrap: wrap; gap: 16px; }
   .featGrid, .painGrid, .eventsGrid { grid-template-columns: 1fr; }
-  .plans { grid-template-columns: 1fr; }
+  .plans  { grid-template-columns: 1fr; }
   .shHighlights { grid-template-columns: repeat(2, 1fr); }
   .shHlNum { font-size: 28px; }
-  .trialBanner { flex-direction: column; gap: 10px; }
-  .btnOutline { margin-bottom: 10px; }
-  .pathCard { padding: 24px; }
+  .trialBanner { flex-direction: column; gap: 10px; padding: 16px 20px; }
+  .trialBig { font-size: 34px; }
+  .btnOutline { margin-bottom: 8px; }
+  .pathCard   { padding: 24px; }
+  .twoPaths   { grid-template-columns: 1fr; }
 }
