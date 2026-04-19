@@ -1,22 +1,10 @@
 import type { Metadata, Viewport } from 'next'
-import { Inter, Syne, DM_Sans } from 'next/font/google'
+import { Inter } from 'next/font/google'
 import { NextIntlClientProvider } from 'next-intl'
 import { getLocale, getMessages } from 'next-intl/server'
 import './globals.css'
 
 const inter = Inter({ subsets: ['latin'] })
-
-const syne = Syne({
-  subsets: ['latin'],
-  weight: ['500', '700', '800'],
-  variable: '--font-syne',
-})
-
-const dmSans = DM_Sans({
-  subsets: ['latin'],
-  weight: ['400', '500'],
-  variable: '--font-dm-sans',
-})
 
 export const metadata: Metadata = {
   title: 'Pronto — Business Management for Service SMBs',
@@ -62,7 +50,15 @@ export default async function RootLayout({
   const messages = await getMessages()
 
   return (
-    <html lang={locale} className={`${syne.variable} ${dmSans.variable}`}>
+    <html lang={locale}>
+      <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;500;600;700;800&family=DM+Sans:wght@400;500&display=swap"
+          rel="stylesheet"
+        />
+      </head>
       <body className={inter.className}>
         <NextIntlClientProvider messages={messages}>
           {children}
