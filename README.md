@@ -1,22 +1,24 @@
 🌍 **English** | [Español](docs/README.es.md) | [Português](docs/README.pt.md)
 
-# Pronto — Business Management for Service SMBs
+# Pronto — Open Source POS · CRM · Booking for Service Businesses
 
-> Self-hosted, open-source POS · CRM · Inventory · Booking · Omnichannel Notifications.  
+> Self-hosted business management for salons, barbershops, auto repair shops, cafes, and any service SMB.  
 > Your data, your server. Zero commission. One-command install.
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![Next.js](https://img.shields.io/badge/Next.js-14-black)](https://nextjs.org)
 [![Supabase](https://img.shields.io/badge/Supabase-PostgreSQL-green)](https://supabase.com)
 [![Docker](https://img.shields.io/badge/Docker-ready-blue)](docker-compose.yml)
+[![CI](https://github.com/SGrappelli/pronto/actions/workflows/ci.yml/badge.svg)](https://github.com/SGrappelli/pronto/actions/workflows/ci.yml)
 
 ---
 
-## What is Pronto?
+## Why Pronto
 
-Pronto is a free, open-source business management system built for service businesses — salons, auto repair shops, cafes, dental clinics, fitness clubs, and more.
-
-No monthly fees. No commission on sales. Your data stays on your server.
+- **Your data, your server** — client records, booking history, and inventory stay on your own machine. No vendor lock-in, no data leaving your infrastructure.
+- **Zero commission** — clients book and pay directly with your business. No marketplace middleman taking a cut.
+- **One command to install** — `docker compose up -d` and you're running. Migrations apply automatically on first start.
+- **Full source code, MIT license** — read it, modify it, white-label it. No hidden SaaS layer, no feature flags, no phone-home.
 
 ---
 
@@ -259,7 +261,6 @@ Unlike Telegram/Viber (which notify the *business owner*), WhatsApp messages go 
 
 > ⚠️ **WhatsApp messaging limits:** Free-form text messages (`type: text`) only work within a **24-hour customer service window** that opens after the client messages the business first. Business-initiated messages — reminders, thank-you, re-activation, birthday — require **pre-approved Message Templates (HSM)** submitted through Meta Business Manager. Without approved templates, these messages are silently dropped by Meta and never delivered. For full cron notification support via WhatsApp, create and submit your message templates at [business.facebook.com → Account tools → Message templates](https://business.facebook.com).
 
-
 ---
 
 ## Setting up notifications cron
@@ -346,6 +347,7 @@ pronto/
 │   ├── (auth)/          # Login, Register, Check email
 │   ├── (dashboard)/     # POS, CRM, Inventory, Booking, Settings, Dashboard
 │   ├── api/             # Email, Telegram/Viber webhooks, Cron
+│   ├── onboarding/      # First-run setup wizard (business name, slug, services)
 │   └── book/[slug]/     # Public booking page (no login required)
 ├── components/
 │   ├── layout/          # Sidebar, Header
@@ -382,7 +384,10 @@ Need help getting started? I offer:
 
 - **Installation & setup** — I'll deploy Pronto on your server, configure all integrations, and get you running ($100–200)
 - **Customization** — custom features, branding, or integrations for your specific business ($150–400)
+
 Contact: [ukv2179@gmail.com](mailto:ukv2179@gmail.com) or open an issue with the `services` label.
+
+**Don't want to self-host?** A managed cloud version is available at [trypronto.app](https://trypronto.app) — no server required, ready in minutes.
 
 ---
 
@@ -411,7 +416,6 @@ Pull requests are welcome! Please open an issue first to discuss major changes.
 - Omnichannel notifications: Email · Telegram · WhatsApp · Viber
 - PWA — installable on any device without App Store
 - Docker one-command install
-- Multi-tenant architecture
 
 ### 🔜 v1.5 — Q3 2026
 - Analytics dashboard (revenue, LTV, top services)
