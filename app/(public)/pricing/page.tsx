@@ -190,6 +190,46 @@ export default function PricingPage() {
           </a>
           .
         </p>
+
+        {/* FAQ */}
+        <div className="mt-20 max-w-3xl mx-auto">
+          <h2 className="text-2xl font-bold text-gray-900 mb-8 text-center" style={{ fontFamily: "var(--font-bricolage, 'Bricolage Grotesque'), sans-serif", letterSpacing: '-0.5px' }}>
+            Frequently asked questions
+          </h2>
+          <div className="divide-y divide-gray-100 border-t border-gray-100">
+            {[
+              {
+                q: 'Is there a free plan?',
+                a: 'Yes. The Free plan is free forever — no credit card required. It includes POS, inventory management, and email notifications for 1 employee and up to 50 clients.',
+              },
+              {
+                q: 'Is there a free trial on paid plans?',
+                a: 'Yes. All paid plans (Starter, Pro, Agency) include a 14-day free trial. You can start immediately without entering a credit card.',
+              },
+              {
+                q: 'How much does Pronto cost?',
+                a: 'Pronto starts free forever. Paid plans are: Starter $19/month, Pro $39/month, Agency $79/month. Annual billing includes a 2-month discount.',
+              },
+              {
+                q: 'Can I upgrade or downgrade my plan?',
+                a: 'Yes, you can change your plan at any time from Settings → Billing. Upgrades take effect immediately; downgrades apply at the next billing cycle.',
+              },
+              {
+                q: 'Can I cancel anytime?',
+                a: 'Yes. Cancel anytime from Settings → Billing — no cancellation fees. You keep access until the end of the paid period.',
+              },
+              {
+                q: 'What payment methods are accepted?',
+                a: 'All major credit and debit cards (Visa, Mastercard, Amex) via Paddle, our payment processor.',
+              },
+            ].map(({ q, a }) => (
+              <div key={q} className="py-5">
+                <h3 className="text-base font-semibold text-gray-900 mb-2" style={{ fontFamily: "var(--font-bricolage, 'Bricolage Grotesque'), sans-serif" }}>{q}</h3>
+                <p className="text-sm text-gray-600 leading-relaxed">{a}</p>
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
     </div>
   )
