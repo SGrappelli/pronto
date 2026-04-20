@@ -1,6 +1,19 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
+import { Bricolage_Grotesque, DM_Sans } from 'next/font/google'
 import styles from './landing.module.css'
+
+const bricolage = Bricolage_Grotesque({
+  subsets: ['latin'],
+  weight: ['400', '500', '600', '700', '800'],
+  variable: '--font-bricolage',
+})
+
+const dmSans = DM_Sans({
+  subsets: ['latin'],
+  weight: ['400', '500'],
+  variable: '--font-dm-sans',
+})
 
 export const metadata: Metadata = {
   title: 'Pronto — Free Open Source POS, CRM & Booking for Service Businesses',
@@ -114,7 +127,7 @@ const organizationJsonLd = {
 
 export default function RootPage() {
   return (
-    <div className={styles.page}>
+    <div className={`${styles.page} ${bricolage.variable} ${dmSans.variable}`}>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(softwareAppJsonLd) }}
@@ -180,30 +193,32 @@ export default function RootPage() {
             <span className={`${styles.bizTag} ${styles.bt7}`}>Massage &amp; spa</span>
             <span className={`${styles.bizTag} ${styles.bt8}`}>And any other service SMB</span>
           </div>
-          <div className={styles.featGrid}>
-            <div className={styles.featCard}>
-              <h4>POS / Checkout</h4>
-              <p>Complete a sale in 3 clicks. Cash, card, transfer. Works fully offline.</p>
-            </div>
-            <div className={styles.featCard}>
-              <h4>CRM</h4>
-              <p>Full client history — visits, spending, tags, birthday, notes.</p>
-            </div>
-            <div className={styles.featCard}>
-              <h4>Inventory</h4>
-              <p>Track stock levels. Low-stock alerts via all notification channels.</p>
-            </div>
-            <div className={styles.featCard}>
-              <h4>Booking calendar</h4>
-              <p>Week view, drag &amp; drop. No double-booking at database level.</p>
-            </div>
-            <div className={styles.featCard}>
-              <h4>Online booking</h4>
-              <p>Public page — clients book with just a name &amp; phone. No registration required.</p>
-            </div>
-            <div className={styles.featCard}>
-              <h4>PWA</h4>
-              <p>Install on any device directly from the browser. Works offline.</p>
+          <div className={styles.cardsWrap}>
+            <div className={styles.featGrid}>
+              <div className={styles.featCard}>
+                <h4>POS / Checkout</h4>
+                <p>Complete a sale in 3 clicks. Cash, card, transfer. Works fully offline.</p>
+              </div>
+              <div className={styles.featCard}>
+                <h4>CRM</h4>
+                <p>Full client history — visits, spending, tags, birthday, notes.</p>
+              </div>
+              <div className={styles.featCard}>
+                <h4>Inventory</h4>
+                <p>Track stock levels. Low-stock alerts via all notification channels.</p>
+              </div>
+              <div className={styles.featCard}>
+                <h4>Booking calendar</h4>
+                <p>Week view, drag &amp; drop. No double-booking at database level.</p>
+              </div>
+              <div className={styles.featCard}>
+                <h4>Online booking</h4>
+                <p>Public page — clients book with just a name &amp; phone. No registration required.</p>
+              </div>
+              <div className={styles.featCard}>
+                <h4>PWA</h4>
+                <p>Install on any device directly from the browser. Works offline.</p>
+              </div>
             </div>
           </div>
         </section>
@@ -214,6 +229,7 @@ export default function RootPage() {
             <h2>Built for service businesses</h2>
             <p>Replacing Excel, manual reminders, and expensive platforms that own your clients.</p>
           </div>
+          <div className={styles.cardsWrap}>
           <div className={styles.painGrid}>
             <div className={styles.painCard}>
               <div className={styles.painFromLabel}>From</div>
@@ -254,6 +270,7 @@ export default function RootPage() {
               <div className={styles.painTo}>Self-hosted: data stays on your server</div>
             </div>
           </div>
+          </div>
         </section>
 
         {/* OMNICHANNEL NOTIFICATIONS */}
@@ -287,36 +304,32 @@ export default function RootPage() {
               <span className={styles.badgeSoon}>Coming soon</span>
             </div>
           </div>
-          <div className={styles.eventsGrid}>
-            <div className={styles.eventItem}>
-              <div className={styles.evIcon}>✅</div>
-              <div className={styles.evText}>Booking confirmed</div>
-              <div className={styles.evSub}>Sent immediately after booking</div>
-            </div>
-            <div className={styles.eventItem}>
-              <div className={styles.evIcon}>🔔</div>
-              <div className={styles.evText}>Appointment reminder</div>
-              <div className={styles.evSub}>24h and 1h before visit</div>
-            </div>
-            <div className={styles.eventItem}>
-              <div className={styles.evIcon}>🙏</div>
-              <div className={styles.evText}>Thank you message</div>
-              <div className={styles.evSub}>2 hours after visit</div>
-            </div>
-            <div className={styles.eventItem}>
-              <div className={styles.evIcon}>💤</div>
-              <div className={styles.evText}>Re-activation</div>
-              <div className={styles.evSub}>&ldquo;Haven&rsquo;t seen you in 30 days&rdquo;</div>
-            </div>
-            <div className={styles.eventItem}>
-              <div className={styles.evIcon}>🎂</div>
-              <div className={styles.evText}>Birthday greeting</div>
-              <div className={styles.evSub}>Sent automatically</div>
-            </div>
-            <div className={styles.eventItem}>
-              <div className={styles.evIcon}>⚠️</div>
-              <div className={styles.evText}>Low stock alert</div>
-              <div className={styles.evSub}>To business owner</div>
+          <div className={styles.cardsWrap}>
+            <div className={styles.notifGrid}>
+              <div className={styles.notifCard}>
+                <div className={styles.evText}>Booking confirmed</div>
+                <div className={styles.evSub}>Sent immediately after booking</div>
+              </div>
+              <div className={styles.notifCard}>
+                <div className={styles.evText}>Appointment reminder</div>
+                <div className={styles.evSub}>24h and 1h before visit</div>
+              </div>
+              <div className={styles.notifCard}>
+                <div className={styles.evText}>Thank you message</div>
+                <div className={styles.evSub}>2 hours after visit</div>
+              </div>
+              <div className={styles.notifCard}>
+                <div className={styles.evText}>Re-activation</div>
+                <div className={styles.evSub}>&ldquo;Haven&rsquo;t seen you in 30 days&rdquo;</div>
+              </div>
+              <div className={styles.notifCard}>
+                <div className={styles.evText}>Birthday greeting</div>
+                <div className={styles.evSub}>Sent automatically</div>
+              </div>
+              <div className={styles.notifCard}>
+                <div className={styles.evText}>Low stock alert</div>
+                <div className={styles.evSub}>To business owner</div>
+              </div>
             </div>
           </div>
         </section>
@@ -442,7 +455,7 @@ export default function RootPage() {
               <div className={styles.plan}>
                 <div className={styles.planName}>Free</div>
                 <div className={styles.planPrice}>$0</div>
-                <div className={styles.planTrial}>Free forever</div>
+                <span className={styles.planTrialFree}>Free forever</span>
                 <div className={styles.planLimit}>1 employee · 100 clients</div>
                 <ul className={styles.planFeats}>
                   <li>POS + CRM + Inventory</li>

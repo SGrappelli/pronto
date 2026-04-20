@@ -1,12 +1,12 @@
 .page {
-  font-family: 'DM Sans', sans-serif;
+  font-family: var(--font-dm-sans, 'DM Sans'), sans-serif;
   color: #111;
   background: #fff;
   -webkit-font-smoothing: antialiased;
 }
 
 .page h1, .page h2, .page h3, .page h4 {
-  font-family: 'Bricolage Grotesque', sans-serif;
+  font-family: var(--font-bricolage, 'Bricolage Grotesque'), sans-serif;
 }
 
 /* NAV */
@@ -160,6 +160,8 @@
 .bt7 { background: #ffedd5; color: #9a3412; border: 1px solid #fed7aa; }
 .bt8 { background: #f1f5f9; color: #475569; border: 1px solid #e2e8f0; }
 
+.cardsWrap { max-width: 900px; margin: 0 auto; }
+
 /* FEATURE CARDS */
 .featGrid {
   display: grid;
@@ -283,7 +285,17 @@
   margin-left: 2px;
 }
 
-/* NOTIFICATION EVENT CARDS */
+/* NOTIFICATION CARDS */
+.notifGrid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+.notifCard {
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 14px;
+  padding: 24px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+/* NOTIFICATION EVENT CARDS (legacy, kept for compatibility) */
 .eventsGrid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -315,16 +327,16 @@
 }
 
 .evText {
-  font-size: 15px;
+  font-size: 18px;
   font-weight: 700;
   color: #0a0a0a;
-  margin-bottom: 6px;
+  margin-bottom: 8px;
 }
 
 .evSub {
-  font-size: 13px;
-  color: #6b7280;
-  line-height: 1.5;
+  font-size: 15px;
+  color: #374151;
+  line-height: 1.6;
 }
 
 /* TWO-PATH CARDS */
@@ -608,12 +620,22 @@
 }
 
 .planTrial {
-  font-size: 11px;
-  color: #16a34a;
+  font-size: 12px;
+  color: #166534;
   font-weight: 700;
+  background: #dcfce7;
+  padding: 4px 10px;
+  border-radius: 8px;
+  display: inline-block;
   margin-bottom: 12px;
-  padding-bottom: 12px;
-  border-bottom: 1px solid #f3f4f6;
+}
+
+.planTrialFree {
+  font-size: 13px;
+  color: #9ca3af;
+  font-weight: 500;
+  margin-bottom: 12px;
+  display: block;
 }
 
 .planLimit {
@@ -748,6 +770,7 @@
   .footer { padding: 24px; }
   .featGrid   { grid-template-columns: repeat(2, 1fr); }
   .painGrid   { grid-template-columns: repeat(2, 1fr); }
+  .notifGrid  { grid-template-columns: repeat(2, 1fr); }
   .eventsGrid { grid-template-columns: repeat(2, 1fr); }
   .twoPaths   { grid-template-columns: 1fr; }
   .plans      { grid-template-columns: repeat(2, 1fr); }
@@ -766,7 +789,7 @@
   .faq    { padding: 44px 16px; }
   .footer { flex-direction: column; align-items: flex-start; gap: 16px; padding: 24px 16px; }
   .footerLinks { flex-wrap: wrap; gap: 16px; }
-  .featGrid, .painGrid, .eventsGrid { grid-template-columns: 1fr; }
+  .featGrid, .painGrid, .notifGrid, .eventsGrid { grid-template-columns: 1fr; }
   .plans  { grid-template-columns: 1fr; }
   .shHighlights { grid-template-columns: repeat(2, 1fr); }
   .shHlNum { font-size: 28px; }
