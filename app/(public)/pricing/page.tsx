@@ -57,7 +57,7 @@ export default function PricingPage() {
     <div className="py-16 px-4 sm:px-6">
       <div className="max-w-6xl mx-auto">
         <div className="text-center mb-14">
-          <h1 className="text-4xl font-bold text-gray-900 mb-4">Simple, transparent pricing</h1>
+          <h1 className="text-4xl font-bold text-gray-900 mb-4" style={{ fontFamily: "var(--font-bricolage, 'Bricolage Grotesque'), sans-serif", letterSpacing: '-0.5px' }}>Simple, transparent pricing</h1>
           <p className="text-lg text-gray-600 max-w-2xl mx-auto">
             All plans include a 14-day free trial. No credit card required to start.
           </p>
@@ -115,8 +115,8 @@ export default function PricingPage() {
           Prices shown in USD. Billing is handled securely by{' '}
           <span className="font-medium text-gray-700">Paddle</span>.
           {' '}Annual plans include a 2-month discount. Questions? Contact us at{' '}
-          <a href="mailto:hello@trypronto.app" className="text-blue-600 hover:underline">
-            hello@trypronto.app
+          <a href="mailto:support@trypronto.app" className="text-blue-600 hover:underline">
+            support@trypronto.app
           </a>
           .
         </p>

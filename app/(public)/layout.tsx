@@ -1,45 +1,55 @@
 import Link from 'next/link'
+import { Bricolage_Grotesque, DM_Sans } from 'next/font/google'
+import styles from './public-layout.module.css'
+
+const bricolage = Bricolage_Grotesque({
+  subsets: ['latin'],
+  weight: ['400', '500', '600', '700', '800'],
+  variable: '--font-bricolage',
+})
+
+const dmSans = DM_Sans({
+  subsets: ['latin'],
+  weight: ['400', '500'],
+  variable: '--font-dm-sans',
+})
 
 export default function PublicLayout({ children }: { children: React.ReactNode }) {
   return (
-    <div className="min-h-screen bg-white flex flex-col">
-      <header className="border-b border-gray-200 bg-white sticky top-0 z-10">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
-          <Link href="/" className="text-xl font-bold text-blue-600">
-            Pronto
+    <div className={`${styles.page} ${bricolage.variable} ${dmSans.variable}`}>
+      <nav className={styles.nav}>
+        <Link href="/" className={styles.navBrand}>
+          Pronto<span>.</span>
+        </Link>
+        <div className={styles.navRight}>
+          <Link href="/pricing" className={`${styles.navLink} ${styles.hideMob}`}>
+            Pricing
           </Link>
-          <nav className="flex items-center gap-6 text-sm text-gray-600">
-            <Link href="/pricing" className="hover:text-blue-600 transition-colors">Pricing</Link>
-            <Link href="/terms" className="hover:text-blue-600 transition-colors">Terms</Link>
-            <Link href="/privacy" className="hover:text-blue-600 transition-colors">Privacy</Link>
-            <Link href="/refund" className="hover:text-blue-600 transition-colors">Refunds</Link>
-            <Link
-              href="/login"
-              className="ml-2 bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-blue-700 transition-colors"
-            >
-              Sign in
-            </Link>
-          </nav>
+          <Link href="/login" className={styles.navLink}>
+            Sign in
+          </Link>
+          <Link href="/register" className={styles.btnNav}>
+            Start free
+          </Link>
         </div>
-      </header>
+      </nav>
 
-      <main className="flex-1">
+      <main className={styles.main}>
         {children}
       </main>
 
-      <footer className="border-t border-gray-200 bg-gray-50 py-10">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6">
-          <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
-            <p className="text-sm text-gray-500">
-              &copy; {new Date().getFullYear()} Pronto. All rights reserved.
-            </p>
-            <nav className="flex flex-wrap gap-4 text-sm text-gray-500">
-              <Link href="/pricing" className="hover:text-blue-600 transition-colors">Pricing</Link>
-              <Link href="/terms" className="hover:text-blue-600 transition-colors">Terms of Service</Link>
-              <Link href="/privacy" className="hover:text-blue-600 transition-colors">Privacy Policy</Link>
-              <Link href="/refund" className="hover:text-blue-600 transition-colors">Refund Policy</Link>
-            </nav>
-          </div>
+      <footer className={styles.footer}>
+        <div className={styles.footerBrand}>
+          Pronto<span>.</span>
+        </div>
+        <div className={styles.footerCopy}>© 2026 Pronto. All rights reserved.</div>
+        <div className={styles.footerLinks}>
+          <Link href="/terms">Terms</Link>
+          <Link href="/privacy">Privacy</Link>
+          <Link href="/refund">Refund policy</Link>
+          <a href="https://github.com/SGrappelli/pronto" target="_blank" rel="noopener noreferrer">
+            GitHub
+          </a>
         </div>
       </footer>
     </div>

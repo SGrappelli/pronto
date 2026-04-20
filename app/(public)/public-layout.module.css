@@ -1,0 +1,96 @@
+.page {
+  font-family: var(--font-dm-sans, 'DM Sans'), sans-serif;
+  color: #111;
+  background: #fff;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.nav {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(255, 255, 255, 0.96);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border-bottom: 1px solid #f0f0f0;
+  padding: 0 48px;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.navBrand {
+  font-family: var(--font-bricolage, 'Bricolage Grotesque'), sans-serif;
+  font-size: 22px;
+  font-weight: 800;
+  color: #111;
+  text-decoration: none;
+  letter-spacing: -0.5px;
+}
+.navBrand span { color: #16a34a; }
+
+.navRight { display: flex; align-items: center; gap: 24px; }
+
+.navLink {
+  font-size: 16px;
+  color: #374151;
+  text-decoration: none;
+  font-weight: 500;
+}
+.navLink:hover { color: #111; }
+
+.btnNav {
+  background: #111;
+  color: #fff;
+  font-family: var(--font-dm-sans, 'DM Sans'), sans-serif;
+  font-size: 15px;
+  font-weight: 500;
+  padding: 10px 22px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.main { flex: 1; }
+
+.footer {
+  padding: 28px 48px;
+  border-top: 1px solid #f0f0f0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #fff;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.footerBrand {
+  font-family: var(--font-bricolage, 'Bricolage Grotesque'), sans-serif;
+  font-size: 22px;
+  font-weight: 800;
+  color: #111;
+  letter-spacing: -0.5px;
+}
+.footerBrand span { color: #16a34a; }
+
+.footerCopy { font-size: 13px; color: #9ca3af; }
+
+.footerLinks { display: flex; gap: 28px; }
+.footerLinks a { font-size: 13px; color: #9ca3af; text-decoration: none; }
+.footerLinks a:hover { color: #111; }
+
+@media (max-width: 1024px) {
+  .nav    { padding: 0 24px; }
+  .footer { padding: 24px; }
+}
+
+@media (max-width: 640px) {
+  .nav         { padding: 0 16px; height: 56px; }
+  .hideMob     { display: none; }
+  .footer      { flex-direction: column; align-items: flex-start; gap: 16px; padding: 24px 16px; }
+  .footerLinks { flex-wrap: wrap; gap: 16px; }
+}
