@@ -2,12 +2,44 @@ import { Metadata } from 'next'
 
 export const metadata: Metadata = {
   title: 'Terms of Service — Pronto',
+  description:
+    'Pronto Terms of Service. Understand your rights, payment terms via Paddle, data ownership, and acceptable use policies for our POS, CRM, and appointment booking platform.',
+  keywords: [
+    'pronto terms of service', 'pos software terms', 'saas terms of service',
+    'business management software terms', 'pronto legal', 'trypronto terms',
+  ],
+  alternates: { canonical: 'https://trypronto.app/terms' },
+  openGraph: {
+    type: 'website',
+    url: 'https://trypronto.app/terms',
+    title: 'Terms of Service — Pronto',
+    description: 'Pronto Terms of Service — payment terms, data ownership, acceptable use, and your rights as a subscriber.',
+    images: [{ url: 'https://trypronto.app/og-image.png' }],
+    locale: 'en_US',
+    siteName: 'Pronto',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Terms of Service — Pronto',
+    description: 'Pronto Terms of Service — payment terms, data ownership, acceptable use, and your rights as a subscriber.',
+    images: ['https://trypronto.app/og-image.png'],
+  },
+}
+
+const termsJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'WebPage',
+  name: 'Terms of Service — Pronto',
+  url: 'https://trypronto.app/terms',
   description: 'Terms of Service for Pronto business management software.',
+  publisher: { '@type': 'Organization', name: 'Pronto', url: 'https://trypronto.app' },
+  dateModified: '2026-04-17',
 }
 
 export default function TermsPage() {
   return (
     <div className="py-14 px-4 sm:px-6">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(termsJsonLd) }} />
       <div className="max-w-3xl mx-auto">
         <h1 className="text-3xl font-bold text-gray-900 mb-2">Terms of Service</h1>
         <p className="text-sm text-gray-500 mb-10">Last updated: April 17, 2026</p>

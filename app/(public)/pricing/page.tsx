@@ -3,8 +3,76 @@ import { Check, Minus } from 'lucide-react'
 import { PricingCards } from './PricingCards'
 
 export const metadata: Metadata = {
-  title: 'Pricing — Pronto',
-  description: 'Simple, transparent pricing for every business size.',
+  title: 'Pricing — Pronto | Free POS, CRM & Booking Software',
+  description:
+    'Pronto plans from $0/month. Free forever plan included. Starter $19, Pro $39, Agency $79 — 14-day free trial, no credit card required. POS, CRM, booking and omnichannel notifications for service businesses.',
+  keywords: [
+    'pronto pricing', 'pos software pricing', 'crm software price',
+    'appointment booking software cost', 'free pos system price',
+    'salon management software pricing', 'service business software plans',
+    'small business pos cost', 'open source pos pricing', 'booking software subscription',
+  ],
+  alternates: { canonical: 'https://trypronto.app/pricing' },
+  openGraph: {
+    type: 'website',
+    url: 'https://trypronto.app/pricing',
+    title: 'Pricing — Pronto | Free POS, CRM & Booking Software',
+    description:
+      'Plans from $0/month. Free forever + paid plans with 14-day trial. POS, CRM, booking and notifications for salons, barbershops, cafes and any service SMB.',
+    images: [{ url: 'https://trypronto.app/og-image.png' }],
+    locale: 'en_US',
+    siteName: 'Pronto',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Pricing — Pronto | Free POS, CRM & Booking Software',
+    description:
+      'Plans from $0/month. Free forever + paid plans with 14-day trial. No credit card required.',
+    images: ['https://trypronto.app/og-image.png'],
+  },
+}
+
+const pricingJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'SoftwareApplication',
+  name: 'Pronto',
+  url: 'https://trypronto.app',
+  description: 'Free open-source POS, CRM, inventory and appointment booking for service businesses.',
+  applicationCategory: 'BusinessApplication',
+  operatingSystem: 'Web',
+  offers: [
+    { '@type': 'Offer', name: 'Free', price: '0', priceCurrency: 'USD', description: '1 employee, 50 clients, POS + email notifications' },
+    { '@type': 'Offer', name: 'Starter', price: '19', priceCurrency: 'USD', description: '3 employees, 500 clients, Telegram & WhatsApp' },
+    { '@type': 'Offer', name: 'Pro', price: '39', priceCurrency: 'USD', description: '10 employees, unlimited clients, Viber, custom domain' },
+    { '@type': 'Offer', name: 'Agency', price: '79', priceCurrency: 'USD', description: 'Unlimited employees, multiple locations, white-label, API' },
+  ],
+}
+
+const pricingFaqJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: [
+    {
+      '@type': 'Question',
+      name: 'Is there a free plan?',
+      acceptedAnswer: { '@type': 'Answer', text: 'Yes. The Free plan is free forever with no credit card required. It includes POS, inventory, and email notifications for 1 employee and up to 50 clients.' },
+    },
+    {
+      '@type': 'Question',
+      name: 'Is there a free trial?',
+      acceptedAnswer: { '@type': 'Answer', text: 'Yes. All paid plans (Starter, Pro, Agency) include a 14-day free trial. No credit card is required to start.' },
+    },
+    {
+      '@type': 'Question',
+      name: 'How much does Pronto cost?',
+      acceptedAnswer: { '@type': 'Answer', text: 'Pronto starts free forever. Paid plans are: Starter $19/month, Pro $39/month, Agency $79/month. Annual billing includes a 2-month discount.' },
+    },
+    {
+      '@type': 'Question',
+      name: 'Can I cancel anytime?',
+      acceptedAnswer: { '@type': 'Answer', text: 'Yes. You can cancel your subscription at any time from Settings → Billing. No cancellation fees.' },
+    },
+  ],
 }
 
 // Used only for the feature comparison table header
@@ -55,6 +123,8 @@ function FeatureCell({ value }: { value: FeatureValue }) {
 export default function PricingPage() {
   return (
     <div className="py-16 px-4 sm:px-6">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(pricingJsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(pricingFaqJsonLd) }} />
       <div className="max-w-6xl mx-auto">
         <div className="text-center mb-14">
           <h1 className="text-4xl font-bold text-gray-900 mb-4" style={{ fontFamily: "var(--font-bricolage, 'Bricolage Grotesque'), sans-serif", letterSpacing: '-0.5px' }}>Simple, transparent pricing</h1>

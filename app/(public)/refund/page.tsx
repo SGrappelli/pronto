@@ -3,12 +3,67 @@ import Link from 'next/link'
 
 export const metadata: Metadata = {
   title: 'Refund Policy — Pronto',
-  description: 'Refund Policy for Pronto business management software.',
+  description:
+    'Pronto Refund Policy. Annual plans: full refund within 14 days. Monthly plans: cancel anytime, no future charges. Simple, transparent, and fair.',
+  keywords: [
+    'pronto refund policy', 'pos software refund', 'saas refund policy',
+    'business software money back', 'trypronto refund', 'cancel subscription pronto',
+  ],
+  alternates: { canonical: 'https://trypronto.app/refund' },
+  openGraph: {
+    type: 'website',
+    url: 'https://trypronto.app/refund',
+    title: 'Refund Policy — Pronto',
+    description: 'Annual plans: 14-day full refund. Monthly plans: cancel anytime. No hidden fees.',
+    images: [{ url: 'https://trypronto.app/og-image.png' }],
+    locale: 'en_US',
+    siteName: 'Pronto',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Refund Policy — Pronto',
+    description: 'Annual plans: 14-day full refund. Monthly plans: cancel anytime. No hidden fees.',
+    images: ['https://trypronto.app/og-image.png'],
+  },
+}
+
+const refundJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'WebPage',
+  name: 'Refund Policy — Pronto',
+  url: 'https://trypronto.app/refund',
+  description: 'Refund policy for Pronto subscription plans.',
+  publisher: { '@type': 'Organization', name: 'Pronto', url: 'https://trypronto.app' },
+  dateModified: '2026-04-17',
+}
+
+const refundFaqJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: [
+    {
+      '@type': 'Question',
+      name: 'Can I get a refund for my Pronto subscription?',
+      acceptedAnswer: { '@type': 'Answer', text: 'Annual plans are eligible for a full refund within 14 days of purchase. Monthly plans are non-refundable once the billing period begins, but you can cancel anytime to prevent future charges.' },
+    },
+    {
+      '@type': 'Question',
+      name: 'How do I cancel my Pronto subscription?',
+      acceptedAnswer: { '@type': 'Answer', text: 'Go to Settings → Billing in your Pronto account and cancel anytime. You keep access until the end of the paid period.' },
+    },
+    {
+      '@type': 'Question',
+      name: 'How do I request a refund from Pronto?',
+      acceptedAnswer: { '@type': 'Answer', text: 'Email support@trypronto.app with subject "Refund Request", include your account email and the charge date. We process refunds within 3 business days through Paddle.' },
+    },
+  ],
 }
 
 export default function RefundPage() {
   return (
     <div className="py-14 px-4 sm:px-6">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(refundJsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(refundFaqJsonLd) }} />
       <div className="max-w-3xl mx-auto">
         <h1 className="text-3xl font-bold text-gray-900 mb-2">Refund Policy</h1>
         <p className="text-sm text-gray-500 mb-10">Last updated: April 17, 2026</p>

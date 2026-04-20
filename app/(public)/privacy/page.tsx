@@ -2,12 +2,44 @@ import { Metadata } from 'next'
 
 export const metadata: Metadata = {
   title: 'Privacy Policy — Pronto',
-  description: 'Privacy Policy for Pronto business management software.',
+  description:
+    'Pronto Privacy Policy. GDPR-compliant. We collect only what\'s needed to run your business — no data selling, no ad tracking. Your client data stays yours.',
+  keywords: [
+    'pronto privacy policy', 'pos software gdpr', 'crm data privacy',
+    'business management software privacy', 'trypronto privacy', 'saas gdpr compliance',
+  ],
+  alternates: { canonical: 'https://trypronto.app/privacy' },
+  openGraph: {
+    type: 'website',
+    url: 'https://trypronto.app/privacy',
+    title: 'Privacy Policy — Pronto',
+    description: 'GDPR-compliant. We never sell your data. Your client and business data belongs to you.',
+    images: [{ url: 'https://trypronto.app/og-image.png' }],
+    locale: 'en_US',
+    siteName: 'Pronto',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Privacy Policy — Pronto',
+    description: 'GDPR-compliant. We never sell your data. Your client and business data belongs to you.',
+    images: ['https://trypronto.app/og-image.png'],
+  },
+}
+
+const privacyJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'WebPage',
+  name: 'Privacy Policy — Pronto',
+  url: 'https://trypronto.app/privacy',
+  description: 'GDPR-compliant privacy policy for Pronto business management software.',
+  publisher: { '@type': 'Organization', name: 'Pronto', url: 'https://trypronto.app' },
+  dateModified: '2026-04-17',
 }
 
 export default function PrivacyPage() {
   return (
     <div className="py-14 px-4 sm:px-6">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(privacyJsonLd) }} />
       <div className="max-w-3xl mx-auto">
         <h1 className="text-3xl font-bold text-gray-900 mb-2">Privacy Policy</h1>
         <p className="text-sm text-gray-500 mb-10">Last updated: April 17, 2026</p>
@@ -190,8 +222,8 @@ export default function PrivacyPage() {
             </ul>
             <p className="mt-3">
               To exercise any of these rights, contact us at{' '}
-              <a href="mailto:privacy@trypronto.app" className="text-blue-600 hover:underline">
-                privacy@trypronto.app
+              <a href="mailto:support@trypronto.app" className="text-blue-600 hover:underline">
+                support@trypronto.app
               </a>
               . We will respond within 30 days.
             </p>
@@ -233,8 +265,8 @@ export default function PrivacyPage() {
               <p className="font-medium text-gray-900">Pronto</p>
               <p>
                 Email:{' '}
-                <a href="mailto:privacy@trypronto.app" className="text-blue-600 hover:underline">
-                  privacy@trypronto.app
+                <a href="mailto:support@trypronto.app" className="text-blue-600 hover:underline">
+                  support@trypronto.app
                 </a>
               </p>
               <p>Website: trypronto.app</p>
