@@ -180,6 +180,9 @@
   font-weight: 700;
   margin-bottom: 10px;
   color: #0a0a0a;
+  min-height: 2.4em;
+  display: flex;
+  align-items: flex-start;
 }
 
 .featCard p {
@@ -560,6 +563,7 @@
   display: flex;
   flex-direction: column;
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+  position: relative;
 }
 
 .plan.featured {
@@ -567,15 +571,16 @@
 }
 
 .planPopular {
+  position: absolute;
+  top: 16px;
+  right: 16px;
   font-size: 11px;
   font-weight: 700;
   background: #eff6ff;
   color: #1d4ed8;
   padding: 3px 10px;
   border-radius: 12px;
-  display: inline-block;
-  margin-bottom: 12px;
-  align-self: flex-start;
+  white-space: nowrap;
 }
 
 .planName {
