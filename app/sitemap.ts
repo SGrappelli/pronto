@@ -66,7 +66,7 @@ function hasNoIndex(filePath: string): boolean {
     const src = fs.readFileSync(filePath, 'utf-8')
     // Match: robots: 'noindex' | robots: "noindex" | index: false (inside robots block)
     return /robots\s*:\s*['"]noindex['"]/i.test(src) ||
-      /robots\s*:\s*\{[^}]*index\s*:\s*false/s.test(src)
+      /robots\s*:\s*\{[^}]*index\s*:\s*false/.test(src)
   } catch {
     return false
   }
