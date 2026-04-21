@@ -40,6 +40,8 @@ export type Database = {
           smtp_pass: string | null
           smtp_from: string | null
           resend_api_key: string | null
+          meta_whatsapp_phone_number_id: string | null
+          meta_whatsapp_access_token: string | null
           created_at: string
           updated_at: string
         }
@@ -73,6 +75,8 @@ export type Database = {
           smtp_pass?: string | null
           smtp_from?: string | null
           resend_api_key?: string | null
+          meta_whatsapp_phone_number_id?: string | null
+          meta_whatsapp_access_token?: string | null
           created_at?: string
           updated_at?: string
         }
@@ -106,6 +110,8 @@ export type Database = {
           smtp_pass?: string | null
           smtp_from?: string | null
           resend_api_key?: string | null
+          meta_whatsapp_phone_number_id?: string | null
+          meta_whatsapp_access_token?: string | null
           created_at?: string
           updated_at?: string
         }

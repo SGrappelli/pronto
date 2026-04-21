@@ -409,12 +409,13 @@
         "label": "Email",
         "connected": "Connected",
         "notSet": "Not configured",
-        "smtpOption": "SMTP server (recommended for self-hosted)",
+        "smtpOption": "SMTP server",
         "resendOption": "Resend API",
         "smtpHost": "SMTP Host",
         "smtpPort": "SMTP Port",
         "smtpUser": "Username",
         "smtpPass": "Password",
+        "smtpPassHint": "For Gmail: use an App Password — myaccount.google.com → Security → 2-Step Verification → App passwords",
         "smtpFrom": "From address",
         "smtpHostPlaceholder": "smtp.gmail.com",
         "smtpFromPlaceholder": "hello@mybusiness.com",
@@ -442,7 +443,12 @@
         "label": "WhatsApp (Meta Cloud API)",
         "connected": "Connected",
         "notSet": "Not configured",
-        "description": "Sends messages directly to clients who have a WhatsApp number saved in CRM. Configured via server environment variables."
+        "description": "Sends messages directly to clients who have a WhatsApp number saved in CRM.",
+        "phoneNumberId": "Phone Number ID",
+        "phoneNumberIdPlaceholder": "1234567890",
+        "accessToken": "Access Token",
+        "accessTokenPlaceholder": "EAABs...",
+        "saveButton": "Save credentials"
       },
       "ownerWhatsapp": {
         "label": "Your WhatsApp number (for alerts)",

@@ -8,7 +8,7 @@ export default async function SettingsPage() {
 
   const { data: business } = await supabase
     .from('businesses')
-    .select('id, name, slug, type, phone, email, address, timezone, currency, plan, plan_expires_at, telegram_bot_token, telegram_chat_id, viber_bot_token, viber_chat_id, owner_whatsapp, ls_customer_id, email_provider, smtp_host, smtp_port, smtp_user, smtp_pass, smtp_from, resend_api_key')
+    .select('id, name, slug, type, phone, email, address, timezone, currency, plan, plan_expires_at, telegram_bot_token, telegram_chat_id, viber_bot_token, viber_chat_id, owner_whatsapp, ls_customer_id, email_provider, smtp_host, smtp_port, smtp_user, smtp_pass, smtp_from, resend_api_key, meta_whatsapp_phone_number_id, meta_whatsapp_access_token')
     .eq('owner_id', user!.id)
     .maybeSingle()
 
@@ -34,11 +34,6 @@ export default async function SettingsPage() {
       .order('day_of_week'),
   ])
 
-  const whatsappConnected = !!(
-    process.env.META_WHATSAPP_PHONE_NUMBER_ID &&
-    process.env.META_WHATSAPP_ACCESS_TOKEN
-  )
-
   return (
     <>
       <Header title="Settings" />
@@ -48,7 +43,6 @@ export default async function SettingsPage() {
         employees={employees ?? []}
         workingHours={businessHours ?? []}
         userEmail={user!.email ?? ''}
-        whatsappConnected={whatsappConnected}
       />
     </>
   )

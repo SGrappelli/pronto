@@ -21,6 +21,8 @@ interface Business {
   smtp_host: string | null; smtp_port: number | null; smtp_user: string | null
   smtp_pass: string | null; smtp_from: string | null
   resend_api_key: string | null
+  meta_whatsapp_phone_number_id: string | null
+  meta_whatsapp_access_token: string | null
 }
 interface Service { id: string; name: string; description: string | null; price: number; duration_min: number; category: string | null; is_active: boolean; capacity: number }
 interface Employee { id: string; name: string; role: string; email: string | null; phone: string | null; is_active: boolean }
@@ -41,10 +43,10 @@ const TIME_OPTIONS = Array.from({ length: 48 }, (_, i) => {
   return `${String(h).padStart(2, '0')}:${m}`
 })
 
-interface Props { business: Business & { telegram_chat_id?: string | null; viber_chat_id?: string | null }; services: Service[]; employees: Employee[]; workingHours: DayHours[]; userEmail: string; whatsappConnected: boolean }
+interface Props { business: Business & { telegram_chat_id?: string | null; viber_chat_id?: string | null }; services: Service[]; employees: Employee[]; workingHours: DayHours[]; userEmail: string }
 type Tab = 'general' | 'services' | 'employees' | 'notifications' | 'billing' | 'account'
 
-export function SettingsTabs({ business: initial, services: initServices, employees: initEmployees, workingHours: initHours, userEmail, whatsappConnected }: Props) {
+export function SettingsTabs({ business: initial, services: initServices, employees: initEmployees, workingHours: initHours, userEmail }: Props) {
   const supabase = createClient()
   const router = useRouter()
   const t = useTranslations('settings')
@@ -57,6 +59,8 @@ export function SettingsTabs({ business: initial, services: initServices, employ
   const [webhookMsg, setWebhookMsg] = useState('')
   const [viberWebhookStatus, setViberWebhookStatus] = useState<'idle' | 'loading' | 'ok' | 'error'>('idle')
   const [viberWebhookMsg, setViberWebhookMsg] = useState('')
+  const [waStatus, setWaStatus] = useState<'idle' | 'loading' | 'ok' | 'error'>('idle')
+  const [waMsg, setWaMsg] = useState('')
   const [biz, setBiz] = useState(initial)
   const [saving, setSaving] = useState(false)
   const [saved, setSaved] = useState(false)
@@ -147,6 +151,8 @@ export function SettingsTabs({ business: initial, services: initServices, employ
       smtp_host: biz.smtp_host, smtp_port: biz.smtp_port, smtp_user: biz.smtp_user,
       smtp_pass: biz.smtp_pass, smtp_from: biz.smtp_from,
       resend_api_key: biz.resend_api_key,
+      meta_whatsapp_phone_number_id: biz.meta_whatsapp_phone_number_id,
+      meta_whatsapp_access_token: biz.meta_whatsapp_access_token,
     }).eq('id', biz.id)
     setSaving(false); setSaved(true); setTimeout(() => setSaved(false), 2000)
     router.refresh()
@@ -189,6 +195,23 @@ export function SettingsTabs({ business: initial, services: initServices, employ
     }
     setEmpForm({}); setEditingEmp(null)
     router.refresh()
+  }
+
+  async function connectWhatsApp() {
+    setWaStatus('loading')
+    setWaMsg('')
+    const { error } = await supabase.from('businesses').update({
+      meta_whatsapp_phone_number_id: biz.meta_whatsapp_phone_number_id,
+      meta_whatsapp_access_token: biz.meta_whatsapp_access_token,
+    }).eq('id', biz.id)
+    if (error) {
+      setWaStatus('error')
+      setWaMsg(error.message)
+    } else {
+      setWaStatus('ok')
+      setWaMsg('WhatsApp credentials saved successfully.')
+      router.refresh()
+    }
   }
 
   async function connectViber() {
@@ -413,7 +436,7 @@ export function SettingsTabs({ business: initial, services: initServices, employ
           <div className="pt-2">
             <div className="text-xs font-medium text-gray-500 mb-1">{t('general.bookingUrlLabel')}</div>
             <div className="bg-gray-50 border border-gray-200 rounded-lg px-3 py-2 text-sm text-blue-600 select-all">
-              {`${origin}/book/${biz.slug}`}
+              {process.env.NEXT_PUBLIC_DEPLOYMENT_MODE === 'saas' ? `${origin}/book` : `${origin}/book/${biz.slug}`}
             </div>
           </div>
           <div className="flex items-center gap-3 pt-2">
@@ -701,6 +724,7 @@ export function SettingsTabs({ business: initial, services: initServices, employ
                     <input type="password" value={biz.smtp_pass ?? ''}
                       onChange={(e) => setBiz((b) => ({ ...b, smtp_pass: e.target.value || null }))}
                       className="w-full mt-1 border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                    <p className="text-xs text-gray-400 mt-1">{t('notifications.email.smtpPassHint')}</p>
                   </div>
                   <div className="sm:col-span-2">
                     <label className="text-xs font-medium text-gray-500">{t('notifications.email.smtpFrom')}</label>
@@ -827,30 +851,54 @@ export function SettingsTabs({ business: initial, services: initServices, employ
             <div>
               <div className="flex items-center gap-2 mb-1">
                 <span className="text-sm font-medium text-gray-900">{t('notifications.whatsapp.label')}</span>
-                {whatsappConnected
+                {biz.meta_whatsapp_phone_number_id && biz.meta_whatsapp_access_token
                   ? <Badge variant="success"><CheckCircle2 className="w-3 h-3 mr-1" />{t('notifications.whatsapp.connected')}</Badge>
                   : <Badge variant="secondary">{t('notifications.whatsapp.notSet')}</Badge>}
               </div>
-              {whatsappConnected && (
-                <p className="text-xs text-amber-600 bg-amber-50 border border-amber-200 rounded-lg px-3 py-2 mb-3">
-                  Configured via server environment variables (<code className="font-mono">META_WHATSAPP_PHONE_NUMBER_ID</code> / <code className="font-mono">META_WHATSAPP_ACCESS_TOKEN</code>). This is a server-level setting shared across all businesses on this installation.
-                </p>
-              )}
               <p className="text-xs text-gray-500 mb-3">{t('notifications.whatsapp.description')}</p>
-              <ol className="text-xs text-gray-500 space-y-1 list-decimal list-inside">
+              <ol className="text-xs text-gray-500 space-y-1 mb-3 list-decimal list-inside">
                 <li>Go to <a href="https://developers.facebook.com" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">developers.facebook.com</a> → create a Meta App → add the <strong>WhatsApp</strong> product</li>
-                <li>In <strong>WhatsApp → API Setup</strong> copy the <em>Phone Number ID</em> and a <strong>permanent access token</strong> (create via System User in Meta Business Manager — recommended) or a temporary token (expires in 24h)</li>
-                <li>Add to your <code className="bg-gray-100 px-1 rounded">.env</code>:<br />
-                  <code className="bg-gray-100 px-1 rounded block mt-1 whitespace-nowrap">META_WHATSAPP_PHONE_NUMBER_ID=...</code>
-                  <code className="bg-gray-100 px-1 rounded block mt-0.5 whitespace-nowrap">META_WHATSAPP_ACCESS_TOKEN=...</code>
-                </li>
-                <li>Restart the server — the status badge above will turn green</li>
+                <li>In <strong>WhatsApp → API Setup</strong> copy the <em>Phone Number ID</em> and a <strong>permanent access token</strong> (create via System User in Meta Business Manager — recommended)</li>
+                <li>Paste both below and click <strong>{t('notifications.whatsapp.saveButton')}</strong></li>
                 <li>Add a client&apos;s WhatsApp number in CRM → client page — they will receive notifications automatically</li>
               </ol>
+              <div className="space-y-2 mb-2">
+                <input
+                  type="text"
+                  value={biz.meta_whatsapp_phone_number_id ?? ''}
+                  onChange={(e) => setBiz((b) => ({ ...b, meta_whatsapp_phone_number_id: e.target.value || null }))}
+                  placeholder={t('notifications.whatsapp.phoneNumberIdPlaceholder')}
+                  className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+                <input
+                  type="password"
+                  value={biz.meta_whatsapp_access_token ?? ''}
+                  onChange={(e) => setBiz((b) => ({ ...b, meta_whatsapp_access_token: e.target.value || null }))}
+                  placeholder={t('notifications.whatsapp.accessTokenPlaceholder')}
+                  className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+              </div>
+              <Button
+                onClick={connectWhatsApp}
+                disabled={waStatus === 'loading' || !biz.meta_whatsapp_phone_number_id || !biz.meta_whatsapp_access_token}
+                variant="outline"
+              >
+                {waStatus === 'loading' ? <Loader2 className="w-4 h-4 animate-spin" /> : t('notifications.whatsapp.saveButton')}
+              </Button>
+              {waStatus === 'ok' && (
+                <div className="mt-2 flex items-start gap-2 text-xs text-green-700 bg-green-50 border border-green-200 rounded-lg px-3 py-2">
+                  <CheckCircle2 className="w-3.5 h-3.5 mt-0.5 shrink-0" />{waMsg}
+                </div>
+              )}
+              {waStatus === 'error' && (
+                <div className="mt-2 flex items-start gap-2 text-xs text-red-700 bg-red-50 border border-red-200 rounded-lg px-3 py-2">
+                  <AlertCircle className="w-3.5 h-3.5 mt-0.5 shrink-0" />{waMsg}
+                </div>
+              )}
             </div>
 
             {/* WhatsApp номер владельца для алертов */}
-            {whatsappConnected && (
+            {!!(biz.meta_whatsapp_phone_number_id && biz.meta_whatsapp_access_token) && (
               <div>
                 <label className="text-xs font-medium text-gray-500">{t('notifications.ownerWhatsapp.label')}</label>
                 <p className="text-xs text-gray-400 mb-2">{t('notifications.ownerWhatsapp.description')}</p>

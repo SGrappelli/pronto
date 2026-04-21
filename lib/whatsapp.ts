@@ -20,10 +20,11 @@ function normalizePhone(phone: string): string {
 
 export async function sendWhatsAppMessage(
   to: string,
-  message: string
+  message: string,
+  credentials?: { phoneNumberId: string; accessToken: string }
 ): Promise<boolean> {
-  const phoneNumberId = process.env.META_WHATSAPP_PHONE_NUMBER_ID
-  const accessToken = process.env.META_WHATSAPP_ACCESS_TOKEN
+  const phoneNumberId = credentials?.phoneNumberId ?? process.env.META_WHATSAPP_PHONE_NUMBER_ID
+  const accessToken = credentials?.accessToken ?? process.env.META_WHATSAPP_ACCESS_TOKEN
 
   if (!phoneNumberId || !accessToken) return false
 
