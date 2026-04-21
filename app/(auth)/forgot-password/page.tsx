@@ -1,5 +1,10 @@
+import type { Metadata } from 'next'
 import { requestPasswordReset } from './actions'
 import Link from 'next/link'
+
+export const metadata: Metadata = {
+  robots: { index: false, follow: false },
+}
 
 export default function ForgotPasswordPage({
   searchParams,

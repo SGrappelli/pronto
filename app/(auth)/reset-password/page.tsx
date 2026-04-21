@@ -1,5 +1,10 @@
+import type { Metadata } from 'next'
 import { updatePassword } from './actions'
 import { PasswordInput } from '@/components/ui/password-input'
+
+export const metadata: Metadata = {
+  robots: { index: false, follow: false },
+}
 
 export default function ResetPasswordPage({
   searchParams,

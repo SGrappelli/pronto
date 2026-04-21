@@ -8,7 +8,11 @@ const BASE_URL = 'https://trypronto.app'
 const EXCLUDED_FS_SEGMENTS = ['(dashboard)', 'api']
 
 // URL route prefixes to exclude
-const EXCLUDED_ROUTE_PREFIXES = ['/api', '/dashboard', '/settings', '/admin']
+const EXCLUDED_ROUTE_PREFIXES = [
+  '/api', '/dashboard', '/settings', '/admin',
+  '/check-email', '/offline', '/onboarding',
+  '/forgot-password', '/reset-password',
+]
 
 // Priority map for known routes; everything else gets 0.6
 const ROUTE_PRIORITIES: Record<string, number> = {

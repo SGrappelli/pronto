@@ -1,6 +1,11 @@
+import type { Metadata } from 'next'
 import Link from 'next/link'
 import { Mail } from 'lucide-react'
 import { getTranslations } from 'next-intl/server'
+
+export const metadata: Metadata = {
+  robots: { index: false, follow: false },
+}
 
 export default async function CheckEmailPage() {
   const t = await getTranslations('auth.checkEmail')
