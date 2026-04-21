@@ -139,7 +139,6 @@ const breadcrumbSchema = {
 }
 
 const pageStyles = `
-@import url('https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;500;600;700;800&family=DM+Sans:wght@400;500;800&display=swap');
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:'DM Sans',sans-serif;color:#111;background:#fff;-webkit-font-smoothing:antialiased}
 h1,h2,h3,h4{font-family:'Bricolage Grotesque',sans-serif}
