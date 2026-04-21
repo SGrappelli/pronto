@@ -585,6 +585,7 @@ export default function RootPage() {
         </div>
         <div className={styles.footerCopy}>© 2026 Pronto. All rights reserved.</div>
         <div className={styles.footerLinks}>
+          <Link href="/for">For businesses</Link>
           <Link href="/terms">Terms</Link>
           <Link href="/privacy">Privacy</Link>
           <Link href="/refund">Refund policy</Link>
