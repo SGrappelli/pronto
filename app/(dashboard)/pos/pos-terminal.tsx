@@ -40,6 +40,7 @@ interface BookingContext {
   bookingId: string
   clientId: string
   serviceId: string
+  staffId: string
   label: string
 }
 
@@ -116,6 +117,7 @@ export function POSTerminal({ businessId, currency, services: initialServices, e
     const svc = initialServices.find((s) => s.id === bookingContext.serviceId)
     if (svc) setCart([{ service: svc, qty: 1 }])
     if (bookingContext.clientId) setSelectedClient(bookingContext.clientId)
+    if (bookingContext.staffId) setSelectedEmployee(bookingContext.staffId)
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []) // only once on mount
 

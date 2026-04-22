@@ -4,12 +4,13 @@ import { POSTerminal } from './pos-terminal'
 import { getTranslations } from 'next-intl/server'
 import Link from 'next/link'
 import { History } from 'lucide-react'
-import { formatTime } from '@/lib/utils'
+import { formatInBusinessTimezone } from '@/lib/utils'
 
 interface SearchParams {
   bookingId?: string
   clientId?: string
   serviceId?: string
+  staffId?: string
 }
 
 export default async function POSPage({ searchParams }: { searchParams: SearchParams }) {
@@ -18,7 +19,7 @@ export default async function POSPage({ searchParams }: { searchParams: SearchPa
 
   const { data: business } = await supabase
     .from('businesses')
-    .select('id, currency')
+    .select('id, currency, timezone')
     .eq('owner_id', user!.id)
     .maybeSingle()
 
@@ -50,13 +51,14 @@ export default async function POSPage({ searchParams }: { searchParams: SearchPa
     bookingId: string
     clientId: string
     serviceId: string
+    staffId: string
     label: string
   } | undefined
 
   if (searchParams.bookingId) {
     const { data: appt } = await supabase
       .from('appointments')
-      .select('id, starts_at, clients(name), services(name)')
+      .select('id, starts_at, clients(name), services(name), employees(id, name)')
       .eq('id', searchParams.bookingId)
       .eq('business_id', business.id) // security: only own business
       .maybeSingle()
@@ -64,11 +66,13 @@ export default async function POSPage({ searchParams }: { searchParams: SearchPa
     if (appt) {
       const clientName = (appt.clients as { name: string } | null)?.name ?? 'Walk-in'
       const serviceName = (appt.services as { name: string } | null)?.name ?? ''
+      const tz = business.timezone ?? 'UTC'
       bookingContext = {
         bookingId: appt.id,
         clientId: searchParams.clientId ?? '',
         serviceId: searchParams.serviceId ?? '',
-        label: `${clientName} — ${serviceName} — ${formatTime(appt.starts_at)}`,
+        staffId: searchParams.staffId ?? (appt.employees as { id: string; name: string } | null)?.id ?? '',
+        label: `${clientName} — ${serviceName} — ${formatInBusinessTimezone(appt.starts_at, tz, 'time')}`,
       }
     }
   }

@@ -2,7 +2,7 @@ import { createClient } from '@/lib/supabase/server'
 import { Header } from '@/components/layout/header'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
-import { formatCurrency, formatDate } from '@/lib/utils'
+import { formatCurrency, formatInBusinessTimezone } from '@/lib/utils'
 import { Plus, Search, Phone, Mail } from 'lucide-react'
 import Link from 'next/link'
 import { getTranslations } from 'next-intl/server'
@@ -17,7 +17,7 @@ export default async function CRMPage({
   const { data: { user } } = await supabase.auth.getUser()
 
   const { data: business } = await supabase
-    .from('businesses').select('id, currency').eq('owner_id', user!.id).maybeSingle()
+    .from('businesses').select('id, currency, timezone').eq('owner_id', user!.id).maybeSingle()
 
   if (!business) return null
 
@@ -126,7 +126,7 @@ export default async function CRMPage({
                       {formatCurrency(c.total_spent, business.currency)}
                     </td>
                     <td className="px-4 py-3 text-right hidden md:table-cell text-gray-500">
-                      {c.last_visit_at ? formatDate(c.last_visit_at) : '—'}
+                      {c.last_visit_at ? formatInBusinessTimezone(c.last_visit_at, business.timezone) : '—'}
                     </td>
                   </tr>
                 ))}

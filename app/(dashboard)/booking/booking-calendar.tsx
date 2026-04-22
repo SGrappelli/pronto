@@ -2,7 +2,7 @@
 
 import { useState, useMemo, useEffect } from 'react'
 import { createClient } from '@/lib/supabase/client'
-import { formatTime, uses12HourClock } from '@/lib/utils'
+import { formatInBusinessTimezone, uses12HourClock } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
 import { DatePicker } from '@/components/ui/date-picker'
 import { ChevronLeft, ChevronRight, ExternalLink, CreditCard } from 'lucide-react'
@@ -40,7 +40,7 @@ interface Client { id: string; name: string; phone: string | null }
 interface BusinessHour { day_of_week: number; is_open: boolean; open_time: string; close_time: string }
 
 interface Props {
-  businessId: string; slug: string
+  businessId: string; slug: string; timezone: string
   appointments: Appointment[]; employees: Employee[]; services: Service[]; clients: Client[]
   businessHours: BusinessHour[]
 }
@@ -94,7 +94,7 @@ function getMonday(date: Date) {
   return d
 }
 
-export function BookingCalendar({ businessId, slug, appointments: initial, employees, services, clients: initialClients, businessHours }: Props) {
+export function BookingCalendar({ businessId, slug, timezone, appointments: initial, employees, services, clients: initialClients, businessHours }: Props) {
   const supabase = createClient()
   const router = useRouter()
   const t = useTranslations('booking')
@@ -390,7 +390,7 @@ export function BookingCalendar({ businessId, slug, appointments: initial, emplo
                               className={`rounded border px-1 py-0.5 mb-0.5 cursor-grab active:cursor-grabbing text-xs ${statusColors[a.status] ?? 'bg-gray-100'}`}
                             >
                               <div className="font-semibold truncate">{a.clients?.name ?? t('walkIn')}</div>
-                              <div className="truncate">{a.services?.name} · {formatTime(a.starts_at, locale)}</div>
+                              <div className="truncate">{a.services?.name} · {formatInBusinessTimezone(a.starts_at, timezone, 'time')}</div>
                               {a.employees?.name && (
                                 <div className="truncate text-[10px] opacity-70">{a.employees.name}</div>
                               )}
@@ -549,7 +549,7 @@ export function BookingCalendar({ businessId, slug, appointments: initial, emplo
           <div className="bg-white rounded-2xl shadow-xl w-full max-w-sm p-6">
             <h2 className="text-base font-semibold mb-1">{selectedAppt.clients?.name ?? t('walkIn')}</h2>
             <p className="text-sm text-gray-500 mb-4">
-              {selectedAppt.services?.name} · {formatTime(selectedAppt.starts_at)} – {formatTime(selectedAppt.ends_at, locale)}
+              {selectedAppt.services?.name} · {formatInBusinessTimezone(selectedAppt.starts_at, timezone, 'time')} – {formatInBusinessTimezone(selectedAppt.ends_at, timezone, 'time')}
             </p>
             <div className="flex items-center gap-2 mb-2 flex-wrap">
               {selectedAppt.employees && (
@@ -582,6 +582,7 @@ export function BookingCalendar({ businessId, slug, appointments: initial, emplo
                   const params = new URLSearchParams({ bookingId: selectedAppt.id })
                   if (selectedAppt.clients?.id) params.set('clientId', selectedAppt.clients.id)
                   if (selectedAppt.services?.id) params.set('serviceId', selectedAppt.services.id)
+                  if (selectedAppt.employees?.id) params.set('staffId', selectedAppt.employees.id)
                   router.push(`/pos?${params.toString()}`)
                 }}
               >

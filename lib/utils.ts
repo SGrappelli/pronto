@@ -35,6 +35,21 @@ export function formatTime(date: string | Date, locale = 'en-US'): string {
   }).format(new Date(date))
 }
 
+export function formatInBusinessTimezone(
+  date: string | Date,
+  timezone: string,
+  part: 'date' | 'time' = 'date',
+  locale = 'en-US'
+): string {
+  const opts: Intl.DateTimeFormatOptions = { timeZone: timezone }
+  if (part === 'date') {
+    opts.year = 'numeric'; opts.month = 'short'; opts.day = 'numeric'
+  } else {
+    opts.hour = '2-digit'; opts.minute = '2-digit'; opts.hour12 = uses12HourClock(locale)
+  }
+  return new Intl.DateTimeFormat(locale, opts).format(new Date(date))
+}
+
 export function slugify(text: string): string {
   return text
     .toLowerCase()

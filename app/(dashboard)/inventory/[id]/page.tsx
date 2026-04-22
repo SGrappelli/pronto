@@ -12,7 +12,7 @@ export default async function InventoryItemPage({ params }: { params: { id: stri
   const { data: { user } } = await supabase.auth.getUser()
 
   const { data: business } = await supabase
-    .from('businesses').select('id, currency').eq('owner_id', user!.id).maybeSingle()
+    .from('businesses').select('id, currency, timezone').eq('owner_id', user!.id).maybeSingle()
   if (!business) return null
 
   const { data: item } = await supabase
@@ -54,6 +54,7 @@ export default async function InventoryItemPage({ params }: { params: { id: stri
         item={item}
         movements={(movements ?? []) as any}
         currency={business.currency}
+        timezone={business.timezone}
         businessId={business.id}
         categories={categories}
       />

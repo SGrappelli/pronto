@@ -57,6 +57,7 @@ export default async function BookingPage() {
       <BookingCalendar
         businessId={business.id}
         slug={business.slug}
+        timezone={business.timezone}
         appointments={appointments ?? []}
         employees={employees ?? []}
         services={services ?? []}

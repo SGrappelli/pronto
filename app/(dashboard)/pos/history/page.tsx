@@ -1,6 +1,6 @@
 import { createClient } from '@/lib/supabase/server'
 import { Header } from '@/components/layout/header'
-import { formatCurrency, formatDate, formatTime } from '@/lib/utils'
+import { formatCurrency, formatInBusinessTimezone } from '@/lib/utils'
 import { getTranslations } from 'next-intl/server'
 import Link from 'next/link'
 import { HistoryFilters } from './history-filters'
@@ -15,7 +15,7 @@ export default async function TransactionHistoryPage({
   const { data: { user } } = await supabase.auth.getUser()
 
   const { data: business } = await supabase
-    .from('businesses').select('id, currency').eq('owner_id', user!.id).maybeSingle()
+    .from('businesses').select('id, currency, timezone').eq('owner_id', user!.id).maybeSingle()
   if (!business) return null
 
   let query = supabase
@@ -147,8 +147,8 @@ export default async function TransactionHistoryPage({
                         {formatCurrency(tx.amount, business.currency)}
                       </td>
                       <td className="px-4 py-3 text-right text-gray-500 hidden md:table-cell">
-                        <div>{formatDate(tx.created_at)}</div>
-                        <div className="text-xs">{formatTime(tx.created_at)}</div>
+                        <div>{formatInBusinessTimezone(tx.created_at, business.timezone)}</div>
+                        <div className="text-xs">{formatInBusinessTimezone(tx.created_at, business.timezone, 'time')}</div>
                       </td>
                     </tr>
                   )

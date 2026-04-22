@@ -1,7 +1,7 @@
 import { createClient } from '@/lib/supabase/server'
 import { Header } from '@/components/layout/header'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { formatCurrency, formatDate } from '@/lib/utils'
+import { formatCurrency, formatInBusinessTimezone } from '@/lib/utils'
 import { Users, Package, CalendarDays, TrendingUp, ArrowUpRight } from 'lucide-react'
 import Link from 'next/link'
 import { redirect } from 'next/navigation'
@@ -14,7 +14,7 @@ export default async function DashboardPage() {
 
   const { data: business } = await supabase
     .from('businesses')
-    .select('id, name, currency, onboarding_completed')
+    .select('id, name, currency, timezone, onboarding_completed')
     .eq('owner_id', user!.id)
     .maybeSingle()
 
@@ -121,7 +121,7 @@ export default async function DashboardPage() {
                           {(a.clients as { name: string } | null)?.name ?? t('upcomingAppointments.walkIn')}
                         </div>
                         <div className="text-xs text-gray-500">
-                          {(a.services as { name: string } | null)?.name} · {formatDate(a.starts_at)}
+                          {(a.services as { name: string } | null)?.name} · {formatInBusinessTimezone(a.starts_at, business.timezone)}
                         </div>
                       </div>
                       <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${statusColors[a.status]}`}>
@@ -156,7 +156,7 @@ export default async function DashboardPage() {
                           {(tx.clients as { name: string } | null)?.name ?? t('recentSales.walkIn')}
                         </div>
                         <div className="text-xs text-gray-500 capitalize">
-                          {tx.payment_method} · {formatDate(tx.created_at)}
+                          {tx.payment_method} · {formatInBusinessTimezone(tx.created_at, business.timezone)}
                         </div>
                       </div>
                       <span className="text-sm font-semibold text-gray-900">

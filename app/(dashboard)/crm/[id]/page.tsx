@@ -13,7 +13,7 @@ export default async function ClientDetailPage({ params }: { params: { id: strin
   const { data: { user } } = await supabase.auth.getUser()
 
   const { data: business } = await supabase
-    .from('businesses').select('id, currency, telegram_bot_token').eq('owner_id', user!.id).maybeSingle()
+    .from('businesses').select('id, currency, timezone, telegram_bot_token').eq('owner_id', user!.id).maybeSingle()
   if (!business) return null
 
   const { data: client } = await supabase
@@ -54,6 +54,7 @@ export default async function ClientDetailPage({ params }: { params: { id: strin
         client={client}
         appointments={appointments ?? []}
         currency={business.currency}
+        timezone={business.timezone}
         businessId={business.id}
         telegramBotUsername={telegramBotUsername}
       />

@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import { createClient } from '@/lib/supabase/client'
 import { useRouter } from 'next/navigation'
-import { formatCurrency, formatDate, formatTime } from '@/lib/utils'
+import { formatCurrency, formatInBusinessTimezone } from '@/lib/utils'
 import { useTranslations } from 'next-intl'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
@@ -36,11 +36,12 @@ interface Props {
   item: Item
   movements: Movement[]
   currency: string
+  timezone: string
   businessId: string
   categories: string[]
 }
 
-export function InventoryDetailView({ item: initial, movements: initialMovements, currency, businessId, categories }: Props) {
+export function InventoryDetailView({ item: initial, movements: initialMovements, currency, timezone, businessId, categories }: Props) {
   const supabase = createClient()
   const router = useRouter()
   const t = useTranslations('inventoryDetail')
@@ -335,8 +336,8 @@ export function InventoryDetailView({ item: initial, movements: initialMovements
                 {movements.map((m) => (
                   <tr key={m.id} className="border-b border-gray-100 last:border-0">
                     <td className="py-2 pr-4 text-gray-500">
-                      <div>{formatDate(m.created_at)}</div>
-                      <div className="text-xs">{formatTime(m.created_at)}</div>
+                      <div>{formatInBusinessTimezone(m.created_at, timezone)}</div>
+                      <div className="text-xs">{formatInBusinessTimezone(m.created_at, timezone, 'time')}</div>
                     </td>
                     <td className="py-2 pr-4">
                       <span className={`font-medium capitalize ${movTypeColor[m.type]}`}>
