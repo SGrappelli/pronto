@@ -22,9 +22,9 @@ export default async function CRMPage({
   if (!business) return null
 
   let query = supabase.from('clients')
-    .select('id, name, phone, email, tags, total_visits, total_spent, last_visit_at, created_at')
+    .select('id, name, phone, email, tags, created_at')
     .eq('business_id', business.id)
-    .order('last_visit_at', { ascending: false, nullsFirst: false })
+    .order('name')
     .limit(50)
 
   if (searchParams.q) {
@@ -36,25 +36,30 @@ export default async function CRMPage({
 
   const { data: clients } = await query
 
-  // Fetch last service name per client from their most recent completed transaction
+  // Compute visits, spent, last visit, and last service name live from transactions
   const clientIds = (clients ?? []).map((c) => c.id)
-  const lastServiceMap: Record<string, string> = {}
+  const statsMap: Record<string, { total_visits: number; total_spent: number; last_visit_at: string | null; lastService: string | null }> = {}
   if (clientIds.length > 0) {
-    const { data: lastTxs } = await supabase
+    const { data: txs } = await supabase
       .from('transactions')
-      .select('client_id, items')
+      .select('client_id, amount, created_at, items')
       .eq('business_id', business.id)
       .eq('status', 'completed')
       .in('client_id', clientIds)
       .order('created_at', { ascending: false })
-      .limit(200)
-    if (lastTxs) {
-      for (const tx of lastTxs) {
-        if (tx.client_id && !lastServiceMap[tx.client_id]) {
-          const items = Array.isArray(tx.items) ? tx.items : []
-          const name = (items[0] as any)?.name
-          if (name) lastServiceMap[tx.client_id] = name
-        }
+      .limit(500)
+    for (const tx of txs ?? []) {
+      if (!tx.client_id) continue
+      if (!statsMap[tx.client_id]) {
+        statsMap[tx.client_id] = { total_visits: 0, total_spent: 0, last_visit_at: null, lastService: null }
+      }
+      statsMap[tx.client_id].total_visits++
+      statsMap[tx.client_id].total_spent += tx.amount
+      if (!statsMap[tx.client_id].last_visit_at) statsMap[tx.client_id].last_visit_at = tx.created_at
+      if (!statsMap[tx.client_id].lastService) {
+        const items = Array.isArray(tx.items) ? tx.items : []
+        const name = (items[0] as any)?.name
+        if (name) statsMap[tx.client_id].lastService = name
       }
     }
   }
@@ -119,14 +124,14 @@ export default async function CRMPage({
                       </div>
                     </td>
                     <td className="px-4 py-3 hidden xl:table-cell text-gray-600 text-sm">
-                      {lastServiceMap[c.id] ?? <span className="text-gray-300">—</span>}
+                      {statsMap[c.id]?.lastService ?? <span className="text-gray-300">—</span>}
                     </td>
-                    <td className="px-4 py-3 text-right hidden lg:table-cell text-gray-700">{c.total_visits}</td>
+                    <td className="px-4 py-3 text-right hidden lg:table-cell text-gray-700">{statsMap[c.id]?.total_visits ?? 0}</td>
                     <td className="px-4 py-3 text-right hidden lg:table-cell font-medium text-gray-900">
-                      {formatCurrency(c.total_spent, business.currency)}
+                      {formatCurrency(statsMap[c.id]?.total_spent ?? 0, business.currency)}
                     </td>
                     <td className="px-4 py-3 text-right hidden md:table-cell text-gray-500">
-                      {c.last_visit_at ? formatInBusinessTimezone(c.last_visit_at, business.timezone) : '—'}
+                      {statsMap[c.id]?.last_visit_at ? formatInBusinessTimezone(statsMap[c.id]!.last_visit_at!, business.timezone) : '—'}
                     </td>
                   </tr>
                 ))}

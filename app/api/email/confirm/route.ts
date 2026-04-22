@@ -56,7 +56,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'rate_limited' }, { status: 429 })
     }
 
-    const { appointmentId } = await req.json()
+    const { appointmentId, formEmail } = await req.json()
     if (!appointmentId) return NextResponse.json({ error: 'missing appointmentId' }, { status: 400 })
 
     // Используем service role — этот роут вызывается server-to-server (из /api/book),
@@ -175,7 +175,10 @@ export async function POST(req: NextRequest) {
     }
 
     // ── Email → клиенту ─────────────────────────────────────────────────────
-    if (!client?.email) {
+    // Prefer the email submitted in the booking form (formEmail) over the one stored in DB,
+    // since the DB record may belong to an existing client found by phone who has a different email.
+    const recipientEmail = formEmail || client?.email
+    if (!recipientEmail) {
       return NextResponse.json({ sent: true, email: 'skipped: no client email' })
     }
 
@@ -195,7 +198,7 @@ export async function POST(req: NextRequest) {
     }
 
     await sendBookingConfirmation({
-      to: client.email,
+      to: recipientEmail,
       clientName: client.name,
       businessName: biz?.name ?? 'Your appointment',
       serviceName: service?.name ?? '—',

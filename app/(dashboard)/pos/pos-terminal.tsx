@@ -72,6 +72,12 @@ export function POSTerminal({ businessId, currency, services: initialServices, e
   const [activeBookingId] = useState(bookingContext?.bookingId ?? '')
   const [showBookingBanner, setShowBookingBanner] = useState(!!bookingContext)
 
+  // Walk-in → save as client
+  const [showSaveModal, setShowSaveModal] = useState(false)
+  const [walkinTxId, setWalkinTxId] = useState('')
+  const [saveForm, setSaveForm] = useState({ name: '', phone: '', email: '', notes: '' })
+  const [savingClient, setSavingClient] = useState(false)
+
   // ─── Offline state ────────────────────────────────────────────────────────
   const [isOnline, setIsOnline] = useState(true)
   const [pendingCount, setPendingCount] = useState(0)
@@ -229,6 +235,7 @@ export function POSTerminal({ businessId, currency, services: initialServices, e
         setPendingCount((n) => n + 1)
       } else {
         // ── Online: normal Supabase insert ────────────────────────────────
+        const wasWalkin = !selectedClient
         const { data, error } = await supabase
           .from('transactions')
           .insert({
@@ -240,7 +247,7 @@ export function POSTerminal({ businessId, currency, services: initialServices, e
             status: 'completed',
             items,
           })
-          .select('receipt_number')
+          .select('receipt_number, id')
           .single()
 
         if (error) throw error
@@ -257,6 +264,12 @@ export function POSTerminal({ businessId, currency, services: initialServices, e
               if (apptErr) console.error('[POS] Failed to update booking status:', apptErr)
             })
         }
+
+        if (wasWalkin && data.id) {
+          setWalkinTxId(data.id)
+          setSaveForm({ name: '', phone: '', email: '', notes: '' })
+          setShowSaveModal(true)
+        }
       }
 
       setSuccessAmount(total)
@@ -272,25 +285,108 @@ export function POSTerminal({ businessId, currency, services: initialServices, e
     }
   }
 
+  // ─── Save walk-in as client ───────────────────────────────────────────────
+  async function saveWalkinAsClient() {
+    if (!saveForm.name.trim()) return
+    setSavingClient(true)
+    const { data: client } = await supabase
+      .from('clients')
+      .insert({
+        business_id: businessId,
+        name: saveForm.name.trim(),
+        phone: saveForm.phone || null,
+        email: saveForm.email || null,
+        notes: saveForm.notes || null,
+      })
+      .select('id')
+      .single()
+
+    if (client) {
+      if (walkinTxId) {
+        await supabase.from('transactions').update({ client_id: client.id }).eq('id', walkinTxId)
+      }
+      setActiveClients((prev) => [...prev, { id: client.id, name: saveForm.name.trim(), phone: saveForm.phone || null }])
+    }
+    setSavingClient(false)
+    setShowSaveModal(false)
+    setWalkinTxId('')
+  }
+
   // ─── Success screen ───────────────────────────────────────────────────────
   if (success) {
     const isOfflineReceipt = receiptNumber.startsWith('OFFLINE-')
     return (
       <div className="flex-1 flex items-center justify-center p-6">
-        <Card className="max-w-sm w-full text-center">
-          <CardContent className="pt-8 pb-8">
-            <CheckCircle2 className={`w-12 h-12 mx-auto mb-4 ${isOfflineReceipt ? 'text-orange-500' : 'text-green-500'}`} />
-            <h2 className="text-xl font-semibold text-gray-900 mb-1">{t('success.heading')}</h2>
-            <p className="text-sm text-gray-500 mb-1">{t('success.receipt')} {receiptNumber}</p>
-            {isOfflineReceipt && (
-              <p className="text-xs text-orange-600 bg-orange-50 rounded-lg px-3 py-2 mb-3">
-                Saved offline. Will sync when internet is restored.
-              </p>
-            )}
-            <p className="text-2xl font-bold text-gray-900 mb-6">{formatCurrency(successAmount, currency)}</p>
-            <Button onClick={() => setSuccess(false)} className="w-full">{t('success.newSale')}</Button>
-          </CardContent>
-        </Card>
+        <div className="max-w-sm w-full space-y-3">
+          <Card className="text-center">
+            <CardContent className="pt-8 pb-8">
+              <CheckCircle2 className={`w-12 h-12 mx-auto mb-4 ${isOfflineReceipt ? 'text-orange-500' : 'text-green-500'}`} />
+              <h2 className="text-xl font-semibold text-gray-900 mb-1">{t('success.heading')}</h2>
+              <p className="text-sm text-gray-500 mb-1">{t('success.receipt')} {receiptNumber}</p>
+              {isOfflineReceipt && (
+                <p className="text-xs text-orange-600 bg-orange-50 rounded-lg px-3 py-2 mb-3">
+                  Saved offline. Will sync when internet is restored.
+                </p>
+              )}
+              <p className="text-2xl font-bold text-gray-900 mb-6">{formatCurrency(successAmount, currency)}</p>
+              <Button onClick={() => { setSuccess(false); setShowSaveModal(false) }} className="w-full">{t('success.newSale')}</Button>
+            </CardContent>
+          </Card>
+
+          {/* Walk-in → save as client prompt */}
+          {showSaveModal && (
+            <Card>
+              <CardContent className="pt-5 pb-5">
+                <p className="text-sm font-semibold text-gray-900 mb-3">Save this customer to your client base?</p>
+                <div className="space-y-2">
+                  <input
+                    type="text"
+                    placeholder="Name *"
+                    value={saveForm.name}
+                    onChange={(e) => setSaveForm((f) => ({ ...f, name: e.target.value }))}
+                    className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  />
+                  <input
+                    type="tel"
+                    placeholder="Phone"
+                    value={saveForm.phone}
+                    onChange={(e) => setSaveForm((f) => ({ ...f, phone: e.target.value }))}
+                    className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  />
+                  <input
+                    type="email"
+                    placeholder="Email"
+                    value={saveForm.email}
+                    onChange={(e) => setSaveForm((f) => ({ ...f, email: e.target.value }))}
+                    className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  />
+                  <textarea
+                    placeholder="Notes"
+                    value={saveForm.notes}
+                    onChange={(e) => setSaveForm((f) => ({ ...f, notes: e.target.value }))}
+                    rows={2}
+                    className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
+                  />
+                </div>
+                <div className="flex gap-2 mt-3">
+                  <button
+                    onClick={() => setShowSaveModal(false)}
+                    className="flex-1 border border-gray-200 rounded-lg py-2 text-sm text-gray-600 hover:bg-gray-50 transition-colors"
+                  >
+                    Skip
+                  </button>
+                  <button
+                    onClick={saveWalkinAsClient}
+                    disabled={!saveForm.name.trim() || savingClient}
+                    className="flex-1 bg-blue-600 text-white rounded-lg py-2 text-sm font-medium hover:bg-blue-700 transition-colors disabled:opacity-50"
+                  >
+                    {savingClient ? '…' : 'Save client'}
+                  </button>
+                </div>
+              </CardContent>
+            </Card>
+          )}
+        </div>
       </div>
     )
   }

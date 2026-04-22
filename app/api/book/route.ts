@@ -9,6 +9,26 @@ import { z } from 'zod'
 import { createServiceClient } from '@/lib/supabase/service'
 import { rateLimit, getIp } from '@/lib/rate-limit'
 
+/** Convert a wall-clock date+time (e.g. "2024-03-15", "14:30") in a named IANA timezone to a UTC Date. */
+function parseDateTimeInTz(date: string, time: string, timezone: string): Date {
+  const [year, month, day] = date.split('-').map(Number)
+  const [hour, minute] = time.split(':').map(Number)
+  // Use noon UTC on the same date as a stable reference to determine the TZ offset,
+  // avoiding DST edge cases that only happen near midnight.
+  const noonUtc = new Date(Date.UTC(year, month - 1, day, 12, 0))
+  const parts = new Intl.DateTimeFormat('en-US', {
+    timeZone: timezone,
+    year: 'numeric', month: 'numeric', day: 'numeric',
+    hour: 'numeric', minute: 'numeric', second: 'numeric',
+    hour12: false,
+  }).formatToParts(noonUtc)
+  const get = (type: string) => parseInt(parts.find((p) => p.type === type)?.value ?? '0')
+  const localNoonMs = Date.UTC(get('year'), get('month') - 1, get('day'), get('hour') % 24, get('minute'), get('second'))
+  const offsetMs = localNoonMs - noonUtc.getTime()
+  // wall_clock = UTC + offset  →  UTC = wall_clock - offset
+  return new Date(Date.UTC(year, month - 1, day, hour, minute) - offsetMs)
+}
+
 const BookingSchema = z.object({
   businessId: z.string().uuid(),
   serviceId:  z.string().uuid(),
@@ -47,18 +67,27 @@ export async function POST(req: NextRequest) {
 
   const supabase = createServiceClient()
 
-  // Verify the business exists and the service belongs to it
-  const { data: service } = await supabase
-    .from('services')
-    .select('id, duration_min, price')
-    .eq('id', serviceId)
-    .eq('business_id', businessId)
-    .eq('is_active', true)
-    .maybeSingle()
+  // Verify the business exists and the service belongs to it; also fetch timezone
+  const [{ data: service }, { data: biz }] = await Promise.all([
+    supabase
+      .from('services')
+      .select('id, duration_min, price')
+      .eq('id', serviceId)
+      .eq('business_id', businessId)
+      .eq('is_active', true)
+      .maybeSingle(),
+    supabase
+      .from('businesses')
+      .select('timezone')
+      .eq('id', businessId)
+      .maybeSingle(),
+  ])
 
   if (!service) {
     return NextResponse.json({ error: 'service_not_found' }, { status: 404 })
   }
+
+  const timezone = biz?.timezone ?? 'UTC'
 
   // Upsert client
   let clientId: string | null = null
@@ -94,8 +123,8 @@ export async function POST(req: NextRequest) {
     }
   }
 
-  // Create appointment
-  const startsAt = new Date(`${date}T${time}`)
+  // Create appointment — parse wall-clock time in the business timezone
+  const startsAt = parseDateTimeInTz(date, time, timezone)
   const endsAt   = new Date(startsAt.getTime() + service.duration_min * 60_000)
 
   const { data: appt, error: apptErr } = await supabase
@@ -131,7 +160,7 @@ export async function POST(req: NextRequest) {
   fetch(`${process.env.NEXT_PUBLIC_APP_URL ?? 'http://localhost:3000'}/api/email/confirm`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ appointmentId: appt.id }),
+    body: JSON.stringify({ appointmentId: appt.id, formEmail: email || null }),
   }).then(async (res) => {
     if (!res.ok) {
       const text = await res.text().catch(() => '')

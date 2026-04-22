@@ -389,7 +389,7 @@ export function BookingCalendar({ businessId, slug, timezone, appointments: init
                               onClick={(e) => { e.stopPropagation(); setSelectedAppt(a) }}
                               className={`rounded border px-1 py-0.5 mb-0.5 cursor-grab active:cursor-grabbing text-xs ${statusColors[a.status] ?? 'bg-gray-100'}`}
                             >
-                              <div className="font-semibold truncate">{a.clients?.name ?? t('walkIn')}</div>
+                              <div className="font-semibold truncate">{a.clients?.name ?? (a.source === 'online' ? 'Online' : t('walkIn'))}</div>
                               <div className="truncate">{a.services?.name} · {formatInBusinessTimezone(a.starts_at, timezone, 'time')}</div>
                               {a.employees?.name && (
                                 <div className="truncate text-[10px] opacity-70">{a.employees.name}</div>
@@ -415,7 +415,7 @@ export function BookingCalendar({ businessId, slug, timezone, appointments: init
         <DragOverlay>
           {draggedAppt && (
             <div className={`rounded border px-2 py-1 text-xs shadow-lg w-28 ${statusColors[draggedAppt.status] ?? 'bg-gray-100'}`}>
-              <div className="font-semibold truncate">{draggedAppt.clients?.name ?? t('walkIn')}</div>
+              <div className="font-semibold truncate">{draggedAppt.clients?.name ?? (draggedAppt.source === 'online' ? 'Online' : t('walkIn'))}</div>
               <div className="truncate">{draggedAppt.services?.name}</div>
               {draggedAppt.employees?.name && (
                 <div className="truncate opacity-70">{draggedAppt.employees.name}</div>
@@ -547,7 +547,7 @@ export function BookingCalendar({ businessId, slug, timezone, appointments: init
       {selectedAppt && (
         <div className="fixed inset-0 bg-black/40 z-50 flex items-center justify-center p-4">
           <div className="bg-white rounded-2xl shadow-xl w-full max-w-sm p-6">
-            <h2 className="text-base font-semibold mb-1">{selectedAppt.clients?.name ?? t('walkIn')}</h2>
+            <h2 className="text-base font-semibold mb-1">{selectedAppt.clients?.name ?? (selectedAppt.source === 'online' ? 'Online booking' : t('walkIn'))}</h2>
             <p className="text-sm text-gray-500 mb-4">
               {selectedAppt.services?.name} · {formatInBusinessTimezone(selectedAppt.starts_at, timezone, 'time')} – {formatInBusinessTimezone(selectedAppt.ends_at, timezone, 'time')}
             </p>

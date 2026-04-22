@@ -162,24 +162,35 @@ export function PublicBookingForm({ business, services, employees, workingHours,
 
   async function submit() {
     if (!selectedService || !date || !time || !contact.name) return
+    if (!contact.phone && !contact.email) {
+      setBookingError('Please enter at least a phone number or email so we can confirm your booking.')
+      return
+    }
     setSaving(true)
     setSlotTakenError(false)
     setBookingError(null)
 
-    const res = await fetch('/api/book', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        businessId:  business.id,
-        serviceId:   selectedService.id,
-        employeeId:  selectedEmployee || null,
-        date,
-        time,
-        name:  contact.name,
-        phone: contact.phone || null,
-        email: contact.email || null,
-      }),
-    })
+    let res: Response
+    try {
+      res = await fetch('/api/book', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          businessId:  business.id,
+          serviceId:   selectedService.id,
+          employeeId:  selectedEmployee || null,
+          date,
+          time,
+          name:  contact.name,
+          phone: contact.phone || null,
+          email: contact.email || null,
+        }),
+      })
+    } catch {
+      setSaving(false)
+      setBookingError('Network error. Please check your connection and try again.')
+      return
+    }
 
     if (res.status === 409) {
       // Another user grabbed this slot between the availability check and the insert.
