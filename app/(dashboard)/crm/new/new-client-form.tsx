@@ -1,7 +1,6 @@
 'use client'
 
 import { useState } from 'react'
-import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 import { DatePicker } from '@/components/ui/date-picker'
 import Link from 'next/link'
@@ -11,9 +10,23 @@ interface Props {
   businessId: string
 }
 
+function validatePhone(phone: string): string | null {
+  if (!phone) return null
+  if (!/^[\d\s+\-()]+$/.test(phone)) return 'Please enter a valid phone number (digits only)'
+  const digits = phone.replace(/\D/g, '')
+  if (digits.length < 7 || digits.length > 15) return 'Please enter a valid phone number (digits only)'
+  return null
+}
+
+function validateBirthday(birthday: string): string | null {
+  if (!birthday) return null
+  const d = new Date(birthday + 'T00:00:00')
+  if (isNaN(d.getTime()) || d.getFullYear() < 1900 || d > new Date()) return 'Please enter a valid date'
+  return null
+}
+
 export function NewClientForm({ businessId }: Props) {
   const supabase = createClient()
-  const router = useRouter()
   const t = useTranslations('newClient')
 
   const [form, setForm] = useState({
@@ -26,12 +39,30 @@ export function NewClientForm({ businessId }: Props) {
     notes: '',
   })
   const [saving, setSaving] = useState(false)
+  const [errors, setErrors] = useState<{ phone?: string; birthday?: string }>({})
+
+  function blurPhone() {
+    const e = validatePhone(form.phone)
+    setErrors((prev) => ({ ...prev, phone: e ?? undefined }))
+  }
+
+  function blurBirthday() {
+    const e = validateBirthday(form.birthday)
+    setErrors((prev) => ({ ...prev, birthday: e ?? undefined }))
+  }
 
   async function submit(e: React.FormEvent) {
     e.preventDefault()
     if (!form.name.trim()) return
-    setSaving(true)
 
+    const phoneErr = validatePhone(form.phone)
+    const bdErr = validateBirthday(form.birthday)
+    if (phoneErr || bdErr) {
+      setErrors({ phone: phoneErr ?? undefined, birthday: bdErr ?? undefined })
+      return
+    }
+
+    setSaving(true)
     const tags = form.tags ? form.tags.split(',').map((t) => t.trim()).filter(Boolean) : []
 
     const { data: client } = await supabase.from('clients').insert({
@@ -46,8 +77,8 @@ export function NewClientForm({ businessId }: Props) {
     }).select('id').single()
 
     setSaving(false)
-    if (client) router.push(`/crm/${client.id}`)
-    else router.push('/crm')
+    // Hard navigate to bypass Next.js router cache so /crm list always shows fresh data
+    window.location.href = client ? `/crm/${client.id}` : '/crm'
   }
 
   return (
@@ -70,9 +101,11 @@ export function NewClientForm({ businessId }: Props) {
           type="tel"
           value={form.phone}
           onChange={(e) => setForm((f) => ({ ...f, phone: e.target.value }))}
+          onBlur={blurPhone}
           placeholder={t('fields.phonePlaceholder')}
-          className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className={`w-full border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${errors.phone ? 'border-red-400' : 'border-gray-200'}`}
         />
+        {errors.phone && <p className="text-xs text-red-500 mt-1">{errors.phone}</p>}
       </div>
 
       <div>
@@ -99,10 +132,20 @@ export function NewClientForm({ businessId }: Props) {
 
       <div>
         <label className="block text-sm font-medium text-gray-700 mb-1">{t('fields.birthday')}</label>
-        <DatePicker
-          value={form.birthday}
-          onChange={(v) => setForm((f) => ({ ...f, birthday: v }))}
-        />
+        <div
+          onBlur={(e) => {
+            if (!e.currentTarget.contains(e.relatedTarget as Node)) blurBirthday()
+          }}
+        >
+          <DatePicker
+            value={form.birthday}
+            onChange={(v) => {
+              setForm((f) => ({ ...f, birthday: v }))
+              setErrors((prev) => ({ ...prev, birthday: undefined }))
+            }}
+          />
+        </div>
+        {errors.birthday && <p className="text-xs text-red-500 mt-1">{errors.birthday}</p>}
       </div>
 
       <div>
