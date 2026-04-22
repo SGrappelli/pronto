@@ -65,6 +65,13 @@ export async function POST(req: NextRequest) {
 
   const { businessId, serviceId, employeeId, date, time, name, phone, email } = parsed.data
 
+  if (!phone && !email) {
+    return NextResponse.json(
+      { error: 'contact_required', message: 'At least a phone number or email is required' },
+      { status: 400 }
+    )
+  }
+
   const supabase = createServiceClient()
 
   // Verify the business exists and the service belongs to it; also fetch timezone
