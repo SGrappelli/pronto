@@ -55,6 +55,21 @@ const statusColors: Record<string, string> = {
   no_show: 'bg-gray-100 text-gray-500',
 }
 
+function validatePhone(phone: string): string | null {
+  if (!phone) return null
+  if (!/^[\d\s+\-()]+$/.test(phone)) return 'Please enter a valid phone number (digits only)'
+  const digits = phone.replace(/\D/g, '')
+  if (digits.length < 7 || digits.length > 15) return 'Please enter a valid phone number (digits only)'
+  return null
+}
+
+function validateBirthday(birthday: string): string | null {
+  if (!birthday) return null
+  const d = new Date(birthday + 'T00:00:00')
+  if (isNaN(d.getTime()) || d.getFullYear() < 1900 || d > new Date()) return 'Please enter a valid date'
+  return null
+}
+
 export function ClientDetailView({ client: initial, appointments, currency, timezone, businessId, telegramBotUsername }: Props) {
   const supabase = createClient()
   const router = useRouter()
@@ -73,6 +88,7 @@ export function ClientDetailView({ client: initial, appointments, currency, time
   const [saving, setSaving] = useState(false)
   const [copied, setCopied] = useState(false)
   const [confirmDelete, setConfirmDelete] = useState(false)
+  const [editErrors, setEditErrors] = useState<{ phone?: string; birthday?: string }>({})
 
   const telegramInviteLink = telegramBotUsername
     ? `https://t.me/${telegramBotUsername}?start=client_${initial.id}`
@@ -87,6 +103,13 @@ export function ClientDetailView({ client: initial, appointments, currency, time
   }
 
   async function save() {
+    const phoneErr = validatePhone(form.phone)
+    const bdErr = validateBirthday(form.birthday)
+    if (phoneErr || bdErr) {
+      setEditErrors({ phone: phoneErr ?? undefined, birthday: bdErr ?? undefined })
+      return
+    }
+    setEditErrors({})
     setSaving(true)
     const tags = form.tags.split(',').map((t) => t.trim()).filter(Boolean)
     const { data } = await supabase.from('clients').update({
@@ -107,8 +130,8 @@ export function ClientDetailView({ client: initial, appointments, currency, time
 
   async function deleteClient() {
     await supabase.from('clients').delete().eq('id', client.id)
-    router.refresh()
-    router.push('/crm')
+    // Hard navigate so /crm list is fetched fresh (bypasses Next.js router cache)
+    window.location.href = '/crm'
   }
 
   const stats = [
@@ -168,28 +191,58 @@ export function ClientDetailView({ client: initial, appointments, currency, time
           <CardContent>
             {editing ? (
               <div className="space-y-3">
-                {([
-                  { key: 'name', label: t('fields.name'), type: 'text' },
-                  { key: 'phone', label: t('fields.phone'), type: 'tel' },
-                  { key: 'email', label: t('fields.email'), type: 'email' },
-                ] as { key: keyof typeof form; label: string; type: string }[]).map(({ key, label, type }) => (
-                  <div key={key}>
-                    <label className="text-xs font-medium text-gray-500">{label}</label>
-                    <input
-                      type={type}
-                      value={form[key]}
-                      onChange={(e) => setForm((f) => ({ ...f, [key]: e.target.value }))}
-                      className="w-full mt-1 border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    />
-                  </div>
-                ))}
+                <div>
+                  <label className="text-xs font-medium text-gray-500">{t('fields.name')}</label>
+                  <input
+                    type="text"
+                    value={form.name}
+                    onChange={(e) => setForm((f) => ({ ...f, name: e.target.value }))}
+                    className="w-full mt-1 border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  />
+                </div>
+                <div>
+                  <label className="text-xs font-medium text-gray-500">{t('fields.phone')}</label>
+                  <input
+                    type="tel"
+                    value={form.phone}
+                    onChange={(e) => setForm((f) => ({ ...f, phone: e.target.value }))}
+                    onBlur={() => {
+                      const e = validatePhone(form.phone)
+                      setEditErrors((prev) => ({ ...prev, phone: e ?? undefined }))
+                    }}
+                    className={`w-full mt-1 border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${editErrors.phone ? 'border-red-400' : 'border-gray-200'}`}
+                  />
+                  {editErrors.phone && <p className="text-xs text-red-500 mt-1">{editErrors.phone}</p>}
+                </div>
+                <div>
+                  <label className="text-xs font-medium text-gray-500">{t('fields.email')}</label>
+                  <input
+                    type="email"
+                    value={form.email}
+                    onChange={(e) => setForm((f) => ({ ...f, email: e.target.value }))}
+                    className="w-full mt-1 border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  />
+                </div>
                 <div>
                   <label className="text-xs font-medium text-gray-500">{t('fields.birthday')}</label>
-                  <DatePicker
-                    value={form.birthday}
-                    onChange={(v) => setForm((f) => ({ ...f, birthday: v }))}
+                  <div
                     className="mt-1"
-                  />
+                    onBlur={(e) => {
+                      if (!e.currentTarget.contains(e.relatedTarget as Node)) {
+                        const err = validateBirthday(form.birthday)
+                        setEditErrors((prev) => ({ ...prev, birthday: err ?? undefined }))
+                      }
+                    }}
+                  >
+                    <DatePicker
+                      value={form.birthday}
+                      onChange={(v) => {
+                        setForm((f) => ({ ...f, birthday: v }))
+                        setEditErrors((prev) => ({ ...prev, birthday: undefined }))
+                      }}
+                    />
+                  </div>
+                  {editErrors.birthday && <p className="text-xs text-red-500 mt-1">{editErrors.birthday}</p>}
                 </div>
                 <div>
                   <label className="text-xs font-medium text-gray-500">{t('fields.whatsappNumber')}</label>
