@@ -170,9 +170,8 @@ export function PublicBookingForm({ business, services, employees, workingHours,
     setSlotTakenError(false)
     setBookingError(null)
 
-    let res: Response
     try {
-      res = await fetch('/api/book', {
+      const res = await fetch('/api/book', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -186,37 +185,30 @@ export function PublicBookingForm({ business, services, employees, workingHours,
           email: contact.email || null,
         }),
       })
+
+      if (res.status === 409) {
+        // Another user grabbed this slot between the availability check and the insert.
+        // Go back to the time picker, refresh slots so the taken slot disappears,
+        // and show an inline explanation.
+        setSaving(false)
+        setSlotTakenError(true)
+        setTime('')
+        setStep('datetime')
+        if (selectedService) loadSlots(date, selectedService, selectedEmployee)
+        return
+      }
+
+      if (!res.ok) throw new Error(await res.text())
+
+      const data = await res.json()
+      setClientId(data.clientId ?? null)
+      setClientHasTelegram(data.hasTelegram ?? false)
+      setStep('done')
+      setSaving(false)
     } catch {
       setSaving(false)
-      setBookingError('Network error. Please check your connection and try again.')
-      return
-    }
-
-    if (res.status === 409) {
-      // Another user grabbed this slot between the availability check and the insert.
-      // Go back to the time picker, refresh slots so the taken slot disappears,
-      // and show an inline explanation.
-      setSaving(false)
-      setSlotTakenError(true)
-      setTime('')
-      setStep('datetime')
-      if (selectedService) {
-        loadSlots(date, selectedService, selectedEmployee)
-      }
-      return
-    }
-
-    if (!res.ok) {
-      setSaving(false)
       setBookingError('Something went wrong. Please try again or contact the business directly.')
-      return
     }
-
-    const data = await res.json()
-    setClientId(data.clientId ?? null)
-    setClientHasTelegram(data.hasTelegram ?? false)
-    setStep('done')
-    setSaving(false)
   }
 
   function handleSelectService(s: Service) {
