@@ -199,7 +199,7 @@ export async function POST(req: NextRequest) {
 
     await sendBookingConfirmation({
       to: recipientEmail,
-      clientName: client.name,
+      clientName: client?.name ?? 'Guest',
       businessName: biz?.name ?? 'Your appointment',
       serviceName: service?.name ?? '—',
       date,
