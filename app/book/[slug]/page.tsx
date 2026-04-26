@@ -22,13 +22,16 @@ export async function generateMetadata({ params }: { params: { slug: string } })
 export default async function PublicBookingPage({ params }: { params: { slug: string } }) {
   const supabase = createServiceClient()
 
-  const { data: business } = await supabase
+  const { data: bizRaw } = await supabase
     .from('businesses')
     .select('id, name, type, phone, logo_url, currency, slug, telegram_bot_token, viber_bot_token')
     .eq('slug', params.slug)
     .maybeSingle()
 
-  if (!business) notFound()
+  if (!bizRaw) notFound()
+
+  // Destructure tokens server-side only — never passed to the client component
+  const { telegram_bot_token, viber_bot_token, ...business } = bizRaw
 
   const [
     { data: services },
@@ -54,11 +57,11 @@ export default async function PublicBookingPage({ params }: { params: { slug: st
       .select('day_of_week, is_open, open_time, close_time')
       .eq('business_id', business.id)
       .order('day_of_week'),
-    business.telegram_bot_token
-      ? getTelegramBotInfo(business.telegram_bot_token)
+    telegram_bot_token
+      ? getTelegramBotInfo(telegram_bot_token)
       : Promise.resolve({ ok: false as const }),
-    business.viber_bot_token
-      ? getViberBotInfo(business.viber_bot_token)
+    viber_bot_token
+      ? getViberBotInfo(viber_bot_token)
       : Promise.resolve({ ok: false as const }),
   ])
 
