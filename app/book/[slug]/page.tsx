@@ -22,13 +22,21 @@ export async function generateMetadata({ params }: { params: { slug: string } })
 export default async function PublicBookingPage({ params }: { params: { slug: string } }) {
   const supabase = createServiceClient()
 
+  // Public data only — no secrets passed to the client component
   const { data: business } = await supabase
     .from('businesses')
-    .select('id, name, type, phone, logo_url, currency, slug, telegram_bot_token, viber_bot_token')
+    .select('id, name, type, phone, logo_url, currency, slug')
     .eq('slug', params.slug)
     .maybeSingle()
 
   if (!business) notFound()
+
+  // Tokens fetched server-side only for bot-info API calls — never serialised to the client
+  const { data: bizTokens } = await supabase
+    .from('businesses')
+    .select('telegram_bot_token, viber_bot_token')
+    .eq('id', business.id)
+    .maybeSingle()
 
   const [
     { data: services },
@@ -54,11 +62,11 @@ export default async function PublicBookingPage({ params }: { params: { slug: st
       .select('day_of_week, is_open, open_time, close_time')
       .eq('business_id', business.id)
       .order('day_of_week'),
-    business.telegram_bot_token
-      ? getTelegramBotInfo(business.telegram_bot_token)
+    bizTokens?.telegram_bot_token
+      ? getTelegramBotInfo(bizTokens.telegram_bot_token)
       : Promise.resolve({ ok: false as const }),
-    business.viber_bot_token
-      ? getViberBotInfo(business.viber_bot_token)
+    bizTokens?.viber_bot_token
+      ? getViberBotInfo(bizTokens.viber_bot_token)
       : Promise.resolve({ ok: false as const }),
   ])
 

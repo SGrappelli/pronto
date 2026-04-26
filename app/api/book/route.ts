@@ -41,9 +41,9 @@ const BookingSchema = z.object({
 })
 
 export async function POST(req: NextRequest) {
-  // Rate limit: 20 bookings per IP per hour
+  // Rate limit: 5 booking attempts per IP per 10 minutes
   const ip = getIp(req)
-  if (!rateLimit(ip, { limit: 20, windowMs: 60 * 60 * 1000 })) {
+  if (!rateLimit(ip, { limit: 5, windowMs: 10 * 60 * 1000 })) {
     return NextResponse.json({ error: 'rate_limited' }, { status: 429 })
   }
 
@@ -166,7 +166,10 @@ export async function POST(req: NextRequest) {
   // Trigger notifications (fire-and-forget — non-blocking)
   fetch(`${process.env.NEXT_PUBLIC_APP_URL ?? 'http://localhost:3000'}/api/email/confirm`, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${process.env.INTERNAL_API_SECRET ?? ''}`,
+    },
     body: JSON.stringify({ appointmentId: appt.id, formEmail: email || null }),
   }).then(async (res) => {
     if (!res.ok) {

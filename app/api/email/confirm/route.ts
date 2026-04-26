@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient as createAdminClient } from '@supabase/supabase-js'
-import { rateLimit, getIp } from '@/lib/rate-limit'
 import { sendBookingConfirmation, formatEmailDate, formatEmailTime } from '@/lib/email'
 import { sendTelegramMessage, tplNewBooking, tplReminderClient as tgTplConfirmClient } from '@/lib/telegram'
 import { sendViberMessage, tplNewBooking as viberTplNewBooking } from '@/lib/viber'
@@ -51,9 +50,10 @@ function viberTplConfirmClient(opts: {
 
 export async function POST(req: NextRequest) {
   try {
-    const ip = getIp(req)
-    if (!rateLimit(ip, { limit: 10, windowMs: 60 * 60 * 1000 })) {
-      return NextResponse.json({ error: 'rate_limited' }, { status: 429 })
+    const authHeader = req.headers.get('authorization')
+    const expectedSecret = process.env.INTERNAL_API_SECRET
+    if (!expectedSecret || authHeader !== `Bearer ${expectedSecret}`) {
+      return NextResponse.json({ error: 'unauthorized' }, { status: 401 })
     }
 
     const { appointmentId, formEmail } = await req.json()
