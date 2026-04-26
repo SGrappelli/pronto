@@ -106,14 +106,15 @@ export async function GET(req: NextRequest) {
 
     const { data: biz } = await supabase
       .from('businesses')
-      .select('name, address, telegram_bot_token, telegram_chat_id, viber_bot_token, viber_chat_id, meta_whatsapp_phone_number_id, meta_whatsapp_access_token')
+      .select('name, address, timezone, telegram_bot_token, telegram_chat_id, viber_bot_token, viber_chat_id, meta_whatsapp_phone_number_id, meta_whatsapp_access_token')
       .eq('id', a.business_id).single()
 
     const client   = a.clients   as unknown as { name: string; email: string | null; whatsapp_number: string | null; viber_user_id: string | null; telegram_id: string | null } | null
     const service  = a.services  as unknown as { name: string } | null
     const employee = a.employees as unknown as { name: string } | null
-    const date = formatEmailDate(a.starts_at)
-    const time = formatEmailTime(a.starts_at)
+    const tz = biz?.timezone ?? 'UTC'
+    const date = formatEmailDate(a.starts_at, tz)
+    const time = formatEmailTime(a.starts_at, tz)
     const waCredentials = biz?.meta_whatsapp_phone_number_id && biz?.meta_whatsapp_access_token
       ? { phoneNumberId: biz.meta_whatsapp_phone_number_id, accessToken: biz.meta_whatsapp_access_token }
       : undefined
@@ -180,14 +181,15 @@ export async function GET(req: NextRequest) {
 
     const { data: biz } = await supabase
       .from('businesses')
-      .select('name, address, telegram_bot_token, telegram_chat_id, viber_bot_token, viber_chat_id, meta_whatsapp_phone_number_id, meta_whatsapp_access_token')
+      .select('name, address, timezone, telegram_bot_token, telegram_chat_id, viber_bot_token, viber_chat_id, meta_whatsapp_phone_number_id, meta_whatsapp_access_token')
       .eq('id', a.business_id).single()
 
     const client   = a.clients   as unknown as { name: string; email: string | null; whatsapp_number: string | null; viber_user_id: string | null; telegram_id: string | null } | null
     const service  = a.services  as unknown as { name: string } | null
     const employee = a.employees as unknown as { name: string } | null
-    const date = formatEmailDate(a.starts_at)
-    const time = formatEmailTime(a.starts_at)
+    const tz = biz?.timezone ?? 'UTC'
+    const date = formatEmailDate(a.starts_at, tz)
+    const time = formatEmailTime(a.starts_at, tz)
     const waCredentials = biz?.meta_whatsapp_phone_number_id && biz?.meta_whatsapp_access_token
       ? { phoneNumberId: biz.meta_whatsapp_phone_number_id, accessToken: biz.meta_whatsapp_access_token }
       : undefined

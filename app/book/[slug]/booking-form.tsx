@@ -10,7 +10,7 @@ import { useTranslations } from 'next-intl'
 
 interface Service { id: string; name: string; description: string | null; price: number; duration_min: number; category: string | null; capacity: number }
 interface Employee { id: string; name: string }
-interface Business { id: string; name: string; currency: string; slug: string }
+interface Business { id: string; name: string; currency: string; slug: string; timezone: string | null }
 interface DayHours { day_of_week: number; is_open: boolean; open_time: string; close_time: string }
 
 interface Props {
@@ -136,10 +136,20 @@ export function PublicBookingForm({ business, services, employees, workingHours,
         const slotEndMin = slotStartMin + svc.duration_min
 
         const bookedCount = (booked ?? []).filter(({ starts_at, ends_at }: { starts_at: string; ends_at: string }) => {
-          const bStart = new Date(starts_at)
-          const bStartMin = bStart.getHours() * 60 + bStart.getMinutes()
-          const bEnd = new Date(ends_at)
-          const bEndMin = bEnd.getHours() * 60 + bEnd.getMinutes()
+          // Convert UTC timestamps to business-local minutes so the overlap check
+          // is in the same coordinate system as the slot grid (which is in business hours).
+          const toBusinessMin = (iso: string) => {
+            const tz = business.timezone ?? 'UTC'
+            const parts = new Intl.DateTimeFormat('en-US', {
+              timeZone: tz,
+              hour: '2-digit', minute: '2-digit', hour12: false,
+            }).formatToParts(new Date(iso))
+            const h = parseInt(parts.find((p) => p.type === 'hour')?.value ?? '0')
+            const m = parseInt(parts.find((p) => p.type === 'minute')?.value ?? '0')
+            return (h % 24) * 60 + m
+          }
+          const bStartMin = toBusinessMin(starts_at)
+          const bEndMin   = toBusinessMin(ends_at)
           return slotStartMin < bEndMin && slotEndMin > bStartMin
         }).length
 

@@ -24,7 +24,7 @@ export default async function PublicBookingPage({ params }: { params: { slug: st
 
   const { data: bizRaw } = await supabase
     .from('businesses')
-    .select('id, name, type, phone, logo_url, currency, slug, telegram_bot_token, viber_bot_token')
+    .select('id, name, type, phone, logo_url, currency, slug, timezone, telegram_bot_token, viber_bot_token')
     .eq('slug', params.slug)
     .maybeSingle()
 
