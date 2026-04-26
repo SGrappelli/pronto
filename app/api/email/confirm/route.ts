@@ -87,12 +87,13 @@ export async function POST(req: NextRequest) {
 
     const { data: biz } = await supabase
       .from('businesses')
-      .select('name, address, slug, telegram_bot_token, telegram_chat_id, viber_bot_token, viber_chat_id')
+      .select('name, address, slug, timezone, telegram_bot_token, telegram_chat_id, viber_bot_token, viber_chat_id')
       .eq('id', appt.business_id)
       .single()
 
-    const date = formatEmailDate(appt.starts_at)
-    const time = formatEmailTime(appt.starts_at)
+    const tz = biz?.timezone ?? 'UTC'
+    const date = formatEmailDate(appt.starts_at, tz)
+    const time = formatEmailTime(appt.starts_at, tz)
 
     // ── Telegram → владельцу ────────────────────────────────────────────────
     if (biz?.telegram_bot_token && biz?.telegram_chat_id) {
@@ -182,19 +183,19 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ sent: true, email: 'skipped: no client email' })
     }
 
-    const { error: logErr } = await supabase.from('notification_log').insert({
-      business_id: appt.business_id,
-      ref_id: appt.id,
-      type: 'confirm',
-      channel: 'email',
-    })
-    if (logErr) {
-      // 23505 = unique_violation — письмо уже было отправлено ранее, пропускаем
-      if (logErr.code === '23505') {
-        return NextResponse.json({ sent: true, email: 'skipped: already sent' })
-      }
-      // Любая другая ошибка — логируем, но письмо всё равно отправляем
-      console.error('[email/confirm] notification_log insert error:', logErr.message)
+    // BUG-6: SELECT first → send → INSERT. This way a failed send remains retryable,
+    // and we never double-send if the route is called twice for the same appointment.
+    const { data: existingLog } = await supabase
+      .from('notification_log')
+      .select('id')
+      .eq('business_id', appt.business_id)
+      .eq('ref_id', appt.id)
+      .eq('type', 'confirm')
+      .eq('channel', 'email')
+      .maybeSingle()
+
+    if (existingLog) {
+      return NextResponse.json({ sent: true, email: 'skipped: already sent' })
     }
 
     await sendBookingConfirmation({
@@ -206,6 +207,13 @@ export async function POST(req: NextRequest) {
       time,
       employeeName: employee?.name ?? undefined,
       address: biz?.address ?? undefined,
+    })
+
+    await supabase.from('notification_log').insert({
+      business_id: appt.business_id,
+      ref_id: appt.id,
+      type: 'confirm',
+      channel: 'email',
     })
 
     return NextResponse.json({ sent: true })

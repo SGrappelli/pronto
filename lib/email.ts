@@ -248,18 +248,20 @@ function firstName(name: string): string {
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
-export function formatEmailDate(iso: string) {
+export function formatEmailDate(iso: string, timezone = 'UTC') {
   return new Date(iso).toLocaleDateString('en-US', {
     weekday: 'long',
     day: 'numeric',
     month: 'long',
+    timeZone: timezone,
   })
 }
 
-export function formatEmailTime(iso: string) {
+export function formatEmailTime(iso: string, timezone = 'UTC') {
   return new Date(iso).toLocaleTimeString('en-US', {
     hour: '2-digit',
     minute: '2-digit',
     hour12: false,
+    timeZone: timezone,
   })
 }

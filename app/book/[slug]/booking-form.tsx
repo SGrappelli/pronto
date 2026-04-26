@@ -10,7 +10,7 @@ import { useTranslations } from 'next-intl'
 
 interface Service { id: string; name: string; description: string | null; price: number; duration_min: number; category: string | null; capacity: number }
 interface Employee { id: string; name: string }
-interface Business { id: string; name: string; currency: string; slug: string }
+interface Business { id: string; name: string; currency: string; slug: string; timezone?: string | null }
 interface DayHours { day_of_week: number; is_open: boolean; open_time: string; close_time: string }
 
 interface Props {
@@ -33,6 +33,16 @@ const DEFAULT_HOURS: DayHours[] = [0, 1, 2, 3, 4, 5, 6].map((dow) => ({
   open_time: '09:00',
   close_time: '20:00',
 }))
+
+/** Convert a UTC ISO timestamp to minutes-since-midnight in the given IANA timezone. */
+function toBusinessMin(iso: string, tz: string): number {
+  const parts = new Intl.DateTimeFormat('en-US', {
+    timeZone: tz, hour: '2-digit', minute: '2-digit', hour12: false,
+  }).formatToParts(new Date(iso))
+  const h = parseInt(parts.find((p) => p.type === 'hour')?.value ?? '0')
+  const m = parseInt(parts.find((p) => p.type === 'minute')?.value ?? '0')
+  return (h % 24) * 60 + m
+}
 
 /** Generate time slots from open_time to close_time with step = durationMin */
 function generateSlots(openTime: string, closeTime: string, durationMin: number): string[] {
@@ -136,11 +146,10 @@ export function PublicBookingForm({ business, services, employees, workingHours,
         const slotStartMin = sh * 60 + sm
         const slotEndMin = slotStartMin + svc.duration_min
 
+        const tz = business.timezone ?? 'UTC'
         const bookedCount = (booked ?? []).filter(({ starts_at, ends_at }: { starts_at: string; ends_at: string }) => {
-          const bStart = new Date(starts_at)
-          const bStartMin = bStart.getHours() * 60 + bStart.getMinutes()
-          const bEnd = new Date(ends_at)
-          const bEndMin = bEnd.getHours() * 60 + bEnd.getMinutes()
+          const bStartMin = toBusinessMin(starts_at, tz)
+          const bEndMin   = toBusinessMin(ends_at, tz)
           return slotStartMin < bEndMin && slotEndMin > bStartMin
         }).length
 
