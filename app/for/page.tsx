@@ -199,7 +199,7 @@ const pageContent = `
         <span class="biz-card-arrow">&rarr;</span>
         <span class="biz-card-emoji">&#x2702;&#xFE0F;</span>
         <div class="biz-card-title">Barbershops</div>
-        <div class="biz-card-desc">Walk-ins, appointments, multi-barber scheduling and product sales.</div>
+        <div class="biz-card-desc">Appointments, walk-ins, multi-barber calendar and grooming product sales.</div>
       </a>
 
       <a href="/for/auto-repair" class="biz-card">
@@ -301,6 +301,9 @@ const pageContent = `
   <div class="footer-brand">Pronto<span>.</span></div>
   <div class="footer-copy">&copy; 2026 Pronto. All rights reserved.</div>
   <div class="footer-links">
+    <a href="/for/salons">Salons</a>
+    <a href="/for/barbershops">Barbershops</a>
+    <a href="/for/auto-repair">Auto repair</a>
     <a href="/terms">Terms</a>
     <a href="/privacy">Privacy</a>
     <a href="/refund">Refund policy</a>
