@@ -143,7 +143,17 @@ export async function middleware(request: NextRequest) {
   // SaaS: authenticated user on root domain (no subdomain) accessing a protected path →
   // look up their business slug and redirect to the tenant subdomain.
   // This catches the case where the user navigates directly to trypronto.app/dashboard.
-  if (saasMode && !subdomain && user && isProtected) {
+  //
+  // IMPORTANT: skip for Next.js internal RSC/prefetch requests. Cross-origin redirects
+  // on these requests violate CORS (browser blocks redirect from trypronto.app to
+  // openyoga.trypronto.app). Next.js will fall back to full browser navigation which
+  // gets redirected correctly.
+  const isNextInternal =
+    request.nextUrl.searchParams.has('_rsc') ||
+    (request.headers.get('accept') ?? '').includes('text/x-component') ||
+    request.headers.has('Next-Router-State-Tree')
+
+  if (saasMode && !subdomain && user && isProtected && !isNextInternal) {
     try {
       const apiUrl =
         `${process.env.NEXT_PUBLIC_SUPABASE_URL}/rest/v1/businesses` +
