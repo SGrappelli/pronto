@@ -43,7 +43,7 @@ const BookingSchema = z.object({
 export async function POST(req: NextRequest) {
   // Rate limit: 5 booking attempts per IP per 10 minutes
   const ip = getIp(req)
-  if (!rateLimit(ip, { limit: 5, windowMs: 10 * 60 * 1000 })) {
+  if (!rateLimit(ip, { limit: 20, windowMs: 10 * 60 * 1000 })) {
     return NextResponse.json({ error: 'rate_limited' }, { status: 429 })
   }
 
