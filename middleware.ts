@@ -140,6 +140,34 @@ export async function middleware(request: NextRequest) {
     return NextResponse.redirect(loginUrl)
   }
 
+  // SaaS: authenticated user on root domain (no subdomain) accessing a protected path →
+  // look up their business slug and redirect to the tenant subdomain.
+  // This catches the case where the user navigates directly to trypronto.app/dashboard.
+  if (saasMode && !subdomain && user && isProtected) {
+    try {
+      const apiUrl =
+        `${process.env.NEXT_PUBLIC_SUPABASE_URL}/rest/v1/businesses` +
+        `?owner_id=eq.${encodeURIComponent(user.id)}&select=slug&limit=1`
+      const res = await fetch(apiUrl, {
+        headers: {
+          apikey: process.env.SUPABASE_SERVICE_ROLE_KEY!,
+          Authorization: `Bearer ${process.env.SUPABASE_SERVICE_ROLE_KEY!}`,
+        },
+        cache: 'no-store',
+      })
+      const rows: { slug: string }[] = res.ok ? await res.json() : []
+      const slug = rows[0]?.slug
+      if (slug) {
+        const target = request.nextUrl.clone()
+        target.host = `${slug}.${rootDomain}`
+        target.port = ''
+        return NextResponse.redirect(target)
+      }
+    } catch {
+      // Supabase unavailable — fall through, serve root-domain request as-is
+    }
+  }
+
   // Public routes — serve as-is for unauthenticated users
   const publicPaths = ['/', '/pricing', '/terms', '/privacy', '/refund']
   if (publicPaths.includes(pathname)) {

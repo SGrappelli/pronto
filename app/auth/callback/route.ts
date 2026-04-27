@@ -3,6 +3,15 @@ import { createClient as createAdminClient } from '@supabase/supabase-js'
 import { slugify } from '@/lib/utils'
 import { NextResponse } from 'next/server'
 
+const isSaas = process.env.NEXT_PUBLIC_DEPLOYMENT_MODE === 'saas'
+const rootDomain = process.env.NEXT_PUBLIC_ROOT_DOMAIN ?? 'trypronto.app'
+
+/** Build a tenant-aware redirect URL: subdomain for SaaS, root domain for self-hosted. */
+function tenantUrl(slug: string | null, path: string, fallbackOrigin: string): string {
+  if (isSaas && slug) return `https://${slug}.${rootDomain}${path}`
+  return `${fallbackOrigin}${path}`
+}
+
 export async function GET(request: Request) {
   const { searchParams, origin: requestOrigin } = new URL(request.url)
   const origin = process.env.NEXT_PUBLIC_SITE_URL || requestOrigin
@@ -27,7 +36,7 @@ export async function GET(request: Request) {
 
       const { data: existing } = await admin
         .from('businesses')
-        .select('id, onboarding_completed')
+        .select('id, slug, onboarding_completed')
         .eq('owner_id', data.user.id)
         .maybeSingle()
 
@@ -59,15 +68,15 @@ export async function GET(request: Request) {
           slug,
         })
 
-        return NextResponse.redirect(`${origin}/onboarding`)
+        return NextResponse.redirect(tenantUrl(slug, '/onboarding', origin))
       }
 
       // Бизнес есть, но онбординг не завершён — отправляем на онбординг
       if (!existing.onboarding_completed) {
-        return NextResponse.redirect(`${origin}/onboarding`)
+        return NextResponse.redirect(tenantUrl(existing.slug, '/onboarding', origin))
       }
 
-      return NextResponse.redirect(`${origin}${next}`)
+      return NextResponse.redirect(tenantUrl(existing.slug, next, origin))
     }
   }
 
