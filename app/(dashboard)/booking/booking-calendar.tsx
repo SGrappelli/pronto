@@ -27,6 +27,30 @@ interface Appointment {
   services: { id: string; name: string; price: number } | null
 }
 
+/** Get year/month/day/hour of a UTC ISO timestamp in the given IANA timezone. */
+function apptTzParts(iso: string, tz: string): { year: number; month: number; day: number; hour: number } {
+  const parts = new Intl.DateTimeFormat('en-US', {
+    timeZone: tz,
+    year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', hour12: false,
+  }).formatToParts(new Date(iso))
+  const get = (type: string) => parseInt(parts.find((p) => p.type === type)?.value ?? '0')
+  return { year: get('year'), month: get('month'), day: get('day'), hour: get('hour') % 24 }
+}
+
+/** Convert a wall-clock date+time in the business timezone to a UTC Date. */
+function wallclockToUtc(year: number, month: number, day: number, hour: number, minute: number, tz: string): Date {
+  const noonUtc = new Date(Date.UTC(year, month - 1, day, 12, 0))
+  const parts = new Intl.DateTimeFormat('en-US', {
+    timeZone: tz,
+    year: 'numeric', month: 'numeric', day: 'numeric',
+    hour: 'numeric', minute: 'numeric', second: 'numeric', hour12: false,
+  }).formatToParts(noonUtc)
+  const get = (t: string) => parseInt(parts.find((p) => p.type === t)?.value ?? '0')
+  const localNoonMs = Date.UTC(get('year'), get('month') - 1, get('day'), get('hour') % 24, get('minute'), get('second'))
+  const offsetMs = localNoonMs - noonUtc.getTime()
+  return new Date(Date.UTC(year, month - 1, day, hour, minute) - offsetMs)
+}
+
 const SOURCE_BADGE: Record<string, { label: string; pill: string }> = {
   online:   { label: 'Online',   pill: 'bg-blue-100 text-blue-700' },
   manual:   { label: 'Manual',   pill: 'bg-gray-100 text-gray-500' },
@@ -101,6 +125,14 @@ export function BookingCalendar({ businessId, slug, timezone, appointments: init
   const [weekStart, setWeekStart] = useState(() => getMonday(new Date()))
   const [origin, setOrigin] = useState('')
   useEffect(() => { setOrigin(window.location.origin) }, [])
+  const bookingUrl = useMemo(() => {
+    if (process.env.NEXT_PUBLIC_DEPLOYMENT_MODE === 'saas') {
+      const baseDomain = (process.env.NEXT_PUBLIC_APP_URL ?? 'https://trypronto.app')
+        .replace(/^https?:\/\//, '').replace(/\/$/, '')
+      return `https://${slug}.${baseDomain}/book`
+    }
+    return `${origin}/book/${slug}`
+  }, [slug, origin])
   const [appointments, setAppointments] = useState(initial)
   const [clientsList, setClientsList] = useState<Client[]>(initialClients)
 
@@ -115,12 +147,12 @@ export function BookingCalendar({ businessId, slug, timezone, appointments: init
       : 20
     // Expand to cover any appointment that falls outside the business-hours window
     for (const appt of appointments) {
-      const h = new Date(appt.starts_at).getHours()
+      const { hour: h } = apptTzParts(appt.starts_at, timezone)
       if (h < minHour) minHour = h
       if (h > maxHour) maxHour = h
     }
     return Array.from({ length: maxHour - minHour + 1 }, (_, i) => i + minHour)
-  }, [businessHours, appointments])
+  }, [businessHours, appointments, timezone])
   const [showForm, setShowForm] = useState(false)
   const [formError, setFormError] = useState<string | null>(null)
   const locale = typeof navigator !== 'undefined' ? navigator.language : 'en-US'
@@ -212,18 +244,21 @@ export function BookingCalendar({ businessId, slug, timezone, appointments: init
     const appt = appointments.find((a) => a.id === apptId)
     if (!appt) return
 
-    // Skip if dropped on the same slot
-    const s = new Date(appt.starts_at)
+    // Skip if dropped on the same slot (compare in business timezone)
+    const p = apptTzParts(appt.starts_at, timezone)
     const sameDay = weekDates[dayIndex]
     if (
-      s.getHours() === hour &&
-      s.getFullYear() === sameDay.getFullYear() &&
-      s.getMonth() === sameDay.getMonth() &&
-      s.getDate() === sameDay.getDate()
+      p.hour === hour &&
+      p.year === sameDay.getFullYear() &&
+      p.month === sameDay.getMonth() + 1 &&
+      p.day === sameDay.getDate()
     ) return
 
-    const newStartsAt = new Date(sameDay)
-    newStartsAt.setHours(hour, 0, 0, 0)
+    // Build the new UTC timestamp from the business-timezone wall-clock time
+    const newStartsAt = wallclockToUtc(
+      sameDay.getFullYear(), sameDay.getMonth() + 1, sameDay.getDate(),
+      hour, 0, timezone
+    )
 
     // Prevent dropping in the past or on a closed day
     if (newStartsAt < new Date()) return
@@ -271,14 +306,16 @@ export function BookingCalendar({ businessId, slug, timezone, appointments: init
   function getApptForCell(dayIndex: number, hour: number) {
     const day = weekDates[dayIndex]
     return appointments.filter((a) => {
-      const s = new Date(a.starts_at)
-      return s.getFullYear() === day.getFullYear() && s.getMonth() === day.getMonth() && s.getDate() === day.getDate() && s.getHours() === hour
+      const p = apptTzParts(a.starts_at, timezone)
+      return p.year === day.getFullYear() && p.month === day.getMonth() + 1 && p.day === day.getDate() && p.hour === hour
     })
   }
 
   async function saveAppointment() {
     if (!form.service_id || !form.date || !formTime) return
-    const startsAt = new Date(`${form.date}T${formTime}`)
+    const [fYear, fMonth, fDay] = form.date.split('-').map(Number)
+    const [fHour, fMin] = formTime.split(':').map(Number)
+    const startsAt = wallclockToUtc(fYear, fMonth, fDay, fHour, fMin, timezone)
     setSaving(true)
     setFormError(null)
     const service = services.find((s) => s.id === form.service_id)!
@@ -335,7 +372,7 @@ export function BookingCalendar({ businessId, slug, timezone, appointments: init
           </button>
         </div>
         <div className="flex items-center gap-2">
-          <a href={`${origin}/book/${slug}`} target="_blank" rel="noopener noreferrer"
+          <a href={bookingUrl} target="_blank" rel="noopener noreferrer"
             className="flex items-center gap-1 text-xs text-blue-600 hover:underline">
             <ExternalLink className="w-3 h-3" /> {t('calendar.publicPage')}
           </a>

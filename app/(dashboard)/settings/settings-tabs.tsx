@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 import { Button } from '@/components/ui/button'
@@ -84,6 +84,16 @@ export function SettingsTabs({ business: initial, services: initServices, employ
   const [savingHours, setSavingHours] = useState(false)
   const [origin, setOrigin] = useState('')
   useEffect(() => { setOrigin(window.location.origin) }, [])
+
+  const bookingUrl = useMemo(() => {
+    if (process.env.NEXT_PUBLIC_DEPLOYMENT_MODE === 'saas') {
+      const baseDomain = (process.env.NEXT_PUBLIC_APP_URL ?? 'https://trypronto.app')
+        .replace(/^https?:\/\//, '').replace(/\/$/, '')
+      return `https://${biz.slug}.${baseDomain}/book`
+    }
+    return `${origin}/book/${biz.slug}`
+  }, [biz.slug, origin])
+
   const [savedHours, setSavedHours] = useState(false)
 
   async function saveWorkingHours() {
@@ -436,7 +446,7 @@ export function SettingsTabs({ business: initial, services: initServices, employ
           <div className="pt-2">
             <div className="text-xs font-medium text-gray-500 mb-1">{t('general.bookingUrlLabel')}</div>
             <div className="bg-gray-50 border border-gray-200 rounded-lg px-3 py-2 text-sm text-blue-600 select-all">
-              {process.env.NEXT_PUBLIC_DEPLOYMENT_MODE === 'saas' ? `${origin}/book` : `${origin}/book/${biz.slug}`}
+              {bookingUrl}
             </div>
           </div>
           <div className="flex items-center gap-3 pt-2">
