@@ -517,7 +517,7 @@ const pageContent = `
     </div>
     <div class="wf-step">
       <div class="wf-num">04</div>
-      <div class="wf-title">Checkout and re-engage</div>
+      <div class="wf-title">Checkout and<br>re-engage</div>
       <div class="wf-desc">Complete the sale at the POS. Thank-you sent automatically. Client added to your CRM forever.</div>
     </div>
   </div>
