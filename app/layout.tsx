@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from 'next'
 import { Inter } from 'next/font/google'
 import { NextIntlClientProvider } from 'next-intl'
 import { getLocale, getMessages } from 'next-intl/server'
+import Script from 'next/script'
 import './globals.css'
 
 const inter = Inter({ subsets: ['latin'] })
@@ -63,6 +64,17 @@ export default async function RootLayout({
         <NextIntlClientProvider messages={messages}>
           {children}
         </NextIntlClientProvider>
+        {process.env.NODE_ENV === 'production' && (
+          <>
+            <Script strategy="afterInteractive" src="https://www.googletagmanager.com/gtag/js?id=G-YBD74MJ5HW" />
+            <Script strategy="afterInteractive" id="ga4-init">{`
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+              gtag('config', 'G-YBD74MJ5HW');
+            `}</Script>
+          </>
+        )}
       </body>
     </html>
   )
