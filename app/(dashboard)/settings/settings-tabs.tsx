@@ -805,8 +805,7 @@ export function SettingsTabs({ business: initial, services: initServices, employ
 
             <hr className="border-gray-100" />
 
-            {/* Viber — hidden in SaaS mode unless NEXT_PUBLIC_ENABLE_VIBER=true */}
-            {(process.env.NEXT_PUBLIC_DEPLOYMENT_MODE !== 'saas' || process.env.NEXT_PUBLIC_ENABLE_VIBER === 'true') && (
+            {/* Viber */}
             <div>
               <div className="flex items-center gap-2 mb-1">
                 <span className="text-sm font-medium text-gray-900">{t('notifications.viber.label')}</span>
@@ -815,19 +814,10 @@ export function SettingsTabs({ business: initial, services: initServices, employ
                   : <Badge variant="secondary">{t('notifications.viber.notSet')}</Badge>}
               </div>
 
-              <div className="mb-3 flex items-start gap-2 text-xs text-amber-700 bg-amber-50 border border-amber-200 rounded-lg px-3 py-2">
-                <AlertCircle className="w-3.5 h-3.5 mt-0.5 shrink-0" />
-                <span>
-                  Since February 2024, new Viber bots require a commercial agreement with Viber (~€100/month).
-                  This integration works for bots created before February 2024, or if you have an active commercial agreement with Viber.
-                  For new setups, <strong>Telegram is recommended</strong> (free).
-                </span>
-              </div>
-
               <ol className="text-xs text-gray-500 space-y-1 mb-3 list-decimal list-inside">
-                <li>Go to <a href="https://partners.viber.com" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">partners.viber.com</a> → sign in → copy the auth token from your bot account</li>
+                <li>Go to <a href="https://developers.viber.com" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">developers.viber.com</a> → create a bot → copy the token</li>
                 <li>Paste the token below and click <strong>Connect</strong></li>
-                <li>Find your bot in Viber and start a conversation — you will receive a welcome message</li>
+                <li>Open your bot in Viber from your business account and send <code className="bg-gray-100 px-1 rounded">/start</code> — this registers the chat to receive notifications</li>
               </ol>
 
               <div className="flex gap-2">
@@ -853,7 +843,6 @@ export function SettingsTabs({ business: initial, services: initServices, employ
                 </div>
               )}
             </div>
-            )}
 
             <hr className="border-gray-100" />
 
@@ -875,6 +864,7 @@ export function SettingsTabs({ business: initial, services: initServices, employ
               <div className="space-y-2 mb-2">
                 <input
                   type="text"
+                  autoComplete="off"
                   value={biz.meta_whatsapp_phone_number_id ?? ''}
                   onChange={(e) => setBiz((b) => ({ ...b, meta_whatsapp_phone_number_id: e.target.value || null }))}
                   placeholder={t('notifications.whatsapp.phoneNumberIdPlaceholder')}
@@ -882,6 +872,7 @@ export function SettingsTabs({ business: initial, services: initServices, employ
                 />
                 <input
                   type="password"
+                  autoComplete="new-password"
                   value={biz.meta_whatsapp_access_token ?? ''}
                   onChange={(e) => setBiz((b) => ({ ...b, meta_whatsapp_access_token: e.target.value || null }))}
                   placeholder={t('notifications.whatsapp.accessTokenPlaceholder')}
