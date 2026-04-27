@@ -507,13 +507,13 @@
       "phonePlaceholder": "+1 234 567 8900",
       "emailLabel": "Email",
       "emailPlaceholder": "you@example.com",
-      "booking": "Booking…",
+      "booking": "Confirming…",
       "confirm": "Confirm booking — {price}",
       "noRegistration": "No registration required"
     },
     "success": {
       "heading": "Booking confirmed!",
-      "body": "You'll receive a confirmation shortly. See you soon!",
+      "body": "Your appointment is confirmed. See you soon!",
       "bookAnother": "Book another",
       "optInHeading": "Get reminders in your messenger",
       "optInSub": "Tap below to receive appointment reminders in Telegram or Viber — no registration needed.",

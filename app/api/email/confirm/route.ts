@@ -18,7 +18,7 @@ function tplConfirmClient(opts: {
     `✅ <b>Booking confirmed!</b>`,
     ``,
     `👤 ${opts.clientName}`,
-    `✂️ ${opts.serviceName}`,
+    `📋 ${opts.serviceName}`,
     `🕐 ${opts.date} at ${opts.time}`,
     `🏠 ${opts.businessName}`,
   ]
@@ -39,7 +39,7 @@ function viberTplConfirmClient(opts: {
     `✅ Booking confirmed!`,
     ``,
     `👤 ${opts.clientName}`,
-    `✂️ ${opts.serviceName}`,
+    `📋 ${opts.serviceName}`,
     `🕐 ${opts.date} at ${opts.time}`,
     `🏠 ${opts.businessName}`,
   ]

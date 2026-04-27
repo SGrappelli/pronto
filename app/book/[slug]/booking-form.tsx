@@ -473,7 +473,7 @@ export function PublicBookingForm({ business, services, employees, workingHours,
                           <div>{formatSlot(ts)}</div>
                           {isPartial && (
                             <div className={`text-xs mt-0.5 ${time === ts ? 'text-blue-100' : 'text-amber-600'}`}>
-                              {spotsLeft} left
+                              {spotsLeft} spots left
                             </div>
                           )}
                         </button>
