@@ -208,6 +208,12 @@ export function PublicBookingForm({ business, services, employees, workingHours,
         return
       }
 
+      if (res.status === 429) {
+        setSaving(false)
+        setBookingError('Too many booking attempts. Please wait a few minutes and try again.')
+        return
+      }
+
       if (!res.ok) throw new Error(await res.text())
 
       const data = await res.json()
