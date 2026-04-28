@@ -105,8 +105,8 @@ function DroppableCell({
 const statusColors: Record<string, string> = {
   pending: 'bg-yellow-100 border-yellow-300 text-yellow-800',
   confirmed: 'bg-blue-100 border-blue-300 text-blue-800',
-  completed: 'bg-green-100 border-green-300 text-green-800',
-  paid: 'bg-emerald-100 border-emerald-300 text-emerald-800',
+  completed: 'bg-amber-100 border-amber-300 text-amber-800',
+  paid: 'bg-green-100 border-green-300 text-green-800',
   cancelled: 'bg-gray-100 border-gray-300 text-gray-500',
   no_show: 'bg-red-50 border-red-200 text-red-600',
 }
