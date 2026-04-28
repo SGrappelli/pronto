@@ -127,7 +127,7 @@ export function PublicBookingForm({ business, services, employees, workingHours,
       const { data: booked } = await supabase.rpc('get_booked_slots', {
         p_business_id: business.id,
         p_date: selectedDate,
-        p_employee_id: employeeId || null,
+        p_employee_id: capacity > 1 ? null : (employeeId || null),
       })
 
       slots = slots.filter((slot) => {
