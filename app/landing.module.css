@@ -779,7 +779,7 @@
 
 @media (max-width: 640px) {
   .nav    { padding: 0 16px; height: 56px; }
-  .navLink.hideMob { display: none; }
+  .navRight { gap: 12px; }
   .hero   { padding: 52px 16px 44px; }
   .hero h1 { font-size: 34px; letter-spacing: -1px; }
   .heroDesc { font-size: 16px; }

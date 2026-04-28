@@ -131,7 +131,7 @@ footer{padding:28px 48px;border-top:1px solid #f0f0f0;display:flex;justify-conte
 }
 @media(max-width:640px){
   nav{padding:0 16px;height:56px}
-  .nav-link.hide-mob{display:none}
+  .nav-right{gap:12px}
   .hero{padding:48px 16px 40px}
   .hero h1{font-size:32px;letter-spacing:-1px}
   .hero p{font-size:15px}
@@ -154,7 +154,7 @@ const pageContent = `
 <nav>
   <a href="/" class="nav-brand">Pronto<span>.</span></a>
   <div class="nav-right">
-    <a href="/pricing" class="nav-link hide-mob">Pricing</a>
+    <a href="/pricing" class="nav-link">Pricing</a>
     <a href="/login" class="nav-link">Sign in</a>
     <a href="/register" class="btn-nav">Start free</a>
   </div>
