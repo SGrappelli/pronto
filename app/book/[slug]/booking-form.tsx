@@ -176,6 +176,14 @@ export function PublicBookingForm({ business, services, employees, workingHours,
       setBookingError('Please enter at least a phone number or email so we can confirm your booking.')
       return
     }
+    if (contact.phone && !/^[\d\s\+\-\(\)\.]{7,}$/.test(contact.phone)) {
+      setBookingError('Please enter a valid phone number (digits only, e.g. +1 234 567 8900).')
+      return
+    }
+    if (contact.email && !contact.email.includes('@')) {
+      setBookingError('Please enter a valid email address (e.g. name@example.com).')
+      return
+    }
     setSaving(true)
     setSlotTakenError(false)
     setBookingError(null)
