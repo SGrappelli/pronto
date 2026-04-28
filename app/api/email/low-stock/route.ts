@@ -21,18 +21,22 @@ export async function POST(req: NextRequest) {
     if (!item) return NextResponse.json({ error: 'not found' }, { status: 404 })
     if (item.quantity > item.low_stock_threshold) return NextResponse.json({ skipped: 'stock ok' })
 
-    // Dedup — один алерт на каждый уровень остатка
-    const { error: logErr } = await supabase.from('notification_log').insert({
-      business_id: item.business_id,
-      ref_id: `low_stock_${item.id}_${item.quantity}`,
-      type: 'low_stock',
-      channel: 'email',
-    })
-    if (logErr) return NextResponse.json({ skipped: 'already alerted at this level' })
+    // Dedup — SELECT first so a failed send remains retryable (INSERT happens after)
+    const { data: alreadySent } = await supabase
+      .from('notification_log')
+      .select('id')
+      .eq('business_id', item.business_id)
+      .eq('ref_id', `low_stock_${item.id}_${item.quantity}`)
+      .eq('type', 'low_stock')
+      .eq('channel', 'email')
+      .maybeSingle()
 
+    if (alreadySent) return NextResponse.json({ skipped: 'already alerted at this level' })
+
+    // FIX: include owner_id so we can fall back to auth email when businesses.email is null
     const { data: biz } = await supabase
       .from('businesses')
-      .select('name, email, telegram_bot_token, telegram_chat_id, viber_bot_token, viber_chat_id, owner_whatsapp')
+      .select('owner_id, name, email, telegram_bot_token, telegram_chat_id, viber_bot_token, viber_chat_id, owner_whatsapp')
       .eq('id', item.business_id)
       .single()
 
@@ -78,17 +82,35 @@ export async function POST(req: NextRequest) {
     }
 
     // ── Email → владельцу ────────────────────────────────────────────────────
-    if (!biz?.email) return NextResponse.json({ tg: true, email: 'skipped: no business email' })
+    // FIX: businesses.email is NULL for most businesses (not populated at registration).
+    // Fall back to the owner's Supabase auth email so the alert always reaches someone.
+    let recipientEmail: string | null = biz?.email ?? null
+    if (!recipientEmail && biz?.owner_id) {
+      const { data: authData } = await supabase.auth.admin.getUserById(biz.owner_id)
+      recipientEmail = authData?.user?.email ?? null
+    }
+
+    if (!recipientEmail) {
+      return NextResponse.json({ tg: true, email: 'skipped: no email found for owner' })
+    }
 
     await sendLowStockAlert({
-      to: biz.email,
-      businessName: biz.name,
+      to: recipientEmail,
+      businessName: biz!.name,
       items: [{
         name: item.name,
         quantity: item.quantity,
         unit: item.unit,
         threshold: item.low_stock_threshold,
       }],
+    })
+
+    // Record AFTER successful send so a failed send remains retryable
+    await supabase.from('notification_log').insert({
+      business_id: item.business_id,
+      ref_id: `low_stock_${item.id}_${item.quantity}`,
+      type: 'low_stock',
+      channel: 'email',
     })
 
     return NextResponse.json({ sent: true })
