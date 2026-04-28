@@ -304,6 +304,7 @@ const pageContent = `
     <a href="/for/salons">Salons</a>
     <a href="/for/barbershops">Barbershops</a>
     <a href="/for/auto-repair">Auto repair</a>
+    <a href="/for/dental">Dental</a>
     <a href="/terms">Terms</a>
     <a href="/privacy">Privacy</a>
     <a href="/refund">Refund policy</a>
