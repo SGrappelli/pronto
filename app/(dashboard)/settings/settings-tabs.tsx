@@ -168,6 +168,7 @@ export function SettingsTabs({ business: initial, services: initServices, employ
       const { data } = await supabase.from('services').insert({
         business_id: biz.id, name: svcForm.name!, description: svcForm.description ?? null,
         price: svcForm.price!, duration_min: svcForm.duration_min ?? 60, category: svcForm.category ?? null,
+        capacity: svcForm.capacity ?? 1,
       }).select().single()
       if (data) setServices((prev) => [...prev, data as Service])
     }
