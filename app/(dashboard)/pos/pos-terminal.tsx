@@ -254,11 +254,11 @@ export function POSTerminal({ businessId, currency, services: initialServices, e
         setReceiptNumber(data.receipt_number ?? '')
         router.refresh()
 
-        // ── If came from Booking: mark appointment as completed ───────────
+        // ── If came from Booking: mark appointment as paid ────────────────
         if (activeBookingId) {
           supabase
             .from('appointments')
-            .update({ status: 'completed' })
+            .update({ status: 'paid' })
             .eq('id', activeBookingId)
             .then(({ error: apptErr }) => {
               if (apptErr) console.error('[POS] Failed to update booking status:', apptErr)

@@ -106,6 +106,7 @@ const statusColors: Record<string, string> = {
   pending: 'bg-yellow-100 border-yellow-300 text-yellow-800',
   confirmed: 'bg-blue-100 border-blue-300 text-blue-800',
   completed: 'bg-green-100 border-green-300 text-green-800',
+  paid: 'bg-emerald-100 border-emerald-300 text-emerald-800',
   cancelled: 'bg-gray-100 border-gray-300 text-gray-500',
   no_show: 'bg-red-50 border-red-200 text-red-600',
 }
@@ -602,7 +603,7 @@ export function BookingCalendar({ businessId, slug, timezone, appointments: init
             <div className="mb-4">
               <div className="text-xs text-gray-400 mb-2 uppercase font-medium">{t('detail.statusLabel')}</div>
               <div className="flex flex-wrap gap-2">
-                {(['pending', 'confirmed', 'completed', 'cancelled', 'no_show'] as const).map((s) => (
+                {(['pending', 'confirmed', 'completed', 'paid', 'cancelled', 'no_show'] as const).map((s) => (
                   <button key={s} onClick={() => updateStatus(selectedAppt.id, s)}
                     className={`text-xs px-3 py-1 rounded-full border transition-colors capitalize ${
                       selectedAppt.status === s ? statusColors[s] : 'bg-white border-gray-200 text-gray-500 hover:bg-gray-50'
@@ -612,7 +613,7 @@ export function BookingCalendar({ businessId, slug, timezone, appointments: init
                 ))}
               </div>
             </div>
-            {(selectedAppt.status === 'pending' || selectedAppt.status === 'confirmed') && (
+            {selectedAppt.status !== 'paid' && selectedAppt.status !== 'cancelled' && (
               <Button
                 className="w-full mb-2 gap-2"
                 onClick={() => {
