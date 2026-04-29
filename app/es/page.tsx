@@ -163,7 +163,7 @@ export default function EsPage() {
           Pronto<span>.</span>
         </Link>
         <div className={styles.navRight}>
-          <Link href="/" className={`${styles.navLink} lang-switcher`}>
+          <Link href="/" className={`${styles.navLink} ${styles.hideMob}`}>
             EN
           </Link>
           <Link href="/es/precios" className={styles.navLink}>
