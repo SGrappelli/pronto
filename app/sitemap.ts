@@ -22,6 +22,7 @@ const ROUTE_PRIORITIES: Record<string, number> = {
   '/for': 0.8,
   '/pricing': 0.8,
   '/es/precios': 0.8,
+  '/es/para': 0.85,
   '/register': 0.7,
   '/login': 0.5,
 }
@@ -93,7 +94,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     .filter(({ file }) => !hasNoIndex(file))
     .map(({ route }) => ({
       url: `${BASE_URL}${route}`,
-      changeFrequency: (route === '/' || route === '/es' ? 'weekly' : 'monthly') as MetadataRoute.Sitemap[number]['changeFrequency'],
+      changeFrequency: (['/', '/es', '/for', '/es/para'].includes(route) ? 'weekly' : 'monthly') as MetadataRoute.Sitemap[number]['changeFrequency'],
       priority: getPriority(route),
       lastModified: new Date(),
     }))

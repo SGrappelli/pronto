@@ -1,13 +1,13 @@
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: 'Pronto for Service Businesses — POS, Booking & CRM',
+  title: 'Pronto para Negocios de Servicios — POS, Reservas y CRM Gratis',
   description:
-    'Free POS, CRM and appointment booking for salons, barbershops, auto repair, dental, fitness and any service SMB. Zero commission. Self-hosted or cloud.',
+    'Software gratis de POS, CRM y reservas para salones, barberías, talleres de autos, clínicas dentales, gimnasios, spas, cafeterías y cualquier negocio de servicios. Sin comisiones.',
   keywords:
-    'service business management software, small business POS, appointment booking software, salon software, barbershop software, auto repair shop software, dental clinic software, fitness club software, cafe POS',
+    'software para negocios de servicios, POS para pequeños negocios, software de reservas gratis, programa para salón de belleza, software para barbería, sistema para taller mecánico, software clínica dental, gestión gimnasio, POS cafetería, software código abierto negocios',
   alternates: {
-    canonical: 'https://trypronto.app/for',
+    canonical: 'https://trypronto.app/es/para',
     languages: {
       en: 'https://trypronto.app/for',
       es: 'https://trypronto.app/es/para',
@@ -16,20 +16,20 @@ export const metadata: Metadata = {
   },
   openGraph: {
     type: 'website',
-    url: 'https://trypronto.app/for',
-    title: 'Pronto for Service Businesses — POS, Booking & CRM',
+    url: 'https://trypronto.app/es/para',
+    title: 'Pronto para Negocios de Servicios — POS, Reservas y CRM Gratis',
     description:
-      'Free POS, CRM and appointment booking for any service business. Zero commission. Self-hosted or cloud.',
-    images: [{ url: 'https://trypronto.app/og-image.png' }],
-    locale: 'en_US',
+      'POS, CRM y reservas gratis para cualquier negocio de servicios. Sin comisiones. Self-hosted o en la nube.',
+    images: [{ url: 'https://trypronto.app/og-image-es.png' }],
+    locale: 'es_ES',
     siteName: 'Pronto',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Pronto for Service Businesses — POS, Booking & CRM',
+    title: 'Pronto para Negocios de Servicios — POS, Reservas y CRM Gratis',
     description:
-      'Free POS, CRM and appointment booking for any service business. Zero commission. Self-hosted or cloud.',
-    images: ['https://trypronto.app/og-image.png'],
+      'POS, CRM y reservas gratis para cualquier negocio de servicios. Sin comisiones. Self-hosted o en la nube.',
+    images: ['https://trypronto.app/og-image-es.png'],
   },
 }
 
@@ -38,23 +38,24 @@ const breadcrumbSchema = {
   '@type': 'BreadcrumbList',
   itemListElement: [
     { '@type': 'ListItem', position: 1, name: 'Pronto', item: 'https://trypronto.app' },
-    { '@type': 'ListItem', position: 2, name: 'For businesses', item: 'https://trypronto.app/for' },
+    { '@type': 'ListItem', position: 2, name: 'Inicio', item: 'https://trypronto.app/es/' },
+    { '@type': 'ListItem', position: 3, name: 'Para negocios', item: 'https://trypronto.app/es/para' },
   ],
 }
 
 const itemListSchema = {
   '@context': 'https://schema.org',
   '@type': 'ItemList',
-  name: 'Pronto for service businesses',
+  name: 'Pronto para negocios de servicios',
   itemListElement: [
-    { '@type': 'ListItem', position: 1, name: 'Salons & beauty', url: 'https://trypronto.app/for/salons' },
-    { '@type': 'ListItem', position: 2, name: 'Barbershops', url: 'https://trypronto.app/for/barbershops' },
-    { '@type': 'ListItem', position: 3, name: 'Auto repair shops', url: 'https://trypronto.app/for/auto-repair' },
-    { '@type': 'ListItem', position: 4, name: 'Dental clinics', url: 'https://trypronto.app/for/dental' },
-    { '@type': 'ListItem', position: 5, name: 'Fitness clubs', url: 'https://trypronto.app/for/fitness' },
-    { '@type': 'ListItem', position: 6, name: 'Cafes', url: 'https://trypronto.app/for/cafes' },
-    { '@type': 'ListItem', position: 7, name: 'Massage & spa', url: 'https://trypronto.app/for/spa' },
-    { '@type': 'ListItem', position: 8, name: 'Tattoo studios', url: 'https://trypronto.app/for/tattoo' },
+    { '@type': 'ListItem', position: 1, name: 'Salones de belleza', url: 'https://trypronto.app/es/para/salones' },
+    { '@type': 'ListItem', position: 2, name: 'Barberías', url: 'https://trypronto.app/es/para/barberia' },
+    { '@type': 'ListItem', position: 3, name: 'Talleres de autos', url: 'https://trypronto.app/es/para/autoservicio' },
+    { '@type': 'ListItem', position: 4, name: 'Clínicas dentales', url: 'https://trypronto.app/es/para/dental' },
+    { '@type': 'ListItem', position: 5, name: 'Gimnasios', url: 'https://trypronto.app/es/para/gimnasio' },
+    { '@type': 'ListItem', position: 6, name: 'Cafeterías', url: 'https://trypronto.app/es/para/cafeteria' },
+    { '@type': 'ListItem', position: 7, name: 'Masajes y spa', url: 'https://trypronto.app/es/para/spa' },
+    { '@type': 'ListItem', position: 8, name: 'Estudios de tatuajes', url: 'https://trypronto.app/es/para/tatuajes' },
   ],
 }
 
@@ -159,18 +160,19 @@ footer{padding:28px 48px;border-top:1px solid #f0f0f0;display:flex;justify-conte
 
 const pageContent = `
 <nav>
-  <a href="/" class="nav-brand">Pronto<span>.</span></a>
+  <a href="/es/" class="nav-brand">Pronto<span>.</span></a>
   <div class="nav-right">
-    <a href="/pricing" class="nav-link">Pricing</a>
-    <a href="/es/para" class="nav-link lang-switcher">ES</a>
-    <a href="/login" class="nav-link">Sign in</a>
-    <a href="/register" class="btn-nav">Start free</a>
+    <a href="/for" class="nav-link lang-switcher">EN</a>
+    <a href="/es/precios" class="nav-link">Precios</a>
+    <a href="/login" class="nav-link">Iniciar sesi&oacute;n</a>
+    <a href="/register" class="btn-nav">Empezar gratis</a>
   </div>
 </nav>
 
 <div class="breadcrumb">
   <a href="/">Pronto</a><span>&rsaquo;</span>
-  For businesses
+  <a href="/es/">Inicio</a><span>&rsaquo;</span>
+  Para negocios
 </div>
 
 <main>
@@ -178,78 +180,78 @@ const pageContent = `
 <section class="hero">
   <div class="hero-eyebrow">
     <span class="hero-eyebrow-dot"></span>
-    Built for service businesses
+    Hecho para negocios de servicios
   </div>
-  <h1>One tool for <em>every service</em> business</h1>
-  <p>POS, CRM, appointment booking, inventory and omnichannel notifications &mdash; the same powerful system, tuned for your industry.</p>
+  <h1>Una herramienta para <em>cada negocio</em> de servicios</h1>
+  <p>POS, CRM, reservas en l&iacute;nea, inventario y notificaciones omnicanal &mdash; el mismo sistema potente, adaptado a tu sector.</p>
   <div class="hero-pills">
-    <span class="hero-pill">Zero commission</span>
-    <span class="hero-pill">Self-hosted or cloud</span>
-    <span class="hero-pill">One command install</span>
+    <span class="hero-pill">Sin comisiones</span>
+    <span class="hero-pill">Self-hosted o en la nube</span>
+    <span class="hero-pill">Instalaci&oacute;n en un comando</span>
     <span class="hero-pill">Email &middot; Telegram &middot; WhatsApp &middot; Viber</span>
-    <span class="hero-pill">MIT open source</span>
+    <span class="hero-pill">C&oacute;digo abierto MIT</span>
   </div>
 </section>
 
 <section class="grid-section">
   <div class="grid-section-inner">
-    <div class="grid-label">Choose your industry</div>
+    <div class="grid-label">Elige tu sector</div>
     <div class="biz-grid">
 
-      <a href="/for/salons" class="biz-card">
+      <a href="/es/para/salones" class="biz-card">
         <span class="biz-card-arrow">&rarr;</span>
         <span class="biz-card-emoji">&#x1F487;</span>
-        <div class="biz-card-title">Salons &amp; beauty</div>
-        <div class="biz-card-desc">Hair salons, nail salons, beauty studios, lash &amp; brow bars.</div>
+        <div class="biz-card-title">Salones de belleza</div>
+        <div class="biz-card-desc">Salones de cabello, u&ntilde;as, est&eacute;tica, pesta&ntilde;as y cejas.</div>
       </a>
 
-      <a href="/for/barbershops" class="biz-card">
+      <a href="/es/para/barberia" class="biz-card">
         <span class="biz-card-arrow">&rarr;</span>
         <span class="biz-card-emoji">&#x2702;&#xFE0F;</span>
-        <div class="biz-card-title">Barbershops</div>
-        <div class="biz-card-desc">Appointments, walk-ins, multi-barber calendar and grooming product sales.</div>
+        <div class="biz-card-title">Barber&iacute;as</div>
+        <div class="biz-card-desc">Walk-ins, citas, agenda para varios barberos y venta de productos.</div>
       </a>
 
-      <a href="/for/auto-repair" class="biz-card">
+      <a href="/es/para/autoservicio" class="biz-card">
         <span class="biz-card-arrow">&rarr;</span>
         <span class="biz-card-emoji">&#x1F527;</span>
-        <div class="biz-card-title">Auto repair</div>
-        <div class="biz-card-desc">Service orders, parts inventory, job tracking and client notifications.</div>
+        <div class="biz-card-title">Talleres de autos</div>
+        <div class="biz-card-desc">&Oacute;rdenes de servicio, inventario de repuestos, seguimiento de trabajos y notificaciones al cliente.</div>
       </a>
 
-      <a href="/for/dental" class="biz-card">
+      <a href="/es/para/dental" class="biz-card">
         <span class="biz-card-arrow">&rarr;</span>
         <span class="biz-card-emoji">&#x1F9B7;</span>
-        <div class="biz-card-title">Dental clinics</div>
-        <div class="biz-card-desc">Patient scheduling, appointment reminders and payment processing.</div>
+        <div class="biz-card-title">Cl&iacute;nicas dentales</div>
+        <div class="biz-card-desc">Agenda de pacientes, recordatorios de citas y cobro de servicios.</div>
       </a>
 
-      <a href="/for/fitness" class="biz-card">
+      <a href="/es/para/gimnasio" class="biz-card">
         <span class="biz-card-arrow">&rarr;</span>
         <span class="biz-card-emoji">&#x1F3CB;&#xFE0F;</span>
-        <div class="biz-card-title">Fitness clubs</div>
-        <div class="biz-card-desc">Class bookings, membership tracking, trainer scheduling.</div>
+        <div class="biz-card-title">Gimnasios</div>
+        <div class="biz-card-desc">Reservas de clases, control de membres&iacute;as y agenda de entrenadores.</div>
       </a>
 
-      <a href="/for/spa" class="biz-card">
+      <a href="/es/para/spa" class="biz-card">
         <span class="biz-card-arrow">&rarr;</span>
         <span class="biz-card-emoji">&#x1F9D6;</span>
-        <div class="biz-card-title">Massage &amp; spa</div>
-        <div class="biz-card-desc">Treatment bookings, therapist schedules, product and service sales.</div>
+        <div class="biz-card-title">Masajes y spa</div>
+        <div class="biz-card-desc">Reservas de tratamientos, agenda de terapeutas y venta de productos.</div>
       </a>
 
-      <a href="/for/cafes" class="biz-card">
+      <a href="/es/para/cafeteria" class="biz-card">
         <span class="biz-card-arrow">&rarr;</span>
         <span class="biz-card-emoji">&#x2615;</span>
-        <div class="biz-card-title">Cafes</div>
-        <div class="biz-card-desc">Fast POS, inventory tracking, table or takeaway orders.</div>
+        <div class="biz-card-title">Cafeter&iacute;as</div>
+        <div class="biz-card-desc">POS r&aacute;pido, control de inventario y pedidos para consumir o llevar.</div>
       </a>
 
-      <a href="/for/tattoo" class="biz-card">
+      <a href="/es/para/tatuajes" class="biz-card">
         <span class="biz-card-arrow">&rarr;</span>
         <span class="biz-card-emoji">&#x1F3A8;</span>
-        <div class="biz-card-title">Tattoo studios</div>
-        <div class="biz-card-desc">Session bookings, deposits, client history and artist schedules.</div>
+        <div class="biz-card-title">Estudios de tatuajes</div>
+        <div class="biz-card-desc">Reservas de sesiones, dep&oacute;sitos, historial de clientes y agenda de artistas.</div>
       </a>
 
     </div>
@@ -258,74 +260,70 @@ const pageContent = `
 
 <section class="shared">
   <div class="shared-inner">
-    <h2>Everything above shares the same core</h2>
+    <h2>Todo lo anterior comparte el mismo n&uacute;cleo</h2>
     <div class="shared-grid">
       <div class="shared-item">
         <div class="shared-title">POS</div>
-        <div class="shared-desc">Complete a sale in 3 clicks. Works offline.</div>
+        <div class="shared-desc">Completa una venta en 3 clics. Funciona sin internet.</div>
       </div>
       <div class="shared-item">
         <div class="shared-title">CRM</div>
-        <div class="shared-desc">Full client history, tags, notes, birthday.</div>
+        <div class="shared-desc">Historial completo del cliente, etiquetas, notas y cumplea&ntilde;os.</div>
       </div>
       <div class="shared-item">
-        <div class="shared-title">Booking calendar</div>
-        <div class="shared-desc">Drag &amp; drop. No double-bookings. Ever.</div>
+        <div class="shared-title">Calendario de citas</div>
+        <div class="shared-desc">Drag &amp; drop. Sin reservas dobles. Nunca.</div>
       </div>
       <div class="shared-item">
-        <div class="shared-title">Notifications</div>
-        <div class="shared-desc">Email &middot; Telegram &middot; WhatsApp &middot; Viber &mdash; automatic.</div>
+        <div class="shared-title">Notificaciones</div>
+        <div class="shared-desc">Email &middot; Telegram &middot; WhatsApp &middot; Viber &mdash; autom&aacute;ticas.</div>
       </div>
       <div class="shared-item">
-        <div class="shared-title">Inventory</div>
-        <div class="shared-desc">Track stock, get low-stock alerts instantly.</div>
+        <div class="shared-title">Inventario</div>
+        <div class="shared-desc">Control de stock y alertas de m&iacute;nimos al instante.</div>
       </div>
       <div class="shared-item">
-        <div class="shared-title">Online booking</div>
-        <div class="shared-desc">Clients book with name &amp; phone. No account needed.</div>
+        <div class="shared-title">Reservas en l&iacute;nea</div>
+        <div class="shared-desc">Los clientes reservan con nombre y tel&eacute;fono. Sin cuenta.</div>
       </div>
       <div class="shared-item">
         <div class="shared-title">Self-hosted</div>
-        <div class="shared-desc">One command. Your server. Your data. Forever free.</div>
+        <div class="shared-desc">Un comando. Tu servidor. Tus datos. Gratis para siempre.</div>
       </div>
       <div class="shared-item">
         <div class="shared-title">PWA</div>
-        <div class="shared-desc">Install from browser. Works offline at checkout.</div>
+        <div class="shared-desc">Se instala desde el navegador. Funciona sin conexi&oacute;n en caja.</div>
       </div>
     </div>
   </div>
 </section>
 
 <section class="cta">
-  <h2>Not sure which fits?</h2>
-  <p>Start with the cloud free tier &mdash; it works for every service business, no setup needed.</p>
-  <a href="/register" class="btn-primary">Start free &mdash; no credit card</a>
-  <a href="https://github.com/SGrappelli/pronto" class="btn-outline">Self-host on GitHub &rarr;</a>
+  <h2>&iquest;No sabes cu&aacute;l es el tuyo?</h2>
+  <p>Empieza con el plan gratuito en la nube &mdash; funciona para cualquier negocio de servicios, sin configuraci&oacute;n.</p>
+  <a href="/register" class="btn-primary">Empezar gratis &mdash; sin tarjeta</a>
+  <a href="https://github.com/SGrappelli/pronto" class="btn-outline">Self-host en GitHub &rarr;</a>
 </section>
 
 </main>
 
 <footer>
   <div class="footer-brand">Pronto<span>.</span></div>
-  <div class="footer-copy">&copy; 2026 Pronto. All rights reserved.</div>
+  <div class="footer-copy">&copy; 2026 Pronto. Todos los derechos reservados.</div>
   <div class="footer-links">
-    <a href="/for/salons">Salons</a>
-    <a href="/for/barbershops">Barbershops</a>
-    <a href="/for/auto-repair">Auto repair</a>
-    <a href="/for/dental">Dental</a>
-    <a href="/for/fitness">Fitness</a>
-    <a href="/for/spa">Spa</a>
-    <a href="/for/cafes">Cafes</a>
-    <a href="/for/tattoo">Tattoo</a>
-    <a href="/terms">Terms</a>
-    <a href="/privacy">Privacy</a>
-    <a href="/refund">Refund policy</a>
+    <a href="/es/">Inicio</a>
+    <a href="/es/precios">Precios</a>
+    <a href="/es/para/salones">Salones</a>
+    <a href="/es/para/barberia">Barber&iacute;as</a>
+    <a href="/terms">T&eacute;rminos</a>
+    <a href="/privacy">Privacidad</a>
+    <a href="/refund">Reembolsos</a>
     <a href="https://github.com/SGrappelli/pronto">GitHub</a>
   </div>
 </footer>
 `
 
-export default function ForPage() {
+export default function EsParaPage() {
   return (
     <>
       <script
