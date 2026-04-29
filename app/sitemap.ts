@@ -21,6 +21,7 @@ const ROUTE_PRIORITIES: Record<string, number> = {
   '/for/salons': 0.9,
   '/for': 0.8,
   '/pricing': 0.8,
+  '/es/precios': 0.8,
   '/register': 0.7,
   '/login': 0.5,
 }

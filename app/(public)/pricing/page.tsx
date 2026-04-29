@@ -12,7 +12,14 @@ export const metadata: Metadata = {
     'salon management software pricing', 'service business software plans',
     'small business pos cost', 'open source pos pricing', 'booking software subscription',
   ],
-  alternates: { canonical: 'https://trypronto.app/pricing' },
+  alternates: {
+    canonical: 'https://trypronto.app/pricing',
+    languages: {
+      en: 'https://trypronto.app/pricing',
+      es: 'https://trypronto.app/es/precios',
+      'x-default': 'https://trypronto.app/pricing',
+    },
+  },
   openGraph: {
     type: 'website',
     url: 'https://trypronto.app/pricing',
