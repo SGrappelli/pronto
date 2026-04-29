@@ -55,6 +55,14 @@
   color: #111;
 }
 
+.hideMob {
+  display: inline;
+}
+
+@media (max-width: 640px) {
+  .hideMob { display: none; }
+}
+
 .btnNav {
   background: #111;
   color: #fff;

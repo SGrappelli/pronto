@@ -17,6 +17,7 @@ const EXCLUDED_ROUTE_PREFIXES = [
 // Priority map for known routes; everything else gets 0.6
 const ROUTE_PRIORITIES: Record<string, number> = {
   '/': 1.0,
+  '/es': 0.9,
   '/for/salons': 0.9,
   '/for': 0.8,
   '/pricing': 0.8,
@@ -91,7 +92,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     .filter(({ file }) => !hasNoIndex(file))
     .map(({ route }) => ({
       url: `${BASE_URL}${route}`,
-      changeFrequency: (route === '/' ? 'weekly' : 'monthly') as MetadataRoute.Sitemap[number]['changeFrequency'],
+      changeFrequency: (route === '/' || route === '/es' ? 'weekly' : 'monthly') as MetadataRoute.Sitemap[number]['changeFrequency'],
       priority: getPriority(route),
       lastModified: new Date(),
     }))
