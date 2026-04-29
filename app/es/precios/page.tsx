@@ -195,7 +195,7 @@ export default function EsPreciosPage() {
           Pronto<span>.</span>
         </Link>
         <div className={styles.navRight}>
-          <Link href="/pricing" className={`${styles.navLink} lang-switcher`}>
+          <Link href="/pricing" className={`${styles.navLink} ${styles.hideMob}`}>
             EN
           </Link>
           <Link href="/es/precios" className={`${styles.navLink} ${styles.hideMob}`}>

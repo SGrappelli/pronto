@@ -90,7 +90,6 @@
 
 @media (max-width: 640px) {
   .nav         { padding: 0 16px; height: 56px; }
-  .navRight    { gap: 12px; }
   .hideMob     { display: none; }
   .footer      { flex-direction: column; align-items: flex-start; gap: 16px; padding: 24px 16px; }
   .footerLinks { flex-wrap: wrap; gap: 16px; }
