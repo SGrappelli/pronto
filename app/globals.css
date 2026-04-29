@@ -2,6 +2,17 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Language switcher — visible on all screen sizes */
+.lang-switcher {
+  display: inline;
+}
+
+@media (display-mode: standalone) {
+  .lang-switcher {
+    display: inline-flex !important;
+  }
+}
+
 @layer base {
   :root {
     --background: 0 0% 100%;

@@ -25,7 +25,7 @@ export default function PublicLayout({ children }: { children: React.ReactNode }
           <Link href="/pricing" className={`${styles.navLink} ${styles.hideMob}`}>
             Pricing
           </Link>
-          <Link href="/es/precios" className={`${styles.navLink} ${styles.hideMob}`}>
+          <Link href="/es/precios" className={`${styles.navLink} lang-switcher`}>
             ES
           </Link>
           <Link href="/login" className={styles.navLink}>
