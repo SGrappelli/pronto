@@ -314,12 +314,15 @@ const pageContent = `
 <footer>
   <div class="footer-brand">Pronto<span>.</span></div>
   <div class="footer-copy">&copy; 2026 Pronto. Todos los derechos reservados.</div>
+    <!-- FOOTER — keep in sync with all other pages
+       ES standard: /es/ · /es/precios · /es/para · /es/para/salones · legal · GitHub
+       EN standard: / · /pricing · /for · /for/salons · legal · GitHub -->
   <div class="footer-links">
-    <a href="/es/precios">Precios</a>
     <a href="/es/">Inicio</a>
+    <a href="/es/precios">Precios</a>
+    <a href="/es/para">Para negocios</a>
     <a href="/es/para/salones">Salones</a>
-    <a href="/es/para/barberia">Barber&iacute;as</a>
-    <a href="/terms">T&eacute;rminos</a>
+    <a href="/terms">Términos</a>
     <a href="/privacy">Privacidad</a>
     <a href="/refund">Reembolsos</a>
     <a href="https://github.com/SGrappelli/pronto">GitHub</a>

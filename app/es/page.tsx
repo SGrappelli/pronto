@@ -605,13 +605,19 @@ export default function EsPage() {
         </div>
       </section>
 
+      {/* FOOTER — keep in sync with all other pages
+          ES standard: /es/ · /es/precios · /es/para · /es/para/salones · legal · GitHub
+          EN standard: / · /pricing · /for · /for/salons · legal · GitHub */}
       <footer className={styles.footer}>
         <div className={styles.footerBrand}>
           Pronto<span>.</span>
         </div>
         <div className={styles.footerCopy}>© 2026 Pronto. Todos los derechos reservados.</div>
         <div className={styles.footerLinks}>
+          <Link href="/es/">Inicio</Link>
           <Link href="/es/precios">Precios</Link>
+          <Link href="/es/para">Para negocios</Link>
+          <Link href="/es/para/salones">Salones</Link>
           <Link href="/terms">Términos</Link>
           <Link href="/privacy">Privacidad</Link>
           <Link href="/refund">Reembolsos</Link>
