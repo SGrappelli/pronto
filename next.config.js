@@ -70,6 +70,17 @@ const nextConfig = {
       { protocol: 'https', hostname: '*.r2.cloudflarestorage.com' },
     ],
   },
+  async redirects() {
+    return [
+      // Redirect www → non-www (301 permanent) to fix Soft 404 in Google Search Console
+      {
+        source: '/:path*',
+        has: [{ type: 'host', value: 'www.trypronto.app' }],
+        destination: 'https://trypronto.app/:path*',
+        permanent: true,
+      },
+    ]
+  },
 }
 
 module.exports = withPWA(withNextIntl(nextConfig))
