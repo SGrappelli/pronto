@@ -71,12 +71,14 @@ const nextConfig = {
     ],
   },
   async redirects() {
+    const domain = process.env.APP_DOMAIN
+    if (!domain) return []
+    // Redirect www → non-www (301 permanent) to fix Soft 404 in Google Search Console
     return [
-      // Redirect www → non-www (301 permanent) to fix Soft 404 in Google Search Console
       {
         source: '/:path*',
-        has: [{ type: 'host', value: 'www.trypronto.app' }],
-        destination: 'https://trypronto.app/:path*',
+        has: [{ type: 'host', value: `www.${domain}` }],
+        destination: `https://${domain}/:path*`,
         permanent: true,
       },
     ]
