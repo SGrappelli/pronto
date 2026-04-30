@@ -41,14 +41,19 @@ export default function PublicLayout({ children }: { children: React.ReactNode }
         {children}
       </main>
 
+      {/* FOOTER — keep in sync with all other pages
+          ES standard: /es/ · /es/precios · /es/para · /es/para/salones · legal · GitHub
+          EN standard: / · /pricing · /for · /for/salons · legal · GitHub */}
       <footer className={styles.footer}>
         <div className={styles.footerBrand}>
           Pronto<span>.</span>
         </div>
         <div className={styles.footerCopy}>© 2026 Pronto. All rights reserved.</div>
         <div className={styles.footerLinks}>
+          <Link href="/">Home</Link>
           <Link href="/pricing">Pricing</Link>
           <Link href="/for">For businesses</Link>
+          <Link href="/for/salons">Salons</Link>
           <Link href="/terms">Terms</Link>
           <Link href="/privacy">Privacy</Link>
           <Link href="/refund">Refund policy</Link>

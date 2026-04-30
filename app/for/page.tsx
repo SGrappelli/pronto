@@ -312,16 +312,14 @@ const pageContent = `
 <footer>
   <div class="footer-brand">Pronto<span>.</span></div>
   <div class="footer-copy">&copy; 2026 Pronto. All rights reserved.</div>
+    <!-- FOOTER — keep in sync with all other pages
+       ES standard: /es/ · /es/precios · /es/para · /es/para/salones · legal · GitHub
+       EN standard: / · /pricing · /for · /for/salons · legal · GitHub -->
   <div class="footer-links">
+    <a href="/">Home</a>
     <a href="/pricing">Pricing</a>
+    <a href="/for">For businesses</a>
     <a href="/for/salons">Salons</a>
-    <a href="/for/barbershops">Barbershops</a>
-    <a href="/for/auto-repair">Auto repair</a>
-    <a href="/for/dental">Dental</a>
-    <a href="/for/fitness">Fitness</a>
-    <a href="/for/spa">Spa</a>
-    <a href="/for/cafes">Cafes</a>
-    <a href="/for/tattoo">Tattoo</a>
     <a href="/terms">Terms</a>
     <a href="/privacy">Privacy</a>
     <a href="/refund">Refund policy</a>
