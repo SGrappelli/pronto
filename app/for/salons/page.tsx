@@ -6,7 +6,14 @@ export const metadata: Metadata = {
     'Free salon management software with POS, appointment booking, CRM and automated reminders via WhatsApp, Telegram & Email. Zero commission. Self-hosted or cloud.',
   keywords:
     'salon management software, beauty salon POS, salon booking software, appointment booking software for salons, salon CRM, free salon software, hair salon management, beauty salon scheduling software, salon software no commission, self-hosted salon software',
-  alternates: { canonical: 'https://trypronto.app/for/salons' },
+  alternates: {
+    canonical: 'https://trypronto.app/for/salons',
+    languages: {
+      en: 'https://trypronto.app/for/salons',
+      es: 'https://trypronto.app/es/para/salones',
+      'x-default': 'https://trypronto.app/for/salons',
+    },
+  },
   openGraph: {
     type: 'website',
     url: 'https://trypronto.app/for/salons',
@@ -346,6 +353,7 @@ const pageContent = `
   <a href="/" class="nav-brand">Pronto<span>.</span></a>
   <div class="nav-right">
     <a href="/pricing" class="nav-link">Pricing</a>
+    <a href="/es/para/salones" class="nav-link">ES</a>
     <a href="/login" class="nav-link">Sign in</a>
     <a href="/register" class="btn-nav">Start free</a>
   </div>
