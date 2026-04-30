@@ -784,6 +784,7 @@ const pageContent = `
   <div class="footer-brand">Pronto<span>.</span></div>
   <div class="footer-copy">&copy; 2026 Pronto. All rights reserved.</div>
   <div class="footer-links">
+    <a href="/pricing">Pricing</a>
     <a href="/for/salons">Salons</a>
     <a href="/for/barbershops">Barbershops</a>
     <a href="/for/dental">Dental</a>

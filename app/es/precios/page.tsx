@@ -383,6 +383,7 @@ export default function EsPreciosPage() {
         </div>
         <div className={styles.footerCopy}>© 2026 Pronto. Todos los derechos reservados.</div>
         <div className={styles.footerLinks}>
+          <Link href="/es/precios">Precios</Link>
           <Link href="/es/">Inicio</Link>
           <Link href="/terms">Términos</Link>
           <Link href="/privacy">Privacidad</Link>
