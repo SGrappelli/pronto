@@ -163,14 +163,14 @@ export default function EsPage() {
           Pronto<span>.</span>
         </Link>
         <div className={styles.navRight}>
-          <Link href="/" className={`${styles.navLink} lang-switcher`}>
-            EN
-          </Link>
-          <Link href="/es/precios" className={styles.navLink}>
+          <Link href="/es/precios" className={`${styles.navLink} ${styles.hideMob}`}>
             Precios
           </Link>
           <Link href="/login" className={styles.navLink}>
             Iniciar sesión
+          </Link>
+          <Link href="/" className={`${styles.navLink} lang-switcher`}>
+            EN
           </Link>
           <Link href="/register" className={styles.btnNav}>
             Empezar gratis

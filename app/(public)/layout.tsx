@@ -25,11 +25,11 @@ export default function PublicLayout({ children }: { children: React.ReactNode }
           <Link href="/pricing" className={`${styles.navLink} ${styles.hideMob}`}>
             Pricing
           </Link>
-          <Link href="/es/precios" className={`${styles.navLink} lang-switcher`}>
-            ES
-          </Link>
           <Link href="/login" className={styles.navLink}>
             Sign in
+          </Link>
+          <Link href="/es/precios" className={`${styles.navLink} lang-switcher`}>
+            ES
           </Link>
           <Link href="/register" className={styles.btnNav}>
             Start free

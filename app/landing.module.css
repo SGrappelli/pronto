@@ -787,7 +787,9 @@
 
 @media (max-width: 640px) {
   .nav    { padding: 0 16px; height: 56px; }
-  .navRight { gap: 12px; }
+  .navRight { gap: 8px; }
+  .navLink  { font-size: 14px; }
+  .btnNav   { font-size: 13px; padding: 8px 14px; white-space: nowrap; }
   .hero   { padding: 52px 16px 44px; }
   .hero h1 { font-size: 34px; letter-spacing: -1px; }
   .heroDesc { font-size: 16px; }

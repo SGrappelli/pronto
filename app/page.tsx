@@ -146,14 +146,14 @@ export default function RootPage() {
           Pronto<span>.</span>
         </Link>
         <div className={styles.navRight}>
-          <Link href="/es/" className={`${styles.navLink} lang-switcher`}>
-            ES
-          </Link>
-          <Link href="/pricing" className={styles.navLink}>
+          <Link href="/pricing" className={`${styles.navLink} ${styles.hideMob}`}>
             Pricing
           </Link>
           <Link href="/login" className={styles.navLink}>
             Sign in
+          </Link>
+          <Link href="/es/" className={`${styles.navLink} lang-switcher`}>
+            ES
           </Link>
           <Link href="/register" className={styles.btnNav}>
             Start free
