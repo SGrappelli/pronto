@@ -807,6 +807,16 @@ Nosotros gestionamos actualizaciones, backups y uptime.</p>
   </div>
 </section>
 
+<section style="background:#f8fafc;border-top:1px solid #f0f0f0;padding:40px 48px;text-align:center">
+  <p style="font-size:13px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:#9ca3af;margin-bottom:16px">Tambi&eacute;n para</p>
+  <div style="display:flex;flex-wrap:wrap;gap:10px;justify-content:center">
+    <a href="/es/para/barberia" style="font-size:14px;font-weight:500;padding:8px 18px;border-radius:20px;background:#fff;border:1px solid #e2e8f0;color:#111;text-decoration:none">✂️ Barber&iacute;as</a>
+    <a href="/es/para/spa" style="font-size:14px;font-weight:500;padding:8px 18px;border-radius:20px;background:#fff;border:1px solid #e2e8f0;color:#111;text-decoration:none">🧖 Masajes y spa</a>
+    <a href="/es/para/tatuajes" style="font-size:14px;font-weight:500;padding:8px 18px;border-radius:20px;background:#fff;border:1px solid #e2e8f0;color:#111;text-decoration:none">🎨 Estudios de tatuajes</a>
+    <a href="/es/para" style="font-size:14px;font-weight:500;padding:8px 18px;border-radius:20px;background:#fff;border:1px solid #e2e8f0;color:#111;text-decoration:none">Ver todos →</a>
+  </div>
+</section>
+
 <section class="cta-band">
   <h2>Empieza a gestionar tu sal&oacute;n gratis hoy</h2>
   <p>La nube tarda 5 minutos. Self-hosted es un solo comando.
@@ -830,8 +840,8 @@ De cualquier forma &mdash; sin comisiones, para siempre.</p>
     <a href="/es/precios">Precios</a>
     <a href="/es/para">Para negocios</a>
     <a href="/es/para/barberia">Barber&iacute;as</a>
-    <a href="/es/para/autoservicio">Talleres</a>
-    <a href="/es/para/dental">Dental</a>
+    <a href="/es/para/spa">Masajes y spa</a>
+    <a href="/es/para/tatuajes">Estudios de tatuajes</a>
     <a href="/terms">T&eacute;rminos</a>
     <a href="/privacy">Privacidad</a>
     <a href="/refund">Reembolsos</a>

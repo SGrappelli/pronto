@@ -778,6 +778,16 @@ const pageContent = `
   </div>
 </section>
 
+<section style="background:#f8fafc;border-top:1px solid #f0f0f0;padding:40px 48px;text-align:center">
+  <p style="font-size:13px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:#9ca3af;margin-bottom:16px">Also works great for</p>
+  <div style="display:flex;flex-wrap:wrap;gap:10px;justify-content:center">
+    <a href="/for/barbershops" style="font-size:14px;font-weight:500;padding:8px 18px;border-radius:20px;background:#fff;border:1px solid #e2e8f0;color:#111;text-decoration:none">✂️ Barbershops</a>
+    <a href="/for/spa" style="font-size:14px;font-weight:500;padding:8px 18px;border-radius:20px;background:#fff;border:1px solid #e2e8f0;color:#111;text-decoration:none">🧖 Massage &amp; spa</a>
+    <a href="/for/tattoo" style="font-size:14px;font-weight:500;padding:8px 18px;border-radius:20px;background:#fff;border:1px solid #e2e8f0;color:#111;text-decoration:none">🎨 Tattoo studios</a>
+    <a href="/for" style="font-size:14px;font-weight:500;padding:8px 18px;border-radius:20px;background:#fff;border:1px solid #e2e8f0;color:#111;text-decoration:none">View all →</a>
+  </div>
+</section>
+
 <section class="cta-band">
   <h2>Start managing your salon for free</h2>
   <p>Cloud setup takes 5 minutes. Self-hosted is one command. Either way &mdash; zero commission, forever.</p>
@@ -799,7 +809,9 @@ const pageContent = `
     <a href="/">Home</a>
     <a href="/pricing">Pricing</a>
     <a href="/for">For businesses</a>
-    <a href="/for/salons">Salons</a>
+    <a href="/for/barbershops">Barbershops</a>
+    <a href="/for/spa">Massage &amp; spa</a>
+    <a href="/for/tattoo">Tattoo studios</a>
     <a href="/terms">Terms</a>
     <a href="/privacy">Privacy</a>
     <a href="/refund">Refund policy</a>
