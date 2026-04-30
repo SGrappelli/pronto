@@ -6,7 +6,14 @@ export const metadata: Metadata = {
     'Free auto repair shop management software with service order tracking, appointment booking, parts inventory and automated client notifications via WhatsApp, Telegram & Email. Zero commission. Self-hosted or cloud.',
   keywords:
     'auto repair shop software, auto repair management software, auto repair shop POS, car repair shop booking software, auto repair CRM, free auto repair software, mechanic shop software, garage management software, auto shop software no commission, self-hosted auto repair software',
-  alternates: { canonical: 'https://trypronto.app/for/auto-repair' },
+  alternates: {
+    canonical: 'https://trypronto.app/for/auto-repair',
+    languages: {
+      en: 'https://trypronto.app/for/auto-repair',
+      es: 'https://trypronto.app/es/para/autoservicio',
+      'x-default': 'https://trypronto.app/for/auto-repair',
+    },
+  },
   openGraph: {
     type: 'website',
     url: 'https://trypronto.app/for/auto-repair',
@@ -347,6 +354,7 @@ const pageContent = `
   <a href="/" class="nav-brand">Pronto<span>.</span></a>
   <div class="nav-right">
     <a href="/pricing" class="nav-link">Pricing</a>
+    <a href="/es/para/autoservicio" class="nav-link">ES</a>
     <a href="/login" class="nav-link">Sign in</a>
     <a href="/register" class="btn-nav">Start free</a>
   </div>
