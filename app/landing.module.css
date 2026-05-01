@@ -768,6 +768,10 @@
   color: #111;
 }
 
+.footerSocial { display: flex; gap: 16px; align-items: center; }
+.footerSocial a { color: #9ca3af; display: flex; line-height: 1; }
+.footerSocial a:hover { color: #111; }
+
 /* RESPONSIVE */
 @media (max-width: 1024px) {
   .nav    { padding: 0 24px; }
