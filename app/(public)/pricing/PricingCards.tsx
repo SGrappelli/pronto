@@ -1,10 +1,12 @@
 'use client'
 
 import { useState } from 'react'
+import { getWhopCheckoutUrl } from '@/lib/whop'
 
 const paidPlans = [
   {
     name: 'Starter',
+    tier: 'starter' as const,
     monthlyPrice: 19,
     annualTotal: 190,
     annualMonthly: 15.83,
@@ -12,11 +14,11 @@ const paidPlans = [
     description: 'For solo operators and small shops.',
     highlight: false,
     popularBadge: undefined as string | undefined,
-    cta: 'Start Starter',
-    href: '/register',
+    cta: 'Get started',
   },
   {
     name: 'Pro',
+    tier: 'pro' as const,
     monthlyPrice: 39,
     annualTotal: 390,
     annualMonthly: 32.50,
@@ -24,11 +26,11 @@ const paidPlans = [
     description: 'For growing teams with advanced needs.',
     highlight: true,
     popularBadge: 'Most popular',
-    cta: 'Start Pro',
-    href: '/register',
+    cta: 'Get started',
   },
   {
     name: 'Agency',
+    tier: 'agency' as const,
     monthlyPrice: 79,
     annualTotal: 790,
     annualMonthly: 65.83,
@@ -36,8 +38,7 @@ const paidPlans = [
     description: 'For agencies managing multiple locations.',
     highlight: false,
     popularBadge: undefined as string | undefined,
-    cta: 'Start Agency',
-    href: '/register',
+    cta: 'Get started',
   },
 ]
 
@@ -142,7 +143,9 @@ export function PricingCards() {
                 )}
               </div>
               <a
-                href={plan.href}
+                href={getWhopCheckoutUrl(plan.tier, '')}
+                target="_blank"
+                rel="noopener noreferrer"
                 className={`mt-auto w-full text-center py-2.5 rounded-lg text-sm font-semibold transition-colors ${
                   plan.highlight
                     ? 'bg-blue-600 text-white hover:bg-blue-700'

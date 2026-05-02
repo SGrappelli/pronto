@@ -33,6 +33,8 @@ export type Database = {
           ls_customer_id: string | null
           ls_subscription_id: string | null
           ls_variant_id: string | null
+          subscription_tier: string
+          whop_membership_id: string | null
           email_provider: string | null
           smtp_host: string | null
           smtp_port: number | null
@@ -68,6 +70,8 @@ export type Database = {
           ls_customer_id?: string | null
           ls_subscription_id?: string | null
           ls_variant_id?: string | null
+          subscription_tier?: string
+          whop_membership_id?: string | null
           email_provider?: string | null
           smtp_host?: string | null
           smtp_port?: number | null
@@ -103,6 +107,8 @@ export type Database = {
           ls_customer_id?: string | null
           ls_subscription_id?: string | null
           ls_variant_id?: string | null
+          subscription_tier?: string
+          whop_membership_id?: string | null
           email_provider?: string | null
           smtp_host?: string | null
           smtp_port?: number | null

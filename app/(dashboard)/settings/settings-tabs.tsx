@@ -7,8 +7,7 @@ import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { Plus, Pencil, Trash2, Check, Loader2, CheckCircle2, AlertCircle, Zap, Building2, Users, Eye, EyeOff } from 'lucide-react'
 import { useTranslations } from 'next-intl'
-import { startCheckout, openCustomerPortal } from './billing-actions'
-import { PLAN_LIMITS } from '@/lib/lemonsqueezy'
+import { getWhopCheckoutUrl } from '@/lib/whop'
 
 interface Business {
   id: string; name: string; slug: string; type: string | null; phone: string | null
@@ -17,6 +16,8 @@ interface Business {
   telegram_bot_token: string | null; viber_bot_token: string | null
   owner_whatsapp: string | null
   ls_customer_id: string | null
+  subscription_tier: string | null
+  whop_membership_id: string | null
   email_provider: string | null
   smtp_host: string | null; smtp_port: number | null; smtp_user: string | null
   smtp_pass: string | null; smtp_from: string | null
@@ -933,144 +934,7 @@ export function SettingsTabs({ business: initial, services: initServices, employ
 
       {/* Billing */}
       {tab === 'billing' && (
-        <div className="space-y-4">
-          {process.env.NEXT_PUBLIC_DEPLOYMENT_MODE !== 'saas' ? (
-            /* ── Self-hosted mode ── */
-            <>
-              <div className="bg-white rounded-xl border border-gray-200 p-6">
-                <div className="flex items-center gap-3 mb-4">
-                  <div className="p-2 bg-green-50 rounded-lg">
-                    <Zap className="w-5 h-5 text-green-600" />
-                  </div>
-                  <div>
-                    <div className="text-base font-semibold text-gray-900">Self-hosted Plan</div>
-                    <div className="text-sm text-gray-500">You own this installation. No limits, no subscriptions, free forever.</div>
-                  </div>
-                  <Badge variant="success" className="ml-auto">Active</Badge>
-                </div>
-                <div className="space-y-2 mt-2">
-                  {[
-                    'Unlimited employees',
-                    'Unlimited clients',
-                    'All features included',
-                  ].map((item) => (
-                    <div key={item} className="flex items-center gap-2 text-sm text-gray-700">
-                      <Check className="w-4 h-4 text-green-500 shrink-0" />
-                      {item}
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              <div className="bg-gray-50 rounded-xl border border-gray-200 p-6">
-                <div className="font-semibold text-gray-900 mb-1">Prefer a managed version?</div>
-                <p className="text-sm text-gray-500 mb-4">
-                  trypronto.app handles hosting and updates for you. Plans from $19/mo.
-                </p>
-                <a
-                  href="https://trypronto.app"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1.5 border border-gray-300 text-gray-700 text-sm font-medium px-4 py-2 rounded-lg hover:bg-white hover:border-gray-400 transition-colors"
-                >
-                  Learn more →
-                </a>
-              </div>
-            </>
-          ) : (
-            /* ── SaaS mode ── */
-            <>
-              <div className="bg-white rounded-xl border border-gray-200 p-6">
-                <h2 className="font-semibold text-gray-900 mb-4">{t('billing.heading')}</h2>
-                <div className="flex items-center gap-3 mb-4">
-                  <div className="p-2 bg-blue-50 rounded-lg"><Zap className="w-5 h-5 text-blue-600" /></div>
-                  <div>
-                    <div className="text-sm font-semibold text-gray-900 capitalize">
-                      {PLAN_LIMITS[biz.plan]?.label ?? biz.plan} {t('billing.planSuffix')}
-                    </div>
-                    {biz.plan_expires_at && (
-                      <div className="text-xs text-gray-500">
-                        {t('billing.renewsOn')} {new Date(biz.plan_expires_at).toLocaleDateString('en-US', { day: 'numeric', month: 'long', year: 'numeric' })}
-                      </div>
-                    )}
-                  </div>
-                  <Badge variant={biz.plan === 'free' ? 'secondary' : 'success'} className="ml-auto">
-                    {biz.plan === 'free' ? t('billing.freePlan') : t('billing.activePlan')}
-                  </Badge>
-                </div>
-                <div className="grid grid-cols-2 gap-3 mb-4">
-                  <div className="bg-gray-50 rounded-lg p-3 flex items-center gap-2">
-                    <Users className="w-4 h-4 text-gray-400" />
-                    <div>
-                      <div className="text-xs text-gray-500">{t('billing.employees')}</div>
-                      <div className="text-sm font-medium text-gray-900">
-                        {PLAN_LIMITS[biz.plan]?.employees === 999 ? 'Unlimited' : `Up to ${PLAN_LIMITS[biz.plan]?.employees}`}
-                      </div>
-                    </div>
-                  </div>
-                  <div className="bg-gray-50 rounded-lg p-3 flex items-center gap-2">
-                    <Building2 className="w-4 h-4 text-gray-400" />
-                    <div>
-                      <div className="text-xs text-gray-500">{t('billing.clients')}</div>
-                      <div className="text-sm font-medium text-gray-900">
-                        {PLAN_LIMITS[biz.plan]?.clients >= 999_999 ? 'Unlimited' : `Up to ${PLAN_LIMITS[biz.plan]?.clients.toLocaleString()}`}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                {biz.ls_customer_id && biz.plan !== 'free' && (
-                  <form action={openCustomerPortal}>
-                    <Button type="submit" variant="outline" size="sm">{t('billing.manageSubscription')}</Button>
-                  </form>
-                )}
-              </div>
-
-              {biz.plan !== 'agency' && (
-                <div className="grid sm:grid-cols-3 gap-3">
-                  {(['starter', 'pro', 'agency'] as const)
-                    .filter((p) => p !== biz.plan)
-                    .map((plan) => {
-                      const limits = PLAN_LIMITS[plan]
-                      const prices: Record<string, string> = { starter: '$19/mo', pro: '$39/mo', agency: '$79/mo' }
-                      return (
-                        <div key={plan} className={`bg-white rounded-xl border p-4 ${plan === 'pro' ? 'border-blue-300 ring-1 ring-blue-200' : 'border-gray-200'}`}>
-                          {plan === 'pro' && (
-                            <div className="text-xs font-semibold text-blue-600 mb-2 uppercase tracking-wide">{t('billing.mostPopular')}</div>
-                          )}
-                          <div className="font-semibold text-gray-900 capitalize mb-0.5">{limits.label}</div>
-                          <div className="text-lg font-bold text-gray-900 mb-2">{prices[plan]}</div>
-                          <div className="text-xs text-gray-500 mb-4 space-y-0.5">
-                            <div>👥 {limits.employees === 999 ? 'Unlimited employees' : `${limits.employees} employees`}</div>
-                            <div>🧑‍💼 {limits.clients >= 999_999 ? 'Unlimited clients' : `${limits.clients.toLocaleString()} clients`}</div>
-                          </div>
-                          {plan === biz.plan ? (
-                            <div className="text-xs text-center text-gray-400">{t('billing.currentPlan')}</div>
-                          ) : (
-                            <form action={startCheckout.bind(null, plan)}>
-                              <Button type="submit" size="sm" className="w-full" variant={plan === 'pro' ? 'default' : 'outline'}>
-                                {t('billing.upgrade')}
-                              </Button>
-                            </form>
-                          )}
-                        </div>
-                      )
-                    })}
-                </div>
-              )}
-
-              {searchParams.get('success') && (
-                <div className="flex items-center gap-2 text-sm text-green-700 bg-green-50 border border-green-200 rounded-lg px-4 py-3">
-                  <CheckCircle2 className="w-4 h-4 shrink-0" /> {t('billing.successMessage')}
-                </div>
-              )}
-              {searchParams.get('error') && (
-                <div className="flex items-center gap-2 text-sm text-red-700 bg-red-50 border border-red-200 rounded-lg px-4 py-3">
-                  <AlertCircle className="w-4 h-4 shrink-0" /> {t('billing.errorMessage')}
-                </div>
-              )}
-            </>
-          )}
-        </div>
+        <BillingTab businessId={biz.id} currentTier={(biz.subscription_tier ?? 'free') as PlanTier} />
       )}
 
       {/* Account */}
@@ -1175,6 +1039,111 @@ export function SettingsTabs({ business: initial, services: initServices, employ
           </div>
         </div>
       )}
+    </div>
+  )
+}
+
+// ─── Billing tab ──────────────────────────────────────────────────────────────
+
+type PlanTier = 'free' | 'starter' | 'pro' | 'agency'
+
+const PLANS: { tier: PlanTier; name: string; price: string; features: string[] }[] = [
+  {
+    tier: 'free',
+    name: 'Free',
+    price: '$0',
+    features: ['1 employee', '100 clients', 'Email notifications'],
+  },
+  {
+    tier: 'starter',
+    name: 'Starter',
+    price: '$19/mo',
+    features: ['3 employees', '1 000 clients', 'Telegram · WhatsApp · Viber', 'Online booking'],
+  },
+  {
+    tier: 'pro',
+    name: 'Pro',
+    price: '$39/mo',
+    features: ['15 employees', 'Unlimited clients', 'Analytics', 'Custom domain', 'Loyalty'],
+  },
+  {
+    tier: 'agency',
+    name: 'Agency',
+    price: '$79/mo',
+    features: ['Unlimited locations', 'White-label', 'API access'],
+  },
+]
+
+const TIER_ORDER: PlanTier[] = ['free', 'starter', 'pro', 'agency']
+
+function BillingTab({ businessId, currentTier }: { businessId: string; currentTier: PlanTier }) {
+  return (
+    <div className="space-y-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        {PLANS.map((plan) => {
+          const isCurrent = plan.tier === currentTier
+          const isUpgrade = TIER_ORDER.indexOf(plan.tier) > TIER_ORDER.indexOf(currentTier)
+          const checkoutUrl = getWhopCheckoutUrl(plan.tier, businessId)
+
+          return (
+            <div
+              key={plan.tier}
+              className={`rounded-xl border p-5 flex flex-col gap-3 ${
+                isCurrent ? 'border-blue-500 ring-2 ring-blue-500' : 'border-gray-200'
+              }`}
+            >
+              <div>
+                <div className="flex items-center gap-2 mb-1">
+                  <span className="font-bold text-gray-900">{plan.name}</span>
+                  {isCurrent && (
+                    <span className="text-xs bg-blue-100 text-blue-700 font-semibold px-2 py-0.5 rounded-full">
+                      Current plan
+                    </span>
+                  )}
+                </div>
+                <div className="text-2xl font-extrabold text-gray-900">{plan.price}</div>
+              </div>
+              <ul className="space-y-1.5 flex-1">
+                {plan.features.map((f) => (
+                  <li key={f} className="flex items-center gap-1.5 text-sm text-gray-600">
+                    <Check className="w-3.5 h-3.5 text-green-500 shrink-0" />
+                    {f}
+                  </li>
+                ))}
+              </ul>
+              {isCurrent ? (
+                <div className="w-full text-center text-sm text-gray-400 py-2">Current plan</div>
+              ) : (
+                <a
+                  href={checkoutUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={`w-full text-center text-sm font-semibold py-2 rounded-lg transition-colors ${
+                    isUpgrade
+                      ? 'bg-blue-600 text-white hover:bg-blue-700'
+                      : 'border border-gray-300 text-gray-700 hover:bg-gray-50'
+                  }`}
+                >
+                  {isUpgrade ? 'Upgrade' : 'Downgrade'}
+                </a>
+              )}
+            </div>
+          )
+        })}
+      </div>
+
+      <p className="text-xs text-gray-400">
+        To cancel your subscription, manage it directly at{' '}
+        <a
+          href="https://whop.com/pronto-fdee/"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="underline hover:text-gray-600"
+        >
+          whop.com
+        </a>
+        .
+      </p>
     </div>
   )
 }
