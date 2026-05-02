@@ -10,8 +10,10 @@ const supabase = createClient(
 
 function verifySignature(body: string, signature: string): boolean {
   const secret = process.env.WHOP_WEBHOOK_SECRET
-  if (!secret) return false
+  if (!secret || !signature) return false
   const expected = crypto.createHmac('sha256', secret).update(body).digest('hex')
+  // timingSafeEqual requires equal-length buffers — check first
+  if (expected.length !== signature.length) return false
   return crypto.timingSafeEqual(Buffer.from(expected), Buffer.from(signature))
 }
 
