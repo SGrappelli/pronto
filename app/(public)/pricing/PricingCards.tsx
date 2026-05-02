@@ -1,12 +1,11 @@
 'use client'
 
 import { useState } from 'react'
-import { getWhopCheckoutUrl } from '@/lib/whop'
 
 const paidPlans = [
   {
     name: 'Starter',
-    tier: 'starter' as const,
+    planId: 'plan_4qqxuMZ5moAlM',
     monthlyPrice: 19,
     annualTotal: 190,
     annualMonthly: 15.83,
@@ -18,7 +17,7 @@ const paidPlans = [
   },
   {
     name: 'Pro',
-    tier: 'pro' as const,
+    planId: 'plan_bO9TJeJfJFzmS',
     monthlyPrice: 39,
     annualTotal: 390,
     annualMonthly: 32.50,
@@ -30,7 +29,7 @@ const paidPlans = [
   },
   {
     name: 'Agency',
-    tier: 'agency' as const,
+    planId: 'plan_gFnbUqnOEukQk',
     monthlyPrice: 79,
     annualTotal: 790,
     annualMonthly: 65.83,
@@ -38,7 +37,7 @@ const paidPlans = [
     description: 'For agencies managing multiple locations.',
     highlight: false,
     popularBadge: undefined as string | undefined,
-    cta: 'Get started',
+    cta: 'Contact us',
   },
 ]
 
@@ -142,18 +141,21 @@ export function PricingCards() {
                   </>
                 )}
               </div>
-              <a
-                href={getWhopCheckoutUrl(plan.tier, '')}
-                target="_blank"
-                rel="noopener noreferrer"
-                className={`mt-auto w-full text-center py-2.5 rounded-lg text-sm font-semibold transition-colors ${
-                  plan.highlight
-                    ? 'bg-blue-600 text-white hover:bg-blue-700'
-                    : 'border border-gray-300 text-gray-700 hover:bg-gray-50'
-                }`}
+              <div
+                data-whop-checkout-plan-id={plan.planId}
+                data-whop-checkout-theme="light"
+                className="mt-auto"
               >
-                {plan.cta}
-              </a>
+                <button
+                  className={`w-full py-2.5 rounded-lg text-sm font-semibold transition-colors cursor-pointer ${
+                    plan.highlight
+                      ? 'bg-blue-600 text-white hover:bg-blue-700'
+                      : 'border border-gray-300 text-gray-700 hover:bg-gray-50'
+                  }`}
+                >
+                  {plan.cta}
+                </button>
+              </div>
             </div>
           )
         })}
