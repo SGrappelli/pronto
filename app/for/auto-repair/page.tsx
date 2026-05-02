@@ -6,14 +6,7 @@ export const metadata: Metadata = {
     'Free auto repair shop management software with service order tracking, appointment booking, parts inventory and automated client notifications via WhatsApp, Telegram & Email. Zero commission. Self-hosted or cloud.',
   keywords:
     'auto repair shop software, auto repair management software, auto repair shop POS, car repair shop booking software, auto repair CRM, free auto repair software, mechanic shop software, garage management software, auto shop software no commission, self-hosted auto repair software',
-  alternates: {
-    canonical: 'https://trypronto.app/for/auto-repair',
-    languages: {
-      en: 'https://trypronto.app/for/auto-repair',
-      es: 'https://trypronto.app/es/para/autoservicio',
-      'x-default': 'https://trypronto.app/for/auto-repair',
-    },
-  },
+  alternates: { canonical: 'https://trypronto.app/for/auto-repair' },
   openGraph: {
     type: 'website',
     url: 'https://trypronto.app/for/auto-repair',
@@ -157,7 +150,8 @@ nav{position:sticky;top:0;z-index:100;background:rgba(255,255,255,0.96);backdrop
 .nav-right{display:flex;align-items:center;gap:24px}
 .nav-link{font-size:16px;color:#374151;text-decoration:none;font-weight:500}
 .nav-link:hover{color:#111}
-.btn-nav{background:#111;color:#fff;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:500;padding:10px 22px;border-radius:8px;border:none;cursor:pointer;text-decoration:none}
+.btn-nav{background:#111;color:#fff;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:500;padding:10px 22px;border-radius:8px;border:none;cursor:pointer;text-decoration:none;white-space:nowrap}
+.hide-mob{display:inline}
 
 .hero{padding:80px 48px 72px;background:#fff;border-bottom:1px solid #f0f0f0}
 .hero-inner{max-width:860px;margin:0 auto;text-align:center}
@@ -326,7 +320,10 @@ footer{padding:28px 48px;border-top:1px solid #f0f0f0;display:flex;justify-conte
 }
 @media(max-width:640px){
   nav{padding:0 16px;height:56px}
-  .nav-right{gap:12px}
+  .nav-right{gap:8px}
+  .nav-link{font-size:14px}
+  .btn-nav{font-size:13px;padding:8px 14px}
+  .hide-mob{display:none}
   .hero{padding:48px 16px 40px}
   .hero h1{font-size:34px;letter-spacing:-1px}
   .hero-sub{font-size:16px}
@@ -356,9 +353,9 @@ const pageContent = `
 <nav>
   <a href="/" class="nav-brand">Pronto<span>.</span></a>
   <div class="nav-right">
-    <a href="/pricing" class="nav-link">Pricing</a>
-    <a href="/es/para/autoservicio" class="nav-link">ES</a>
+    <a href="/pricing" class="nav-link hide-mob">Pricing</a>
     <a href="/login" class="nav-link">Sign in</a>
+    <a href="/es/para/autoservicio" class="nav-link lang-switcher">ES</a>
     <a href="/register" class="btn-nav">Start free</a>
   </div>
 </nav>
@@ -780,16 +777,6 @@ const pageContent = `
   </div>
 </section>
 
-<section style="background:#f8fafc;border-top:1px solid #f0f0f0;padding:40px 48px;text-align:center">
-  <p style="font-size:13px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:#9ca3af;margin-bottom:16px">Also works great for</p>
-  <div style="display:flex;flex-wrap:wrap;gap:10px;justify-content:center">
-    <a href="/for/cafes" style="font-size:14px;font-weight:500;padding:8px 18px;border-radius:20px;background:#fff;border:1px solid #e2e8f0;color:#111;text-decoration:none">☕ Cafes</a>
-    <a href="/for/dental" style="font-size:14px;font-weight:500;padding:8px 18px;border-radius:20px;background:#fff;border:1px solid #e2e8f0;color:#111;text-decoration:none">🦷 Dental clinics</a>
-    <a href="/for/fitness" style="font-size:14px;font-weight:500;padding:8px 18px;border-radius:20px;background:#fff;border:1px solid #e2e8f0;color:#111;text-decoration:none">🏋️ Fitness clubs</a>
-    <a href="/for" style="font-size:14px;font-weight:500;padding:8px 18px;border-radius:20px;background:#fff;border:1px solid #e2e8f0;color:#111;text-decoration:none">View all →</a>
-  </div>
-</section>
-
 <section class="cta-band">
   <h2>Start managing your auto repair shop for free</h2>
   <p>Cloud setup takes 5 minutes. Self-hosted is one command. Either way &mdash; zero commission, forever.</p>
@@ -817,9 +804,7 @@ const pageContent = `
     <a href="/">Home</a>
     <a href="/pricing">Pricing</a>
     <a href="/for">For businesses</a>
-    <a href="/for/cafes">Cafes</a>
-    <a href="/for/dental">Dental clinics</a>
-    <a href="/for/fitness">Fitness clubs</a>
+    <a href="/for/salons">Salons</a>
     <a href="/terms">Terms</a>
     <a href="/privacy">Privacy</a>
     <a href="/refund">Refund policy</a>
