@@ -5,7 +5,7 @@ import { useState } from 'react'
 const paidPlans = [
   {
     name: 'Starter',
-    planId: 'plan_4qqxuMZ5moAlM',
+    href: 'https://whop.com/pronto-fdee/pronto-starter/',
     monthlyPrice: 19,
     annualTotal: 190,
     annualMonthly: 15.83,
@@ -17,7 +17,7 @@ const paidPlans = [
   },
   {
     name: 'Pro',
-    planId: 'plan_bO9TJeJfJFzmS',
+    href: 'https://whop.com/pronto-fdee/pronto-pro/',
     monthlyPrice: 39,
     annualTotal: 390,
     annualMonthly: 32.50,
@@ -29,7 +29,7 @@ const paidPlans = [
   },
   {
     name: 'Agency',
-    planId: 'plan_gFnbUqnOEukQk',
+    href: 'https://whop.com/pronto-fdee/pronto-agency/',
     monthlyPrice: 79,
     annualTotal: 790,
     annualMonthly: 65.83,
@@ -141,21 +141,18 @@ export function PricingCards() {
                   </>
                 )}
               </div>
-              <div
-                data-whop-checkout-plan-id={plan.planId}
-                data-whop-checkout-theme="light"
-                className="mt-auto"
+              <a
+                href={plan.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={`mt-auto w-full text-center py-2.5 rounded-lg text-sm font-semibold transition-colors ${
+                  plan.highlight
+                    ? 'bg-blue-600 text-white hover:bg-blue-700'
+                    : 'border border-gray-300 text-gray-700 hover:bg-gray-50'
+                }`}
               >
-                <button
-                  className={`w-full py-2.5 rounded-lg text-sm font-semibold transition-colors cursor-pointer ${
-                    plan.highlight
-                      ? 'bg-blue-600 text-white hover:bg-blue-700'
-                      : 'border border-gray-300 text-gray-700 hover:bg-gray-50'
-                  }`}
-                >
-                  {plan.cta}
-                </button>
-              </div>
+                {plan.cta}
+              </a>
             </div>
           )
         })}

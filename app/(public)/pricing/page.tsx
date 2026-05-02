@@ -1,6 +1,5 @@
 import { Metadata } from 'next'
 import { Check, Minus } from 'lucide-react'
-import Script from 'next/script'
 import { PricingCards } from './PricingCards'
 
 export const metadata: Metadata = {
@@ -131,7 +130,6 @@ function FeatureCell({ value }: { value: FeatureValue }) {
 export default function PricingPage() {
   return (
     <div className="py-16 px-4 sm:px-6">
-      <Script src="https://js.whop.com/static/checkout/loader.js" strategy="afterInteractive" />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(pricingJsonLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(pricingFaqJsonLd) }} />
       <div className="max-w-6xl mx-auto">
