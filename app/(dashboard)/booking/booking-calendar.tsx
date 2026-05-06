@@ -202,6 +202,7 @@ export function BookingCalendar({ businessId, slug, timezone, appointments: init
 
   const [saving, setSaving] = useState(false)
   const [selectedAppt, setSelectedAppt] = useState<Appointment | null>(null)
+  const [confirmDelete, setConfirmDelete] = useState(false)
   const [draggedAppt, setDraggedAppt] = useState<Appointment | null>(null)
 
   // day_of_week: 0=Sun, 1=Mon … 6=Sat (JS getDay() convention)
@@ -360,6 +361,7 @@ export function BookingCalendar({ businessId, slug, timezone, appointments: init
     await supabase.from('appointments').delete().eq('id', id)
     setAppointments((prev) => prev.filter((a) => a.id !== id))
     setSelectedAppt(null)
+    setConfirmDelete(false)
     router.refresh()
   }
 
@@ -635,16 +637,35 @@ export function BookingCalendar({ businessId, slug, timezone, appointments: init
                 {t('detail.chargeButton')}
               </Button>
             )}
-            <Button
-              variant="outline"
-              className="w-full mb-2 text-red-500 border-red-200 hover:bg-red-50 hover:text-red-600"
-              onClick={() => {
-                if (confirm('Delete this appointment?')) deleteAppointment(selectedAppt.id)
-              }}
-            >
-              Delete appointment
-            </Button>
-            <Button variant="outline" className="w-full" onClick={() => setSelectedAppt(null)}>{t('detail.close')}</Button>
+            {confirmDelete ? (
+              <div className="rounded-xl border border-red-200 bg-red-50 p-3 mb-2">
+                <p className="text-sm text-red-700 font-medium mb-2">Delete this appointment?</p>
+                <div className="flex gap-2">
+                  <Button
+                    className="flex-1 bg-red-500 hover:bg-red-600 text-white h-8 text-sm"
+                    onClick={() => deleteAppointment(selectedAppt.id)}
+                  >
+                    Delete
+                  </Button>
+                  <Button
+                    variant="outline"
+                    className="flex-1 h-8 text-sm"
+                    onClick={() => setConfirmDelete(false)}
+                  >
+                    Cancel
+                  </Button>
+                </div>
+              </div>
+            ) : (
+              <Button
+                variant="outline"
+                className="w-full mb-2 text-red-500 border-red-200 hover:bg-red-50 hover:text-red-600"
+                onClick={() => setConfirmDelete(true)}
+              >
+                Delete appointment
+              </Button>
+            )}
+            <Button variant="outline" className="w-full" onClick={() => { setSelectedAppt(null); setConfirmDelete(false) }}>{t('detail.close')}</Button>
           </div>
         </div>
       )}
