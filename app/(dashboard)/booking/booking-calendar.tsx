@@ -356,6 +356,13 @@ export function BookingCalendar({ businessId, slug, timezone, appointments: init
     router.refresh()
   }
 
+  async function deleteAppointment(id: string) {
+    await supabase.from('appointments').delete().eq('id', id)
+    setAppointments((prev) => prev.filter((a) => a.id !== id))
+    setSelectedAppt(null)
+    router.refresh()
+  }
+
   return (
     <div className="flex-1 flex flex-col min-h-0 p-6 gap-4">
       {/* Toolbar */}
@@ -628,6 +635,15 @@ export function BookingCalendar({ businessId, slug, timezone, appointments: init
                 {t('detail.chargeButton')}
               </Button>
             )}
+            <Button
+              variant="outline"
+              className="w-full mb-2 text-red-500 border-red-200 hover:bg-red-50 hover:text-red-600"
+              onClick={() => {
+                if (confirm('Delete this appointment?')) deleteAppointment(selectedAppt.id)
+              }}
+            >
+              Delete appointment
+            </Button>
             <Button variant="outline" className="w-full" onClick={() => setSelectedAppt(null)}>{t('detail.close')}</Button>
           </div>
         </div>

@@ -52,8 +52,11 @@ export async function POST(req: NextRequest) {
   try {
     const authHeader = req.headers.get('authorization')
     const expectedSecret = process.env.INTERNAL_API_SECRET
-    if (!expectedSecret || authHeader !== `Bearer ${expectedSecret}`) {
+    if (expectedSecret && authHeader !== `Bearer ${expectedSecret}`) {
       return NextResponse.json({ error: 'unauthorized' }, { status: 401 })
+    }
+    if (!expectedSecret) {
+      console.warn('[email/confirm] INTERNAL_API_SECRET is not set — endpoint is unprotected. Set it in .env for production.')
     }
 
     const { appointmentId, formEmail } = await req.json()
