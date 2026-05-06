@@ -141,9 +141,8 @@ const breadcrumbSchema = {
   '@type': 'BreadcrumbList',
   itemListElement: [
     { '@type': 'ListItem', position: 1, name: 'Pronto', item: 'https://trypronto.app' },
-    { '@type': 'ListItem', position: 2, name: 'Inicio', item: 'https://trypronto.app/es/' },
-    { '@type': 'ListItem', position: 3, name: 'Para negocios', item: 'https://trypronto.app/es/para' },
-    { '@type': 'ListItem', position: 4, name: 'Talleres mecánicos', item: 'https://trypronto.app/es/para/autoservicio' },
+    { '@type': 'ListItem', position: 2, name: 'Para negocios', item: 'https://trypronto.app/es/para' },
+    { '@type': 'ListItem', position: 3, name: 'Talleres mecánicos', item: 'https://trypronto.app/es/para/autoservicio' },
   ],
 }
 
@@ -370,7 +369,6 @@ const pageContent = `
 
 <div class="breadcrumb">
   <a href="/">Pronto</a><span>&rsaquo;</span>
-  <a href="/es/">Inicio</a><span>&rsaquo;</span>
   <a href="/es/para">Para negocios</a><span>&rsaquo;</span>
   Talleres mec&aacute;nicos
 </div>
@@ -822,9 +820,7 @@ const pageContent = `
     <a href="/es/">Inicio</a>
     <a href="/es/precios">Precios</a>
     <a href="/es/para">Para negocios</a>
-    <a href="/es/para/cafeteria">Cafeter&iacute;as</a>
-    <a href="/es/para/dental">Cl&iacute;nicas dentales</a>
-    <a href="/es/para/gimnasio">Gimnasios</a>
+    <a href="/es/para/autoservicio">Talleres</a>
     <a href="/terms">T&eacute;rminos</a>
     <a href="/privacy">Privacidad</a>
     <a href="/refund">Reembolsos</a>

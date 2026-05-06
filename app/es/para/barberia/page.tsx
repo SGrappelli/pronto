@@ -141,9 +141,8 @@ const breadcrumbSchema = {
   '@type': 'BreadcrumbList',
   itemListElement: [
     { '@type': 'ListItem', position: 1, name: 'Pronto', item: 'https://trypronto.app' },
-    { '@type': 'ListItem', position: 2, name: 'Inicio', item: 'https://trypronto.app/es/' },
-    { '@type': 'ListItem', position: 3, name: 'Para negocios', item: 'https://trypronto.app/es/para' },
-    { '@type': 'ListItem', position: 4, name: 'Barberías', item: 'https://trypronto.app/es/para/barberia' },
+    { '@type': 'ListItem', position: 2, name: 'Para negocios', item: 'https://trypronto.app/es/para' },
+    { '@type': 'ListItem', position: 3, name: 'Barberías', item: 'https://trypronto.app/es/para/barberia' },
   ],
 }
 
@@ -370,7 +369,6 @@ const pageContent = `
 
 <div class="breadcrumb">
   <a href="/">Pronto</a><span>&rsaquo;</span>
-  <a href="/es/">Inicio</a><span>&rsaquo;</span>
   <a href="/es/para">Para negocios</a><span>&rsaquo;</span>
   Barber&iacute;as
 </div>
@@ -851,9 +849,7 @@ De cualquier forma &mdash; sin comisiones por corte, para siempre.</p>
     <a href="/es/">Inicio</a>
     <a href="/es/precios">Precios</a>
     <a href="/es/para">Para negocios</a>
-    <a href="/es/para/salones">Salones</a>
-    <a href="/es/para/tatuajes">Estudios de tatuajes</a>
-    <a href="/es/para/gimnasio">Gimnasios</a>
+    <a href="/es/para/barberia">Barber&iacute;as</a>
     <a href="/terms">T&eacute;rminos</a>
     <a href="/privacy">Privacidad</a>
     <a href="/refund">Reembolsos</a>
