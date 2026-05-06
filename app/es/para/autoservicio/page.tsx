@@ -821,6 +821,7 @@ const pageContent = `
     <a href="/es/precios">Precios</a>
     <a href="/es/para">Para negocios</a>
     <a href="/es/para/autoservicio">Talleres</a>
+    <a href="/es/para/clinica-dental">Cl&iacute;nicas Dentales</a>
     <a href="/terms">T&eacute;rminos</a>
     <a href="/privacy">Privacidad</a>
     <a href="/refund">Reembolsos</a>

@@ -404,6 +404,8 @@ export default function EsPreciosPage() {
           <Link href="/es/precios">Precios</Link>
           <Link href="/es/para">Para negocios</Link>
           <Link href="/es/para/salones">Salones</Link>
+          <Link href="/es/para/barberia">Barberías</Link>
+          <Link href="/es/para/clinica-dental">Clínicas Dentales</Link>
           <Link href="/terms">Términos</Link>
           <Link href="/privacy">Privacidad</Link>
           <Link href="/refund">Reembolsos</Link>
