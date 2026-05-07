@@ -2,7 +2,8 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import { Bricolage_Grotesque, DM_Sans } from 'next/font/google'
 import styles from './landing.module.css'
-import { AnalyticsListener } from '@/components/analytics-listener'
+import { TrackedLink } from '@/components/tracked-link'
+import { TrackedAnchor } from '@/components/tracked-anchor'
 
 const bricolage = Bricolage_Grotesque({
   subsets: ['latin'],
@@ -129,7 +130,6 @@ const organizationJsonLd = {
 export default function RootPage() {
   return (
     <div className={`${styles.page} ${bricolage.variable} ${dmSans.variable}`}>
-      <AnalyticsListener page="/" />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(softwareAppJsonLd) }}
@@ -148,18 +148,18 @@ export default function RootPage() {
           Pronto<span>.</span>
         </Link>
         <div className={styles.navRight}>
-          <Link href="/pricing" className={`${styles.navLink} ${styles.hideMob}`}>
+          <TrackedLink href="/pricing" className={`${styles.navLink} ${styles.hideMob}`} eventName="pricing_click" eventParams={{ source: '/' }}>
             Pricing
-          </Link>
-          <Link href="/login" className={styles.navLink}>
+          </TrackedLink>
+          <TrackedLink href="/login" className={styles.navLink} eventName="login_click" eventParams={{ label: 'nav_signin' }}>
             Sign in
-          </Link>
-          <Link href="/es/" className={`${styles.navLink} lang-switcher`}>
+          </TrackedLink>
+          <TrackedLink href="/es/" className={`${styles.navLink} lang-switcher`} eventName="language_switch" eventParams={{ to: 'es' }}>
             ES
-          </Link>
-          <Link href="/register" className={styles.btnNav}>
+          </TrackedLink>
+          <TrackedLink href="/register" className={styles.btnNav} eventName="cta_click" eventParams={{ label: 'start_free', page: '/' }}>
             Start free
-          </Link>
+          </TrackedLink>
         </div>
       </nav>
 
@@ -397,15 +397,17 @@ export default function RootPage() {
                 <span className={styles.codePrefix}>$</span>docker compose up -d
               </div>
               <br />
-              <a
+              <TrackedAnchor
                 href="https://github.com/SGrappelli/pronto"
                 className={styles.btnOutline}
                 style={{ marginTop: '16px' }}
                 target="_blank"
                 rel="noopener noreferrer"
+                eventName="github_click"
+                eventParams={{ label: 'cta_button', page: '/' }}
               >
                 View on GitHub →
-              </a>
+              </TrackedAnchor>
               <Link href="/docs" className={styles.btnOutline} style={{ marginTop: '16px' }}>
                 Documentation →
               </Link>
@@ -447,9 +449,9 @@ export default function RootPage() {
                   </div>
                 </div>
               </div>
-              <Link href="/register" className={styles.btnPrimary}>
+              <TrackedLink href="/register" className={styles.btnPrimary} eventName="cta_click" eventParams={{ label: 'start_free', page: '/' }}>
                 Start free — no credit card
-              </Link>
+              </TrackedLink>
             </div>
           </div>
 
@@ -593,18 +595,18 @@ export default function RootPage() {
         </div>
         <div className={styles.footerCopy}>© 2026 Pronto. All rights reserved.</div>
         <div className={styles.footerSocial}>
-          <a href="https://x.com/prontopos" target="_blank" rel="noopener noreferrer" aria-label="Pronto on X">
+          <TrackedAnchor href="https://x.com/prontopos" target="_blank" rel="noopener noreferrer" aria-label="Pronto on X" eventName="social_click" eventParams={{ platform: 'twitter' }}>
             <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.76l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
-          </a>
-          <a href="https://www.linkedin.com/in/konstantinumnov/" target="_blank" rel="noopener noreferrer" aria-label="Pronto on LinkedIn">
+          </TrackedAnchor>
+          <TrackedAnchor href="https://www.linkedin.com/in/konstantinumnov/" target="_blank" rel="noopener noreferrer" aria-label="Pronto on LinkedIn" eventName="social_click" eventParams={{ platform: 'linkedin' }}>
             <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
-          </a>
-          <a href="https://www.youtube.com/@trypronto" target="_blank" rel="noopener noreferrer" aria-label="Pronto on YouTube">
+          </TrackedAnchor>
+          <TrackedAnchor href="https://www.youtube.com/@trypronto" target="_blank" rel="noopener noreferrer" aria-label="Pronto on YouTube" eventName="social_click" eventParams={{ platform: 'youtube' }}>
             <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
-          </a>
-          <a href="https://github.com/SGrappelli/pronto" target="_blank" rel="noopener noreferrer" aria-label="Pronto on GitHub">
+          </TrackedAnchor>
+          <TrackedAnchor href="https://github.com/SGrappelli/pronto" target="_blank" rel="noopener noreferrer" aria-label="Pronto on GitHub" eventName="github_click" eventParams={{ label: 'footer_link', page: '/' }}>
             <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
-          </a>
+          </TrackedAnchor>
         </div>
         <div className={styles.footerLinks}>
           <Link href="/">Home</Link>
@@ -614,13 +616,9 @@ export default function RootPage() {
           <Link href="/terms">Terms</Link>
           <Link href="/privacy">Privacy</Link>
           <Link href="/refund">Refund policy</Link>
-          <a
-            href="https://github.com/SGrappelli/pronto"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
+          <TrackedAnchor href="https://github.com/SGrappelli/pronto" target="_blank" rel="noopener noreferrer" eventName="github_click" eventParams={{ label: 'footer_link', page: '/' }}>
             GitHub
-          </a>
+          </TrackedAnchor>
         </div>
       </footer>
     </div>
