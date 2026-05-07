@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import { AnalyticsListener } from '@/components/analytics-listener'
 
 export const metadata: Metadata = {
   title: 'Software Gratis para Barberías — Reservas, POS y CRM | Pronto',
@@ -862,6 +863,7 @@ De cualquier forma &mdash; sin comisiones por corte, para siempre.</p>
 export default function EsParaBarberiaPage() {
   return (
     <>
+      <AnalyticsListener page="/es/para/barberia" />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(softwareAppSchema) }}

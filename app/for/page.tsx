@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import { AnalyticsListener } from '@/components/analytics-listener'
 
 export const metadata: Metadata = {
   title: 'Pronto for Service Businesses — POS, Booking & CRM',
@@ -340,6 +341,7 @@ const pageContent = `
 export default function ForPage() {
   return (
     <>
+      <AnalyticsListener page="/for" />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}

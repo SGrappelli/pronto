@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import { AnalyticsListener } from '@/components/analytics-listener'
 
 export const metadata: Metadata = {
   title: 'Free Barbershop Management Software — Booking, POS & CRM | Pronto',
@@ -816,6 +817,7 @@ const pageContent = `
 export default function BarbershopsPage() {
   return (
     <>
+      <AnalyticsListener page="/for/barbershops" />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(softwareAppSchema) }}

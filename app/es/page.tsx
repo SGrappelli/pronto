@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import { Bricolage_Grotesque, DM_Sans } from 'next/font/google'
 import styles from '../landing.module.css'
+import { AnalyticsListener } from '@/components/analytics-listener'
 
 const bricolage = Bricolage_Grotesque({
   subsets: ['latin'],
@@ -145,6 +146,7 @@ const organizationJsonLd = {
 export default function EsPage() {
   return (
     <div className={`${styles.page} ${bricolage.variable} ${dmSans.variable}`}>
+      <AnalyticsListener page="/es" />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(softwareAppJsonLd) }}

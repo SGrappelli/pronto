@@ -4,6 +4,7 @@ import { Bricolage_Grotesque, DM_Sans } from 'next/font/google'
 import { Check, Minus } from 'lucide-react'
 import { PricingCards } from './PricingCards'
 import styles from '../../(public)/public-layout.module.css'
+import { AnalyticsListener } from '@/components/analytics-listener'
 
 const bricolage = Bricolage_Grotesque({
   subsets: ['latin'],
@@ -187,6 +188,7 @@ function FeatureCell({ value }: { value: FeatureValue }) {
 export default function EsPreciosPage() {
   return (
     <div className={`${styles.page} ${bricolage.variable} ${dmSans.variable}`}>
+      <AnalyticsListener page="/es/precios" />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
 

@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import { AnalyticsListener } from '@/components/analytics-listener'
 
 export const metadata: Metadata = {
   title: 'Software Gratis para Clínicas Dentales — Pronto',
@@ -653,6 +654,7 @@ const pageContent = `
 export default function EsParaClinicaDentalPage() {
   return (
     <>
+      <AnalyticsListener page="/es/para/clinica-dental" />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(softwareAppSchema) }}
