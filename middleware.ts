@@ -43,6 +43,14 @@ export async function middleware(request: NextRequest) {
   const rootDomain = process.env.NEXT_PUBLIC_ROOT_DOMAIN ?? 'trypronto.app'
   const saasMode = process.env.NEXT_PUBLIC_DEPLOYMENT_MODE === 'saas'
 
+  // ── www → non-www redirect (301) ─────────────────────────────────────────
+  // Prevents Google from indexing www.trypronto.app/* as a separate page.
+  if (saasMode && hostname.startsWith('www.')) {
+    const redirectUrl = request.nextUrl.clone()
+    redirectUrl.host = hostname.slice(4) // remove 'www.'
+    return NextResponse.redirect(redirectUrl, { status: 301 })
+  }
+
   // ── Subdomain extraction ────────────────────────────────────────────────────
   let subdomain: string | null = null
 
