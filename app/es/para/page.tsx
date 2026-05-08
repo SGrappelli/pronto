@@ -51,7 +51,7 @@ const itemListSchema = {
     { '@type': 'ListItem', position: 1, name: 'Salones de belleza', url: 'https://trypronto.app/es/para/salones' },
     { '@type': 'ListItem', position: 2, name: 'Barberías', url: 'https://trypronto.app/es/para/barberia' },
     { '@type': 'ListItem', position: 3, name: 'Talleres de autos', url: 'https://trypronto.app/es/para/autoservicio' },
-    { '@type': 'ListItem', position: 4, name: 'Clínicas dentales', url: 'https://trypronto.app/es/para/dental' },
+    { '@type': 'ListItem', position: 4, name: 'Clínicas dentales', url: 'https://trypronto.app/es/para/clinica-dental' },
     { '@type': 'ListItem', position: 5, name: 'Gimnasios', url: 'https://trypronto.app/es/para/gimnasio' },
     { '@type': 'ListItem', position: 6, name: 'Cafeterías', url: 'https://trypronto.app/es/para/cafeteria' },
     { '@type': 'ListItem', position: 7, name: 'Masajes y spa', url: 'https://trypronto.app/es/para/spa' },
@@ -223,7 +223,7 @@ const pageContent = `
         <div class="biz-card-desc">&Oacute;rdenes de servicio, inventario de repuestos, seguimiento de trabajos y notificaciones al cliente.</div>
       </a>
 
-      <a href="/es/para/dental" class="biz-card">
+      <a href="/es/para/clinica-dental" class="biz-card">
         <span class="biz-card-arrow">&rarr;</span>
         <span class="biz-card-emoji">&#x1F9B7;</span>
         <div class="biz-card-title">Cl&iacute;nicas dentales</div>
