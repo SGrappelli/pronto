@@ -642,6 +642,7 @@ const pageContent = `
       <a href="/es/para/barberia">Barber&iacute;as</a>
       <a href="/es/para/gimnasio">Gimnasios</a>
       <a href="/es/para/spa">Masajes y spa</a>
+      <a href="/es/para/cafeteria">Cafeter&iacute;as</a>
       <a href="/terms">T&eacute;rminos</a>
       <a href="/privacy">Privacidad</a>
       <a href="/refund">Reembolsos</a>
