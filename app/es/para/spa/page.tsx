@@ -1,34 +1,34 @@
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: 'Software Gratis para Gimnasios y Centros Fitness — Pronto',
+  title: 'Software Gratis para Centros de Masajes y Spa — Pronto',
   description:
-    'Software gratuito para gimnasios con reservas de clases, CRM de socios, POS, inventario y recordatorios automáticos por WhatsApp y Telegram. Sin comisiones',
+    'Software gratuito para centros de masajes y spa: reservas online, CRM de clientes, POS y recordatorios automáticos por WhatsApp y Telegram. Sin comisiones.',
   keywords:
-    'software para gimnasios gratis, gestión de gimnasio, reservas de clases fitness, software centro deportivo, CRM socios gimnasio, recordatorios WhatsApp gimnasio, software fitness gratis, gestión membresías gimnasio, sistema POS gimnasio, alternativa Mindbody gratis',
+    'software para spa gratis, gestión centro masajes, reservas spa online, software centro bienestar, CRM clientes spa, recordatorios WhatsApp spa, software masajes gratis, gestión terapeutas, sistema POS spa, alternativa Mindbody gratis',
   alternates: {
-    canonical: 'https://trypronto.app/es/para/gimnasio',
+    canonical: 'https://trypronto.app/es/para/spa',
     languages: {
-      es: 'https://trypronto.app/es/para/gimnasio',
-      en: 'https://trypronto.app/for/fitness',
-      'x-default': 'https://trypronto.app/for/fitness',
+      es: 'https://trypronto.app/es/para/spa',
+      en: 'https://trypronto.app/for/spa',
+      'x-default': 'https://trypronto.app/for/spa',
     },
   },
   openGraph: {
     type: 'website',
-    url: 'https://trypronto.app/es/para/gimnasio',
-    title: 'Software Gratis para Gimnasios y Centros Fitness — Pronto',
+    url: 'https://trypronto.app/es/para/spa',
+    title: 'Software Gratis para Centros de Masajes y Spa — Pronto',
     description:
-      'Gestiona tu gimnasio sin comisiones. Reservas de clases, CRM de socios, POS y recordatorios automáticos por WhatsApp, Telegram y Email. Instalación en un comando.',
+      'Gestiona tu spa o centro de masajes sin comisiones. Reservas online, CRM de clientes, POS y recordatorios automáticos por WhatsApp, Telegram y Email. Instalación en un comando.',
     images: [{ url: 'https://trypronto.app/og-image-es.png' }],
     locale: 'es_ES',
     siteName: 'Pronto',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Software Gratis para Gimnasios — Pronto',
+    title: 'Software Gratis para Centros de Masajes y Spa — Pronto',
     description:
-      'Reservas de clases, CRM de socios y recordatorios automáticos para tu gimnasio. Sin comisiones, sin vendor lock-in. Instala en un comando con Docker.',
+      'Reservas online, CRM de clientes y recordatorios automáticos para tu spa o centro de masajes. Sin comisiones, sin vendor lock-in. Instala en un comando con Docker.',
     images: ['https://trypronto.app/og-image-es.png'],
   },
 }
@@ -37,9 +37,9 @@ const softwareAppSchema = {
   '@context': 'https://schema.org',
   '@type': 'SoftwareApplication',
   name: 'Pronto',
-  url: 'https://trypronto.app/es/para/gimnasio',
+  url: 'https://trypronto.app/es/para/spa',
   applicationCategory: 'BusinessApplication',
-  applicationSubCategory: 'Gym Management Software',
+  applicationSubCategory: 'Spa Management Software',
   operatingSystem: 'Web, Android, iOS',
   offers: {
     '@type': 'Offer',
@@ -47,21 +47,21 @@ const softwareAppSchema = {
     priceCurrency: 'USD',
   },
   featureList: [
-    'Reservas de clases sin registro de cliente',
-    'CRM de socios con historial de visitas',
+    'Reservas de tratamientos sin registro de cliente',
+    'CRM de clientes con historial de tratamientos y preferencias',
     'Caja registradora (POS) con múltiples métodos de pago',
     'Recordatorios automáticos por WhatsApp y Telegram',
-    'Control de inventario de tienda deportiva',
-    'Notificaciones de reactivación de socios inactivos',
+    'Control de inventario de aceites y productos cosméticos',
+    'Notificaciones de reactivación de clientes inactivos',
     'Progressive Web App con modo offline',
     'Instalación con Docker en un solo comando',
     'Multitenant SaaS con subdominio propio',
     'Código abierto bajo licencia MIT',
   ],
   description:
-    'Software gratuito de gestión para gimnasios y centros fitness. Reservas de clases, CRM de socios, POS y recordatorios automáticos por WhatsApp, Telegram y Email. Sin comisiones.',
+    'Software gratuito de gestión para centros de masajes y spa. Reservas online, CRM de clientes, POS y recordatorios automáticos por WhatsApp, Telegram y Email. Sin comisiones.',
   keywords:
-    'software gimnasio, gestión fitness, reservas clases, CRM socios, Mindbody alternativa, Glofox alternativa, TeamUp alternativa, software deportivo gratis',
+    'software spa, gestión masajes, reservas tratamientos, CRM clientes spa, Mindbody alternativa, software bienestar gratis, gestión terapeutas, centro holístico software',
   inLanguage: 'es',
   isAccessibleForFree: true,
   license: 'https://opensource.org/licenses/MIT',
@@ -79,47 +79,47 @@ const faqSchema = {
   mainEntity: [
     {
       '@type': 'Question',
-      name: '¿Cuál es el mejor software gratuito para gimnasios?',
+      name: '¿Cuál es el mejor software gratuito para centros de masajes y spa?',
       acceptedAnswer: {
         '@type': 'Answer',
-        text: 'Pronto ofrece un plan gratuito completo para gimnasios con POS, CRM de socios, reservas de clases, control de inventario y notificaciones por Email — sin límite de tiempo y sin tarjeta de crédito. El plan gratuito incluye 1 entrenador y hasta 100 socios.',
+        text: 'Pronto ofrece un plan gratuito completo para spas y centros de masajes con POS, CRM de clientes, reservas online, control de inventario y notificaciones por Email — sin límite de tiempo y sin tarjeta de crédito. El plan gratuito incluye 1 terapeuta y hasta 100 clientes.',
       },
     },
     {
       '@type': 'Question',
-      name: '¿Puedo gestionar las reservas de clases grupales con Pronto?',
+      name: '¿Puedo gestionar las reservas de masajes y tratamientos con Pronto?',
       acceptedAnswer: {
         '@type': 'Answer',
-        text: 'Sí. Los socios reservan clases directamente desde tu página pública sin necesidad de crear una cuenta. Solo introducen su nombre y teléfono. Pronto confirma la reserva automáticamente y envía recordatorios 24 horas y 1 hora antes de la clase por WhatsApp, Telegram o Email.',
+        text: 'Sí. Los clientes reservan tratamientos directamente desde tu página pública sin necesidad de crear una cuenta. Solo introducen su nombre y teléfono. Pronto confirma la reserva automáticamente y envía recordatorios 24 horas y 1 hora antes de la cita por WhatsApp, Telegram o Email.',
       },
     },
     {
       '@type': 'Question',
-      name: '¿Pronto cobra comisión por las reservas de mis socios?',
+      name: '¿Pronto cobra comisión por las reservas de mis clientes?',
       acceptedAnswer: {
         '@type': 'Answer',
-        text: 'No. Pronto no cobra ninguna comisión sobre las reservas ni sobre los pagos. Tus socios reservan directamente contigo y tú recibes el 100% de cada transacción. No hay plataforma intermediaria.',
+        text: 'No. Pronto no cobra ninguna comisión sobre las reservas ni sobre los pagos. Tus clientes reservan directamente contigo y tú recibes el 100% de cada transacción. No hay plataforma intermediaria.',
       },
     },
     {
       '@type': 'Question',
-      name: '¿Funciona con WhatsApp para enviar recordatorios a los socios?',
+      name: '¿Funciona con WhatsApp para enviar recordatorios a los clientes del spa?',
       acceptedAnswer: {
         '@type': 'Answer',
-        text: 'Sí. Pronto envía recordatorios automáticos por WhatsApp, Telegram, Viber y Email. Los mensajes incluyen: confirmación de reserva, recordatorio 24 horas antes, recordatorio 1 hora antes de la clase, mensaje de agradecimiento y recordatorio de reactivación para socios inactivos.',
+        text: 'Sí. Pronto envía recordatorios automáticos por WhatsApp, Telegram, Viber y Email. Los mensajes incluyen: confirmación de reserva, recordatorio 24 horas antes, recordatorio 1 hora antes del tratamiento, mensaje de agradecimiento y recordatorio de reactivación para clientes inactivos.',
       },
     },
     {
       '@type': 'Question',
-      name: '¿Puedo llevar el inventario de suplementos y productos deportivos?',
+      name: '¿Puedo llevar el inventario de aceites, cosméticos y productos del spa?',
       acceptedAnswer: {
         '@type': 'Answer',
-        text: 'Sí. El módulo de inventario permite registrar suplementos, ropa y accesorios deportivos con cantidades mínimas configurables. Cuando el stock de un producto llega al mínimo, Pronto envía una alerta automática para que puedas reponer a tiempo.',
+        text: 'Sí. El módulo de inventario permite registrar aceites esenciales, cosméticos, toallas y cualquier producto del spa con cantidades mínimas configurables. Cuando el stock de un producto llega al mínimo, Pronto envía una alerta automática para que puedas reponer a tiempo.',
       },
     },
     {
       '@type': 'Question',
-      name: '¿Tiene aplicación móvil para el gimnasio?',
+      name: '¿Tiene aplicación móvil para el spa?',
       acceptedAnswer: {
         '@type': 'Answer',
         text: 'Pronto es una Progressive Web App (PWA) que se instala en la pantalla de inicio de cualquier móvil sin necesidad de App Store ni Google Play. Funciona en Android e iOS y permite gestionar reservas y cobros incluso sin conexión a internet.',
@@ -130,15 +130,15 @@ const faqSchema = {
       name: '¿Cómo instalo Pronto en mi propio servidor?',
       acceptedAnswer: {
         '@type': 'Answer',
-        text: 'Necesitas Docker en cualquier servidor Linux, Windows o macOS con al menos 1 GB de RAM. Ejecuta docker compose up -d y el sistema de gestión de gimnasios arranca automáticamente. No se requieren conocimientos de DevOps. Consulta la documentación en GitHub para instrucciones paso a paso.',
+        text: 'Necesitas Docker en cualquier servidor Linux, Windows o macOS con al menos 1 GB de RAM. Ejecuta docker compose up -d y el sistema de gestión del spa arranca automáticamente. No se requieren conocimientos de DevOps. Consulta la documentación en GitHub para instrucciones paso a paso.',
       },
     },
     {
       '@type': 'Question',
-      name: '¿Cuántos entrenadores o empleados puedo añadir?',
+      name: '¿Cuántos terapeutas o empleados puedo añadir?',
       acceptedAnswer: {
         '@type': 'Answer',
-        text: 'El plan gratuito incluye 1 entrenador. El plan Starter permite 3 entrenadores, el plan Pro hasta 15 y el plan Agency admite múltiples ubicaciones con entrenadores ilimitados. Cada entrenador tiene su propio acceso y puede gestionar su agenda de clases de forma independiente.',
+        text: 'El plan gratuito incluye 1 terapeuta. El plan Starter permite 3 terapeutas, el plan Pro hasta 15 y el plan Agency admite múltiples ubicaciones con terapeutas ilimitados. Cada terapeuta tiene su propio acceso y puede gestionar su agenda de tratamientos de forma independiente.',
       },
     },
   ],
@@ -150,7 +150,7 @@ const breadcrumbSchema = {
   itemListElement: [
     { '@type': 'ListItem', position: 1, name: 'Inicio', item: 'https://trypronto.app/es/' },
     { '@type': 'ListItem', position: 2, name: 'Para negocios', item: 'https://trypronto.app/es/para' },
-    { '@type': 'ListItem', position: 3, name: 'Gimnasios y centros fitness', item: 'https://trypronto.app/es/para/gimnasio' },
+    { '@type': 'ListItem', position: 3, name: 'Centros de masajes y spa', item: 'https://trypronto.app/es/para/spa' },
   ],
 }
 
@@ -370,7 +370,7 @@ const pageContent = `
 <div class="breadcrumb">
   <a href="/es/">Inicio</a><span>&rsaquo;</span>
   <a href="/es/para">Para negocios</a><span>&rsaquo;</span>
-  Gimnasios y centros fitness
+  Centros de masajes y spa
 </div>
 
 <main>
@@ -379,11 +379,11 @@ const pageContent = `
   <div class="hero-inner">
     <div class="hero-eyebrow">
       <span class="hero-eyebrow-dot"></span>
-      Software de gesti&oacute;n para gimnasios
+      Software de gesti&oacute;n para centros de masajes y spa
     </div>
-    <h1>Gestiona tu gimnasio gratis. Sin comisiones.</h1>
-    <p class="hero-sub">Pronto reemplaza las hojas de c&aacute;lculo y las apps dispersas. Reservas de clases, CRM de socios, caja registradora, control de inventario y recordatorios autom&aacute;ticos por WhatsApp, Telegram y Email &mdash; todo en una sola herramienta que tus socios encuentran sin registrarse en ninguna plataforma.</p>
-    <p class="hero-platforms">La mayor&iacute;a de plataformas cobran entre un <strong>20&ndash;30%</strong> por cada clase de tus propios socios. Pronto cobra <strong>$0</strong>.</p>
+    <h1>Gestiona tu spa o centro de masajes gratis. Sin comisiones.</h1>
+    <p class="hero-sub">Pronto reemplaza la agenda en papel y los grupos de WhatsApp. Reservas de tratamientos, CRM de clientes con historial, caja registradora, control de inventario y recordatorios autom&aacute;ticos por WhatsApp, Telegram y Email &mdash; todo en una sola herramienta que tus clientes encuentran sin registrarse en ninguna plataforma.</p>
+    <p class="hero-platforms">La mayor&iacute;a de plataformas cobran entre un <strong>15&ndash;30%</strong> por cada cita de tus propios clientes. Pronto cobra <strong>$0</strong>.</p>
     <div class="hero-ctas">
       <a href="/register" class="btn-primary">Empieza gratis</a>
       <a href="https://github.com/SGrappelli/pronto" class="btn-outline">Ver en GitHub &rarr;</a>
@@ -412,8 +412,8 @@ const pageContent = `
 <section class="sec sec-warm">
   <div class="cards-wrap">
     <div class="problem-banner">
-      <h3>La trampa del software para gimnasios de la que nadie habla</h3>
-      <p>Has construido una base de socios fiel durante a&ntilde;os. Entonces una plataforma de reservas exige una <strong>comisi&oacute;n del 20&ndash;30%</strong> por cada clase &mdash; de socios que ya son tuyos. Cancela y tu historial de reservas, contactos de socios y registros de asistencia desaparecen para siempre.</p>
+      <h3>La trampa del software para spas de la que nadie habla</h3>
+      <p>Has construido una clientela fiel durante a&ntilde;os. Entonces una plataforma de reservas exige una <strong>comisi&oacute;n del 15&ndash;30%</strong> por cada tratamiento &mdash; de clientes que ya son tuyos. Cancela y tu historial de reservas, fichas de clientes y preferencias de tratamientos desaparecen para siempre.</p>
     </div>
   </div>
   <div style="height:32px"></div>
@@ -425,37 +425,37 @@ const pageContent = `
     <div class="pain-grid">
       <div class="pain-card">
         <div class="pain-from-label">Problema</div>
-        <div class="pain-from-text">Excel para llevar socios</div>
+        <div class="pain-from-text">Agenda en papel o grupos de WhatsApp para gestionar citas</div>
         <div class="pain-arrow">&darr;</div>
-        <div class="pain-to">CRM + POS integrados en una sola pantalla</div>
+        <div class="pain-to">CRM + agenda digital integrados en una sola pantalla</div>
       </div>
       <div class="pain-card">
         <div class="pain-from-label">Problema</div>
-        <div class="pain-from-text">Llamar a cada socio para recordarle la clase</div>
+        <div class="pain-from-text">Llamar a cada cliente para recordarle el tratamiento</div>
         <div class="pain-arrow">&darr;</div>
         <div class="pain-to">Recordatorios autom&aacute;ticos por WhatsApp y Telegram</div>
       </div>
       <div class="pain-card">
         <div class="pain-from-label">Problema</div>
-        <div class="pain-from-text">La plataforma cobra comisi&oacute;n por tus propios socios</div>
+        <div class="pain-from-text">La plataforma cobra comisi&oacute;n por tus propios clientes</div>
         <div class="pain-arrow">&darr;</div>
         <div class="pain-to">Reservas directas sin comisi&oacute;n &mdash; 0%</div>
       </div>
       <div class="pain-card">
         <div class="pain-from-label">Problema</div>
-        <div class="pain-from-text">Software complejo que nadie aprende</div>
+        <div class="pain-from-text">Sin historial de tratamientos ni preferencias por cliente</div>
         <div class="pain-arrow">&darr;</div>
-        <div class="pain-to">Interfaz que cualquier recepcionista domina en 30 minutos</div>
+        <div class="pain-to">Ficha completa: tratamientos, alergias, notas y preferencias</div>
       </div>
       <div class="pain-card">
         <div class="pain-from-label">Problema</div>
-        <div class="pain-from-text">Sin historial de asistencia</div>
+        <div class="pain-from-text">Gestionar varias terapeutas sin orden</div>
         <div class="pain-arrow">&darr;</div>
-        <div class="pain-to">Historial completo de visitas y clases por socio</div>
+        <div class="pain-to">Vista de agenda por terapeuta con disponibilidad en tiempo real</div>
       </div>
       <div class="pain-card">
         <div class="pain-from-label">Problema</div>
-        <div class="pain-from-text">Inventario de tienda deportiva en papel</div>
+        <div class="pain-from-text">Inventario de aceites y cosm&eacute;ticos en papel</div>
         <div class="pain-arrow">&darr;</div>
         <div class="pain-to">Alertas autom&aacute;ticas cuando el stock llega al m&iacute;nimo</div>
       </div>
@@ -465,39 +465,39 @@ const pageContent = `
 
 <section class="sec sec-white">
   <div class="sec-head">
-    <h2>Todo lo que necesita tu gimnasio</h2>
-    <p>Dise&ntilde;ado para quien gestiona el gimnasio, no para equipos de IT enterprise.</p>
+    <h2>Todo lo que necesita tu spa</h2>
+    <p>Dise&ntilde;ado para quien gestiona el centro, no para equipos de IT enterprise.</p>
   </div>
   <div class="cards-wrap">
     <div class="feat-grid">
       <div class="feat-card">
         <div class="feat-card-icon">&#x1F4C5;</div>
-        <h4>Reservas de clases</h4>
-        <p>Los socios reservan clases directamente desde tu p&aacute;gina p&uacute;blica &mdash; sin crear cuenta en ninguna plataforma. Solo nombre y tel&eacute;fono.</p>
+        <h4>Reservas de tratamientos</h4>
+        <p>Los clientes reservan masajes y tratamientos directamente desde tu p&aacute;gina p&uacute;blica &mdash; sin crear cuenta en ninguna plataforma. Solo nombre y tel&eacute;fono.</p>
         <div class="feat-detail">Protecci&oacute;n de capacidad a nivel de base de datos &mdash; imposible hacer overbooking</div>
       </div>
       <div class="feat-card">
         <div class="feat-card-icon">&#x1F464;</div>
-        <h4>CRM de socios</h4>
-        <p>Ficha completa de cada socio: historial de clases, notas, etiquetas y datos de contacto. Busca cualquier socio en menos de un segundo.</p>
-        <div class="feat-detail">Busca en toda tu base de socios en menos de 1 segundo</div>
+        <h4>CRM de clientes</h4>
+        <p>Ficha completa de cada cliente: historial de tratamientos, alergias, preferencias, notas y datos de contacto. Busca cualquier cliente en menos de un segundo.</p>
+        <div class="feat-detail">Busca en toda tu base de clientes en menos de 1 segundo</div>
       </div>
       <div class="feat-card">
         <div class="feat-card-icon">&#x1F4B3;</div>
         <h4>Caja registradora (POS)</h4>
-        <p>Cobra membres&iacute;as, sesiones sueltas y productos de tu tienda deportiva. Acepta m&uacute;ltiples m&eacute;todos de pago y genera recibos al instante.</p>
+        <p>Cobra tratamientos, bonos y productos de cuidado personal. Acepta m&uacute;ltiples m&eacute;todos de pago y genera recibos al instante.</p>
         <div class="feat-detail">Funciona completamente offline &mdash; sin internet en el cobro</div>
       </div>
       <div class="feat-card">
         <div class="feat-card-icon">&#x1F514;</div>
         <h4>Recordatorios autom&aacute;ticos</h4>
-        <p>WhatsApp, Telegram, Viber y Email. Confirmaci&oacute;n de reserva, recordatorio 24&nbsp;h antes de la clase, felicitaci&oacute;n de cumplea&ntilde;os y mensaje de reactivaci&oacute;n.</p>
+        <p>WhatsApp, Telegram, Viber y Email. Confirmaci&oacute;n de reserva, recordatorio 24&nbsp;h antes del tratamiento, felicitaci&oacute;n de cumplea&ntilde;os y mensaje de reactivaci&oacute;n.</p>
         <div class="feat-detail">Telegram, WhatsApp, Viber y Email &mdash; todos los canales incluidos</div>
       </div>
       <div class="feat-card">
         <div class="feat-card-icon">&#x1F4E6;</div>
         <h4>Control de inventario</h4>
-        <p>Gestiona el stock de suplementos, ropa y accesorios deportivos. Recibe alertas autom&aacute;ticas cuando un producto llega al m&iacute;nimo configurado.</p>
+        <p>Gestiona el stock de aceites esenciales, cosm&eacute;ticos y productos de spa. Recibe alertas autom&aacute;ticas cuando un producto llega al m&iacute;nimo configurado.</p>
         <div class="feat-detail">Notificaci&oacute;n autom&aacute;tica cuando el stock llega al m&iacute;nimo</div>
       </div>
       <div class="feat-card">
@@ -512,13 +512,13 @@ const pageContent = `
 
 <section class="sec sec-green">
   <div class="sec-head">
-    <h2>As&iacute; funciona Pronto en tu gimnasio</h2>
-    <p>Desde un nuevo socio hasta un fiel habitual &mdash; totalmente automatizado.</p>
+    <h2>As&iacute; funciona Pronto en tu spa</h2>
+    <p>Desde un nuevo cliente hasta un habitual fiel &mdash; totalmente automatizado.</p>
   </div>
   <div class="workflow">
     <div class="wf-step">
       <div class="wf-num">01</div>
-      <div class="wf-title">El socio descubre el horario de clases</div>
+      <div class="wf-title">El cliente descubre tus servicios</div>
       <div class="wf-desc">Enlazado desde Instagram, Google o donde quieras. Sin app, sin cuenta &mdash; solo nombre y tel&eacute;fono.</div>
     </div>
     <div class="wf-step">
@@ -529,20 +529,20 @@ const pageContent = `
     <div class="wf-step">
       <div class="wf-num">03</div>
       <div class="wf-title">Recordatorios sin intervenci&oacute;n tuya</div>
-      <div class="wf-desc">24 horas y 1 hora antes de la clase. Sin mensajes manuales. Menos ausencias.</div>
+      <div class="wf-desc">24 horas y 1 hora antes del tratamiento. Sin mensajes manuales. Menos ausencias.</div>
     </div>
     <div class="wf-step">
       <div class="wf-num">04</div>
       <div class="wf-title">Cobro y<br>fidelizaci&oacute;n</div>
-      <div class="wf-desc">Cobra en el POS. Gracias autom&aacute;tico. Socio a&ntilde;adido a tu CRM para siempre.</div>
+      <div class="wf-desc">Cobra en el POS. Gracias autom&aacute;tico. Cliente a&ntilde;adido a tu CRM para siempre.</div>
     </div>
   </div>
 </section>
 
 <section class="sec sec-blue">
   <div class="sec-head">
-    <h2>Recordatorios que fidelizan a tus socios</h2>
-    <p>El &uacute;nico software fitness open-source con Email, Telegram, WhatsApp y Viber integrados &mdash; sin plugins ni add-ons de pago.</p>
+    <h2>Recordatorios que fidelizan a tus clientes</h2>
+    <p>El &uacute;nico software spa open-source con Email, Telegram, WhatsApp y Viber integrados &mdash; sin plugins ni add-ons de pago.</p>
   </div>
   <div class="channel-row">
     <div class="channel"><span class="dot dot-green"></span>Email</div>
@@ -557,13 +557,13 @@ const pageContent = `
       <div class="notif-card">
         <div class="ev-emoji">&#x2705;</div>
         <div class="ev-text">Confirmaci&oacute;n de reserva</div>
-        <div class="ev-sub">Enviada autom&aacute;ticamente al confirmar una clase</div>
+        <div class="ev-sub">Enviada autom&aacute;ticamente al confirmar el tratamiento</div>
         <div class="ev-channels">WhatsApp &middot; Telegram &middot; Email &middot; Viber</div>
       </div>
       <div class="notif-card">
         <div class="ev-emoji">&#x23F0;</div>
         <div class="ev-text">Recordatorio 24 horas</div>
-        <div class="ev-sub">&ldquo;Te esperamos ma&ntilde;ana en tu clase de las 10:00&rdquo;</div>
+        <div class="ev-sub">&ldquo;Te esperamos ma&ntilde;ana para tu masaje de las 11:00&rdquo;</div>
         <div class="ev-channels">WhatsApp &middot; Telegram &middot; Email &middot; Viber</div>
       </div>
       <div class="notif-card">
@@ -574,20 +574,20 @@ const pageContent = `
       </div>
       <div class="notif-card">
         <div class="ev-emoji">&#x1F48C;</div>
-        <div class="ev-text">Gracias por venir</div>
-        <div class="ev-sub">Mensaje autom&aacute;tico 2 horas despu&eacute;s de la clase</div>
+        <div class="ev-text">Gracias por visitarnos</div>
+        <div class="ev-sub">Mensaje autom&aacute;tico 2 horas despu&eacute;s del tratamiento</div>
         <div class="ev-channels">WhatsApp &middot; Telegram &middot; Email &middot; Viber</div>
       </div>
       <div class="notif-card">
         <div class="ev-emoji">&#x1F504;</div>
         <div class="ev-text">Reactivaci&oacute;n</div>
-        <div class="ev-sub">&ldquo;Llevas 30 d&iacute;as sin entrenar, te echamos de menos&rdquo;</div>
+        <div class="ev-sub">&ldquo;Llevas 30 d&iacute;as sin visitarnos, te echamos de menos&rdquo;</div>
         <div class="ev-channels">WhatsApp &middot; Telegram &middot; Email &middot; Viber</div>
       </div>
       <div class="notif-card">
         <div class="ev-emoji">&#x1F4E6;</div>
         <div class="ev-text">Alerta de stock m&iacute;nimo</div>
-        <div class="ev-sub">Aviso interno cuando los suplementos o accesorios se agotan</div>
+        <div class="ev-sub">Aviso interno cuando aceites o cosm&eacute;ticos se agotan</div>
         <div class="ev-channels">Al propietario por cualquier canal</div>
       </div>
     </div>
@@ -596,8 +596,8 @@ const pageContent = `
 
 <section class="sec sec-warm">
   <div class="sec-head">
-    <h2>Por qu&eacute; los gimnasios eligen Pronto</h2>
-    <p>Comparativa con las plataformas de reservas para gimnasios m&aacute;s conocidas.</p>
+    <h2>Por qu&eacute; los spas eligen Pronto</h2>
+    <p>Comparativa con las plataformas de reservas para spas m&aacute;s conocidas.</p>
   </div>
   <div class="comp-table">
     <div class="comp-row header">
@@ -609,7 +609,7 @@ const pageContent = `
     <div class="comp-row pronto-row">
       <div class="comp-cell">Comisi&oacute;n por reservas</div>
       <div class="comp-cell good">$0 siempre</div>
-      <div class="comp-cell bad">10&ndash;30% por reserva</div>
+      <div class="comp-cell bad">15&ndash;30% por reserva</div>
       <div class="comp-cell" style="color:#374151">$0 (cuota mensual)</div>
     </div>
     <div class="comp-row">
@@ -645,20 +645,20 @@ const pageContent = `
   </div>
   <div style="text-align:center;margin-top:24px">
     <div class="badge-row">
-      <span class="badge">Gimnasios</span>
-      <span class="badge">Estudios de yoga</span>
-      <span class="badge">Estudios fitness</span>
-      <span class="badge">Entrenadores personales</span>
-      <span class="badge">CrossFit boxes</span>
-      <span class="badge">Estudios de pilates</span>
-      <span class="badge">Escuelas de artes marciales</span>
+      <span class="badge">Centros de masajes</span>
+      <span class="badge">Spas</span>
+      <span class="badge">Centros de bienestar</span>
+      <span class="badge">Terapeutas</span>
+      <span class="badge">Centros hol&iacute;sticos</span>
+      <span class="badge">Salas de yoga y meditaci&oacute;n</span>
+      <span class="badge">Balnearios</span>
     </div>
   </div>
 </section>
 
 <section class="sec sec-white">
   <div class="sec-head">
-    <h2>Dos formas de usar Pronto en tu gimnasio</h2>
+    <h2>Dos formas de usar Pronto en tu spa</h2>
     <p>Instala en tu servidor para control total, o usa nuestra nube y empieza en minutos.</p>
   </div>
   <div class="two-paths">
@@ -668,7 +668,7 @@ const pageContent = `
       <p class="path-desc">Descarga el c&oacute;digo, ejecuta docker compose up -d y Pronto arranca en tu servidor. Tus datos nunca salen de tu infraestructura.</p>
       <div class="code-block"><span class="code-prefix">$</span>docker compose up -d</div><br>
       <div class="path-points" style="margin-top:16px">
-        <div class="path-point"><div class="path-point-dot"></div><div class="path-point-text"><strong>$0 para siempre</strong> &mdash; sin suscripci&oacute;n, sin l&iacute;mites de socios ni entrenadores</div></div>
+        <div class="path-point"><div class="path-point-dot"></div><div class="path-point-text"><strong>$0 para siempre</strong> &mdash; sin suscripci&oacute;n, sin l&iacute;mites de clientes ni terapeutas</div></div>
         <div class="path-point"><div class="path-point-dot"></div><div class="path-point-text"><strong>Licencia MIT</strong> &mdash; modifica, ampl&iacute;a y white-label libremente</div></div>
         <div class="path-point"><div class="path-point-dot"></div><div class="path-point-text"><strong>Cualquier servidor</strong> &mdash; VPS Linux, Windows, macOS. 1&nbsp;GB RAM m&iacute;nimo</div></div>
       </div>
@@ -678,7 +678,7 @@ const pageContent = `
     <div class="path-card cloud">
       <div class="path-label">Opci&oacute;n 2</div>
       <h3>En la nube (trypronto.app)</h3>
-      <p class="path-desc">Crea tu cuenta y empieza en minutos. Tu gimnasio obtiene su propio subdominio: migimnasio.trypronto.app. Prueba gratuita de 14 d&iacute;as en planes de pago.</p>
+      <p class="path-desc">Crea tu cuenta y empieza en minutos. Tu spa obtiene su propio subdominio: mispa.trypronto.app. Prueba gratuita de 14 d&iacute;as en planes de pago.</p>
       <div class="trial-banner">
         <div class="trial-big">14 d&iacute;as</div>
         <div>
@@ -687,7 +687,7 @@ const pageContent = `
         </div>
       </div>
       <div class="path-points">
-        <div class="path-point"><div class="path-point-dot"></div><div class="path-point-text"><strong>Tu subdominio</strong> &mdash; migimnasio.trypronto.app o dominio propio en Pro+</div></div>
+        <div class="path-point"><div class="path-point-dot"></div><div class="path-point-text"><strong>Tu subdominio</strong> &mdash; mispa.trypronto.app o dominio propio en Pro+</div></div>
         <div class="path-point"><div class="path-point-dot"></div><div class="path-point-text"><strong>Nos encargamos de todo</strong> &mdash; copias de seguridad, monitorizaci&oacute;n, funciones nuevas autom&aacute;ticamente</div></div>
       </div>
       <a href="/register" class="btn-primary">Empieza gratis</a>
@@ -696,14 +696,14 @@ const pageContent = `
 
   <div style="height:48px"></div>
   <div style="text-align:center;margin-bottom:22px">
-    <p style="font-family:'Bricolage Grotesque',sans-serif;font-size:22px;font-weight:700;color:#0a0a0a">Planes para gimnasios de todos los tama&ntilde;os</p>
+    <p style="font-family:'Bricolage Grotesque',sans-serif;font-size:22px;font-weight:700;color:#0a0a0a">Planes para spas de todos los tama&ntilde;os</p>
   </div>
   <div class="plans">
     <div class="plan">
       <div class="plan-name">Free</div>
       <div class="plan-price">$0<span>/mes</span></div>
       <span class="plan-trial-free">Gratis para siempre</span>
-      <div class="plan-limit">1 entrenador &middot; 100 socios</div>
+      <div class="plan-limit">1 terapeuta &middot; 100 clientes</div>
       <ul class="plan-feats">
         <li>POS + CRM + Inventario</li>
         <li>Notificaciones por Email</li>
@@ -714,7 +714,7 @@ const pageContent = `
       <div class="plan-name">Starter</div>
       <div class="plan-price">$19<span>/mes</span></div>
       <div class="plan-trial">14 d&iacute;as de prueba gratis</div>
-      <div class="plan-limit">3 entrenadores &middot; 1.000 socios</div>
+      <div class="plan-limit">3 terapeutas &middot; 1.000 clientes</div>
       <ul class="plan-feats">
         <li>Telegram + WhatsApp + Viber</li>
         <li>Reservas online</li>
@@ -725,7 +725,7 @@ const pageContent = `
       <div class="plan-name">Pro</div>
       <div class="plan-price">$39<span>/mes</span></div>
       <div class="plan-trial">14 d&iacute;as de prueba gratis</div>
-      <div class="plan-limit">15 entrenadores &middot; ilimitado</div>
+      <div class="plan-limit">15 terapeutas &middot; ilimitado</div>
       <ul class="plan-feats">
         <li>Anal&iacute;tica <span class="badge-soon" style="font-size:10px;background:#fef3c7;color:#92400e;padding:1px 6px;border-radius:8px">Pr&oacute;ximamente</span></li>
         <li>Dominio propio</li>
@@ -753,42 +753,42 @@ const pageContent = `
   <div class="faq-inner">
     <h2>Preguntas frecuentes</h2>
     <div class="faq-item">
-      <div class="faq-q">&iquest;Cu&aacute;l es el mejor software gratuito para gimnasios?</div>
-      <div class="faq-a">Pronto ofrece un plan gratuito completo para gimnasios con POS, CRM de socios, reservas de clases, control de inventario y notificaciones por Email &mdash; sin l&iacute;mite de tiempo y sin tarjeta de cr&eacute;dito. El plan gratuito incluye 1 entrenador y hasta 100 socios.</div>
+      <div class="faq-q">&iquest;Cu&aacute;l es el mejor software gratuito para centros de masajes y spa?</div>
+      <div class="faq-a">Pronto ofrece un plan gratuito completo para spas y centros de masajes con POS, CRM de clientes, reservas online, control de inventario y notificaciones por Email &mdash; sin l&iacute;mite de tiempo y sin tarjeta de cr&eacute;dito. El plan gratuito incluye 1 terapeuta y hasta 100 clientes.</div>
     </div>
     <div class="faq-item">
-      <div class="faq-q">&iquest;Puedo gestionar las reservas de clases grupales con Pronto?</div>
-      <div class="faq-a">S&iacute;. Los socios reservan clases directamente desde tu p&aacute;gina p&uacute;blica sin necesidad de crear una cuenta. Solo introducen su nombre y tel&eacute;fono. Pronto confirma la reserva autom&aacute;ticamente y env&iacute;a recordatorios 24 horas y 1 hora antes de la clase por WhatsApp, Telegram o Email.</div>
+      <div class="faq-q">&iquest;Puedo gestionar las reservas de masajes y tratamientos con Pronto?</div>
+      <div class="faq-a">S&iacute;. Los clientes reservan tratamientos directamente desde tu p&aacute;gina p&uacute;blica sin necesidad de crear una cuenta. Solo introducen su nombre y tel&eacute;fono. Pronto confirma la reserva autom&aacute;ticamente y env&iacute;a recordatorios 24 horas y 1 hora antes del tratamiento por WhatsApp, Telegram o Email.</div>
     </div>
     <div class="faq-item">
-      <div class="faq-q">&iquest;Pronto cobra comisi&oacute;n por las reservas de mis socios?</div>
-      <div class="faq-a">No. Pronto no cobra ninguna comisi&oacute;n sobre las reservas ni sobre los pagos. Tus socios reservan directamente contigo y t&uacute; recibes el 100% de cada transacci&oacute;n. No hay plataforma intermediaria.</div>
+      <div class="faq-q">&iquest;Pronto cobra comisi&oacute;n por las reservas de mis clientes?</div>
+      <div class="faq-a">No. Pronto no cobra ninguna comisi&oacute;n sobre las reservas ni sobre los pagos. Tus clientes reservan directamente contigo y t&uacute; recibes el 100% de cada transacci&oacute;n. No hay plataforma intermediaria.</div>
     </div>
     <div class="faq-item">
-      <div class="faq-q">&iquest;Funciona con WhatsApp para enviar recordatorios a los socios?</div>
-      <div class="faq-a">S&iacute;. Pronto env&iacute;a recordatorios autom&aacute;ticos por WhatsApp, Telegram, Viber y Email. Los mensajes incluyen: confirmaci&oacute;n de reserva, recordatorio 24 horas antes, recordatorio 1 hora antes de la clase, mensaje de agradecimiento y recordatorio de reactivaci&oacute;n para socios inactivos.</div>
+      <div class="faq-q">&iquest;Funciona con WhatsApp para enviar recordatorios a los clientes del spa?</div>
+      <div class="faq-a">S&iacute;. Pronto env&iacute;a recordatorios autom&aacute;ticos por WhatsApp, Telegram, Viber y Email. Los mensajes incluyen: confirmaci&oacute;n de reserva, recordatorio 24 horas antes, recordatorio 1 hora antes del tratamiento, mensaje de agradecimiento y recordatorio de reactivaci&oacute;n para clientes inactivos.</div>
     </div>
     <div class="faq-item">
-      <div class="faq-q">&iquest;Puedo llevar el inventario de suplementos y productos deportivos?</div>
-      <div class="faq-a">S&iacute;. El m&oacute;dulo de inventario permite registrar suplementos, ropa y accesorios deportivos con cantidades m&iacute;nimas configurables. Cuando el stock de un producto llega al m&iacute;nimo, Pronto env&iacute;a una alerta autom&aacute;tica para que puedas reponer a tiempo.</div>
+      <div class="faq-q">&iquest;Puedo llevar el inventario de aceites, cosm&eacute;ticos y productos del spa?</div>
+      <div class="faq-a">S&iacute;. El m&oacute;dulo de inventario permite registrar aceites esenciales, cosm&eacute;ticos, toallas y cualquier producto del spa con cantidades m&iacute;nimas configurables. Cuando el stock de un producto llega al m&iacute;nimo, Pronto env&iacute;a una alerta autom&aacute;tica para que puedas reponer a tiempo.</div>
     </div>
     <div class="faq-item">
-      <div class="faq-q">&iquest;Tiene aplicaci&oacute;n m&oacute;vil para el gimnasio?</div>
+      <div class="faq-q">&iquest;Tiene aplicaci&oacute;n m&oacute;vil para el spa?</div>
       <div class="faq-a">Pronto es una Progressive Web App (PWA) que se instala en la pantalla de inicio de cualquier m&oacute;vil sin necesidad de App Store ni Google Play. Funciona en Android e iOS y permite gestionar reservas y cobros incluso sin conexi&oacute;n a internet.</div>
     </div>
     <div class="faq-item">
       <div class="faq-q">&iquest;C&oacute;mo instalo Pronto en mi propio servidor?</div>
-      <div class="faq-a">Necesitas Docker en cualquier servidor Linux, Windows o macOS con al menos 1 GB de RAM. Ejecuta <code>docker compose up -d</code> y el sistema de gesti&oacute;n de gimnasios arranca autom&aacute;ticamente. No se requieren conocimientos de DevOps. Consulta la <a href="https://github.com/SGrappelli/pronto" style="color:#3b82f6;text-decoration:none">documentaci&oacute;n en GitHub</a> para instrucciones paso a paso.</div>
+      <div class="faq-a">Necesitas Docker en cualquier servidor Linux, Windows o macOS con al menos 1 GB de RAM. Ejecuta <code>docker compose up -d</code> y el sistema de gesti&oacute;n del spa arranca autom&aacute;ticamente. No se requieren conocimientos de DevOps. Consulta la <a href="https://github.com/SGrappelli/pronto" style="color:#3b82f6;text-decoration:none">documentaci&oacute;n en GitHub</a> para instrucciones paso a paso.</div>
     </div>
     <div class="faq-item">
-      <div class="faq-q">&iquest;Cu&aacute;ntos entrenadores o empleados puedo a&ntilde;adir?</div>
-      <div class="faq-a">El plan gratuito incluye 1 entrenador. El plan Starter permite 3 entrenadores, el plan Pro hasta 15 y el plan Agency admite m&uacute;ltiples ubicaciones con entrenadores ilimitados. Cada entrenador tiene su propio acceso y puede gestionar su agenda de clases de forma independiente.</div>
+      <div class="faq-q">&iquest;Cu&aacute;ntos terapeutas o empleados puedo a&ntilde;adir?</div>
+      <div class="faq-a">El plan gratuito incluye 1 terapeuta. El plan Starter permite 3 terapeutas, el plan Pro hasta 15 y el plan Agency admite m&uacute;ltiples ubicaciones con terapeutas ilimitados. Cada terapeuta tiene su propio acceso y puede gestionar su agenda de tratamientos de forma independiente.</div>
     </div>
   </div>
 </section>
 
 <section class="cta-band">
-  <h2>Empieza a gestionar tu gimnasio gratis</h2>
+  <h2>Empieza a gestionar tu spa gratis</h2>
   <p>Sin tarjeta de cr&eacute;dito. Sin comisiones. Tus datos, tu servidor.</p>
   <div>
     <a href="/register" class="btn-cta-white">Crear cuenta gratis</a>
@@ -806,8 +806,8 @@ const pageContent = `
     <a href="/es/para">Para negocios</a>
     <a href="/es/para/salones">Salones de belleza</a>
     <a href="/es/para/barberia">Barber&iacute;as</a>
+    <a href="/es/para/gimnasio">Gimnasios</a>
     <a href="/es/para/clinica-dental">Cl&iacute;nicas dentales</a>
-    <a href="/es/para/spa">Masajes y spa</a>
     <a href="/terms">T&eacute;rminos</a>
     <a href="/privacy">Privacidad</a>
     <a href="/refund">Reembolsos</a>
@@ -816,7 +816,7 @@ const pageContent = `
 </footer>
 `
 
-export default function GimnasioPage() {
+export default function SpaPage() {
   return (
     <>
       <script

@@ -817,6 +817,7 @@ Nosotros gestionamos actualizaciones, backups y uptime.</p>
     <a href="/es/para/salones" style="font-size:14px;font-weight:500;padding:8px 18px;border-radius:20px;background:#fff;border:1px solid #e2e8f0;color:#111;text-decoration:none">&#x1F487; Salones de belleza</a>
     <a href="/es/para/tatuajes" style="font-size:14px;font-weight:500;padding:8px 18px;border-radius:20px;background:#fff;border:1px solid #e2e8f0;color:#111;text-decoration:none">&#x1F3A8; Estudios de tatuajes</a>
     <a href="/es/para/gimnasio" style="font-size:14px;font-weight:500;padding:8px 18px;border-radius:20px;background:#fff;border:1px solid #e2e8f0;color:#111;text-decoration:none">&#x1F3CB;&#xFE0F; Gimnasios</a>
+    <a href="/es/para/spa" style="font-size:14px;font-weight:500;padding:8px 18px;border-radius:20px;background:#fff;border:1px solid #e2e8f0;color:#111;text-decoration:none">&#x1F9D6; Masajes y spa</a>
     <a href="/es/para" style="font-size:14px;font-weight:500;padding:8px 18px;border-radius:20px;background:#fff;border:1px solid #e2e8f0;color:#111;text-decoration:none">Ver todos &rarr;</a>
   </div>
 </section>
@@ -851,6 +852,8 @@ De cualquier forma &mdash; sin comisiones por corte, para siempre.</p>
     <a href="/es/para">Para negocios</a>
     <a href="/es/para/barberia">Barber&iacute;as</a>
     <a href="/es/para/clinica-dental">Cl&iacute;nicas Dentales</a>
+    <a href="/es/para/gimnasio">Gimnasios</a>
+    <a href="/es/para/spa">Masajes y spa</a>
     <a href="/terms">T&eacute;rminos</a>
     <a href="/privacy">Privacidad</a>
     <a href="/refund">Reembolsos</a>

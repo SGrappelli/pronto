@@ -612,6 +612,7 @@ const pageContent = `
     <a href="/es/para/salones" style="font-size:14px;font-weight:500;padding:8px 18px;border-radius:20px;background:#fff;border:1px solid #e2e8f0;color:#111;text-decoration:none">💆 Salones de belleza</a>
     <a href="/es/para/autoservicio" style="font-size:14px;font-weight:500;padding:8px 18px;border-radius:20px;background:#fff;border:1px solid #e2e8f0;color:#111;text-decoration:none">🔧 Talleres mec&aacute;nicos</a>
     <a href="/es/para/gimnasio" style="font-size:14px;font-weight:500;padding:8px 18px;border-radius:20px;background:#fff;border:1px solid #e2e8f0;color:#111;text-decoration:none">🏋️ Gimnasios</a>
+    <a href="/es/para/spa" style="font-size:14px;font-weight:500;padding:8px 18px;border-radius:20px;background:#fff;border:1px solid #e2e8f0;color:#111;text-decoration:none">🧖 Masajes y spa</a>
   </div>
 </section>
 
@@ -644,6 +645,7 @@ const pageContent = `
     <a href="/es/para/barberia">Barber&iacute;as</a>
     <a href="/es/para/clinica-dental">Cl&iacute;nicas Dentales</a>
     <a href="/es/para/gimnasio">Gimnasios</a>
+    <a href="/es/para/spa">Masajes y spa</a>
     <a href="/terms">T&eacute;rminos</a>
     <a href="/privacy">Privacidad</a>
     <a href="/refund">Reembolsos</a>
