@@ -1,4 +1,4 @@
-import type { Metadata } from 'next'
+﻿import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
   title: 'Free Auto Repair Shop Software — Bookings, POS & CRM | Pronto',
@@ -804,11 +804,11 @@ const pageContent = `
     <a href="/">Home</a>
     <a href="/pricing">Pricing</a>
     <a href="/for">For businesses</a>
-    <a href="/for/salons">Salons</a>
+    <a href="/for/dental">Dental clinics</a>
+    <a href="/for/fitness">Fitness clubs</a>
     <a href="/terms">Terms</a>
     <a href="/privacy">Privacy</a>
     <a href="/refund">Refund policy</a>
-    <a href="https://github.com/SGrappelli/pronto">GitHub</a>
   </div>
 </footer>
 `
