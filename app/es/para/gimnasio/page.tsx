@@ -295,10 +295,10 @@ nav{position:sticky;top:0;z-index:100;background:rgba(255,255,255,0.96);backdrop
 footer{padding:28px 48px;border-top:1px solid #f0f0f0;display:flex;justify-content:space-between;align-items:center;background:#fff}
 .footer-brand{font-size:22px;font-weight:800;color:#111;letter-spacing:-0.5px}
 .footer-brand span{color:#16a34a}
-.footer-copy{font-size:12px;color:#9ca3af;margin-top:2px}
+.footer-copy{font-size:13px;color:#9ca3af;margin-top:2px}
 .footer-right{display:flex;align-items:center;gap:20px}
-.footer-links{display:flex;gap:14px;flex-wrap:wrap;justify-content:flex-end}
-.footer-links a{font-size:12px;color:#9ca3af;text-decoration:none}
+.footer-links{display:flex;gap:16px;flex-wrap:wrap;justify-content:flex-end}
+.footer-links a{font-size:13px;color:#9ca3af;text-decoration:none}
 .footer-links a:hover{color:#111}
 .footer-social{display:flex;gap:10px;align-items:center;flex-shrink:0}
 .footer-social a{color:#9ca3af;display:flex;align-items:center;line-height:1}
