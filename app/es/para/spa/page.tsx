@@ -165,7 +165,7 @@ nav{position:sticky;top:0;z-index:100;background:rgba(255,255,255,0.96);backdrop
 .nav-right{display:flex;align-items:center;gap:24px}
 .nav-link{font-size:16px;color:#374151;text-decoration:none;font-weight:500}
 .nav-link:hover{color:#111}
-.btn-nav{background:#111;color:#fff;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:500;padding:10px 22px;border-radius:8px;border:none;cursor:pointer;text-decoration:none}
+.btn-nav{background:#111;color:#fff;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:500;padding:10px 22px;border-radius:8px;border:none;cursor:pointer;text-decoration:none;white-space:nowrap}
 .hide-mob{display:inline}
 
 .hero{padding:80px 48px 72px;background:#fff;border-bottom:1px solid #f0f0f0}
@@ -336,7 +336,9 @@ footer{padding:28px 48px;border-top:1px solid #f0f0f0;display:flex;justify-conte
 }
 @media(max-width:640px){
   nav{padding:0 16px;height:56px}
-  .nav-right{gap:12px}
+  .nav-right{gap:8px}
+  .nav-link{font-size:14px}
+  .btn-nav{font-size:13px;padding:8px 14px}
   .hide-mob{display:none}
   .hero{padding:48px 16px 40px}
   .hero h1{font-size:34px;letter-spacing:-1px}
