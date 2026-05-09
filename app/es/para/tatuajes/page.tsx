@@ -1,34 +1,34 @@
-﻿import type { Metadata } from 'next'
+import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: 'Software Gratis para Centros de Masajes y Spa — Pronto',
+  title: 'Software Gratis para Estudios de Tatuajes — Pronto',
   description:
-    'Software gratuito para centros de masajes y spa: reservas online, CRM de clientes, POS y recordatorios automáticos por WhatsApp y Telegram. Sin comisiones.',
+    'Software gratuito para estudios de tatuajes con reservas de citas, CRM de clientes, depósitos, control de inventario y recordatorios por WhatsApp y Telegram. Sin comisiones.',
   keywords:
-    'software para spa gratis, gestión centro masajes, reservas spa online, software centro bienestar, CRM clientes spa, recordatorios WhatsApp spa, software masajes gratis, gestión terapeutas, sistema POS spa, alternativa Mindbody gratis',
+    'software para estudios de tatuajes gratis, gestión estudio tatuaje, reservas citas tatuaje, software tattoo studio, CRM clientes tatuaje, recordatorios WhatsApp tatuaje, sistema citas tatuador, gestión depósitos tatuaje, control inventario tinta tatuaje, alternativa Booksy tatuaje',
   alternates: {
-    canonical: 'https://trypronto.app/es/para/spa',
+    canonical: 'https://trypronto.app/es/para/tatuajes',
     languages: {
-      es: 'https://trypronto.app/es/para/spa',
-      en: 'https://trypronto.app/for/spa',
-      'x-default': 'https://trypronto.app/for/spa',
+      es: 'https://trypronto.app/es/para/tatuajes',
+      en: 'https://trypronto.app/for/tattoo',
+      'x-default': 'https://trypronto.app/for/tattoo',
     },
   },
   openGraph: {
     type: 'website',
-    url: 'https://trypronto.app/es/para/spa',
-    title: 'Software Gratis para Centros de Masajes y Spa — Pronto',
+    url: 'https://trypronto.app/es/para/tatuajes',
+    title: 'Software Gratis para Estudios de Tatuajes — Pronto',
     description:
-      'Gestiona tu spa o centro de masajes sin comisiones. Reservas online, CRM de clientes, POS y recordatorios automáticos por WhatsApp, Telegram y Email. Instalación en un comando.',
+      'Gestiona tu estudio de tatuajes sin comisiones. Reservas de citas, depósitos, CRM de clientes, control de inventario y recordatorios automáticos por WhatsApp, Telegram y Email. Un solo comando para instalar.',
     images: [{ url: 'https://trypronto.app/og-image-es.png' }],
     locale: 'es_ES',
     siteName: 'Pronto',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Software Gratis para Centros de Masajes y Spa — Pronto',
+    title: 'Software Gratis para Estudios de Tatuajes — Pronto',
     description:
-      'Reservas online, CRM de clientes y recordatorios automáticos para tu spa o centro de masajes. Sin comisiones, sin vendor lock-in. Instala en un comando con Docker.',
+      'Reservas de citas, depósitos y recordatorios automáticos para tu estudio de tatuajes. Sin comisiones, sin vendor lock-in. Instala con Docker en un solo comando.',
     images: ['https://trypronto.app/og-image-es.png'],
   },
 }
@@ -37,9 +37,9 @@ const softwareAppSchema = {
   '@context': 'https://schema.org',
   '@type': 'SoftwareApplication',
   name: 'Pronto',
-  url: 'https://trypronto.app/es/para/spa',
+  url: 'https://trypronto.app/es/para/tatuajes',
   applicationCategory: 'BusinessApplication',
-  applicationSubCategory: 'Spa Management Software',
+  applicationSubCategory: 'Tattoo Studio Management Software',
   operatingSystem: 'Web, Android, iOS',
   offers: {
     '@type': 'Offer',
@@ -47,21 +47,21 @@ const softwareAppSchema = {
     priceCurrency: 'USD',
   },
   featureList: [
-    'Reservas de tratamientos sin registro de cliente',
-    'CRM de clientes con historial de tratamientos y preferencias',
+    'Reservas de citas sin registro de cliente',
+    'Gestión de depósitos vinculados a cada cita',
+    'CRM de clientes con historial de sesiones y notas del artista',
     'Caja registradora (POS) con múltiples métodos de pago',
     'Recordatorios automáticos por WhatsApp y Telegram',
-    'Control de inventario de aceites y productos cosméticos',
-    'Notificaciones de reactivación de clientes inactivos',
+    'Instrucciones de cuidados post-tatuaje automáticas',
+    'Control de inventario de tinta y suministros',
     'Progressive Web App con modo offline',
     'Instalación con Docker en un solo comando',
-    'Multitenant SaaS con subdominio propio',
     'Código abierto bajo licencia MIT',
   ],
   description:
-    'Software gratuito de gestión para centros de masajes y spa. Reservas online, CRM de clientes, POS y recordatorios automáticos por WhatsApp, Telegram y Email. Sin comisiones.',
+    'Software gratuito de gestión para estudios de tatuajes. Reservas de citas, depósitos, CRM de clientes, control de inventario y recordatorios automáticos por WhatsApp, Telegram y Email. Sin comisiones.',
   keywords:
-    'software spa, gestión masajes, reservas tratamientos, CRM clientes spa, Mindbody alternativa, software bienestar gratis, gestión terapeutas, centro holístico software',
+    'software estudio tatuaje, gestión tatuadores, reservas citas tatuaje, depósitos tatuaje, Booksy alternativa, Fresha alternativa, software tattoo gratis',
   inLanguage: 'es',
   isAccessibleForFree: true,
   license: 'https://opensource.org/licenses/MIT',
@@ -79,23 +79,23 @@ const faqSchema = {
   mainEntity: [
     {
       '@type': 'Question',
-      name: '¿Cuál es el mejor software gratuito para centros de masajes y spa?',
+      name: '¿Cuál es el mejor software gratuito para estudios de tatuajes?',
       acceptedAnswer: {
         '@type': 'Answer',
-        text: 'Pronto ofrece un plan gratuito completo para spas y centros de masajes con POS, CRM de clientes, reservas online, control de inventario y notificaciones por Email — sin límite de tiempo y sin tarjeta de crédito. El plan gratuito incluye 1 terapeuta y hasta 100 clientes.',
+        text: 'Pronto ofrece un plan gratuito completo para estudios de tatuajes con POS, CRM de clientes, reservas de citas, control de inventario y notificaciones por Email — sin límite de tiempo y sin tarjeta de crédito. El plan gratuito incluye 1 artista y hasta 100 clientes.',
       },
     },
     {
       '@type': 'Question',
-      name: '¿Puedo gestionar las reservas de masajes y tratamientos con Pronto?',
+      name: '¿Puedo gestionar los depósitos de las citas con Pronto?',
       acceptedAnswer: {
         '@type': 'Answer',
-        text: 'Sí. Los clientes reservan tratamientos directamente desde tu página pública sin necesidad de crear una cuenta. Solo introducen su nombre y teléfono. Pronto confirma la reserva automáticamente y envía recordatorios 24 horas y 1 hora antes de la cita por WhatsApp, Telegram o Email.',
+        text: 'Sí. Pronto permite registrar el depósito de cada cita en la caja registradora y vincularlo al cliente. Al finalizar la sesión, el depósito se descuenta del total automáticamente. No necesitas hojas de cálculo ni transferencias sin control.',
       },
     },
     {
       '@type': 'Question',
-      name: '¿Pronto cobra comisión por las reservas de mis clientes?',
+      name: '¿Pronto cobra comisión por las reservas de mi estudio?',
       acceptedAnswer: {
         '@type': 'Answer',
         text: 'No. Pronto no cobra ninguna comisión sobre las reservas ni sobre los pagos. Tus clientes reservan directamente contigo y tú recibes el 100% de cada transacción. No hay plataforma intermediaria.',
@@ -103,26 +103,26 @@ const faqSchema = {
     },
     {
       '@type': 'Question',
-      name: '¿Funciona con WhatsApp para enviar recordatorios a los clientes del spa?',
+      name: '¿Funciona con WhatsApp para enviar recordatorios de citas?',
       acceptedAnswer: {
         '@type': 'Answer',
-        text: 'Sí. Pronto envía recordatorios automáticos por WhatsApp, Telegram, Viber y Email. Los mensajes incluyen: confirmación de reserva, recordatorio 24 horas antes, recordatorio 1 hora antes del tratamiento, mensaje de agradecimiento y recordatorio de reactivación para clientes inactivos.',
+        text: 'Sí. Pronto envía recordatorios automáticos por WhatsApp, Telegram, Viber y Email. Los mensajes incluyen: confirmación de cita, recordatorio 24 horas antes, recordatorio 1 hora antes de la sesión, instrucciones de cuidados post-tatuaje y recordatorio de reactivación para clientes inactivos.',
       },
     },
     {
       '@type': 'Question',
-      name: '¿Puedo llevar el inventario de aceites, cosméticos y productos del spa?',
+      name: '¿Puedo controlar el inventario de tinta, agujas y materiales?',
       acceptedAnswer: {
         '@type': 'Answer',
-        text: 'Sí. El módulo de inventario permite registrar aceites esenciales, cosméticos, toallas y cualquier producto del spa con cantidades mínimas configurables. Cuando el stock de un producto llega al mínimo, Pronto envía una alerta automática para que puedas reponer a tiempo.',
+        text: 'Sí. El módulo de inventario permite registrar tinta, agujas, plásticos y cualquier suministro con cantidades mínimas configurables. Cuando el stock de un material llega al mínimo, Pronto envía una alerta automática para que puedas reponer a tiempo.',
       },
     },
     {
       '@type': 'Question',
-      name: '¿Tiene aplicación móvil para el spa?',
+      name: '¿Tiene aplicación móvil para gestionar el estudio?',
       acceptedAnswer: {
         '@type': 'Answer',
-        text: 'Pronto es una Progressive Web App (PWA) que se instala en la pantalla de inicio de cualquier móvil sin necesidad de App Store ni Google Play. Funciona en Android e iOS y permite gestionar reservas y cobros incluso sin conexión a internet.',
+        text: 'Pronto es una Progressive Web App (PWA) que se instala en la pantalla de inicio de cualquier móvil sin necesidad de App Store ni Google Play. Funciona en Android e iOS y permite gestionar citas y cobros incluso sin conexión a internet.',
       },
     },
     {
@@ -130,15 +130,15 @@ const faqSchema = {
       name: '¿Cómo instalo Pronto en mi propio servidor?',
       acceptedAnswer: {
         '@type': 'Answer',
-        text: 'Necesitas Docker en cualquier servidor Linux, Windows o macOS con al menos 1 GB de RAM. Ejecuta docker compose up -d y el sistema de gestión del spa arranca automáticamente. No se requieren conocimientos de DevOps. Consulta la documentación en GitHub para instrucciones paso a paso.',
+        text: 'Necesitas Docker en cualquier servidor Linux, Windows o macOS con al menos 1 GB de RAM. Ejecuta docker compose up -d y el sistema de gestión del estudio arranca automáticamente. No se requieren conocimientos de DevOps. Consulta la documentación en GitHub para instrucciones paso a paso.',
       },
     },
     {
       '@type': 'Question',
-      name: '¿Cuántos terapeutas o empleados puedo añadir?',
+      name: '¿Cuántos artistas o empleados puedo añadir?',
       acceptedAnswer: {
         '@type': 'Answer',
-        text: 'El plan gratuito incluye 1 terapeuta. El plan Starter permite 3 terapeutas, el plan Pro hasta 15 y el plan Agency admite múltiples ubicaciones con terapeutas ilimitados. Cada terapeuta tiene su propio acceso y puede gestionar su agenda de tratamientos de forma independiente.',
+        text: 'El plan gratuito incluye 1 artista. El plan Starter permite 3 artistas, el plan Pro hasta 15 y el plan Agency admite múltiples ubicaciones con artistas ilimitados. Cada artista tiene su propio acceso y puede gestionar su agenda de citas de forma independiente.',
       },
     },
   ],
@@ -150,7 +150,7 @@ const breadcrumbSchema = {
   itemListElement: [
     { '@type': 'ListItem', position: 1, name: 'Inicio', item: 'https://trypronto.app/es/' },
     { '@type': 'ListItem', position: 2, name: 'Para negocios', item: 'https://trypronto.app/es/para' },
-    { '@type': 'ListItem', position: 3, name: 'Centros de masajes y spa', item: 'https://trypronto.app/es/para/spa' },
+    { '@type': 'ListItem', position: 3, name: 'Estudios de tatuajes', item: 'https://trypronto.app/es/para/tatuajes' },
   ],
 }
 
@@ -370,17 +370,17 @@ const pageContent = `
 <nav>
   <a href="/es/" class="nav-brand">Pronto<span>.</span></a>
   <div class="nav-right">
-    <a href="/es/precios" class="nav-link hide-mob" onclick="window.gtag&&window.gtag('event','pricing_click',{source:'/es/para/spa'})">Precios</a>
-    <a href="/for/spa" class="nav-link lang-switcher" onclick="window.gtag&&window.gtag('event','language_switch',{to:'en'})">EN</a>
+    <a href="/es/precios" class="nav-link hide-mob" onclick="window.gtag&&window.gtag('event','pricing_click',{source:'/es/para/tatuajes'})">Precios</a>
+    <a href="/for/tattoo" class="nav-link lang-switcher" onclick="window.gtag&&window.gtag('event','language_switch',{to:'en'})">EN</a>
     <a href="/login" class="nav-link" onclick="window.gtag&&window.gtag('event','login_click',{label:'nav_signin'})">Iniciar sesi&oacute;n</a>
-    <a href="/register" class="btn-nav" onclick="window.gtag&&window.gtag('event','cta_click',{label:'start_free',page:'/es/para/spa'})">Empezar gratis</a>
+    <a href="/register" class="btn-nav" onclick="window.gtag&&window.gtag('event','cta_click',{label:'start_free',page:'/es/para/tatuajes'})">Empezar gratis</a>
   </div>
 </nav>
 
 <div class="breadcrumb">
   <a href="/es/">Inicio</a><span>&rsaquo;</span>
   <a href="/es/para">Para negocios</a><span>&rsaquo;</span>
-  Centros de masajes y spa
+  Estudios de tatuajes
 </div>
 
 <main>
@@ -389,14 +389,14 @@ const pageContent = `
   <div class="hero-inner">
     <div class="hero-eyebrow">
       <span class="hero-eyebrow-dot"></span>
-      Software de gesti&oacute;n para centros de masajes y spa
+      Software de gesti&oacute;n para estudios de tatuajes
     </div>
-    <h1>Gestiona tu spa o centro de masajes gratis. Sin comisiones.</h1>
-    <p class="hero-sub">Pronto reemplaza la agenda en papel y los grupos de WhatsApp. Reservas de tratamientos, CRM de clientes con historial, caja registradora, control de inventario y recordatorios autom&aacute;ticos por WhatsApp, Telegram y Email &mdash; todo en una sola herramienta que tus clientes encuentran sin registrarse en ninguna plataforma.</p>
-    <p class="hero-platforms">La mayor&iacute;a de plataformas cobran entre un <strong>15&ndash;30%</strong> por cada cita de tus propios clientes. Pronto cobra <strong>$0</strong>.</p>
+    <h1>Gestiona tu estudio de tatuajes gratis. Sin comisiones.</h1>
+    <p class="hero-sub">Pronto reemplaza las hojas de c&aacute;lculo y las apps dispersas. Reservas de citas, gesti&oacute;n de dep&oacute;sitos, CRM de clientes, control de tinta y materiales, y recordatorios autom&aacute;ticos por WhatsApp, Telegram y Email &mdash; todo en una sola herramienta que tus clientes encuentran sin registrarse en ninguna plataforma.</p>
+    <p class="hero-platforms">Las plataformas de reservas cobran una <strong>comisi&oacute;n por cada cita</strong> de clientes que ya son tuyos. Pronto cobra <strong>$0</strong>.</p>
     <div class="hero-ctas">
-      <a href="/register" class="btn-primary">Empieza gratis</a>
-      <a href="https://github.com/SGrappelli/pronto" class="btn-outline">Ver en GitHub &rarr;</a>
+      <a href="/register" class="btn-primary" onclick="window.gtag&&window.gtag('event','cta_click',{label:'start_free',page:'/es/para/tatuajes'})">Empieza gratis</a>
+      <a href="https://github.com/SGrappelli/pronto" class="btn-outline" onclick="window.gtag&&window.gtag('event','github_click',{label:'hero_cta',page:'/es/para/tatuajes'})">Ver en GitHub &rarr;</a>
     </div>
     <div class="hero-stats">
       <div>
@@ -422,52 +422,52 @@ const pageContent = `
 <section class="sec sec-warm">
   <div class="cards-wrap">
     <div class="problem-banner">
-      <h3>La trampa del software para spas de la que nadie habla</h3>
-      <p>Has construido una clientela fiel durante a&ntilde;os. Entonces una plataforma de reservas exige una <strong>comisi&oacute;n del 15&ndash;30%</strong> por cada tratamiento &mdash; de clientes que ya son tuyos. Cancela y tu historial de reservas, fichas de clientes y preferencias de tratamientos desaparecen para siempre.</p>
+      <h3>La trampa del software para estudios de tatuajes que nadie menciona</h3>
+      <p>Llevas a&ntilde;os construyendo una clientela fiel. Entonces una plataforma de reservas exige una <strong>comisi&oacute;n por cada cita</strong> &mdash; de clientes que ya son tuyos. Y si cancelas tu cuenta, desaparece el historial de sesiones, los contactos y los dise&ntilde;os de referencia de tus clientes.</p>
     </div>
   </div>
   <div style="height:32px"></div>
   <div class="sec-head">
     <h2>Los problemas que Pronto resuelve</h2>
-    <p>Cada problema tiene una soluci&oacute;n directa en Pronto.</p>
+    <p>Cada problema a continuaci&oacute;n tiene una soluci&oacute;n directa en Pronto.</p>
   </div>
   <div class="cards-wrap">
     <div class="pain-grid">
       <div class="pain-card">
         <div class="pain-from-label">Problema</div>
-        <div class="pain-from-text">Agenda en papel o grupos de WhatsApp para gestionar citas</div>
+        <div class="pain-from-text">Agenda en papel o DMs de Instagram</div>
         <div class="pain-arrow">&darr;</div>
-        <div class="pain-to">CRM + agenda digital integrados en una sola pantalla</div>
+        <div class="pain-to">Calendario digital con gesti&oacute;n de citas y artistas</div>
       </div>
       <div class="pain-card">
         <div class="pain-from-label">Problema</div>
-        <div class="pain-from-text">Llamar a cada cliente para recordarle el tratamiento</div>
+        <div class="pain-from-text">Gestionar dep&oacute;sitos por transferencia</div>
         <div class="pain-arrow">&darr;</div>
-        <div class="pain-to">Recordatorios autom&aacute;ticos por WhatsApp y Telegram</div>
+        <div class="pain-to">POS con registro de dep&oacute;sito vinculado a cada cita</div>
       </div>
       <div class="pain-card">
         <div class="pain-from-label">Problema</div>
-        <div class="pain-from-text">La plataforma cobra comisi&oacute;n por tus propios clientes</div>
+        <div class="pain-from-text">La plataforma cobra comisi&oacute;n por tus clientes</div>
         <div class="pain-arrow">&darr;</div>
         <div class="pain-to">Reservas directas sin comisi&oacute;n &mdash; 0%</div>
       </div>
       <div class="pain-card">
         <div class="pain-from-label">Problema</div>
-        <div class="pain-from-text">Sin historial de tratamientos ni preferencias por cliente</div>
+        <div class="pain-from-text">Sin historial de trabajos del cliente</div>
         <div class="pain-arrow">&darr;</div>
-        <div class="pain-to">Ficha completa: tratamientos, alergias, notas y preferencias</div>
+        <div class="pain-to">Ficha completa con dise&ntilde;os, referencias y notas</div>
       </div>
       <div class="pain-card">
         <div class="pain-from-label">Problema</div>
-        <div class="pain-from-text">Gestionar varias terapeutas sin orden</div>
+        <div class="pain-from-text">Recordar citas manualmente por WhatsApp</div>
         <div class="pain-arrow">&darr;</div>
-        <div class="pain-to">Vista de agenda por terapeuta con disponibilidad en tiempo real</div>
+        <div class="pain-to">Recordatorios autom&aacute;ticos 24&nbsp;h y 1&nbsp;h antes</div>
       </div>
       <div class="pain-card">
         <div class="pain-from-label">Problema</div>
-        <div class="pain-from-text">Inventario de aceites y cosm&eacute;ticos en papel</div>
+        <div class="pain-from-text">Control de tinta y materiales en papel</div>
         <div class="pain-arrow">&darr;</div>
-        <div class="pain-to">Alertas autom&aacute;ticas cuando el stock llega al m&iacute;nimo</div>
+        <div class="pain-to">Alertas autom&aacute;ticas de stock m&iacute;nimo de suministros</div>
       </div>
     </div>
   </div>
@@ -475,46 +475,46 @@ const pageContent = `
 
 <section class="sec sec-white">
   <div class="sec-head">
-    <h2>Todo lo que necesita tu spa</h2>
-    <p>Dise&ntilde;ado para quien gestiona el centro, no para equipos de IT enterprise.</p>
+    <h2>Todo lo que necesita tu estudio de tatuajes</h2>
+    <p>Dise&ntilde;ado para el artista que gestiona su propio negocio, no para equipos de IT.</p>
   </div>
   <div class="cards-wrap">
     <div class="feat-grid">
       <div class="feat-card">
         <div class="feat-card-icon">&#x1F4C5;</div>
-        <h4>Reservas de tratamientos</h4>
-        <p>Los clientes reservan masajes y tratamientos directamente desde tu p&aacute;gina p&uacute;blica &mdash; sin crear cuenta en ninguna plataforma. Solo nombre y tel&eacute;fono.</p>
-        <div class="feat-detail">Protecci&oacute;n de capacidad a nivel de base de datos &mdash; imposible hacer overbooking</div>
+        <h4>Reservas de citas</h4>
+        <p>Los clientes reservan cita directamente desde tu p&aacute;gina p&uacute;blica &mdash; sin crear cuenta en ninguna plataforma. Solo nombre y tel&eacute;fono. T&uacute; controlas tu agenda sin depender de terceros.</p>
+        <div class="feat-detail">Protecci&oacute;n contra doble reserva a nivel de base de datos</div>
+      </div>
+      <div class="feat-card">
+        <div class="feat-card-icon">&#x1F4B3;</div>
+        <h4>Gesti&oacute;n de dep&oacute;sitos</h4>
+        <p>Registra el dep&oacute;sito de cada cita en el POS y vinc&uacute;lalo al cliente. Al finalizar el trabajo, descuenta el dep&oacute;sito del total autom&aacute;ticamente. Sin hojas de c&aacute;lculo ni transferencias sin control.</p>
+        <div class="feat-detail">Dep&oacute;sito vinculado a la cita y descontado autom&aacute;ticamente al cobrar</div>
       </div>
       <div class="feat-card">
         <div class="feat-card-icon">&#x1F464;</div>
         <h4>CRM de clientes</h4>
-        <p>Ficha completa de cada cliente: historial de tratamientos, alergias, preferencias, notas y datos de contacto. Busca cualquier cliente en menos de un segundo.</p>
+        <p>Ficha completa de cada cliente: historial de sesiones, referencias de dise&ntilde;o, notas del artista y datos de contacto. Busca cualquier cliente en menos de un segundo.</p>
         <div class="feat-detail">Busca en toda tu base de clientes en menos de 1 segundo</div>
-      </div>
-      <div class="feat-card">
-        <div class="feat-card-icon">&#x1F4B3;</div>
-        <h4>Caja registradora (POS)</h4>
-        <p>Cobra tratamientos, bonos y productos de cuidado personal. Acepta m&uacute;ltiples m&eacute;todos de pago y genera recibos al instante.</p>
-        <div class="feat-detail">Funciona completamente offline &mdash; sin internet en el cobro</div>
       </div>
       <div class="feat-card">
         <div class="feat-card-icon">&#x1F514;</div>
         <h4>Recordatorios autom&aacute;ticos</h4>
-        <p>WhatsApp, Telegram, Viber y Email. Confirmaci&oacute;n de reserva, recordatorio 24&nbsp;h antes del tratamiento, felicitaci&oacute;n de cumplea&ntilde;os y mensaje de reactivaci&oacute;n.</p>
-        <div class="feat-detail">Telegram, WhatsApp, Viber y Email &mdash; todos los canales incluidos</div>
+        <p>WhatsApp, Telegram, Viber y Email. Confirmaci&oacute;n de cita, recordatorio 24&nbsp;h antes, recordatorio 1&nbsp;h antes, mensaje de cuidados post-tatuaje y reactivaci&oacute;n de clientes inactivos.</p>
+        <div class="feat-detail">Telegram, WhatsApp, Viber y Email &mdash; todos incluidos</div>
       </div>
       <div class="feat-card">
         <div class="feat-card-icon">&#x1F4E6;</div>
         <h4>Control de inventario</h4>
-        <p>Gestiona el stock de aceites esenciales, cosm&eacute;ticos y productos de spa. Recibe alertas autom&aacute;ticas cuando un producto llega al m&iacute;nimo configurado.</p>
-        <div class="feat-detail">Notificaci&oacute;n autom&aacute;tica cuando el stock llega al m&iacute;nimo</div>
+        <p>Gestiona el stock de tinta, agujas, pl&aacute;sticos y dem&aacute;s suministros con cantidades m&iacute;nimas configurables. Recibe alertas autom&aacute;ticas cuando un material llega al m&iacute;nimo.</p>
+        <div class="feat-detail">Alerta enviada por Telegram, WhatsApp, Email o Viber</div>
       </div>
       <div class="feat-card">
         <div class="feat-card-icon">&#x1F513;</div>
         <h4>Sin vendor lock-in</h4>
         <p>Tus datos en tu servidor. Sin cuotas de plataforma, sin comisiones sobre reservas. Instala con Docker en un solo comando.</p>
-        <div class="feat-detail">Sin App Store, sin comisi&oacute;n del 30% de Apple/Google en compras</div>
+        <div class="feat-detail">Licencia MIT &mdash; modifica y adapta libremente</div>
       </div>
     </div>
   </div>
@@ -522,37 +522,37 @@ const pageContent = `
 
 <section class="sec sec-green">
   <div class="sec-head">
-    <h2>As&iacute; funciona Pronto en tu spa</h2>
-    <p>Desde un nuevo cliente hasta un habitual fiel &mdash; totalmente automatizado.</p>
+    <h2>C&oacute;mo funciona tu estudio con Pronto</h2>
+    <p>Desde un nuevo cliente hasta una sesi&oacute;n recurrente &mdash; completamente automatizado.</p>
   </div>
   <div class="workflow">
     <div class="wf-step">
       <div class="wf-num">01</div>
-      <div class="wf-title">El cliente descubre tus servicios</div>
-      <div class="wf-desc">Enlazado desde Instagram, Google o donde quieras. Sin app, sin cuenta &mdash; solo nombre y tel&eacute;fono.</div>
+      <div class="wf-title">El cliente encuentra tu p&aacute;gina de reservas</div>
+      <div class="wf-desc">Enlazada desde Instagram, Google o donde quieras. Solo nombre y tel&eacute;fono &mdash; sin app ni cuenta.</div>
     </div>
     <div class="wf-step">
       <div class="wf-num">02</div>
-      <div class="wf-title">Reserva confirmada al instante</div>
-      <div class="wf-desc">Confirmaci&oacute;n inmediata por WhatsApp, Telegram, Email o Viber.</div>
+      <div class="wf-title">Cita confirmada con dep&oacute;sito</div>
+      <div class="wf-desc">Confirmaci&oacute;n instant&aacute;nea por WhatsApp, Telegram, Email o Viber. Dep&oacute;sito registrado en el POS.</div>
     </div>
     <div class="wf-step">
       <div class="wf-num">03</div>
-      <div class="wf-title">Recordatorios sin intervenci&oacute;n tuya</div>
-      <div class="wf-desc">24 horas y 1 hora antes del tratamiento. Sin mensajes manuales. Menos ausencias.</div>
+      <div class="wf-title">Recordatorios sin intervenci&oacute;n</div>
+      <div class="wf-desc">24 horas y 1 hora antes de la sesi&oacute;n. Cero mensajes manuales. Menos no-presentaciones.</div>
     </div>
     <div class="wf-step">
       <div class="wf-num">04</div>
-      <div class="wf-title">Cobro y<br>fidelizaci&oacute;n</div>
-      <div class="wf-desc">Cobra en el POS. Gracias autom&aacute;tico. Cliente a&ntilde;adido a tu CRM para siempre.</div>
+      <div class="wf-title">Cobro y cuidados post-tatuaje</div>
+      <div class="wf-desc">Descuenta el dep&oacute;sito en el POS. Instrucciones de cuidados enviadas autom&aacute;ticamente 2 horas despu&eacute;s.</div>
     </div>
   </div>
 </section>
 
 <section class="sec sec-blue">
   <div class="sec-head">
-    <h2>Recordatorios que fidelizan a tus clientes</h2>
-    <p>El &uacute;nico software spa open-source con Email, Telegram, WhatsApp y Viber integrados &mdash; sin plugins ni add-ons de pago.</p>
+    <h2>Mensajes autom&aacute;ticos que reducen los no-shows</h2>
+    <p>El &uacute;nico software open-source para estudios de tatuajes con Email, Telegram, WhatsApp y Viber integrados &mdash; sin plugins ni cargos adicionales.</p>
   </div>
   <div class="channel-row">
     <div class="channel"><span class="dot dot-green"></span>Email</div>
@@ -566,38 +566,38 @@ const pageContent = `
     <div class="notif-grid">
       <div class="notif-card">
         <div class="ev-emoji">&#x2705;</div>
-        <div class="ev-text">Confirmaci&oacute;n de reserva</div>
-        <div class="ev-sub">Enviada autom&aacute;ticamente al confirmar el tratamiento</div>
+        <div class="ev-text">Confirmaci&oacute;n de cita</div>
+        <div class="ev-sub">Enviada autom&aacute;ticamente al reservar una sesi&oacute;n de tatuaje</div>
         <div class="ev-channels">WhatsApp &middot; Telegram &middot; Email &middot; Viber</div>
       </div>
       <div class="notif-card">
         <div class="ev-emoji">&#x23F0;</div>
         <div class="ev-text">Recordatorio 24 horas</div>
-        <div class="ev-sub">&ldquo;Te esperamos ma&ntilde;ana para tu masaje de las 11:00&rdquo;</div>
+        <div class="ev-sub">&ldquo;Te esperamos ma&ntilde;ana para tu sesi&oacute;n de las 15:00&rdquo;</div>
         <div class="ev-channels">WhatsApp &middot; Telegram &middot; Email &middot; Viber</div>
       </div>
       <div class="notif-card">
         <div class="ev-emoji">&#x23F3;</div>
         <div class="ev-text">Recordatorio 1 hora antes</div>
-        <div class="ev-sub">Para reducir las inasistencias de &uacute;ltimo momento</div>
+        <div class="ev-sub">Para eliminar las ausencias de &uacute;ltimo momento</div>
         <div class="ev-channels">WhatsApp &middot; Telegram &middot; Email &middot; Viber</div>
       </div>
       <div class="notif-card">
         <div class="ev-emoji">&#x1F48C;</div>
-        <div class="ev-text">Gracias por visitarnos</div>
-        <div class="ev-sub">Mensaje autom&aacute;tico 2 horas despu&eacute;s del tratamiento</div>
+        <div class="ev-text">Cuidados post-tatuaje</div>
+        <div class="ev-sub">Instrucciones autom&aacute;ticas enviadas 2 horas despu&eacute;s de la sesi&oacute;n</div>
         <div class="ev-channels">WhatsApp &middot; Telegram &middot; Email &middot; Viber</div>
       </div>
       <div class="notif-card">
         <div class="ev-emoji">&#x1F504;</div>
         <div class="ev-text">Reactivaci&oacute;n</div>
-        <div class="ev-sub">&ldquo;Llevas 30 d&iacute;as sin visitarnos, te echamos de menos&rdquo;</div>
+        <div class="ev-sub">&ldquo;Llevas 60 d&iacute;as sin visitarnos, &iquest;tienes alg&uacute;n nuevo dise&ntilde;o en mente?&rdquo;</div>
         <div class="ev-channels">WhatsApp &middot; Telegram &middot; Email &middot; Viber</div>
       </div>
       <div class="notif-card">
         <div class="ev-emoji">&#x1F4E6;</div>
         <div class="ev-text">Alerta de stock m&iacute;nimo</div>
-        <div class="ev-sub">Aviso interno cuando aceites o cosm&eacute;ticos se agotan</div>
+        <div class="ev-sub">Aviso interno cuando la tinta u otros suministros se agotan</div>
         <div class="ev-channels">Al propietario por cualquier canal</div>
       </div>
     </div>
@@ -606,21 +606,21 @@ const pageContent = `
 
 <section class="sec sec-warm">
   <div class="sec-head">
-    <h2>Por qu&eacute; los spas eligen Pronto</h2>
-    <p>Comparativa con las plataformas de reservas para spas m&aacute;s conocidas.</p>
+    <h2>Por qu&eacute; los estudios de tatuajes eligen Pronto</h2>
+    <p>Comparativa con las plataformas de reservas para tatuadores m&aacute;s conocidas.</p>
   </div>
   <div class="comp-table">
     <div class="comp-row header">
       <div class="comp-cell">Caracter&iacute;stica</div>
       <div class="comp-cell">Pronto</div>
-      <div class="comp-cell">Plataformas marketplace</div>
-      <div class="comp-cell">SaaS de suscripci&oacute;n</div>
+      <div class="comp-cell">Booksy</div>
+      <div class="comp-cell">Fresha</div>
     </div>
     <div class="comp-row pronto-row">
       <div class="comp-cell">Comisi&oacute;n por reservas</div>
       <div class="comp-cell good">$0 siempre</div>
-      <div class="comp-cell bad">15&ndash;30% por reserva</div>
-      <div class="comp-cell" style="color:#374151">$0 (cuota mensual)</div>
+      <div class="comp-cell bad">Cuota mensual</div>
+      <div class="comp-cell bad">Comisi&oacute;n por pago online</div>
     </div>
     <div class="comp-row">
       <div class="comp-cell">Los datos son tuyos</div>
@@ -629,10 +629,10 @@ const pageContent = `
       <div class="comp-cell bad">&#x2717; Bloqueados</div>
     </div>
     <div class="comp-row">
-      <div class="comp-cell">Registro de cliente</div>
-      <div class="comp-cell good">&#x2717; Solo nombre + tel.</div>
-      <div class="comp-cell bad">&#x2713; Cuenta obligatoria</div>
-      <div class="comp-cell bad">&#x2713; Cuenta obligatoria</div>
+      <div class="comp-cell">Gesti&oacute;n de dep&oacute;sitos</div>
+      <div class="comp-cell good">&#x2713; POS integrado</div>
+      <div class="comp-cell bad">&#x2717; / Add-on</div>
+      <div class="comp-cell bad">&#x2717; / Add-on</div>
     </div>
     <div class="comp-row">
       <div class="comp-cell">Opci&oacute;n self-hosted</div>
@@ -655,40 +655,37 @@ const pageContent = `
   </div>
   <div style="text-align:center;margin-top:24px">
     <div class="badge-row">
-      <span class="badge">Centros de masajes</span>
-      <span class="badge">Spas</span>
-      <span class="badge">Centros de bienestar</span>
-      <span class="badge">Terapeutas</span>
-      <span class="badge">Centros hol&iacute;sticos</span>
-      <span class="badge">Salas de yoga y meditaci&oacute;n</span>
-      <span class="badge">Balnearios</span>
+      <span class="badge">Estudios de tatuajes</span>
+      <span class="badge">Estudios de piercing</span>
+      <span class="badge">Estudios de micropigmentaci&oacute;n</span>
+      <span class="badge">Estudios de l&aacute;ser</span>
+      <span class="badge">Estudios de pesta&ntilde;as</span>
     </div>
   </div>
 </section>
 
 <section class="sec sec-white">
   <div class="sec-head">
-    <h2>Dos formas de usar Pronto en tu spa</h2>
+    <h2>Dos formas de usar Pronto en tu estudio</h2>
     <p>Instala en tu servidor para control total, o usa nuestra nube y empieza en minutos.</p>
   </div>
   <div class="two-paths">
     <div class="path-card self">
-      <div class="path-label">Opci&oacute;n 1</div>
+      <div class="path-label">Opci&oacute;n 1 &middot; Control total &middot; MIT License</div>
       <h3>En tu propio servidor</h3>
       <p class="path-desc">Descarga el c&oacute;digo, ejecuta docker compose up -d y Pronto arranca en tu servidor. Tus datos nunca salen de tu infraestructura.</p>
       <div class="code-block"><span class="code-prefix">$</span>docker compose up -d</div><br>
       <div class="path-points" style="margin-top:16px">
-        <div class="path-point"><div class="path-point-dot"></div><div class="path-point-text"><strong>$0 para siempre</strong> &mdash; sin suscripci&oacute;n, sin l&iacute;mites de clientes ni terapeutas</div></div>
+        <div class="path-point"><div class="path-point-dot"></div><div class="path-point-text"><strong>$0 para siempre</strong> &mdash; sin suscripci&oacute;n, sin l&iacute;mites de clientes ni artistas</div></div>
         <div class="path-point"><div class="path-point-dot"></div><div class="path-point-text"><strong>Licencia MIT</strong> &mdash; modifica, ampl&iacute;a y white-label libremente</div></div>
         <div class="path-point"><div class="path-point-dot"></div><div class="path-point-text"><strong>Cualquier servidor</strong> &mdash; VPS Linux, Windows, macOS. 1&nbsp;GB RAM m&iacute;nimo</div></div>
       </div>
-      <a href="https://github.com/SGrappelli/pronto" class="btn-outline" style="margin-right:10px">Ver en GitHub &rarr;</a>
-      <a href="/docs" class="btn-outline">Documentaci&oacute;n &rarr;</a>
+      <a href="https://github.com/SGrappelli/pronto" class="btn-outline" onclick="window.gtag&&window.gtag('event','github_click',{label:'cta_button',page:'/es/para/tatuajes'})">Ver en GitHub &rarr;</a>
     </div>
     <div class="path-card cloud">
-      <div class="path-label">Opci&oacute;n 2</div>
+      <div class="path-label">Opci&oacute;n 2 &middot; Sin instalaci&oacute;n &middot; Desde $0/mes</div>
       <h3>En la nube (trypronto.app)</h3>
-      <p class="path-desc">Crea tu cuenta y empieza en minutos. Tu spa obtiene su propio subdominio: mispa.trypronto.app. Prueba gratuita de 14 d&iacute;as en planes de pago.</p>
+      <p class="path-desc">Crea tu cuenta y empieza en minutos. Tu estudio obtiene su propio subdominio: miestudio.trypronto.app. Prueba gratuita de 14 d&iacute;as en planes de pago.</p>
       <div class="trial-banner">
         <div class="trial-big">14 d&iacute;as</div>
         <div>
@@ -697,23 +694,23 @@ const pageContent = `
         </div>
       </div>
       <div class="path-points">
-        <div class="path-point"><div class="path-point-dot"></div><div class="path-point-text"><strong>Tu subdominio</strong> &mdash; mispa.trypronto.app o dominio propio en Pro+</div></div>
-        <div class="path-point"><div class="path-point-dot"></div><div class="path-point-text"><strong>Nos encargamos de todo</strong> &mdash; copias de seguridad, monitorizaci&oacute;n, funciones nuevas autom&aacute;ticamente</div></div>
+        <div class="path-point"><div class="path-point-dot"></div><div class="path-point-text"><strong>Tu subdominio</strong> &mdash; miestudio.trypronto.app o dominio propio en Pro+</div></div>
+        <div class="path-point"><div class="path-point-dot"></div><div class="path-point-text"><strong>Nos encargamos de todo</strong> &mdash; actualizaciones, backups y monitoreo de uptime</div></div>
       </div>
-      <a href="/register" class="btn-primary">Empieza gratis</a>
+      <a href="/register" class="btn-primary" onclick="window.gtag&&window.gtag('event','cta_click',{label:'start_free',page:'/es/para/tatuajes'})">Empieza gratis</a>
     </div>
   </div>
 
   <div style="height:48px"></div>
   <div style="text-align:center;margin-bottom:22px">
-    <p style="font-family:'Bricolage Grotesque',sans-serif;font-size:22px;font-weight:700;color:#0a0a0a">Planes para spas de todos los tama&ntilde;os</p>
+    <p style="font-family:'Bricolage Grotesque',sans-serif;font-size:22px;font-weight:700;color:#0a0a0a">Planes para estudios de tatuajes de todos los tama&ntilde;os</p>
   </div>
   <div class="plans">
     <div class="plan">
       <div class="plan-name">Free</div>
       <div class="plan-price">$0<span>/mes</span></div>
       <span class="plan-trial-free">Gratis para siempre</span>
-      <div class="plan-limit">1 terapeuta &middot; 100 clientes</div>
+      <div class="plan-limit">1 artista &middot; 100 clientes</div>
       <ul class="plan-feats">
         <li>POS + CRM + Inventario</li>
         <li>Notificaciones por Email</li>
@@ -724,7 +721,7 @@ const pageContent = `
       <div class="plan-name">Starter</div>
       <div class="plan-price">$19<span>/mes</span></div>
       <div class="plan-trial">14 d&iacute;as de prueba gratis</div>
-      <div class="plan-limit">3 terapeutas &middot; 1.000 clientes</div>
+      <div class="plan-limit">3 artistas &middot; 1.000 clientes</div>
       <ul class="plan-feats">
         <li>Telegram + WhatsApp + Viber</li>
         <li>Reservas online</li>
@@ -735,7 +732,7 @@ const pageContent = `
       <div class="plan-name">Pro</div>
       <div class="plan-price">$39<span>/mes</span></div>
       <div class="plan-trial">14 d&iacute;as de prueba gratis</div>
-      <div class="plan-limit">15 terapeutas &middot; ilimitado</div>
+      <div class="plan-limit">15 artistas &middot; ilimitado</div>
       <ul class="plan-feats">
         <li>Anal&iacute;tica <span class="badge-soon" style="font-size:10px;background:#fef3c7;color:#92400e;padding:1px 6px;border-radius:8px">Pr&oacute;ximamente</span></li>
         <li>Dominio propio</li>
@@ -763,46 +760,46 @@ const pageContent = `
   <div class="faq-inner">
     <h2>Preguntas frecuentes</h2>
     <div class="faq-item">
-      <div class="faq-q">&iquest;Cu&aacute;l es el mejor software gratuito para centros de masajes y spa?</div>
-      <div class="faq-a">Pronto ofrece un plan gratuito completo para spas y centros de masajes con POS, CRM de clientes, reservas online, control de inventario y notificaciones por Email &mdash; sin l&iacute;mite de tiempo y sin tarjeta de cr&eacute;dito. El plan gratuito incluye 1 terapeuta y hasta 100 clientes.</div>
+      <div class="faq-q">&iquest;Cu&aacute;l es el mejor software gratuito para estudios de tatuajes?</div>
+      <div class="faq-a">Pronto ofrece un plan gratuito completo para estudios de tatuajes con POS, CRM de clientes, reservas de citas, control de inventario y notificaciones por Email &mdash; sin l&iacute;mite de tiempo y sin tarjeta de cr&eacute;dito. El plan gratuito incluye 1 artista y hasta 100 clientes.</div>
     </div>
     <div class="faq-item">
-      <div class="faq-q">&iquest;Puedo gestionar las reservas de masajes y tratamientos con Pronto?</div>
-      <div class="faq-a">S&iacute;. Los clientes reservan tratamientos directamente desde tu p&aacute;gina p&uacute;blica sin necesidad de crear una cuenta. Solo introducen su nombre y tel&eacute;fono. Pronto confirma la reserva autom&aacute;ticamente y env&iacute;a recordatorios 24 horas y 1 hora antes del tratamiento por WhatsApp, Telegram o Email.</div>
+      <div class="faq-q">&iquest;Puedo gestionar los dep&oacute;sitos de las citas con Pronto?</div>
+      <div class="faq-a">S&iacute;. Pronto permite registrar el dep&oacute;sito de cada cita en la caja registradora y vincularlo al cliente. Al finalizar la sesi&oacute;n, el dep&oacute;sito se descuenta del total autom&aacute;ticamente. No necesitas hojas de c&aacute;lculo ni transferencias sin control.</div>
     </div>
     <div class="faq-item">
-      <div class="faq-q">&iquest;Pronto cobra comisi&oacute;n por las reservas de mis clientes?</div>
+      <div class="faq-q">&iquest;Pronto cobra comisi&oacute;n por las reservas de mi estudio?</div>
       <div class="faq-a">No. Pronto no cobra ninguna comisi&oacute;n sobre las reservas ni sobre los pagos. Tus clientes reservan directamente contigo y t&uacute; recibes el 100% de cada transacci&oacute;n. No hay plataforma intermediaria.</div>
     </div>
     <div class="faq-item">
-      <div class="faq-q">&iquest;Funciona con WhatsApp para enviar recordatorios a los clientes del spa?</div>
-      <div class="faq-a">S&iacute;. Pronto env&iacute;a recordatorios autom&aacute;ticos por WhatsApp, Telegram, Viber y Email. Los mensajes incluyen: confirmaci&oacute;n de reserva, recordatorio 24 horas antes, recordatorio 1 hora antes del tratamiento, mensaje de agradecimiento y recordatorio de reactivaci&oacute;n para clientes inactivos.</div>
+      <div class="faq-q">&iquest;Funciona con WhatsApp para enviar recordatorios de citas?</div>
+      <div class="faq-a">S&iacute;. Pronto env&iacute;a recordatorios autom&aacute;ticos por WhatsApp, Telegram, Viber y Email. Los mensajes incluyen: confirmaci&oacute;n de cita, recordatorio 24 horas antes, recordatorio 1 hora antes de la sesi&oacute;n, instrucciones de cuidados post-tatuaje y recordatorio de reactivaci&oacute;n para clientes inactivos.</div>
     </div>
     <div class="faq-item">
-      <div class="faq-q">&iquest;Puedo llevar el inventario de aceites, cosm&eacute;ticos y productos del spa?</div>
-      <div class="faq-a">S&iacute;. El m&oacute;dulo de inventario permite registrar aceites esenciales, cosm&eacute;ticos, toallas y cualquier producto del spa con cantidades m&iacute;nimas configurables. Cuando el stock de un producto llega al m&iacute;nimo, Pronto env&iacute;a una alerta autom&aacute;tica para que puedas reponer a tiempo.</div>
+      <div class="faq-q">&iquest;Puedo controlar el inventario de tinta, agujas y materiales?</div>
+      <div class="faq-a">S&iacute;. El m&oacute;dulo de inventario permite registrar tinta, agujas, pl&aacute;sticos y cualquier suministro con cantidades m&iacute;nimas configurables. Cuando el stock de un material llega al m&iacute;nimo, Pronto env&iacute;a una alerta autom&aacute;tica para que puedas reponer a tiempo.</div>
     </div>
     <div class="faq-item">
-      <div class="faq-q">&iquest;Tiene aplicaci&oacute;n m&oacute;vil para el spa?</div>
-      <div class="faq-a">Pronto es una Progressive Web App (PWA) que se instala en la pantalla de inicio de cualquier m&oacute;vil sin necesidad de App Store ni Google Play. Funciona en Android e iOS y permite gestionar reservas y cobros incluso sin conexi&oacute;n a internet.</div>
+      <div class="faq-q">&iquest;Tiene aplicaci&oacute;n m&oacute;vil para gestionar el estudio?</div>
+      <div class="faq-a">Pronto es una Progressive Web App (PWA) que se instala en la pantalla de inicio de cualquier m&oacute;vil sin necesidad de App Store ni Google Play. Funciona en Android e iOS y permite gestionar citas y cobros incluso sin conexi&oacute;n a internet.</div>
     </div>
     <div class="faq-item">
       <div class="faq-q">&iquest;C&oacute;mo instalo Pronto en mi propio servidor?</div>
-      <div class="faq-a">Necesitas Docker en cualquier servidor Linux, Windows o macOS con al menos 1 GB de RAM. Ejecuta <code>docker compose up -d</code> y el sistema de gesti&oacute;n del spa arranca autom&aacute;ticamente. No se requieren conocimientos de DevOps. Consulta la <a href="https://github.com/SGrappelli/pronto" style="color:#3b82f6;text-decoration:none">documentaci&oacute;n en GitHub</a> para instrucciones paso a paso.</div>
+      <div class="faq-a">Necesitas Docker en cualquier servidor Linux, Windows o macOS con al menos 1 GB de RAM. Ejecuta <code>docker compose up -d</code> y el sistema de gesti&oacute;n del estudio arranca autom&aacute;ticamente. No se requieren conocimientos de DevOps. Consulta la <a href="https://github.com/SGrappelli/pronto" style="color:#3b82f6;text-decoration:none">documentaci&oacute;n en GitHub</a> para instrucciones paso a paso.</div>
     </div>
     <div class="faq-item">
-      <div class="faq-q">&iquest;Cu&aacute;ntos terapeutas o empleados puedo a&ntilde;adir?</div>
-      <div class="faq-a">El plan gratuito incluye 1 terapeuta. El plan Starter permite 3 terapeutas, el plan Pro hasta 15 y el plan Agency admite m&uacute;ltiples ubicaciones con terapeutas ilimitados. Cada terapeuta tiene su propio acceso y puede gestionar su agenda de tratamientos de forma independiente.</div>
+      <div class="faq-q">&iquest;Cu&aacute;ntos artistas o empleados puedo a&ntilde;adir?</div>
+      <div class="faq-a">El plan gratuito incluye 1 artista. El plan Starter permite 3 artistas, el plan Pro hasta 15 y el plan Agency admite m&uacute;ltiples ubicaciones con artistas ilimitados. Cada artista tiene su propio acceso y puede gestionar su agenda de citas de forma independiente.</div>
     </div>
   </div>
 </section>
 
 <section class="cta-band">
-  <h2>Empieza a gestionar tu spa gratis</h2>
+  <h2>Empieza a gestionar tu estudio de tatuajes gratis</h2>
   <p>Sin tarjeta de cr&eacute;dito. Sin comisiones. Tus datos, tu servidor.</p>
   <div>
-    <a href="/register" class="btn-cta-white">Crear cuenta gratis</a>
-    <a href="https://github.com/SGrappelli/pronto" class="btn-cta-outline">Ver en GitHub</a>
+    <a href="/register" class="btn-cta-white" onclick="window.gtag&&window.gtag('event','cta_click',{label:'start_free',page:'/es/para/tatuajes'})">Crear cuenta gratis</a>
+    <a href="https://github.com/SGrappelli/pronto" class="btn-cta-outline" onclick="window.gtag&&window.gtag('event','github_click',{label:'cta_band',page:'/es/para/tatuajes'})">Ver en GitHub</a>
   </div>
 </section>
 
@@ -820,24 +817,23 @@ const pageContent = `
       <a href="/es/para/salones">Salones de belleza</a>
       <a href="/es/para/barberia">Barber&iacute;as</a>
       <a href="/es/para/gimnasio">Gimnasios</a>
-      <a href="/es/para/clinica-dental">Cl&iacute;nicas dentales</a>
+      <a href="/es/para/spa">Masajes y spa</a>
       <a href="/es/para/cafeteria">Cafeter&iacute;as</a>
-      <a href="/es/para/tatuajes">Estudios de tatuajes</a>
       <a href="/terms">T&eacute;rminos</a>
       <a href="/privacy">Privacidad</a>
       <a href="/refund">Reembolsos</a>
     </div>
     <div class="footer-social">
-      <a href="https://x.com/prontopos" target="_blank" rel="noopener noreferrer" aria-label="Pronto on X" onclick="window.gtag&&window.gtag('event','social_click',{platform:'twitter',page:'/es/para/spa'})"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.76l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a>
-      <a href="https://www.linkedin.com/in/konstantinumnov/" target="_blank" rel="noopener noreferrer" aria-label="Pronto on LinkedIn" onclick="window.gtag&&window.gtag('event','social_click',{platform:'linkedin',page:'/es/para/spa'})"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg></a>
-      <a href="https://www.youtube.com/@trypronto" target="_blank" rel="noopener noreferrer" aria-label="Pronto on YouTube" onclick="window.gtag&&window.gtag('event','social_click',{platform:'youtube',page:'/es/para/spa'})"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg></a>
-      <a href="https://github.com/SGrappelli/pronto" target="_blank" rel="noopener noreferrer" aria-label="Pronto on GitHub" onclick="window.gtag&&window.gtag('event','github_click',{label:'footer_link',page:'/es/para/spa'})"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg></a>
+      <a href="https://x.com/prontopos" target="_blank" rel="noopener noreferrer" aria-label="Pronto on X" onclick="window.gtag&&window.gtag('event','social_click',{platform:'twitter',page:'/es/para/tatuajes'})"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.76l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a>
+      <a href="https://www.linkedin.com/in/konstantinumnov/" target="_blank" rel="noopener noreferrer" aria-label="Pronto on LinkedIn" onclick="window.gtag&&window.gtag('event','social_click',{platform:'linkedin',page:'/es/para/tatuajes'})"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg></a>
+      <a href="https://www.youtube.com/@trypronto" target="_blank" rel="noopener noreferrer" aria-label="Pronto on YouTube" onclick="window.gtag&&window.gtag('event','social_click',{platform:'youtube',page:'/es/para/tatuajes'})"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg></a>
+      <a href="https://github.com/SGrappelli/pronto" target="_blank" rel="noopener noreferrer" aria-label="Pronto on GitHub" onclick="window.gtag&&window.gtag('event','github_click',{label:'footer_social',page:'/es/para/tatuajes'})"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg></a>
     </div>
   </div>
 </footer>
 `
 
-export default function SpaPage() {
+export default function TatuajesPage() {
   return (
     <>
       <script
