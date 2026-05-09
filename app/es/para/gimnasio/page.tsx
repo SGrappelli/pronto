@@ -1,4 +1,4 @@
-import type { Metadata } from 'next'
+﻿import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
   title: 'Software Gratis para Gimnasios y Centros Fitness — Pronto',
@@ -166,6 +166,7 @@ nav{position:sticky;top:0;z-index:100;background:rgba(255,255,255,0.96);backdrop
 .nav-link{font-size:16px;color:#374151;text-decoration:none;font-weight:500}
 .nav-link:hover{color:#111}
 .btn-nav{background:#111;color:#fff;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:500;padding:10px 22px;border-radius:8px;border:none;cursor:pointer;text-decoration:none}
+.hide-mob{display:inline}
 
 .hero{padding:80px 48px 72px;background:#fff;border-bottom:1px solid #f0f0f0}
 .hero-inner{max-width:860px;margin:0 auto;text-align:center}
@@ -336,6 +337,7 @@ footer{padding:28px 48px;border-top:1px solid #f0f0f0;display:flex;justify-conte
 @media(max-width:640px){
   nav{padding:0 16px;height:56px}
   .nav-right{gap:12px}
+  .hide-mob{display:none}
   .hero{padding:48px 16px 40px}
   .hero h1{font-size:34px;letter-spacing:-1px}
   .hero-sub{font-size:16px}
@@ -366,9 +368,10 @@ const pageContent = `
 <nav>
   <a href="/es/" class="nav-brand">Pronto<span>.</span></a>
   <div class="nav-right">
-    <a href="/es/precios" class="nav-link">Precios</a>
-    <a href="/login" class="nav-link">Iniciar sesi&oacute;n</a>
-    <a href="/register" class="btn-nav">Empieza gratis</a>
+    <a href="/es/precios" class="nav-link hide-mob" onclick="window.gtag&&window.gtag('event','pricing_click',{source:'/es/para/gimnasio'})">Precios</a>
+    <a href="/for/fitness" class="nav-link lang-switcher" onclick="window.gtag&&window.gtag('event','language_switch',{to:'en'})">EN</a>
+    <a href="/login" class="nav-link" onclick="window.gtag&&window.gtag('event','login_click',{label:'nav_signin'})">Iniciar sesi&oacute;n</a>
+    <a href="/register" class="btn-nav" onclick="window.gtag&&window.gtag('event','cta_click',{label:'start_free',page:'/es/para/gimnasio'})">Empezar gratis</a>
   </div>
 </nav>
 
