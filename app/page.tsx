@@ -616,9 +616,6 @@ export default function RootPage() {
           <Link href="/terms">Terms</Link>
           <Link href="/privacy">Privacy</Link>
           <Link href="/refund">Refund policy</Link>
-          <TrackedAnchor href="https://github.com/SGrappelli/pronto" target="_blank" rel="noopener noreferrer" eventName="github_click" eventParams={{ label: 'footer_link', page: '/' }}>
-            GitHub
-          </TrackedAnchor>
         </div>
       </footer>
     </div>

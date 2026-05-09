@@ -1,4 +1,4 @@
-import type { Metadata } from 'next'
+﻿import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
   title: 'Pronto for Service Businesses — POS, Booking & CRM',
@@ -332,7 +332,6 @@ const pageContent = `
     <a href="/terms">Terms</a>
     <a href="/privacy">Privacy</a>
     <a href="/refund">Refund policy</a>
-    <a href="https://github.com/SGrappelli/pronto" onclick="window.gtag&&window.gtag('event','github_click',{label:'footer_link',page:'/for'})">GitHub</a>
   </div>
 </footer>
 `
