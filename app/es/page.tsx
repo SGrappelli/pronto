@@ -35,16 +35,16 @@ export const metadata: Metadata = {
     'software código abierto negocios servicios',
   ],
   alternates: {
-    canonical: 'https://trypronto.app/es/',
+    canonical: 'https://trypronto.app/es',
     languages: {
       en: 'https://trypronto.app/',
-      es: 'https://trypronto.app/es/',
+      es: 'https://trypronto.app/es',
       'x-default': 'https://trypronto.app/',
     },
   },
   openGraph: {
     type: 'website',
-    url: 'https://trypronto.app/es/',
+    url: 'https://trypronto.app/es',
     title: 'Pronto — Software Gratis de POS, CRM y Reservas para Negocios de Servicios',
     description:
       'POS, CRM, reservas y notificaciones omnicanal para cualquier negocio de servicios. Sin comisiones. Una sola instalación.',
@@ -65,7 +65,7 @@ const softwareAppJsonLd = {
   '@context': 'https://schema.org',
   '@type': 'SoftwareApplication',
   name: 'Pronto',
-  url: 'https://trypronto.app/es/',
+  url: 'https://trypronto.app/es',
   description:
     'Software gratuito y de código abierto para negocios de servicios: POS, CRM, reservas en línea, inventario y notificaciones automáticas por WhatsApp, Telegram, Viber y Email.',
   applicationCategory: 'BusinessApplication',
