@@ -159,6 +159,8 @@ nav{position:sticky;top:0;z-index:100;background:rgba(255,255,255,0.96);backdrop
 .nav-link:hover{color:#111}
 .btn-nav{background:#111;color:#fff;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:500;padding:10px 22px;border-radius:8px;border:none;cursor:pointer;text-decoration:none;white-space:nowrap}
 .hide-mob{display:inline}
+.hide-tablet{display:inline}
+@media(max-width:900px){.hide-tablet{display:none}}
 
 .hero{padding:80px 48px 72px;background:#fff;border-bottom:1px solid #f0f0f0}
 .hero-inner{max-width:860px;margin:0 auto;text-align:center}
@@ -364,7 +366,7 @@ const pageContent = `
   <div class="nav-right">
     <a href="/es/precios" class="nav-link hide-mob">Precios</a>
     <select aria-label="Language" onchange="var l=this.value;var m={en:'/for/auto-repair',es:'/es/para/autoservicio',pt:'/pt/para/autoservicio'};if(window.gtag)window.gtag('event','language_switch',{to:l});window.location.href=m[l]||'/';" style="font-size:0.85rem;font-family:inherit;font-weight:500;border:1px solid #d1d5db;border-radius:6px;padding:4px 6px;background:transparent;cursor:pointer;color:inherit;appearance:none;-webkit-appearance:none;min-width:52px;"><option value="en">EN</option><option value="es" selected>ES</option><option value="pt">PT</option></select>
-    <a href="/login" class="nav-link">Iniciar sesi&oacute;n</a>
+    <a href="/login" class="nav-link hide-tablet">Iniciar sesi&oacute;n</a>
     <a href="/register" class="btn-nav">Empezar gratis</a>
   </div>
 </nav>

@@ -201,7 +201,7 @@ export default function EsPreciosPage() {
           <TrackedLink href="/es/precios" className={`${styles.navLink} ${styles.hideMob}`} eventName="pricing_click" eventParams={{ source: '/es/precios' }}>
             Precios
           </TrackedLink>
-          <TrackedLink href="/login" className={styles.navLink} eventName="login_click" eventParams={{ label: 'nav_signin' }}>
+          <TrackedLink href="/login" className={`${styles.navLink} ${styles.hideTablet}`} eventName="login_click" eventParams={{ label: 'nav_signin' }}>
             Iniciar sesión
           </TrackedLink>
           <LangSwitcher />

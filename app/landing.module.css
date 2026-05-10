@@ -59,6 +59,14 @@
   display: inline;
 }
 
+.hideTablet {
+  display: inline;
+}
+
+@media (max-width: 900px) {
+  .hideTablet { display: none; }
+}
+
 @media (max-width: 640px) {
   .hideMob { display: none; }
 }
