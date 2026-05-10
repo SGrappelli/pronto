@@ -66,6 +66,7 @@ export default function PublicLayout({ children }: { children: React.ReactNode }
           <Link href="/">Home</Link>
           <Link href="/pricing">Pricing</Link>
           <Link href="/for">For businesses</Link>
+          <Link href="/docs">Documentation</Link>
           <Link href="/for/salons">Salons</Link>
           <Link href="/terms">Terms</Link>
           <Link href="/privacy">Privacy</Link>
