@@ -35,7 +35,7 @@ export function Sidebar({ businessName }: SidebarProps) {
   return (
     <aside className="w-60 shrink-0 bg-white border-r border-gray-200 flex flex-col h-screen sticky top-0">
       <div className="px-5 py-5 border-b border-gray-100">
-        <div className="font-bold text-blue-600 text-lg">Pronto</div>
+        <div className="font-bold text-lg" style={{ color: '#111' }}>Pronto<span style={{ color: '#16a34a' }}>.</span></div>
         <div className="text-xs text-gray-500 truncate mt-0.5">{businessName}</div>
       </div>
 
