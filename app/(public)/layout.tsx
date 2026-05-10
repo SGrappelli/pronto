@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import { LangSwitcher } from '@/components/LangSwitcher'
 import { Bricolage_Grotesque, DM_Sans } from 'next/font/google'
 import styles from './public-layout.module.css'
 
@@ -28,9 +29,7 @@ export default function PublicLayout({ children }: { children: React.ReactNode }
           <Link href="/login" className={styles.navLink}>
             Sign in
           </Link>
-          <Link href="/es/precios" className={`${styles.navLink} lang-switcher`}>
-            ES
-          </Link>
+          <LangSwitcher />
           <Link href="/register" className={styles.btnNav}>
             Start free
           </Link>

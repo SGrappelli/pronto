@@ -363,7 +363,7 @@ const pageContent = `
   <a href="/es/" class="nav-brand">Pronto<span>.</span></a>
   <div class="nav-right">
     <a href="/es/precios" class="nav-link hide-mob" onclick="window.gtag&&window.gtag('event','pricing_click',{source:'/es/para/barberia'})">Precios</a>
-    <a href="/for/barbershops" class="nav-link lang-switcher" onclick="window.gtag&&window.gtag('event','language_switch',{to:'en'})">EN</a>
+    <select aria-label="Language" onchange="var l=this.value;if(window.gtag)window.gtag('event','language_switch',{to:l});var p=window.location.pathname;var b=p.replace(/^\/(es|pt)/,'').replace(/^$/,'/');window.location.href=l==='en'?b||'/':'/'+l+b;" style="font-size:0.85rem;font-family:inherit;font-weight:500;border:1px solid #d1d5db;border-radius:6px;padding:4px 6px;background:transparent;cursor:pointer;color:inherit;appearance:none;-webkit-appearance:none;min-width:52px;"><option value="en">EN</option><option value="es" selected>ES</option><option value="pt">PT</option></select>
     <a href="/login" class="nav-link" onclick="window.gtag&&window.gtag('event','login_click',{label:'nav_signin'})">Iniciar sesi&oacute;n</a>
     <a href="/register" class="btn-nav" onclick="window.gtag&&window.gtag('event','cta_click',{label:'start_free',page:'/es/para/barberia'})">Empezar gratis</a>
   </div>

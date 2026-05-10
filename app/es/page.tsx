@@ -3,6 +3,7 @@ import Link from 'next/link'
 import { Bricolage_Grotesque, DM_Sans } from 'next/font/google'
 import styles from '../landing.module.css'
 import { TrackedLink } from '@/components/tracked-link'
+import { LangSwitcher } from '@/components/LangSwitcher'
 import { TrackedAnchor } from '@/components/tracked-anchor'
 
 const bricolage = Bricolage_Grotesque({
@@ -171,9 +172,7 @@ export default function EsPage() {
           <TrackedLink href="/login" className={styles.navLink} eventName="login_click" eventParams={{ label: 'nav_signin' }}>
             Iniciar sesión
           </TrackedLink>
-          <TrackedLink href="/" className={`${styles.navLink} lang-switcher`} eventName="language_switch" eventParams={{ to: 'en' }}>
-            EN
-          </TrackedLink>
+          <LangSwitcher />
           <TrackedLink href="/register" className={styles.btnNav} eventName="cta_click" eventParams={{ label: 'start_free', page: '/es' }}>
             Empezar gratis
           </TrackedLink>

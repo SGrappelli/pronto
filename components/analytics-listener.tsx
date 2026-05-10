@@ -13,6 +13,14 @@ interface Props {
  */
 export function AnalyticsListener({ page }: Props) {
   useEffect(() => {
+    function handleSelectChange(e: Event) {
+      const select = e.target as HTMLSelectElement
+      if (select.getAttribute('aria-label') !== 'Language') return
+      trackEvent('language_switch', { to: select.value })
+    }
+
+    document.addEventListener('change', handleSelectChange)
+
     function handleClick(e: MouseEvent) {
       const anchor = (e.target as Element).closest('a')
       if (!anchor) return
@@ -84,7 +92,10 @@ export function AnalyticsListener({ page }: Props) {
     }
 
     document.addEventListener('click', handleClick)
-    return () => document.removeEventListener('click', handleClick)
+    return () => {
+      document.removeEventListener('click', handleClick)
+      document.removeEventListener('change', handleSelectChange)
+    }
   }, [page])
 
   return null

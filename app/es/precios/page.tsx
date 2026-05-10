@@ -5,6 +5,7 @@ import { Check, Minus } from 'lucide-react'
 import { PricingCards } from './PricingCards'
 import styles from '../../(public)/public-layout.module.css'
 import { TrackedLink } from '@/components/tracked-link'
+import { LangSwitcher } from '@/components/LangSwitcher'
 import { TrackedAnchor } from '@/components/tracked-anchor'
 
 const bricolage = Bricolage_Grotesque({
@@ -203,9 +204,7 @@ export default function EsPreciosPage() {
           <TrackedLink href="/login" className={styles.navLink} eventName="login_click" eventParams={{ label: 'nav_signin' }}>
             Iniciar sesión
           </TrackedLink>
-          <TrackedLink href="/pricing" className={`${styles.navLink} lang-switcher`} eventName="language_switch" eventParams={{ to: 'en' }}>
-            EN
-          </TrackedLink>
+          <LangSwitcher />
           <TrackedLink href="/register" className={styles.btnNav} eventName="cta_click" eventParams={{ label: 'start_free', page: '/es/precios' }}>
             Empezar gratis
           </TrackedLink>
