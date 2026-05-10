@@ -363,7 +363,7 @@ const pageContent = `
   <a href="/" class="nav-brand">Pronto<span>.</span></a>
   <div class="nav-right">
     <a href="/es/precios" class="nav-link hide-mob">Precios</a>
-    <select aria-label="Language" onchange="var l=this.value;if(window.gtag)window.gtag('event','language_switch',{to:l});var p=window.location.pathname;var b=p.replace(/^\/(es|pt)/,'').replace(/^$/,'/');window.location.href=l==='en'?b||'/':'/'+l+b;" style="font-size:0.85rem;font-family:inherit;font-weight:500;border:1px solid #d1d5db;border-radius:6px;padding:4px 6px;background:transparent;cursor:pointer;color:inherit;appearance:none;-webkit-appearance:none;min-width:52px;"><option value="en">EN</option><option value="es" selected>ES</option><option value="pt">PT</option></select>
+    <select aria-label="Language" onchange="var l=this.value;var m={en:'/for/auto-repair',es:'/es/para/autoservicio',pt:'/pt/para/autoservicio'};if(window.gtag)window.gtag('event','language_switch',{to:l});window.location.href=m[l]||'/';" style="font-size:0.85rem;font-family:inherit;font-weight:500;border:1px solid #d1d5db;border-radius:6px;padding:4px 6px;background:transparent;cursor:pointer;color:inherit;appearance:none;-webkit-appearance:none;min-width:52px;"><option value="en">EN</option><option value="es" selected>ES</option><option value="pt">PT</option></select>
     <a href="/login" class="nav-link">Iniciar sesi&oacute;n</a>
     <a href="/register" class="btn-nav">Empezar gratis</a>
   </div>
