@@ -70,9 +70,6 @@ export default function PublicLayout({ children }: { children: React.ReactNode }
           <Link href="/terms">Terms</Link>
           <Link href="/privacy">Privacy</Link>
           <Link href="/refund">Refund policy</Link>
-          <a href="https://github.com/SGrappelli/pronto" target="_blank" rel="noopener noreferrer">
-            GitHub
-          </a>
         </div>
       </footer>
     </div>

@@ -405,18 +405,13 @@ export default function EsPreciosPage() {
           </TrackedAnchor>
         </div>
         <div className={styles.footerLinks}>
-          <Link href="/es/">Inicio</Link>
-          <Link href="/es/precios">Precios</Link>
-          <Link href="/es/para">Para negocios</Link>
-          <Link href="/es/para/salones">Salones</Link>
-          <Link href="/es/para/barberia">Barberías</Link>
-          <Link href="/es/para/clinica-dental">Clínicas Dentales</Link>
-          <Link href="/terms">Términos</Link>
-          <Link href="/privacy">Privacidad</Link>
-          <Link href="/refund">Reembolsos</Link>
-          <TrackedAnchor href="https://github.com/SGrappelli/pronto" target="_blank" rel="noopener noreferrer" eventName="github_click" eventParams={{ label: 'footer_link', page: '/es/precios' }}>
-            GitHub
-          </TrackedAnchor>
+          <Link href="/es/" style={{ fontSize: '15px' }}>Inicio</Link>
+          <Link href="/es/precios" style={{ fontSize: '15px' }}>Precios</Link>
+          <Link href="/es/para" style={{ fontSize: '15px' }}>Para negocios</Link>
+          <Link href="/es/para/salones" style={{ fontSize: '15px' }}>Salones</Link>
+          <Link href="/terms" style={{ fontSize: '15px' }}>Términos</Link>
+          <Link href="/privacy" style={{ fontSize: '15px' }}>Privacidad</Link>
+          <Link href="/refund" style={{ fontSize: '15px' }}>Reembolsos</Link>
         </div>
       </footer>
     </div>
