@@ -5,7 +5,8 @@ import { createClient } from '@/lib/supabase/client'
 import { formatInBusinessTimezone, uses12HourClock } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
 import { DatePicker } from '@/components/ui/date-picker'
-import { ChevronLeft, ChevronRight, ExternalLink, CreditCard } from 'lucide-react'
+import { ChevronLeft, ChevronRight, ExternalLink, CreditCard, AlertCircle } from 'lucide-react'
+import Link from 'next/link'
 import { useTranslations } from 'next-intl'
 import { useRouter } from 'next/navigation'
 import {
@@ -67,6 +68,9 @@ interface Props {
   businessId: string; slug: string; timezone: string
   appointments: Appointment[]; employees: Employee[]; services: Service[]; clients: Client[]
   businessHours: BusinessHour[]
+  plan: string
+  monthlyBookingCount: number
+  bookingLimit: number
 }
 
 // ─── Draggable appointment card ────────────────────────────────────────────────
@@ -119,7 +123,7 @@ function getMonday(date: Date) {
   return d
 }
 
-export function BookingCalendar({ businessId, slug, timezone, appointments: initial, employees, services, clients: initialClients, businessHours }: Props) {
+export function BookingCalendar({ businessId, slug, timezone, appointments: initial, employees, services, clients: initialClients, businessHours, plan, monthlyBookingCount: initialBookingCount, bookingLimit }: Props) {
   const supabase = createClient()
   const router = useRouter()
   const t = useTranslations('booking')
@@ -156,6 +160,8 @@ export function BookingCalendar({ businessId, slug, timezone, appointments: init
   }, [businessHours, appointments, timezone])
   const [showForm, setShowForm] = useState(false)
   const [formError, setFormError] = useState<string | null>(null)
+  const [bookingCount, setBookingCount] = useState(initialBookingCount)
+  const bookingLimitReached = plan === 'free' && bookingCount >= bookingLimit
   const locale = typeof navigator !== 'undefined' ? navigator.language : 'en-US'
   const is12h = uses12HourClock(locale)
 
@@ -331,6 +337,7 @@ export function BookingCalendar({ businessId, slug, timezone, appointments: init
 
     if (!error && data) {
       setAppointments((prev) => [...prev, data as Appointment])
+      setBookingCount((n) => n + 1)
       setShowForm(false)
       setFormError(null)
       setForm({ client_id: '', employee_id: '', service_id: '', date: '', hour: '', minute: '00', period: 'AM', notes: '' })
@@ -477,6 +484,23 @@ export function BookingCalendar({ businessId, slug, timezone, appointments: init
         <div className="fixed inset-0 bg-black/40 z-50 flex items-center justify-center p-4">
           <div className="bg-white rounded-2xl shadow-xl w-full max-w-md p-6">
             <h2 className="text-base font-semibold mb-4">{t('form.heading')}</h2>
+            {bookingLimitReached ? (
+              <div className="space-y-4">
+                <div className="flex items-start gap-3 rounded-lg border border-orange-200 bg-orange-50 px-4 py-3">
+                  <AlertCircle className="w-5 h-5 text-orange-500 shrink-0 mt-0.5" />
+                  <div className="flex-1 min-w-0">
+                    <p className="text-sm font-semibold text-orange-900">You&apos;ve used all {bookingLimit} bookings this month on the Free plan.</p>
+                    <p className="text-sm text-orange-700 mt-0.5">Upgrade to Starter for unlimited bookings.</p>
+                  </div>
+                </div>
+                <div className="flex gap-2">
+                  <Button variant="outline" className="flex-1" onClick={() => setShowForm(false)}>Close</Button>
+                  <Link href="/pricing" className="flex-1">
+                    <Button className="w-full">Upgrade →</Button>
+                  </Link>
+                </div>
+              </div>
+            ) : (
             <div className="space-y-3">
               <div>
                 <label className="text-xs text-gray-500 font-medium">{t('form.serviceLabel')}</label>
@@ -586,6 +610,7 @@ export function BookingCalendar({ businessId, slug, timezone, appointments: init
                 {saving ? t('form.saving') : t('form.save')}
               </Button>
             </div>
+            )}
           </div>
         </div>
       )}

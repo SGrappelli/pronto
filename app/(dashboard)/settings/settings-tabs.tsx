@@ -5,7 +5,8 @@ import { useRouter, useSearchParams } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
-import { Plus, Pencil, Trash2, Check, Loader2, CheckCircle2, AlertCircle, Zap, Building2, Users, Eye, EyeOff } from 'lucide-react'
+import { Plus, Pencil, Trash2, Check, Loader2, CheckCircle2, AlertCircle, Zap, Building2, Users, Eye, EyeOff, X } from 'lucide-react'
+import { UpgradeBanner } from '@/components/ui/upgrade-banner'
 import { useTranslations } from 'next-intl'
 import { getWhopCheckoutUrl } from '@/lib/whop'
 
@@ -74,6 +75,10 @@ export function SettingsTabs({ business: initial, services: initServices, employ
   const [employees, setEmployees] = useState(initEmployees)
   const [empForm, setEmpForm] = useState<Partial<Employee>>({})
   const [editingEmp, setEditingEmp] = useState<string | null>(null)
+  const [empLimitBanner, setEmpLimitBanner] = useState(false)
+
+  const EMPLOYEE_LIMITS: Record<string, number> = { free: 1, starter: 3, pro: 15, agency: Infinity }
+  const empLimit = EMPLOYEE_LIMITS[biz.subscription_tier ?? 'free'] ?? 1
 
   // Working hours state — merge DB rows with defaults (in case some days are missing)
   const [hours, setHours] = useState<DayHours[]>(() => {
@@ -199,6 +204,11 @@ export function SettingsTabs({ business: initial, services: initServices, employ
       await supabase.from('employees').update(empForm).eq('id', editingEmp)
       setEmployees((prev) => prev.map((e) => e.id === editingEmp ? { ...e, ...empForm } as Employee : e))
     } else {
+      const activeCount = employees.filter((e) => e.is_active).length
+      if (activeCount >= empLimit) {
+        setEmpLimitBanner(true)
+        return
+      }
       const { data } = await supabase.from('employees').insert({
         business_id: biz.id, name: empForm.name!, role: empForm.role ?? 'employee',
         email: empForm.email ?? null, phone: empForm.phone ?? null,
@@ -206,6 +216,7 @@ export function SettingsTabs({ business: initial, services: initServices, employ
       if (data) setEmployees((prev) => [...prev, data as Employee])
     }
     setEmpForm({}); setEditingEmp(null)
+    setEmpLimitBanner(false)
     router.refresh()
   }
 
@@ -653,6 +664,14 @@ export function SettingsTabs({ business: initial, services: initServices, employ
           </div>
           <div className="bg-white rounded-xl border border-gray-200 p-5">
             <h3 className="text-sm font-semibold text-gray-900 mb-4">{editingEmp ? t('employees.editHeading') : t('employees.addHeading')}</h3>
+            {empLimitBanner && !editingEmp && (
+              <div className="mb-4">
+                <UpgradeBanner
+                  title={`Free plan includes ${empLimit} team member${empLimit === 1 ? '' : 's'}.`}
+                  description="Upgrade to Starter to add up to 3 team members."
+                />
+              </div>
+            )}
             <div className="grid sm:grid-cols-2 gap-3">
               {([
                 { key: 'name', label: t('employees.fields.name'), type: 'text' },
