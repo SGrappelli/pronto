@@ -90,7 +90,7 @@ const faqJsonLd = {
       name: '¿Pronto es realmente gratuito?',
       acceptedAnswer: {
         '@type': 'Answer',
-        text: 'Sí. La versión self-hosted es gratuita para siempre bajo licencia MIT, sin límites de clientes, empleados ni funciones. La versión en la nube tiene un plan gratuito y planes de pago desde $19 al mes con 14 días de prueba gratis.',
+        text: 'Sí. La versión self-hosted es gratuita para siempre bajo licencia MIT, sin límites de clientes, empleados ni funciones. La versión en la nube tiene un plan gratuito permanente y planes de pago desde $19 al mes.',
       },
     },
     {
@@ -439,14 +439,8 @@ export default function EsPage() {
                 encargamos de las actualizaciones, copias de seguridad e infraestructura.
               </p>
               <div className={styles.trialBanner}>
-                <div className={styles.trialBig}>14 días gratis</div>
-                <div>
-                  <div className={styles.trialText}>
-                    Prueba cualquier plan de pago gratis durante 14 días.
-                  </div>
-                  <div className={styles.trialNote}>
-                    Sin tarjeta de crédito. Cancela cuando quieras.
-                  </div>
+                <div className={styles.trialText}>
+                  Plan gratuito — sin tarjeta de crédito.
                 </div>
               </div>
               <div className={styles.pathPoints}>
@@ -497,7 +491,6 @@ export default function EsPage() {
                 <div className={styles.planPrice}>
                   $19<span>/mes</span>
                 </div>
-                <div className={styles.planTrial}>14 días de prueba gratis</div>
                 <div className={styles.planLimit}>3 empleados · 1 000 clientes</div>
                 <ul className={styles.planFeats}>
                   <li>+ Telegram y WhatsApp</li>
@@ -510,7 +503,6 @@ export default function EsPage() {
                 <div className={styles.planPrice}>
                   $39<span>/mes</span>
                 </div>
-                <div className={styles.planTrial}>14 días de prueba gratis</div>
                 <div className={styles.planLimit}>15 empleados · ilimitado</div>
                 <ul className={styles.planFeats}>
                   <li>+ Notificaciones por Viber</li>
@@ -529,7 +521,6 @@ export default function EsPage() {
                 <div className={styles.planPrice}>
                   $79<span>/mes</span>
                 </div>
-                <div className={styles.planTrial}>14 días de prueba gratis</div>
                 <div className={styles.planLimit}>Varias ubicaciones</div>
                 <ul className={styles.planFeats}>
                   <li>+ White-label</li>
@@ -556,7 +547,7 @@ export default function EsPage() {
             <div className={styles.faqA}>
               Sí. La versión self-hosted es gratuita para siempre bajo licencia MIT, sin límites de
               clientes, empleados ni funciones. La versión en la nube tiene un plan gratuito y
-              planes de pago desde $19 al mes con 14 días de prueba gratis.
+              planes de pago desde $19 al mes.
             </div>
           </div>
           <div className={styles.faqItem}>

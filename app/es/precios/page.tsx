@@ -23,7 +23,7 @@ const dmSans = DM_Sans({
 export const metadata: Metadata = {
   title: 'Precios de Pronto — Software Gratis de Gestión para Negocios de Servicios',
   description:
-    'Pronto tiene un plan gratuito para siempre y planes de pago desde $19 al mes. Sin comisiones, sin contratos. Self-hosted gratis bajo licencia MIT o prueba la nube 14 días gratis.',
+    'Pronto tiene un plan gratuito para siempre y planes de pago desde $19 al mes. Sin comisiones, sin contratos. Plan gratuito disponible — sin tarjeta de crédito.',
   keywords: [
     'precios software gestión negocios',
     'software POS precio',
@@ -48,7 +48,7 @@ export const metadata: Metadata = {
     url: 'https://trypronto.app/es/precios',
     title: 'Precios de Pronto — Desde $0 al mes. Sin comisiones.',
     description:
-      'Plan gratuito para siempre en self-hosted. Planes en la nube desde $19 al mes con 14 días de prueba gratis. Sin tarjeta de crédito.',
+      'Plan gratuito para siempre. Planes en la nube desde $19 al mes. Sin tarjeta de crédito.',
     images: [{ url: 'https://trypronto.app/og-pricing-es.png' }],
     locale: 'es_ES',
     siteName: 'Pronto',
@@ -57,7 +57,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'Precios de Pronto — Desde $0 al mes. Sin comisiones.',
     description:
-      'Plan gratuito para siempre en self-hosted. Planes en la nube desde $19 al mes con 14 días de prueba gratis. Sin tarjeta de crédito.',
+      'Plan gratuito para siempre. Planes en la nube desde $19 al mes. Sin tarjeta de crédito.',
     images: ['https://trypronto.app/og-pricing-es.png'],
   },
 }
@@ -76,10 +76,10 @@ const faqJsonLd = {
     },
     {
       '@type': 'Question',
-      name: '¿Hay período de prueba en los planes de pago?',
+      name: '¿Tiene Pronto un plan gratuito permanente?',
       acceptedAnswer: {
         '@type': 'Answer',
-        text: 'Sí. Los planes Starter, Pro y Agency incluyen 14 días de prueba gratuita. No se requiere tarjeta de crédito para comenzar. Puedes cancelar en cualquier momento antes de que termine el período de prueba sin cargo alguno.',
+        text: 'Sí. La versión en la nube tiene un plan gratuito permanente: 50 reservas al mes, 100 clientes, 1 empleado. Los planes de pago empiezan en $19 al mes.',
       },
     },
     {
@@ -227,7 +227,7 @@ export default function EsPreciosPage() {
               <p className="text-lg text-gray-600 max-w-2xl mx-auto">
                 Sin comisiones. Sin contratos. Sin sorpresas.
                 <br />
-                Self-hosted gratis para siempre o prueba la nube 14 días sin tarjeta.
+                Self-hosted gratis para siempre o empieza con el plan gratuito en la nube. Sin tarjeta.
               </p>
             </div>
 
@@ -303,8 +303,8 @@ export default function EsPreciosPage() {
                     a: 'Sí. El plan Gratis no tiene fecha de vencimiento — incluye POS, CRM, inventario, página de reservas en línea y notificaciones por Email para 1 empleado y hasta 100 clientes. Además, la versión self-hosted es completamente gratuita sin ningún límite bajo licencia MIT.',
                   },
                   {
-                    q: '¿Hay período de prueba en los planes de pago?',
-                    a: 'Sí. Los planes Starter, Pro y Agency incluyen 14 días de prueba gratuita. No se requiere tarjeta de crédito para comenzar. Puedes cancelar en cualquier momento antes de que termine el período de prueba sin cargo alguno.',
+                    q: '¿Tiene Pronto un plan gratuito permanente?',
+                    a: 'Sí. La versión en la nube tiene un plan gratuito permanente: 50 reservas al mes, 100 clientes, 1 empleado. Los planes de pago empiezan en $19 al mes.',
                   },
                   {
                     q: '¿Pronto cobra comisión por reservas o ventas?',

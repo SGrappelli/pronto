@@ -36,8 +36,8 @@
     "footer": "Pronto © 2026 · MIT License",
     "plans": {
       "free": { "name": "Free", "price": "$0", "limit": "1 employee · 100 clients", "cta": "Get started" },
-      "starter": { "name": "Starter", "price": "$19/mo", "limit": "3 employees · 1 000 clients", "cta": "Start trial" },
-      "pro": { "name": "Pro", "price": "$39/mo", "limit": "15 employees · unlimited", "cta": "Start trial" },
+      "starter": { "name": "Starter", "price": "$19/mo", "limit": "3 employees · 1 000 clients", "cta": "Get started" },
+      "pro": { "name": "Pro", "price": "$39/mo", "limit": "15 employees · unlimited", "cta": "Get started" },
       "agency": { "name": "Agency", "price": "$79/mo", "limit": "Multi-location · white-label", "cta": "Contact us" }
     }
   },
@@ -58,7 +58,7 @@
     },
     "register": {
       "heading": "Create your account",
-      "subheading": "14-day free trial · No credit card required",
+      "subheading": "Free plan forever · No credit card required",
       "businessNameLabel": "Business name",
       "businessNamePlaceholder": "Maya's Salon",
       "emailLabel": "Email",

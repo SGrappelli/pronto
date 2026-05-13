@@ -258,7 +258,7 @@ nav{position:sticky;top:0;z-index:100;background:rgba(255,255,255,0.96);backdrop
 .plan-name{font-family:'Bricolage Grotesque',sans-serif;font-size:18px;font-weight:700;color:#111}
 .plan-price{font-family:'Bricolage Grotesque',sans-serif;font-size:32px;font-weight:800;margin-bottom:4px;color:#0a0a0a;line-height:1.1}
 .plan-price span{font-size:14px;font-weight:400;font-family:'DM Sans',sans-serif;color:#9ca3af}
-.plan-trial{font-size:12px;color:#166534;font-weight:700;background:#dcfce7;padding:4px 10px;border-radius:8px;display:inline-block;margin-bottom:12px}
+
 .plan-trial-free{font-size:13px;color:#9ca3af;font-weight:500;margin-bottom:12px;display:block}
 .plan-limit{font-size:13px;color:#374151;margin-bottom:16px;padding-top:10px;border-top:1px solid #f3f4f6}
 .plan-feats{list-style:none;font-size:13px;display:flex;flex-direction:column;gap:8px;flex:1}
@@ -281,10 +281,10 @@ nav{position:sticky;top:0;z-index:100;background:rgba(255,255,255,0.96);backdrop
 .path-point-dot{width:6px;height:6px;border-radius:50%;background:#16a34a;margin-top:7px;flex-shrink:0}
 .path-point-text{font-size:15px;color:#374151;line-height:1.6}
 .path-point-text strong{color:#111;font-weight:600}
-.trial-banner{background:#fff;border:1px solid #bbf7d0;border-radius:12px;padding:20px 26px;margin-bottom:26px;display:flex;align-items:center;gap:22px;flex-wrap:wrap}
-.trial-big{font-family:'Bricolage Grotesque',sans-serif;font-size:40px;font-weight:800;color:#16a34a;white-space:nowrap;line-height:1.1}
-.trial-text{font-size:15px;color:#166534;font-weight:500;margin-bottom:4px}
-.trial-note{font-size:13px;color:#16a34a;opacity:0.75}
+
+
+
+
 
 .faq{padding:72px 48px;background:#fff;border-top:1px solid #f0f0f0}
 .faq-inner{max-width:760px;margin:0 auto}
@@ -362,8 +362,8 @@ footer{padding:28px 48px;border-top:1px solid #f0f0f0;display:flex;justify-conte
   .comp-cell{padding:12px 10px;font-size:13px}
   .cta-band{padding:44px 16px}
   .cta-band h2{font-size:26px}
-  .trial-banner{flex-direction:column;gap:10px;padding:16px 20px}
-  .trial-big{font-size:32px}
+
+
   .path-card{padding:24px}
 }
 `
@@ -690,14 +690,7 @@ const pageContent = `
     <div class="path-card cloud">
       <div class="path-label">Opci&oacute;n 2</div>
       <h3>En la nube (trypronto.app)</h3>
-      <p class="path-desc">Crea tu cuenta y empieza en minutos. Tu gimnasio obtiene su propio subdominio: migimnasio.trypronto.app. Prueba gratuita de 14 d&iacute;as en planes de pago.</p>
-      <div class="trial-banner">
-        <div class="trial-big">14 d&iacute;as</div>
-        <div>
-          <div class="trial-text">Prueba cualquier plan de pago gratis 14 d&iacute;as.</div>
-          <div class="trial-note">Sin tarjeta de cr&eacute;dito. Cancela cuando quieras.</div>
-        </div>
-      </div>
+      <p class="path-desc">Crea tu cuenta y empieza en minutos. Tu gimnasio obtiene su propio subdominio: migimnasio.trypronto.app. Plan gratuito permanente. Sin tarjeta de cr&eacute;dito.</p>
       <div class="path-points">
         <div class="path-point"><div class="path-point-dot"></div><div class="path-point-text"><strong>Tu subdominio</strong> &mdash; migimnasio.trypronto.app o dominio propio en Pro+</div></div>
         <div class="path-point"><div class="path-point-dot"></div><div class="path-point-text"><strong>Nos encargamos de todo</strong> &mdash; copias de seguridad, monitorizaci&oacute;n, funciones nuevas autom&aacute;ticamente</div></div>
@@ -725,7 +718,6 @@ const pageContent = `
     <div class="plan">
       <div class="plan-name">Starter</div>
       <div class="plan-price">$19<span>/mes</span></div>
-      <div class="plan-trial">14 d&iacute;as de prueba gratis</div>
       <div class="plan-limit">3 entrenadores &middot; 1.000 socios</div>
       <ul class="plan-feats">
         <li>Telegram + WhatsApp + Viber</li>
@@ -736,7 +728,6 @@ const pageContent = `
       <div class="plan-popular">M&aacute;s popular</div>
       <div class="plan-name">Pro</div>
       <div class="plan-price">$39<span>/mes</span></div>
-      <div class="plan-trial">14 d&iacute;as de prueba gratis</div>
       <div class="plan-limit">15 entrenadores &middot; ilimitado</div>
       <ul class="plan-feats">
         <li>Anal&iacute;tica <span class="badge-soon" style="font-size:10px;background:#fef3c7;color:#92400e;padding:1px 6px;border-radius:8px">Pr&oacute;ximamente</span></li>
@@ -748,7 +739,6 @@ const pageContent = `
     <div class="plan">
       <div class="plan-name">Agency</div>
       <div class="plan-price">$79<span>/mes</span></div>
-      <div class="plan-trial">14 d&iacute;as de prueba gratis</div>
       <div class="plan-limit">Varias ubicaciones</div>
       <ul class="plan-feats">
         <li>White-label</li>
@@ -758,7 +748,7 @@ const pageContent = `
       </ul>
     </div>
   </div>
-  <p class="pricing-note">Los planes de pago incluyen prueba gratuita de 14 d&iacute;as. Sin tarjeta de cr&eacute;dito para el plan gratuito. <a href="/es/precios">Ver precios completos &rarr;</a></p>
+  <p class="pricing-note">Sin tarjeta de cr&eacute;dito para el plan gratuito. <a href="/es/precios">Ver precios completos &rarr;</a></p>
 </section>
 
 <section class="faq">
