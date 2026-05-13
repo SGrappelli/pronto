@@ -24,14 +24,15 @@ export default async function PublicBookingPage({ params }: { params: { slug: st
 
   const { data: bizRaw } = await supabase
     .from('businesses')
-    .select('id, name, type, phone, logo_url, currency, slug, timezone, telegram_bot_token, viber_bot_token')
+    .select('id, name, type, phone, logo_url, currency, slug, timezone, subscription_tier, telegram_bot_token, viber_bot_token')
     .eq('slug', params.slug)
     .maybeSingle()
 
   if (!bizRaw) notFound()
 
   // Destructure tokens server-side only — never passed to the client component
-  const { telegram_bot_token, viber_bot_token, ...business } = bizRaw
+  const { telegram_bot_token, viber_bot_token, subscription_tier, ...business } = bizRaw
+  const isFreeTier = !subscription_tier || subscription_tier === 'free'
 
   const [
     { data: services },
@@ -97,6 +98,19 @@ export default async function PublicBookingPage({ params }: { params: { slug: st
           viberBotUri={viberBotUri}
         />
       </div>
+
+      {isFreeTier && (
+        <div className="pb-6 text-center">
+          <a
+            href="https://trypronto.app"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-xs text-gray-400 hover:text-gray-500 transition-colors"
+          >
+            Powered by Pronto
+          </a>
+        </div>
+      )}
     </div>
   )
 }

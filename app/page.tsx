@@ -421,11 +421,7 @@ export default function RootPage() {
                 backups, and infrastructure.
               </p>
               <div className={styles.trialBanner}>
-                <div className={styles.trialBig}>14 days free</div>
-                <div>
-                  <div className={styles.trialText}>Try any paid plan free for 14 days.</div>
-                  <div className={styles.trialNote}>No credit card required. Cancel anytime.</div>
-                </div>
+                <div className={styles.trialText}>Free plan — no credit card required.</div>
               </div>
               <div className={styles.pathPoints}>
                 <div className={styles.pathPoint}>
@@ -475,7 +471,6 @@ export default function RootPage() {
                 <div className={styles.planPrice}>
                   $19<span>/mo</span>
                 </div>
-                <div className={styles.planTrial}>14-day free trial</div>
                 <div className={styles.planLimit}>3 employees · unlimited clients · unlimited bookings</div>
                 <ul className={styles.planFeats}>
                   <li>Everything in Free</li>
@@ -488,7 +483,6 @@ export default function RootPage() {
                 <div className={styles.planPrice}>
                   $39<span>/mo</span>
                 </div>
-                <div className={styles.planTrial}>14-day free trial</div>
                 <div className={styles.planLimit}>15 employees · unlimited</div>
                 <ul className={styles.planFeats}>
                   <li>Everything in Starter</li>
@@ -508,7 +502,6 @@ export default function RootPage() {
                 <div className={styles.planPrice}>
                   $79<span>/mo</span>
                 </div>
-                <div className={styles.planTrial}>14-day free trial</div>
                 <div className={styles.planLimit}>Multiple locations</div>
                 <ul className={styles.planFeats}>
                   <li>Everything in Pro</li>
@@ -538,7 +531,7 @@ export default function RootPage() {
             <div className={styles.faqA}>
               Yes. The self-hosted version is free forever under MIT license — no limits on clients,
               staff, or features. The cloud version has a free tier and paid plans from $19/month
-              with a 14-day free trial.
+              with a permanent free plan.
             </div>
           </div>
           <div className={styles.faqItem}>

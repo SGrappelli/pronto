@@ -2,6 +2,7 @@ import { createClient } from '@/lib/supabase/server'
 import { Header } from '@/components/layout/header'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
+import { UpgradeBanner } from '@/components/ui/upgrade-banner'
 import { formatCurrency, formatInBusinessTimezone } from '@/lib/utils'
 import { Plus, Search, Phone, Mail } from 'lucide-react'
 import Link from 'next/link'
@@ -10,7 +11,7 @@ import { getTranslations } from 'next-intl/server'
 export default async function CRMPage({
   searchParams,
 }: {
-  searchParams: { q?: string; tag?: string }
+  searchParams: { q?: string; tag?: string; limit?: string }
 }) {
   const supabase = createClient()
   const t = await getTranslations('crm')
@@ -75,6 +76,14 @@ export default async function CRMPage({
         }
       />
       <main className="p-6">
+        {searchParams.limit === 'clients' && (
+          <div className="mb-4">
+            <UpgradeBanner
+              title="You've reached the 100-client limit on the Free plan."
+              description="Upgrade to Starter to add unlimited clients."
+            />
+          </div>
+        )}
         <div className="mb-4 relative">
           <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
           <form>

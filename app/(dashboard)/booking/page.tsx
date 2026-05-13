@@ -8,7 +8,7 @@ export default async function BookingPage() {
 
   const { data: business } = await supabase
     .from('businesses')
-    .select('id, slug, timezone')
+    .select('id, slug, timezone, subscription_tier')
     .eq('owner_id', user!.id)
     .maybeSingle()
 
@@ -20,7 +20,13 @@ export default async function BookingPage() {
   const weekEnd = new Date(weekStart)
   weekEnd.setDate(weekStart.getDate() + 7)
 
-  const [{ data: appointments }, { data: employees }, { data: services }, { data: clients }, { data: businessHours }] =
+  const plan = business.subscription_tier ?? 'free'
+  const BOOKING_LIMIT = plan === 'free' ? 50 : Infinity
+
+  const monthStart = new Date(Date.UTC(today.getUTCFullYear(), today.getUTCMonth(), 1)).toISOString()
+  const monthEnd   = new Date(Date.UTC(today.getUTCFullYear(), today.getUTCMonth() + 1, 1)).toISOString()
+
+  const [{ data: appointments }, { data: employees }, { data: services }, { data: clients }, { data: businessHours }, { count: monthlyBookingCount }] =
     await Promise.all([
       supabase
         .from('appointments')
@@ -49,6 +55,12 @@ export default async function BookingPage() {
         .from('business_hours')
         .select('day_of_week, is_open, open_time, close_time')
         .eq('business_id', business.id),
+      supabase
+        .from('appointments')
+        .select('id', { count: 'exact', head: true })
+        .eq('business_id', business.id)
+        .gte('starts_at', monthStart)
+        .lt('starts_at', monthEnd),
     ])
 
   return (
@@ -63,6 +75,9 @@ export default async function BookingPage() {
         services={services ?? []}
         clients={clients ?? []}
         businessHours={businessHours ?? []}
+        plan={plan}
+        monthlyBookingCount={monthlyBookingCount ?? 0}
+        bookingLimit={BOOKING_LIMIT}
       />
     </>
   )

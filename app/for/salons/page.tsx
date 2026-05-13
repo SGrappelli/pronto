@@ -240,7 +240,7 @@ nav{position:sticky;top:0;z-index:100;background:rgba(255,255,255,0.96);backdrop
 .plan-name{font-family:'Bricolage Grotesque',sans-serif;font-size:18px;font-weight:700;color:#111}
 .plan-price{font-family:'Bricolage Grotesque',sans-serif;font-size:32px;font-weight:800;margin-bottom:4px;color:#0a0a0a;line-height:1.1}
 .plan-price span{font-size:14px;font-weight:400;font-family:'DM Sans',sans-serif;color:#9ca3af}
-.plan-trial{font-size:12px;color:#166534;font-weight:700;background:#dcfce7;padding:4px 10px;border-radius:8px;display:inline-block;margin-bottom:12px}
+
 .plan-trial-free{font-size:13px;color:#9ca3af;font-weight:500;margin-bottom:12px;display:block}
 .plan-limit{font-size:13px;color:#374151;margin-bottom:16px;padding-top:10px;border-top:1px solid #f3f4f6}
 .plan-feats{list-style:none;font-size:13px;display:flex;flex-direction:column;gap:8px;flex:1}
@@ -263,10 +263,10 @@ nav{position:sticky;top:0;z-index:100;background:rgba(255,255,255,0.96);backdrop
 .path-point-dot{width:6px;height:6px;border-radius:50%;background:#16a34a;margin-top:7px;flex-shrink:0}
 .path-point-text{font-size:15px;color:#374151;line-height:1.6}
 .path-point-text strong{color:#111;font-weight:600}
-.trial-banner{background:#fff;border:1px solid #bbf7d0;border-radius:12px;padding:20px 26px;margin-bottom:26px;display:flex;align-items:center;gap:22px;flex-wrap:wrap}
-.trial-big{font-family:'Bricolage Grotesque',sans-serif;font-size:40px;font-weight:800;color:#16a34a;white-space:nowrap;line-height:1.1}
-.trial-text{font-size:15px;color:#166534;font-weight:500;margin-bottom:4px}
-.trial-note{font-size:13px;color:#16a34a;opacity:0.75}
+
+
+
+
 
 .faq{padding:72px 48px;background:#fff;border-top:1px solid #f0f0f0}
 .faq-inner{max-width:760px;margin:0 auto}
@@ -342,8 +342,8 @@ footer{padding:28px 48px;border-top:1px solid #f0f0f0;display:flex;justify-conte
   .comp-cell{padding:12px 10px;font-size:13px}
   .cta-band{padding:44px 16px}
   .cta-band h2{font-size:26px}
-  .trial-banner{flex-direction:column;gap:10px;padding:16px 20px}
-  .trial-big{font-size:32px}
+
+
   .path-card{padding:24px}
 }
 `
@@ -671,13 +671,6 @@ const pageContent = `
       <div class="path-label">Option 2</div>
       <h3>Cloud &mdash; trypronto.app</h3>
       <p class="path-desc">No server needed. Get your salon&#39;s subdomain in 5 minutes. We handle everything.</p>
-      <div class="trial-banner">
-        <div class="trial-big">14 days free</div>
-        <div>
-          <div class="trial-text">Try any paid plan free for 14 days.</div>
-          <div class="trial-note">No credit card required. Cancel anytime.</div>
-        </div>
-      </div>
       <div class="path-points">
         <div class="path-point"><div class="path-point-dot"></div><div class="path-point-text"><strong>Your subdomain</strong> &mdash; salon-maya.trypronto.app or custom domain on Pro+</div></div>
         <div class="path-point"><div class="path-point-dot"></div><div class="path-point-text"><strong>We handle updates</strong> &mdash; backups, uptime monitoring, new features automatically</div></div>
@@ -706,7 +699,6 @@ const pageContent = `
     <div class="plan">
       <div class="plan-name">Starter</div>
       <div class="plan-price">$19<span>/mo</span></div>
-      <div class="plan-trial">14-day free trial</div>
       <div class="plan-limit">3 employees &middot; unlimited clients &middot; unlimited bookings</div>
       <ul class="plan-feats">
         <li>Everything in Free</li>
@@ -717,7 +709,6 @@ const pageContent = `
       <div class="plan-popular">Most popular</div>
       <div class="plan-name">Pro</div>
       <div class="plan-price">$39<span>/mo</span></div>
-      <div class="plan-trial">14-day free trial</div>
       <div class="plan-limit">15 employees &middot; unlimited</div>
       <ul class="plan-feats">
         <li>Everything in Starter</li>
@@ -729,7 +720,6 @@ const pageContent = `
     <div class="plan">
       <div class="plan-name">Agency</div>
       <div class="plan-price">$79<span>/mo</span></div>
-      <div class="plan-trial">14-day free trial</div>
       <div class="plan-limit">Multiple locations</div>
       <ul class="plan-feats">
         <li>Everything in Pro</li>

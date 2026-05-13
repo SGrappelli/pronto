@@ -8,6 +8,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { z } from 'zod'
 import { createServiceClient } from '@/lib/supabase/service'
 import { rateLimit, getIp } from '@/lib/rate-limit'
+import { checkBookingLimit } from '@/lib/plan-limits'
 
 /** Convert a wall-clock date+time (e.g. "2024-03-15", "14:30") in a named IANA timezone to a UTC Date. */
 function parseDateTimeInTz(date: string, time: string, timezone: string): Date {
@@ -74,7 +75,7 @@ export async function POST(req: NextRequest) {
 
   const supabase = createServiceClient()
 
-  // Verify the business exists and the service belongs to it; also fetch timezone
+  // Verify the business exists and the service belongs to it; also fetch timezone + plan
   const [{ data: service }, { data: biz }] = await Promise.all([
     supabase
       .from('services')
@@ -85,7 +86,7 @@ export async function POST(req: NextRequest) {
       .maybeSingle(),
     supabase
       .from('businesses')
-      .select('timezone')
+      .select('timezone, subscription_tier')
       .eq('id', businessId)
       .maybeSingle(),
   ])
@@ -95,6 +96,16 @@ export async function POST(req: NextRequest) {
   }
 
   const timezone = biz?.timezone ?? 'UTC'
+  const plan     = biz?.subscription_tier ?? 'free'
+
+  // Enforce monthly booking limit
+  const bookingCheck = await checkBookingLimit(supabase, businessId, plan)
+  if (!bookingCheck.allowed) {
+    return NextResponse.json(
+      { error: 'booking_limit_reached', message: 'This business has reached its monthly booking limit.' },
+      { status: 403 }
+    )
+  }
 
   // Upsert client
   let clientId: string | null = null
