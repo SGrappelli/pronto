@@ -501,6 +501,7 @@ export function BookingCalendar({ businessId, slug, timezone, appointments: init
                 </div>
               </div>
             ) : (
+            <>
             <div className="space-y-3">
               <div>
                 <label className="text-xs text-gray-500 font-medium">{t('form.serviceLabel')}</label>
@@ -610,6 +611,7 @@ export function BookingCalendar({ businessId, slug, timezone, appointments: init
                 {saving ? t('form.saving') : t('form.save')}
               </Button>
             </div>
+            </>
             )}
           </div>
         </div>
