@@ -36,7 +36,7 @@ const paidPlans = [
     description: 'Para agencias que gestionan varias ubicaciones.',
     highlight: false,
     popularBadge: undefined as string | undefined,
-    cta: 'Empezar Agency',
+    cta: 'Empezar',
     href: '/register',
   },
 ]

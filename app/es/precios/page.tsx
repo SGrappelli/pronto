@@ -152,16 +152,26 @@ const planColumns = [
 
 type FeatureValue = boolean | string
 
+const comingSoonLabels = new Set([
+  'Panel de analíticas avanzado',
+  'Programa de fidelización',
+  'Dominio personalizado',
+  'Varias ubicaciones',
+  'Modo white-label',
+  'Acceso a API',
+  'Soporte dedicado y SLA',
+])
+
 const features: { label: string; values: FeatureValue[]; section?: string }[] = [
   // Limits
-  { label: 'Empleados',                           values: ['1', '3', '10', 'Ilimitado'],    section: 'Límites' },
-  { label: 'Clientes',                            values: ['100', '1 000', 'Ilimitado', 'Ilimitado'] },
-  { label: 'Transacciones POS / mes',             values: ['20', 'Ilimitado', 'Ilimitado', 'Ilimitado'] },
-  { label: 'Citas / mes',                         values: ['10', 'Ilimitado', 'Ilimitado', 'Ilimitado'] },
+  { label: 'Empleados',                           values: ['1', '3', '15', 'Ilimitado'],    section: 'Límites' },
+  { label: 'Clientes en CRM',                     values: ['100', 'Ilimitado', 'Ilimitado', 'Ilimitado'] },
+  { label: 'Reservas / mes',                      values: ['50', 'Ilimitado', 'Ilimitado', 'Ilimitado'] },
   // Features
-  { label: 'Gestión de inventario',               values: [true, true, true, true],         section: 'Funciones' },
-  { label: 'CRM e historial de clientes',         values: [false, true, true, true] },
-  { label: 'Página de reservas online',           values: [false, true, true, true] },
+  { label: 'POS',                                 values: [true, true, true, true],         section: 'Funciones' },
+  { label: 'CRM e historial de clientes',         values: [true, true, true, true] },
+  { label: 'Gestión de inventario',               values: [true, true, true, true] },
+  { label: 'Página de reservas online',           values: [true, true, true, true] },
   { label: 'Panel de analíticas avanzado',        values: [false, false, true, true] },
   { label: 'Programa de fidelización',            values: [false, false, true, true] },
   { label: 'Dominio personalizado',               values: [false, false, true, true] },
@@ -170,8 +180,11 @@ const features: { label: string; values: FeatureValue[]; section?: string }[] = 
   { label: 'Acceso a API',                        values: [false, false, false, true] },
   // Notifications
   { label: 'Notificaciones por Email',            values: [true, true, true, true],         section: 'Notificaciones' },
-  { label: 'Notificaciones Telegram y WhatsApp',  values: [false, true, true, true] },
-  { label: 'Notificaciones por Viber',            values: [false, false, true, true] },
+  { label: 'Notificaciones por Telegram',         values: [true, true, true, true] },
+  { label: 'Notificaciones por WhatsApp',         values: [true, true, true, true] },
+  { label: 'Notificaciones por Viber',            values: [true, true, true, true] },
+  // Branding
+  { label: 'Badge «Powered by Pronto»',           values: [true, false, false, false],      section: 'Marca' },
   // Support
   { label: 'Soporte por Email',                   values: [true, true, true, true],         section: 'Soporte' },
   { label: 'Soporte prioritario',                 values: [false, false, true, true] },
@@ -266,7 +279,12 @@ export default function EsPreciosPage() {
                         key={feature.label}
                         className={`border-b border-gray-100 ${i % 2 === 0 ? 'bg-white' : 'bg-gray-50/40'}`}
                       >
-                        <td className="px-6 py-3.5 text-gray-700">{feature.label}</td>
+                        <td className="px-6 py-3.5 text-gray-700">
+                          {feature.label}
+                          {comingSoonLabels.has(feature.label) && (
+                            <span className="ml-2 inline-block bg-amber-100 text-amber-700 text-xs font-medium px-1.5 py-0.5 rounded">Próximamente</span>
+                          )}
+                        </td>
                         {feature.values.map((val, j) => (
                           <td key={j} className="px-4 py-3.5 text-center">
                             <FeatureCell value={val} />
