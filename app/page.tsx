@@ -462,12 +462,13 @@ export default function RootPage() {
                 <div className={styles.planName}>Free</div>
                 <div className={styles.planPrice}>$0</div>
                 <span className={styles.planTrialFree}>Free forever</span>
-                <div className={styles.planLimit}>1 employee · 100 clients</div>
+                <div className={styles.planLimit}>1 employee · 100 clients · 50 bookings/month</div>
                 <ul className={styles.planFeats}>
                   <li>POS + CRM + Inventory</li>
-                  <li>Email notifications</li>
+                  <li>Email + Telegram + WhatsApp + Viber notifications</li>
                   <li>Online booking page</li>
                 </ul>
+                <p style={{fontSize:'11px',color:'#9ca3af',marginTop:'8px'}}>&ldquo;Powered by Pronto&rdquo; on booking page</p>
               </div>
               <div className={styles.plan}>
                 <div className={styles.planName}>Starter</div>
@@ -475,10 +476,10 @@ export default function RootPage() {
                   $19<span>/mo</span>
                 </div>
                 <div className={styles.planTrial}>14-day free trial</div>
-                <div className={styles.planLimit}>3 employees · 1 000 clients</div>
+                <div className={styles.planLimit}>3 employees · unlimited clients · unlimited bookings</div>
                 <ul className={styles.planFeats}>
-                  <li>+ Telegram &amp; WhatsApp</li>
-                  <li>+ Online booking</li>
+                  <li>Everything in Free</li>
+                  <li>&ldquo;Powered by Pronto&rdquo; badge removed</li>
                 </ul>
               </div>
               <div className={`${styles.plan} ${styles.featured}`}>
@@ -490,13 +491,15 @@ export default function RootPage() {
                 <div className={styles.planTrial}>14-day free trial</div>
                 <div className={styles.planLimit}>15 employees · unlimited</div>
                 <ul className={styles.planFeats}>
-                  <li>+ Viber notifications</li>
+                  <li>Everything in Starter</li>
                   <li>
-                    + Analytics <span className={styles.badgeSoon}>Coming soon</span>
+                    Analytics dashboard <span className={styles.badgeSoon}>Coming soon</span>
                   </li>
-                  <li>+ Custom domain</li>
                   <li>
-                    + Loyalty program <span className={styles.badgeSoon}>Coming soon</span>
+                    Custom domain <span className={styles.badgeSoon}>Coming soon</span>
+                  </li>
+                  <li>
+                    Loyalty program <span className={styles.badgeSoon}>Coming soon</span>
                   </li>
                 </ul>
               </div>
@@ -508,11 +511,14 @@ export default function RootPage() {
                 <div className={styles.planTrial}>14-day free trial</div>
                 <div className={styles.planLimit}>Multiple locations</div>
                 <ul className={styles.planFeats}>
-                  <li>+ White-label</li>
+                  <li>Everything in Pro</li>
                   <li>
-                    + API access <span className={styles.badgeSoon}>Coming soon</span>
+                    White-label <span className={styles.badgeSoon}>Coming soon</span>
                   </li>
-                  <li>+ Priority support</li>
+                  <li>
+                    API access <span className={styles.badgeSoon}>Coming soon</span>
+                  </li>
+                  <li>Priority support</li>
                 </ul>
               </div>
             </div>

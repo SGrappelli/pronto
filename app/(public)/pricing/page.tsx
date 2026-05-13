@@ -92,6 +92,16 @@ const planColumns = [
 
 type FeatureValue = boolean | string
 
+const comingSoonLabels = new Set([
+  'Advanced analytics dashboard',
+  'Loyalty program',
+  'Custom domain',
+  'Multiple locations',
+  'White-label mode',
+  'API access',
+  'Dedicated support & SLA',
+])
+
 const features: { label: string; values: FeatureValue[]; section?: string }[] = [
   // Limits
   { label: 'Team members',                        values: ['1', '3', '10', 'Unlimited'],  section: 'Limits' },
@@ -175,7 +185,12 @@ export default function PricingPage() {
                     key={feature.label}
                     className={`border-b border-gray-100 ${i % 2 === 0 ? 'bg-white' : 'bg-gray-50/40'}`}
                   >
-                    <td className="px-6 py-3.5 text-gray-700">{feature.label}</td>
+                    <td className="px-6 py-3.5 text-gray-700">
+                      {feature.label}
+                      {comingSoonLabels.has(feature.label) && (
+                        <span className="ml-2 inline-block bg-amber-100 text-amber-700 text-xs font-medium px-1.5 py-0.5 rounded">Coming soon</span>
+                      )}
+                    </td>
                     {feature.values.map((val, j) => (
                       <td key={j} className="px-4 py-3.5 text-center">
                         <FeatureCell value={val} />
@@ -190,7 +205,7 @@ export default function PricingPage() {
 
         <p className="text-center text-sm text-gray-500 mt-10">
           Prices shown in USD. Billing is handled securely by{' '}
-          <span className="font-medium text-gray-700">Paddle</span>.
+          <span className="font-medium text-gray-700">Whop</span>.
           {' '}Annual plans include a 2-month discount. Questions? Contact us at{' '}
           <a href="mailto:support@trypronto.app" className="text-blue-600 hover:underline">
             support@trypronto.app

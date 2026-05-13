@@ -732,21 +732,22 @@ Nosotros gestionamos actualizaciones, backups y uptime.</p>
       <div class="plan-name">Gratis</div>
       <div class="plan-price">$0</div>
       <span class="plan-trial-free">Gratis para siempre</span>
-      <div class="plan-limit">1 barbero &middot; 100 clientes</div>
+      <div class="plan-limit">1 empleado &middot; 100 clientes &middot; 50 reservas/mes</div>
       <ul class="plan-feats">
         <li>POS + CRM + Inventario</li>
-        <li>Notificaciones por Email</li>
+        <li>Notificaciones Email + Telegram + WhatsApp + Viber</li>
         <li>P&aacute;gina de reservas en l&iacute;nea</li>
+        <li><span style="font-size:11px;color:#9ca3af">&ldquo;Powered by Pronto&rdquo; en la p&aacute;gina de reservas</span></li>
       </ul>
     </div>
     <div class="plan">
       <div class="plan-name">Starter</div>
       <div class="plan-price">$19<span>/mes</span></div>
       <div class="plan-trial">14 d&iacute;as de prueba gratis</div>
-      <div class="plan-limit">3 barberos &middot; 1 000 clientes</div>
+      <div class="plan-limit">3 empleados &middot; clientes ilimitados &middot; reservas ilimitadas</div>
       <ul class="plan-feats">
-        <li>Telegram y WhatsApp</li>
-        <li>Reservas en l&iacute;nea</li>
+        <li>Todo lo incluido en Gratis</li>
+        <li>Badge &ldquo;Powered by Pronto&rdquo; eliminado</li>
       </ul>
     </div>
     <div class="plan featured">
@@ -754,11 +755,11 @@ Nosotros gestionamos actualizaciones, backups y uptime.</p>
       <div class="plan-name">Pro</div>
       <div class="plan-price">$39<span>/mes</span></div>
       <div class="plan-trial">14 d&iacute;as de prueba gratis</div>
-      <div class="plan-limit">15 barberos &middot; ilimitado</div>
+      <div class="plan-limit">15 empleados &middot; ilimitado</div>
       <ul class="plan-feats">
-        <li>Notificaciones por Viber</li>
-        <li>Anal&iacute;ticas <span class="badge-soon" style="font-size:10px;background:#fef3c7;color:#92400e;padding:1px 6px;border-radius:8px">Pr&oacute;ximamente</span></li>
-        <li>Dominio personalizado</li>
+        <li>Todo lo incluido en Starter</li>
+        <li>Panel de an&aacute;lisis <span class="badge-soon" style="font-size:10px;background:#fef3c7;color:#92400e;padding:1px 6px;border-radius:8px">Pr&oacute;ximamente</span></li>
+        <li>Dominio personalizado <span class="badge-soon" style="font-size:10px;background:#fef3c7;color:#92400e;padding:1px 6px;border-radius:8px">Pr&oacute;ximamente</span></li>
         <li>Programa de fidelizaci&oacute;n <span class="badge-soon" style="font-size:10px;background:#fef3c7;color:#92400e;padding:1px 6px;border-radius:8px">Pr&oacute;ximamente</span></li>
       </ul>
     </div>
@@ -768,7 +769,8 @@ Nosotros gestionamos actualizaciones, backups y uptime.</p>
       <div class="plan-trial">14 d&iacute;as de prueba gratis</div>
       <div class="plan-limit">Varias ubicaciones</div>
       <ul class="plan-feats">
-        <li>White-label</li>
+        <li>Todo lo incluido en Pro</li>
+        <li>White-label <span class="badge-soon" style="font-size:10px;background:#fef3c7;color:#92400e;padding:1px 6px;border-radius:8px">Pr&oacute;ximamente</span></li>
         <li>Acceso a API <span class="badge-soon" style="font-size:10px;background:#fef3c7;color:#92400e;padding:1px 6px;border-radius:8px">Pr&oacute;ximamente</span></li>
         <li>Soporte prioritario</li>
       </ul>

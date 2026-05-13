@@ -695,21 +695,22 @@ const pageContent = `
       <div class="plan-name">Free</div>
       <div class="plan-price">$0</div>
       <span class="plan-trial-free">Free forever</span>
-      <div class="plan-limit">1 artist &middot; 100 clients</div>
+      <div class="plan-limit">1 employee &middot; 100 clients &middot; 50 bookings/month</div>
       <ul class="plan-feats">
         <li>POS + CRM + Inventory</li>
-        <li>Email notifications</li>
+        <li>Email + Telegram + WhatsApp + Viber notifications</li>
         <li>Online booking page</li>
+        <li><span style="font-size:11px;color:#9ca3af">&ldquo;Powered by Pronto&rdquo; on booking page</span></li>
       </ul>
     </div>
     <div class="plan">
       <div class="plan-name">Starter</div>
       <div class="plan-price">$19<span>/mo</span></div>
       <div class="plan-trial">14-day free trial</div>
-      <div class="plan-limit">3 artists &middot; 1 000 clients</div>
+      <div class="plan-limit">3 employees &middot; unlimited clients &middot; unlimited bookings</div>
       <ul class="plan-feats">
-        <li>Telegram &amp; WhatsApp notifications</li>
-        <li>Online booking page</li>
+        <li>Everything in Free</li>
+        <li>&ldquo;Powered by Pronto&rdquo; badge removed</li>
       </ul>
     </div>
     <div class="plan featured">
@@ -717,12 +718,12 @@ const pageContent = `
       <div class="plan-name">Pro</div>
       <div class="plan-price">$39<span>/mo</span></div>
       <div class="plan-trial">14-day free trial</div>
-      <div class="plan-limit">15 artists &middot; unlimited</div>
+      <div class="plan-limit">15 employees &middot; unlimited</div>
       <ul class="plan-feats">
-        <li>Viber notifications</li>
-        <li>Analytics <span class="badge-soon" style="font-size:10px;background:#fef3c7;color:#92400e;padding:1px 6px;border-radius:8px">Soon</span></li>
-        <li>Custom domain</li>
-        <li>Loyalty program <span class="badge-soon" style="font-size:10px;background:#fef3c7;color:#92400e;padding:1px 6px;border-radius:8px">Soon</span></li>
+        <li>Everything in Starter</li>
+        <li>Analytics dashboard <span class="badge-soon" style="font-size:10px;background:#fef3c7;color:#92400e;padding:1px 6px;border-radius:8px">Coming soon</span></li>
+        <li>Custom domain <span class="badge-soon" style="font-size:10px;background:#fef3c7;color:#92400e;padding:1px 6px;border-radius:8px">Coming soon</span></li>
+        <li>Loyalty program <span class="badge-soon" style="font-size:10px;background:#fef3c7;color:#92400e;padding:1px 6px;border-radius:8px">Coming soon</span></li>
       </ul>
     </div>
     <div class="plan">
@@ -731,8 +732,9 @@ const pageContent = `
       <div class="plan-trial">14-day free trial</div>
       <div class="plan-limit">Multiple locations</div>
       <ul class="plan-feats">
-        <li>White-label</li>
-        <li>API access <span class="badge-soon" style="font-size:10px;background:#fef3c7;color:#92400e;padding:1px 6px;border-radius:8px">Soon</span></li>
+        <li>Everything in Pro</li>
+        <li>White-label <span class="badge-soon" style="font-size:10px;background:#fef3c7;color:#92400e;padding:1px 6px;border-radius:8px">Coming soon</span></li>
+        <li>API access <span class="badge-soon" style="font-size:10px;background:#fef3c7;color:#92400e;padding:1px 6px;border-radius:8px">Coming soon</span></li>
         <li>Priority support</li>
       </ul>
     </div>
