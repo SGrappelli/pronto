@@ -23,7 +23,7 @@ const dmSans = DM_Sans({
 export const metadata: Metadata = {
   title: 'Precios de Pronto — Software Gratis de Gestión para Negocios de Servicios',
   description:
-    'Pronto tiene un plan gratuito para siempre y planes de pago desde $19 al mes. Sin comisiones, sin contratos. Self-hosted gratis bajo licencia MIT o prueba la nube 14 días gratis.',
+    'Pronto tiene un plan gratuito para siempre y planes de pago desde $19 al mes. Sin comisiones, sin contratos. Plan gratuito disponible — sin tarjeta de crédito.',
   keywords: [
     'precios software gestión negocios',
     'software POS precio',
@@ -48,7 +48,7 @@ export const metadata: Metadata = {
     url: 'https://trypronto.app/es/precios',
     title: 'Precios de Pronto — Desde $0 al mes. Sin comisiones.',
     description:
-      'Plan gratuito para siempre en self-hosted. Planes en la nube desde $19 al mes con 14 días de prueba gratis. Sin tarjeta de crédito.',
+      'Plan gratuito para siempre. Planes en la nube desde $19 al mes. Sin tarjeta de crédito.',
     images: [{ url: 'https://trypronto.app/og-pricing-es.png' }],
     locale: 'es_ES',
     siteName: 'Pronto',
@@ -57,7 +57,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'Precios de Pronto — Desde $0 al mes. Sin comisiones.',
     description:
-      'Plan gratuito para siempre en self-hosted. Planes en la nube desde $19 al mes con 14 días de prueba gratis. Sin tarjeta de crédito.',
+      'Plan gratuito para siempre. Planes en la nube desde $19 al mes. Sin tarjeta de crédito.',
     images: ['https://trypronto.app/og-pricing-es.png'],
   },
 }
@@ -76,10 +76,10 @@ const faqJsonLd = {
     },
     {
       '@type': 'Question',
-      name: '¿Hay período de prueba en los planes de pago?',
+      name: '¿Tiene Pronto un plan gratuito permanente?',
       acceptedAnswer: {
         '@type': 'Answer',
-        text: 'Sí. Los planes Starter, Pro y Agency incluyen 14 días de prueba gratuita. No se requiere tarjeta de crédito para comenzar. Puedes cancelar en cualquier momento antes de que termine el período de prueba sin cargo alguno.',
+        text: 'Sí. La versión en la nube tiene un plan gratuito permanente: 50 reservas al mes, 100 clientes, 1 empleado. Los planes de pago empiezan en $19 al mes.',
       },
     },
     {
@@ -152,16 +152,26 @@ const planColumns = [
 
 type FeatureValue = boolean | string
 
+const comingSoonLabels = new Set([
+  'Panel de analíticas avanzado',
+  'Programa de fidelización',
+  'Dominio personalizado',
+  'Varias ubicaciones',
+  'Modo white-label',
+  'Acceso a API',
+  'Soporte dedicado y SLA',
+])
+
 const features: { label: string; values: FeatureValue[]; section?: string }[] = [
   // Limits
-  { label: 'Empleados',                           values: ['1', '3', '10', 'Ilimitado'],    section: 'Límites' },
-  { label: 'Clientes',                            values: ['100', '1 000', 'Ilimitado', 'Ilimitado'] },
-  { label: 'Transacciones POS / mes',             values: ['20', 'Ilimitado', 'Ilimitado', 'Ilimitado'] },
-  { label: 'Citas / mes',                         values: ['10', 'Ilimitado', 'Ilimitado', 'Ilimitado'] },
+  { label: 'Empleados',                           values: ['1', '3', '15', 'Ilimitado'],    section: 'Límites' },
+  { label: 'Clientes en CRM',                     values: ['100', 'Ilimitado', 'Ilimitado', 'Ilimitado'] },
+  { label: 'Reservas / mes',                      values: ['50', 'Ilimitado', 'Ilimitado', 'Ilimitado'] },
   // Features
-  { label: 'Gestión de inventario',               values: [true, true, true, true],         section: 'Funciones' },
-  { label: 'CRM e historial de clientes',         values: [false, true, true, true] },
-  { label: 'Página de reservas online',           values: [false, true, true, true] },
+  { label: 'POS',                                 values: [true, true, true, true],         section: 'Funciones' },
+  { label: 'CRM e historial de clientes',         values: [true, true, true, true] },
+  { label: 'Gestión de inventario',               values: [true, true, true, true] },
+  { label: 'Página de reservas online',           values: [true, true, true, true] },
   { label: 'Panel de analíticas avanzado',        values: [false, false, true, true] },
   { label: 'Programa de fidelización',            values: [false, false, true, true] },
   { label: 'Dominio personalizado',               values: [false, false, true, true] },
@@ -170,8 +180,11 @@ const features: { label: string; values: FeatureValue[]; section?: string }[] = 
   { label: 'Acceso a API',                        values: [false, false, false, true] },
   // Notifications
   { label: 'Notificaciones por Email',            values: [true, true, true, true],         section: 'Notificaciones' },
-  { label: 'Notificaciones Telegram y WhatsApp',  values: [false, true, true, true] },
-  { label: 'Notificaciones por Viber',            values: [false, false, true, true] },
+  { label: 'Notificaciones por Telegram',         values: [true, true, true, true] },
+  { label: 'Notificaciones por WhatsApp',         values: [true, true, true, true] },
+  { label: 'Notificaciones por Viber',            values: [true, true, true, true] },
+  // Branding
+  { label: 'Badge «Powered by Pronto»',           values: [true, false, false, false],      section: 'Marca' },
   // Support
   { label: 'Soporte por Email',                   values: [true, true, true, true],         section: 'Soporte' },
   { label: 'Soporte prioritario',                 values: [false, false, true, true] },
@@ -227,7 +240,7 @@ export default function EsPreciosPage() {
               <p className="text-lg text-gray-600 max-w-2xl mx-auto">
                 Sin comisiones. Sin contratos. Sin sorpresas.
                 <br />
-                Self-hosted gratis para siempre o prueba la nube 14 días sin tarjeta.
+                Self-hosted gratis para siempre o empieza con el plan gratuito en la nube. Sin tarjeta.
               </p>
             </div>
 
@@ -266,7 +279,12 @@ export default function EsPreciosPage() {
                         key={feature.label}
                         className={`border-b border-gray-100 ${i % 2 === 0 ? 'bg-white' : 'bg-gray-50/40'}`}
                       >
-                        <td className="px-6 py-3.5 text-gray-700">{feature.label}</td>
+                        <td className="px-6 py-3.5 text-gray-700">
+                          {feature.label}
+                          {comingSoonLabels.has(feature.label) && (
+                            <span className="ml-2 inline-block bg-amber-100 text-amber-700 text-xs font-medium px-1.5 py-0.5 rounded">Próximamente</span>
+                          )}
+                        </td>
                         {feature.values.map((val, j) => (
                           <td key={j} className="px-4 py-3.5 text-center">
                             <FeatureCell value={val} />
@@ -303,8 +321,8 @@ export default function EsPreciosPage() {
                     a: 'Sí. El plan Gratis no tiene fecha de vencimiento — incluye POS, CRM, inventario, página de reservas en línea y notificaciones por Email para 1 empleado y hasta 100 clientes. Además, la versión self-hosted es completamente gratuita sin ningún límite bajo licencia MIT.',
                   },
                   {
-                    q: '¿Hay período de prueba en los planes de pago?',
-                    a: 'Sí. Los planes Starter, Pro y Agency incluyen 14 días de prueba gratuita. No se requiere tarjeta de crédito para comenzar. Puedes cancelar en cualquier momento antes de que termine el período de prueba sin cargo alguno.',
+                    q: '¿Tiene Pronto un plan gratuito permanente?',
+                    a: 'Sí. La versión en la nube tiene un plan gratuito permanente: 50 reservas al mes, 100 clientes, 1 empleado. Los planes de pago empiezan en $19 al mes.',
                   },
                   {
                     q: '¿Pronto cobra comisión por reservas o ventas?',

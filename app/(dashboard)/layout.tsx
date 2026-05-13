@@ -2,6 +2,7 @@ import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
 import { headers } from 'next/headers'
 import { Sidebar } from '@/components/layout/sidebar'
+import { SoftLimitBanner } from '@/components/ui/soft-limit-banner'
 
 export default async function DashboardLayout({
   children,
@@ -40,6 +41,7 @@ export default async function DashboardLayout({
     <div className="fixed inset-0 flex overflow-hidden bg-gray-50">
       <Sidebar businessName={business.name} />
       <div className="flex-1 flex flex-col min-w-0 overflow-y-auto">
+        <SoftLimitBanner />
         {children}
       </div>
     </div>

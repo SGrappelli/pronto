@@ -129,11 +129,11 @@ export default function TermsPage() {
           </section>
 
           <section>
-            <h2 className="text-xl font-semibold text-gray-900 mb-3">6. Free Plan & Trial</h2>
+            <h2 className="text-xl font-semibold text-gray-900 mb-3">6. Free Plan</h2>
             <p>
               The Free plan is provided as-is without any service level guarantees. We reserve the
               right to modify Free plan limits or discontinue it with 30 days&rsquo; notice.
-              Paid plan trials, if offered, are subject to the terms stated at the time of signup.
+              Paid plans are subscription-based. Cancellation takes effect at the end of the current billing period.
             </p>
           </section>
 

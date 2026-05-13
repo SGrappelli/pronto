@@ -90,7 +90,7 @@ const faqJsonLd = {
       name: '¿Pronto es realmente gratuito?',
       acceptedAnswer: {
         '@type': 'Answer',
-        text: 'Sí. La versión self-hosted es gratuita para siempre bajo licencia MIT, sin límites de clientes, empleados ni funciones. La versión en la nube tiene un plan gratuito y planes de pago desde $19 al mes con 14 días de prueba gratis.',
+        text: 'Sí. La versión self-hosted es gratuita para siempre bajo licencia MIT, sin límites de clientes, empleados ni funciones. La versión en la nube tiene un plan gratuito permanente y planes de pago desde $19 al mes.',
       },
     },
     {
@@ -439,14 +439,8 @@ export default function EsPage() {
                 encargamos de las actualizaciones, copias de seguridad e infraestructura.
               </p>
               <div className={styles.trialBanner}>
-                <div className={styles.trialBig}>14 días gratis</div>
-                <div>
-                  <div className={styles.trialText}>
-                    Prueba cualquier plan de pago gratis durante 14 días.
-                  </div>
-                  <div className={styles.trialNote}>
-                    Sin tarjeta de crédito. Cancela cuando quieras.
-                  </div>
+                <div className={styles.trialText}>
+                  Plan gratuito — sin tarjeta de crédito.
                 </div>
               </div>
               <div className={styles.pathPoints}>
@@ -485,12 +479,13 @@ export default function EsPage() {
                 <div className={styles.planName}>Gratis</div>
                 <div className={styles.planPrice}>$0</div>
                 <span className={styles.planTrialFree}>Gratis para siempre</span>
-                <div className={styles.planLimit}>1 empleado · 100 clientes</div>
+                <div className={styles.planLimit}>1 empleado · 100 clientes · 50 reservas/mes</div>
                 <ul className={styles.planFeats}>
                   <li>POS + CRM + Inventario</li>
-                  <li>Notificaciones por Email</li>
+                  <li>Notificaciones Email + Telegram + WhatsApp + Viber</li>
                   <li>Página de reservas en línea</li>
                 </ul>
+                <p style={{fontSize:'11px',color:'#9ca3af',marginTop:'8px'}}>&ldquo;Powered by Pronto&rdquo; en la página de reservas</p>
               </div>
               <div className={styles.plan}>
                 <div className={styles.planName}>Starter</div>
@@ -498,10 +493,10 @@ export default function EsPage() {
                   $19<span>/mes</span>
                 </div>
                 <div className={styles.planTrial}>14 días de prueba gratis</div>
-                <div className={styles.planLimit}>3 empleados · 1 000 clientes</div>
+                <div className={styles.planLimit}>3 empleados · clientes ilimitados · reservas ilimitadas</div>
                 <ul className={styles.planFeats}>
-                  <li>+ Telegram y WhatsApp</li>
-                  <li>+ Reservas en línea</li>
+                  <li>Todo lo incluido en Gratis</li>
+                  <li>Badge &ldquo;Powered by Pronto&rdquo; eliminado</li>
                 </ul>
               </div>
               <div className={`${styles.plan} ${styles.featured}`}>
@@ -510,16 +505,17 @@ export default function EsPage() {
                 <div className={styles.planPrice}>
                   $39<span>/mes</span>
                 </div>
-                <div className={styles.planTrial}>14 días de prueba gratis</div>
                 <div className={styles.planLimit}>15 empleados · ilimitado</div>
                 <ul className={styles.planFeats}>
-                  <li>+ Notificaciones por Viber</li>
+                  <li>Todo lo incluido en Starter</li>
                   <li>
-                    + Analíticas <span className={styles.badgeSoon}>Próximamente</span>
+                    Panel de análisis <span className={styles.badgeSoon}>Próximamente</span>
                   </li>
-                  <li>+ Dominio personalizado</li>
                   <li>
-                    + Programa de fidelización{' '}
+                    Dominio personalizado <span className={styles.badgeSoon}>Próximamente</span>
+                  </li>
+                  <li>
+                    Programa de fidelización{' '}
                     <span className={styles.badgeSoon}>Próximamente</span>
                   </li>
                 </ul>
@@ -529,14 +525,16 @@ export default function EsPage() {
                 <div className={styles.planPrice}>
                   $79<span>/mes</span>
                 </div>
-                <div className={styles.planTrial}>14 días de prueba gratis</div>
                 <div className={styles.planLimit}>Varias ubicaciones</div>
                 <ul className={styles.planFeats}>
-                  <li>+ White-label</li>
+                  <li>Todo lo incluido en Pro</li>
                   <li>
-                    + Acceso a API <span className={styles.badgeSoon}>Próximamente</span>
+                    White-label <span className={styles.badgeSoon}>Próximamente</span>
                   </li>
-                  <li>+ Soporte prioritario</li>
+                  <li>
+                    Acceso a API <span className={styles.badgeSoon}>Próximamente</span>
+                  </li>
+                  <li>Soporte prioritario</li>
                 </ul>
               </div>
             </div>
@@ -556,7 +554,7 @@ export default function EsPage() {
             <div className={styles.faqA}>
               Sí. La versión self-hosted es gratuita para siempre bajo licencia MIT, sin límites de
               clientes, empleados ni funciones. La versión en la nube tiene un plan gratuito y
-              planes de pago desde $19 al mes con 14 días de prueba gratis.
+              planes de pago desde $19 al mes.
             </div>
           </div>
           <div className={styles.faqItem}>

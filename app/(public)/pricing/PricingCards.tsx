@@ -37,7 +37,7 @@ const paidPlans = [
     description: 'For agencies managing multiple locations.',
     highlight: false,
     popularBadge: undefined as string | undefined,
-    cta: 'Contact us',
+    cta: 'Get started',
   },
 ]
 

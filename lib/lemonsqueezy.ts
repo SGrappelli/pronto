@@ -26,42 +26,37 @@ export type NotificationChannel = 'email' | 'telegram' | 'whatsapp' | 'viber'
 export const PLAN_LIMITS: Record<string, {
   employees: number
   clients: number
-  pos_transactions: number   // per month; Infinity = unlimited
-  appointments: number       // per month; Infinity = unlimited
+  bookings: number           // per month; Infinity = unlimited
   notifications: NotificationChannel[]
   label: string
 }> = {
   free: {
-    employees:        1,
-    clients:          50,
-    pos_transactions: 20,
-    appointments:     10,
-    notifications:    ['email'],
-    label:            'Free',
+    employees:  1,
+    clients:    100,
+    bookings:   50,
+    notifications: ['email', 'telegram', 'whatsapp', 'viber'],
+    label:      'Free',
   },
   starter: {
-    employees:        3,
-    clients:          500,
-    pos_transactions: Infinity,
-    appointments:     Infinity,
-    notifications:    ['email', 'telegram', 'whatsapp'],
-    label:            'Starter',
+    employees:  3,
+    clients:    Infinity,
+    bookings:   Infinity,
+    notifications: ['email', 'telegram', 'whatsapp', 'viber'],
+    label:      'Starter',
   },
   pro: {
-    employees:        10,
-    clients:          Infinity,
-    pos_transactions: Infinity,
-    appointments:     Infinity,
-    notifications:    ['email', 'telegram', 'whatsapp', 'viber'],
-    label:            'Pro',
+    employees:  15,
+    clients:    Infinity,
+    bookings:   Infinity,
+    notifications: ['email', 'telegram', 'whatsapp', 'viber'],
+    label:      'Pro',
   },
   agency: {
-    employees:        Infinity,
-    clients:          Infinity,
-    pos_transactions: Infinity,
-    appointments:     Infinity,
-    notifications:    ['email', 'telegram', 'whatsapp', 'viber'],
-    label:            'Agency',
+    employees:  Infinity,
+    clients:    Infinity,
+    bookings:   Infinity,
+    notifications: ['email', 'telegram', 'whatsapp', 'viber'],
+    label:      'Agency',
   },
 }
 

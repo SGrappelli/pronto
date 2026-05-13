@@ -5,7 +5,7 @@ import { PricingCards } from './PricingCards'
 export const metadata: Metadata = {
   title: 'Pricing — Pronto | Free POS, CRM & Booking Software',
   description:
-    'Pronto plans from $0/month. Free forever plan included. Starter $19, Pro $39, Agency $79 — 14-day free trial, no credit card required. POS, CRM, booking and omnichannel notifications for service businesses.',
+    'Pronto plans from $0/month. Free plan available — no credit card required. Starter $19, Pro $39, Agency $79. POS, CRM, booking and omnichannel notifications for service businesses.',
   keywords: [
     'pronto pricing', 'pos software pricing', 'crm software price',
     'appointment booking software cost', 'free pos system price',
@@ -25,7 +25,7 @@ export const metadata: Metadata = {
     url: 'https://trypronto.app/pricing',
     title: 'Pricing — Pronto | Free POS, CRM & Booking Software',
     description:
-      'Plans from $0/month. Free forever + paid plans with 14-day trial. POS, CRM, booking and notifications for salons, barbershops, cafes and any service SMB.',
+      'Plans from $0/month. Free plan available — no credit card required. POS, CRM, booking and notifications for salons, barbershops, cafes and any service SMB.',
     images: [{ url: 'https://trypronto.app/og-image.png' }],
     locale: 'en_US',
     siteName: 'Pronto',
@@ -34,7 +34,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'Pricing — Pronto | Free POS, CRM & Booking Software',
     description:
-      'Plans from $0/month. Free forever + paid plans with 14-day trial. No credit card required.',
+      'Plans from $0/month. Free plan available — no credit card required.',
     images: ['https://trypronto.app/og-image.png'],
   },
 }
@@ -48,9 +48,9 @@ const pricingJsonLd = {
   applicationCategory: 'BusinessApplication',
   operatingSystem: 'Web',
   offers: [
-    { '@type': 'Offer', name: 'Free', price: '0', priceCurrency: 'USD', description: '1 employee, 50 clients, POS + email notifications' },
-    { '@type': 'Offer', name: 'Starter', price: '19', priceCurrency: 'USD', description: '3 employees, 500 clients, Telegram & WhatsApp' },
-    { '@type': 'Offer', name: 'Pro', price: '39', priceCurrency: 'USD', description: '10 employees, unlimited clients, Viber, custom domain' },
+    { '@type': 'Offer', name: 'Free', price: '0', priceCurrency: 'USD', description: '1 employee, 100 clients, 50 bookings/month, POS + all notifications' },
+    { '@type': 'Offer', name: 'Starter', price: '19', priceCurrency: 'USD', description: '3 employees, unlimited clients, unlimited bookings' },
+    { '@type': 'Offer', name: 'Pro', price: '39', priceCurrency: 'USD', description: '15 employees, analytics, loyalty program, custom domain' },
     { '@type': 'Offer', name: 'Agency', price: '79', priceCurrency: 'USD', description: 'Unlimited employees, multiple locations, white-label, API' },
   ],
 }
@@ -62,12 +62,12 @@ const pricingFaqJsonLd = {
     {
       '@type': 'Question',
       name: 'Is there a free plan?',
-      acceptedAnswer: { '@type': 'Answer', text: 'Yes. The Free plan is free forever with no credit card required. It includes POS, inventory, and email notifications for 1 employee and up to 50 clients.' },
+      acceptedAnswer: { '@type': 'Answer', text: 'Yes. The Free plan is free forever with no credit card required. It includes POS, CRM, inventory, online booking page, and all notification channels for 1 employee, up to 100 clients, and 50 bookings per month.' },
     },
     {
       '@type': 'Question',
-      name: 'Is there a free trial?',
-      acceptedAnswer: { '@type': 'Answer', text: 'Yes. All paid plans (Starter, Pro, Agency) include a 14-day free trial. No credit card is required to start.' },
+      name: 'Is there a free plan?',
+      acceptedAnswer: { '@type': 'Answer', text: 'The cloud version has a permanent free plan: 50 bookings/month, 100 clients, 1 team member. Paid plans start at $19/month.' },
     },
     {
       '@type': 'Question',
@@ -92,28 +92,41 @@ const planColumns = [
 
 type FeatureValue = boolean | string
 
+const comingSoonLabels = new Set([
+  'Analytics dashboard',
+  'Loyalty program',
+  'Custom domain',
+  'Multiple locations',
+  'White-label mode',
+  'API access',
+  'Dedicated support & SLA',
+])
+
 const features: { label: string; values: FeatureValue[]; section?: string }[] = [
   // Limits
-  { label: 'Team members',                        values: ['1', '3', '10', 'Unlimited'],  section: 'Limits' },
-  { label: 'Clients',                             values: ['50', '500', 'Unlimited', 'Unlimited'] },
-  { label: 'POS transactions / month',            values: ['20', 'Unlimited', 'Unlimited', 'Unlimited'] },
-  { label: 'Appointments / month',                values: ['10', 'Unlimited', 'Unlimited', 'Unlimited'] },
+  { label: 'Team members',                        values: ['1', '3', '15', 'Unlimited'],   section: 'Limits' },
+  { label: 'Clients in CRM',                      values: ['100', 'Unlimited', 'Unlimited', 'Unlimited'] },
+  { label: 'Bookings / month',                    values: ['50', 'Unlimited', 'Unlimited', 'Unlimited'] },
   // Features
-  { label: 'Inventory management',                values: [true, true, true, true],       section: 'Features' },
-  { label: 'CRM & client history',                values: [false, true, true, true] },
-  { label: 'Online booking page',                 values: [false, true, true, true] },
-  { label: 'Advanced analytics dashboard',        values: [false, false, true, true] },
+  { label: 'POS',                                 values: [true, true, true, true],        section: 'Features' },
+  { label: 'CRM & client history',                values: [true, true, true, true] },
+  { label: 'Inventory management',                values: [true, true, true, true] },
+  { label: 'Online booking page',                 values: [true, true, true, true] },
+  { label: 'Analytics dashboard',                 values: [false, false, true, true] },
   { label: 'Loyalty program',                     values: [false, false, true, true] },
   { label: 'Custom domain',                       values: [false, false, true, true] },
   { label: 'Multiple locations',                  values: [false, false, false, true] },
   { label: 'White-label mode',                    values: [false, false, false, true] },
   { label: 'API access',                          values: [false, false, false, true] },
   // Notifications
-  { label: 'Email notifications',                 values: [true, true, true, true],       section: 'Notifications' },
-  { label: 'Telegram & WhatsApp notifications',   values: [false, true, true, true] },
-  { label: 'Viber notifications',                 values: [false, false, true, true] },
+  { label: 'Email notifications',                 values: [true, true, true, true],        section: 'Notifications' },
+  { label: 'Telegram notifications',              values: [true, true, true, true] },
+  { label: 'WhatsApp notifications',              values: [true, true, true, true] },
+  { label: 'Viber notifications',                 values: [true, true, true, true] },
+  // Branding
+  { label: '"Powered by Pronto" badge',           values: [true, false, false, false],     section: 'Branding' },
   // Support
-  { label: 'Email support',                       values: [true, true, true, true],       section: 'Support' },
+  { label: 'Email support',                       values: [true, true, true, true],        section: 'Support' },
   { label: 'Priority support',                    values: [false, false, true, true] },
   { label: 'Dedicated support & SLA',             values: [false, false, false, true] },
 ]
@@ -136,7 +149,7 @@ export default function PricingPage() {
         <div className="text-center mb-14">
           <h1 className="text-4xl font-bold text-gray-900 mb-4" style={{ fontFamily: "var(--font-bricolage, 'Bricolage Grotesque'), sans-serif", letterSpacing: '-0.5px' }}>Simple, transparent pricing</h1>
           <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-            All plans include a 14-day free trial. No credit card required to start.
+            Free plan forever. No credit card required to start.
           </p>
         </div>
 
@@ -175,7 +188,12 @@ export default function PricingPage() {
                     key={feature.label}
                     className={`border-b border-gray-100 ${i % 2 === 0 ? 'bg-white' : 'bg-gray-50/40'}`}
                   >
-                    <td className="px-6 py-3.5 text-gray-700">{feature.label}</td>
+                    <td className="px-6 py-3.5 text-gray-700">
+                      {feature.label}
+                      {comingSoonLabels.has(feature.label) && (
+                        <span className="ml-2 inline-block bg-amber-100 text-amber-700 text-xs font-medium px-1.5 py-0.5 rounded">Coming soon</span>
+                      )}
+                    </td>
                     {feature.values.map((val, j) => (
                       <td key={j} className="px-4 py-3.5 text-center">
                         <FeatureCell value={val} />
@@ -190,7 +208,7 @@ export default function PricingPage() {
 
         <p className="text-center text-sm text-gray-500 mt-10">
           Prices shown in USD. Billing is handled securely by{' '}
-          <span className="font-medium text-gray-700">Paddle</span>.
+          <span className="font-medium text-gray-700">Whop</span>.
           {' '}Annual plans include a 2-month discount. Questions? Contact us at{' '}
           <a href="mailto:support@trypronto.app" className="text-blue-600 hover:underline">
             support@trypronto.app
@@ -207,11 +225,11 @@ export default function PricingPage() {
             {[
               {
                 q: 'Is there a free plan?',
-                a: 'Yes. The Free plan is free forever — no credit card required. It includes POS, inventory management, and email notifications for 1 employee and up to 50 clients.',
+                a: 'Yes. The Free plan is free forever — no credit card required. It includes POS, CRM, inventory, online booking page, and all notification channels (Email, Telegram, WhatsApp, Viber) for 1 employee, up to 100 clients, and 50 bookings per month.',
               },
               {
-                q: 'Is there a free trial on paid plans?',
-                a: 'Yes. All paid plans (Starter, Pro, Agency) include a 14-day free trial. You can start immediately without entering a credit card.',
+                q: 'Is there a free plan?',
+                a: 'The cloud version has a permanent free plan: 50 bookings/month, 100 clients, 1 team member. Paid plans start at $19/month.',
               },
               {
                 q: 'How much does Pronto cost?',

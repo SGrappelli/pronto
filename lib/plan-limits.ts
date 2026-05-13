@@ -79,3 +79,36 @@ export async function checkClientLimit(
     plan,
   }
 }
+
+/**
+ * Проверить, можно ли принять ещё одно бронирование в текущем месяце
+ */
+export async function checkBookingLimit(
+  supabase: ReturnType<typeof import('./supabase/service').createServiceClient>,
+  businessId: string,
+  plan: string
+): Promise<PlanCheck> {
+  if (isSelfHosted) return { allowed: true, limit: Infinity, current: 0, plan }
+
+  const limits = PLAN_LIMITS[plan] ?? PLAN_LIMITS.free
+  if (limits.bookings === Infinity) return { allowed: true, limit: Infinity, current: 0, plan }
+
+  const now = new Date()
+  const monthStart = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), 1)).toISOString()
+  const monthEnd   = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth() + 1, 1)).toISOString()
+
+  const { count } = await supabase
+    .from('appointments')
+    .select('id', { count: 'exact', head: true })
+    .eq('business_id', businessId)
+    .gte('starts_at', monthStart)
+    .lt('starts_at', monthEnd)
+
+  const current = count ?? 0
+  return {
+    allowed: current < limits.bookings,
+    limit: limits.bookings,
+    current,
+    plan,
+  }
+}
