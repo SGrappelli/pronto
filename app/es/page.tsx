@@ -632,6 +632,7 @@ export default function EsPage() {
           <Link href="/es/" style={{ fontSize: '15px' }}>Inicio</Link>
           <Link href="/es/precios" style={{ fontSize: '15px' }}>Precios</Link>
           <Link href="/es/para" style={{ fontSize: '15px' }}>Para negocios</Link>
+          <Link href="/es/docs" style={{ fontSize: '15px' }}>Documentación</Link>
           <Link href="/es/para/salones" style={{ fontSize: '15px' }}>Salones</Link>
           <Link href="/terms" style={{ fontSize: '15px' }}>Términos</Link>
           <Link href="/privacy" style={{ fontSize: '15px' }}>Privacidad</Link>
