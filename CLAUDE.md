@@ -19,6 +19,26 @@ DNS changes, etc). Never assume I know what to do next.
 - Resend for email (noreply@trypronto.app)
 - Deployment: docker compose -f docker-compose.saas.yml up -d
 
+## Pricing tiers (updated 2026-05-13)
+
+| | Free | Starter $19 | Pro $39 | Agency $79 |
+|---|---|---|---|---|
+| Team members | 1 | 3 | 15 | Unlimited |
+| Clients in CRM | 100 | Unlimited | Unlimited | Unlimited |
+| Bookings / month | 50 | Unlimited | Unlimited | Unlimited |
+
+**Available from Free:** POS, CRM, Inventory, Online booking page, all notifications (Email + Telegram + WhatsApp + Viber)
+
+**From Starter+:** limits removed, no new features vs Free
+
+**From Pro+:** Analytics dashboard, Loyalty program, Custom domain
+
+**Agency only:** Multiple locations, White-label, API access
+
+**Branding:** "Powered by Pronto" badge on public booking page — Free tier only, hidden for Starter+
+
+Constants in `lib/lemonsqueezy.ts` → `PLAN_LIMITS`. Enforcement in `lib/plan-limits.ts`.
+
 ## Workflow
 - Always push to private SaaS repo (origin = Pronto-saas)
 - Always commit with clear messages

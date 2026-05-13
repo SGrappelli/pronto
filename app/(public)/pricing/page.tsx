@@ -48,9 +48,9 @@ const pricingJsonLd = {
   applicationCategory: 'BusinessApplication',
   operatingSystem: 'Web',
   offers: [
-    { '@type': 'Offer', name: 'Free', price: '0', priceCurrency: 'USD', description: '1 employee, 50 clients, POS + email notifications' },
-    { '@type': 'Offer', name: 'Starter', price: '19', priceCurrency: 'USD', description: '3 employees, 500 clients, Telegram & WhatsApp' },
-    { '@type': 'Offer', name: 'Pro', price: '39', priceCurrency: 'USD', description: '10 employees, unlimited clients, Viber, custom domain' },
+    { '@type': 'Offer', name: 'Free', price: '0', priceCurrency: 'USD', description: '1 employee, 100 clients, 50 bookings/month, POS + all notifications' },
+    { '@type': 'Offer', name: 'Starter', price: '19', priceCurrency: 'USD', description: '3 employees, unlimited clients, unlimited bookings' },
+    { '@type': 'Offer', name: 'Pro', price: '39', priceCurrency: 'USD', description: '15 employees, analytics, loyalty program, custom domain' },
     { '@type': 'Offer', name: 'Agency', price: '79', priceCurrency: 'USD', description: 'Unlimited employees, multiple locations, white-label, API' },
   ],
 }
@@ -62,7 +62,7 @@ const pricingFaqJsonLd = {
     {
       '@type': 'Question',
       name: 'Is there a free plan?',
-      acceptedAnswer: { '@type': 'Answer', text: 'Yes. The Free plan is free forever with no credit card required. It includes POS, inventory, and email notifications for 1 employee and up to 50 clients.' },
+      acceptedAnswer: { '@type': 'Answer', text: 'Yes. The Free plan is free forever with no credit card required. It includes POS, CRM, inventory, online booking page, and all notification channels for 1 employee, up to 100 clients, and 50 bookings per month.' },
     },
     {
       '@type': 'Question',
@@ -94,26 +94,29 @@ type FeatureValue = boolean | string
 
 const features: { label: string; values: FeatureValue[]; section?: string }[] = [
   // Limits
-  { label: 'Team members',                        values: ['1', '3', '10', 'Unlimited'],  section: 'Limits' },
-  { label: 'Clients',                             values: ['50', '500', 'Unlimited', 'Unlimited'] },
-  { label: 'POS transactions / month',            values: ['20', 'Unlimited', 'Unlimited', 'Unlimited'] },
-  { label: 'Appointments / month',                values: ['10', 'Unlimited', 'Unlimited', 'Unlimited'] },
+  { label: 'Team members',                        values: ['1', '3', '15', 'Unlimited'],   section: 'Limits' },
+  { label: 'Clients in CRM',                      values: ['100', 'Unlimited', 'Unlimited', 'Unlimited'] },
+  { label: 'Bookings / month',                    values: ['50', 'Unlimited', 'Unlimited', 'Unlimited'] },
   // Features
-  { label: 'Inventory management',                values: [true, true, true, true],       section: 'Features' },
-  { label: 'CRM & client history',                values: [false, true, true, true] },
-  { label: 'Online booking page',                 values: [false, true, true, true] },
-  { label: 'Advanced analytics dashboard',        values: [false, false, true, true] },
+  { label: 'POS',                                 values: [true, true, true, true],        section: 'Features' },
+  { label: 'CRM & client history',                values: [true, true, true, true] },
+  { label: 'Inventory management',                values: [true, true, true, true] },
+  { label: 'Online booking page',                 values: [true, true, true, true] },
+  { label: 'Analytics dashboard',                 values: [false, false, true, true] },
   { label: 'Loyalty program',                     values: [false, false, true, true] },
   { label: 'Custom domain',                       values: [false, false, true, true] },
   { label: 'Multiple locations',                  values: [false, false, false, true] },
   { label: 'White-label mode',                    values: [false, false, false, true] },
   { label: 'API access',                          values: [false, false, false, true] },
   // Notifications
-  { label: 'Email notifications',                 values: [true, true, true, true],       section: 'Notifications' },
-  { label: 'Telegram & WhatsApp notifications',   values: [false, true, true, true] },
-  { label: 'Viber notifications',                 values: [false, false, true, true] },
+  { label: 'Email notifications',                 values: [true, true, true, true],        section: 'Notifications' },
+  { label: 'Telegram notifications',              values: [true, true, true, true] },
+  { label: 'WhatsApp notifications',              values: [true, true, true, true] },
+  { label: 'Viber notifications',                 values: [true, true, true, true] },
+  // Branding
+  { label: '"Powered by Pronto" badge',           values: [true, false, false, false],     section: 'Branding' },
   // Support
-  { label: 'Email support',                       values: [true, true, true, true],       section: 'Support' },
+  { label: 'Email support',                       values: [true, true, true, true],        section: 'Support' },
   { label: 'Priority support',                    values: [false, false, true, true] },
   { label: 'Dedicated support & SLA',             values: [false, false, false, true] },
 ]
@@ -207,7 +210,7 @@ export default function PricingPage() {
             {[
               {
                 q: 'Is there a free plan?',
-                a: 'Yes. The Free plan is free forever — no credit card required. It includes POS, inventory management, and email notifications for 1 employee and up to 50 clients.',
+                a: 'Yes. The Free plan is free forever — no credit card required. It includes POS, CRM, inventory, online booking page, and all notification channels (Email, Telegram, WhatsApp, Viber) for 1 employee, up to 100 clients, and 50 bookings per month.',
               },
               {
                 q: 'Is there a free trial on paid plans?',

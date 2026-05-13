@@ -1052,25 +1052,25 @@ const PLANS: { tier: PlanTier; name: string; price: string; features: string[] }
     tier: 'free',
     name: 'Free',
     price: '$0',
-    features: ['1 employee', '100 clients', 'Email notifications'],
+    features: ['1 employee', '100 clients', '50 bookings/month', 'POS · CRM · Inventory', 'All notifications'],
   },
   {
     tier: 'starter',
     name: 'Starter',
     price: '$19/mo',
-    features: ['3 employees', '1 000 clients', 'Telegram · WhatsApp · Viber', 'Online booking'],
+    features: ['3 employees', 'Unlimited clients', 'Unlimited bookings'],
   },
   {
     tier: 'pro',
     name: 'Pro',
     price: '$39/mo',
-    features: ['15 employees', 'Unlimited clients', 'Analytics', 'Custom domain', 'Loyalty'],
+    features: ['15 employees', 'Unlimited clients', 'Analytics', 'Loyalty program', 'Custom domain'],
   },
   {
     tier: 'agency',
     name: 'Agency',
     price: '$79/mo',
-    features: ['Unlimited locations', 'White-label', 'API access'],
+    features: ['Unlimited employees', 'Multiple locations', 'White-label', 'API access'],
   },
 ]
 
