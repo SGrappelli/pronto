@@ -8,7 +8,7 @@ import { createClient } from '@/lib/supabase/client'
 const DISMISS_KEY = 'pronto_soft_limit_dismiss'
 const DISMISS_DURATION_MS = 7 * 24 * 60 * 60 * 1000 // 7 days
 
-const FREE_LIMITS = { clients: 100, bookings: 50, employees: 1 }
+const FREE_LIMITS = { clients: 100, bookings: 50 }
 
 function isDismissed(): boolean {
   try {
@@ -45,24 +45,19 @@ export function SoftLimitBanner() {
       const monthStart = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), 1)).toISOString()
       const monthEnd   = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth() + 1, 1)).toISOString()
 
-      const [{ count: clientCount }, { count: bookingCount }, { count: employeeCount }] = await Promise.all([
-        supabase.from('clients').select('id', { count: 'exact', head: true }).eq('business_id', biz.id),
+      const [{ count: bookingCount }, { count: clientCount }] = await Promise.all([
         supabase.from('appointments').select('id', { count: 'exact', head: true })
           .eq('business_id', biz.id).gte('starts_at', monthStart).lt('starts_at', monthEnd),
-        supabase.from('employees').select('id', { count: 'exact', head: true })
-          .eq('business_id', biz.id).eq('is_active', true),
+        supabase.from('clients').select('id', { count: 'exact', head: true }).eq('business_id', biz.id),
       ])
 
-      const checks: { label: string; current: number; limit: number }[] = [
-        { label: 'bookings this month', current: bookingCount ?? 0, limit: FREE_LIMITS.bookings },
-        { label: 'clients',             current: clientCount ?? 0,  limit: FREE_LIMITS.clients },
-        { label: 'team members',        current: employeeCount ?? 0, limit: FREE_LIMITS.employees },
-      ]
-
-      // Find the one closest to (or past) 80% threshold
-      const hit = checks
-        .filter((c) => c.current / c.limit >= 0.8)
-        .sort((a, b) => b.current / b.limit - a.current / a.limit)[0]
+      // Priority: bookings first, then clients. Team members excluded from banner.
+      const hit =
+        (bookingCount ?? 0) / FREE_LIMITS.bookings >= 0.8
+          ? { label: 'bookings this month', current: bookingCount ?? 0, limit: FREE_LIMITS.bookings }
+          : (clientCount ?? 0) / FREE_LIMITS.clients >= 0.8
+            ? { label: 'clients', current: clientCount ?? 0, limit: FREE_LIMITS.clients }
+            : null
 
       if (hit) {
         setWarning(hit)
