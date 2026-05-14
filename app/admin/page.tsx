@@ -12,6 +12,18 @@ function formatDate(iso: string): string {
   })
 }
 
+function relativeTime(iso: string): string {
+  const diff = Date.now() - new Date(iso).getTime()
+  const minutes = Math.floor(diff / 60000)
+  if (minutes < 1) return 'just now'
+  if (minutes < 60) return `${minutes}m ago`
+  const hours = Math.floor(minutes / 60)
+  if (hours < 24) return `${hours}h ago`
+  const days = Math.floor(hours / 24)
+  if (days === 1) return '1 day ago'
+  return `${days} days ago`
+}
+
 const TIER_BADGE: Record<string, { label: string; style: string }> = {
   free:    { label: 'Free',    style: 'background:#e5e7eb;color:#374151' },
   starter: { label: 'Starter', style: 'background:#dbeafe;color:#1d4ed8' },
@@ -19,22 +31,54 @@ const TIER_BADGE: Record<string, { label: string; style: string }> = {
   agency:  { label: 'Agency',  style: 'background:#fef3c7;color:#92400e' },
 }
 
-function TierBadge({ tier }: { tier: string }) {
+function TierBadge({ tier, bookingsCount, createdAt }: {
+  tier: string
+  bookingsCount: number
+  createdAt: string
+}) {
   const b = TIER_BADGE[tier] ?? { label: tier, style: 'background:#e5e7eb;color:#374151' }
+  const threeDaysAgo = Date.now() - 3 * 24 * 60 * 60 * 1000
+  const isOld = new Date(createdAt).getTime() < threeDaysAgo
+
+  let activityBadge: { label: string; bg: string; color: string } | null = null
+  if (bookingsCount > 0) {
+    activityBadge = { label: 'Active', bg: '#dcfce7', color: '#15803d' }
+  } else if (isOld) {
+    activityBadge = { label: 'Idle', bg: '#f3f4f6', color: '#9ca3af' }
+  }
+
   return (
-    <span
-      style={{
-        ...Object.fromEntries(b.style.split(';').map(s => s.split(':') as [string, string])),
-        display: 'inline-block',
-        padding: '2px 10px',
-        borderRadius: '9999px',
-        fontSize: '12px',
-        fontWeight: 600,
-        whiteSpace: 'nowrap',
-      }}
-    >
-      {b.label}
-    </span>
+    <div style={{ display: 'flex', alignItems: 'center', gap: '6px', flexWrap: 'nowrap' }}>
+      <span
+        style={{
+          ...Object.fromEntries(b.style.split(';').map(s => s.split(':') as [string, string])),
+          display: 'inline-block',
+          padding: '2px 10px',
+          borderRadius: '9999px',
+          fontSize: '12px',
+          fontWeight: 600,
+          whiteSpace: 'nowrap',
+        }}
+      >
+        {b.label}
+      </span>
+      {activityBadge && (
+        <span
+          style={{
+            display: 'inline-block',
+            padding: '2px 8px',
+            borderRadius: '9999px',
+            fontSize: '11px',
+            fontWeight: 600,
+            background: activityBadge.bg,
+            color: activityBadge.color,
+            whiteSpace: 'nowrap',
+          }}
+        >
+          {activityBadge.label}
+        </span>
+      )}
+    </div>
   )
 }
 
@@ -50,15 +94,24 @@ export default async function AdminPage() {
     notFound()
   }
 
-  // 2. Fetch data with service role (bypasses RLS, can read auth.users)
+  // 2. Fetch all data with service role (bypasses RLS)
   const svc = createServiceClient()
 
-  const [{ data: businesses }, { data: { users } }] = await Promise.all([
+  const [
+    { data: businesses },
+    { data: { users } },
+    { data: allBookings },
+    { data: allClients },
+    { data: allServices },
+  ] = await Promise.all([
     svc
       .from('businesses')
       .select('id, name, slug, type, subscription_tier, owner_id, created_at')
       .order('created_at', { ascending: false }),
     svc.auth.admin.listUsers({ page: 1, perPage: 1000 }),
+    svc.from('bookings').select('business_id, updated_at'),
+    svc.from('clients').select('business_id, created_at'),
+    svc.from('services').select('business_id'),
   ])
 
   const rows = businesses ?? []
@@ -67,6 +120,42 @@ export default async function AdminPage() {
   const emailById: Record<string, string> = {}
   for (const u of users ?? []) {
     emailById[u.id] = u.email ?? '—'
+  }
+
+  // Build per-business stats
+  const bookingsCount: Record<string, number> = {}
+  const bookingsLastAt: Record<string, string> = {}
+  for (const bk of allBookings ?? []) {
+    const id = bk.business_id as string
+    bookingsCount[id] = (bookingsCount[id] ?? 0) + 1
+    if (!bookingsLastAt[id] || bk.updated_at > bookingsLastAt[id]) {
+      bookingsLastAt[id] = bk.updated_at as string
+    }
+  }
+
+  const clientsCount: Record<string, number> = {}
+  const clientsLastAt: Record<string, string> = {}
+  for (const cl of allClients ?? []) {
+    const id = cl.business_id as string
+    clientsCount[id] = (clientsCount[id] ?? 0) + 1
+    if (!clientsLastAt[id] || cl.created_at > clientsLastAt[id]) {
+      clientsLastAt[id] = cl.created_at as string
+    }
+  }
+
+  const servicesCount: Record<string, number> = {}
+  for (const sv of allServices ?? []) {
+    const id = sv.business_id as string
+    servicesCount[id] = (servicesCount[id] ?? 0) + 1
+  }
+
+  function getLastActivity(businessId: string): string | null {
+    const a = bookingsLastAt[businessId] ?? null
+    const b = clientsLastAt[businessId] ?? null
+    if (!a && !b) return null
+    if (!a) return b
+    if (!b) return a
+    return a > b ? a : b
   }
 
   // 3. Compute summary counters
@@ -79,10 +168,11 @@ export default async function AdminPage() {
 
   const weekAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString()
   const thisWeek = rows.filter(b => b.created_at >= weekAgo).length
+  const activeCount = rows.filter(b => (bookingsCount[b.id] ?? 0) > 0).length
 
   // ── Render ────────────────────────────────────────────────────────────────
   return (
-    <div style={{ fontFamily: 'system-ui, sans-serif', padding: '32px 40px', maxWidth: '1280px', margin: '0 auto' }}>
+    <div style={{ fontFamily: 'system-ui, sans-serif', padding: '32px 40px', maxWidth: '1400px', margin: '0 auto' }}>
 
       {/* Header */}
       <div style={{ marginBottom: '32px' }}>
@@ -95,14 +185,15 @@ export default async function AdminPage() {
       </div>
 
       {/* Summary counters */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(6, 1fr)', gap: '16px', marginBottom: '40px' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', gap: '16px', marginBottom: '40px' }}>
         {[
-          { label: 'Total', value: total, color: '#111' },
-          { label: 'Free', value: byTier.free ?? 0, color: '#374151' },
-          { label: 'Starter', value: byTier.starter ?? 0, color: '#1d4ed8' },
-          { label: 'Pro', value: byTier.pro ?? 0, color: '#6d28d9' },
-          { label: 'Agency', value: byTier.agency ?? 0, color: '#92400e' },
-          { label: 'This week', value: thisWeek, color: '#16a34a' },
+          { label: 'Total',     value: total,              color: '#111' },
+          { label: 'Free',      value: byTier.free ?? 0,   color: '#374151' },
+          { label: 'Starter',   value: byTier.starter ?? 0,color: '#1d4ed8' },
+          { label: 'Pro',       value: byTier.pro ?? 0,    color: '#6d28d9' },
+          { label: 'Agency',    value: byTier.agency ?? 0, color: '#92400e' },
+          { label: 'This week', value: thisWeek,            color: '#16a34a' },
+          { label: 'Active',    value: activeCount,         color: '#15803d' },
         ].map(({ label, value, color }) => (
           <div
             key={label}
@@ -124,7 +215,7 @@ export default async function AdminPage() {
         <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '13px' }}>
           <thead>
             <tr style={{ background: '#f9fafb', borderBottom: '1px solid #e5e7eb' }}>
-              {['Business name', 'Owner email', 'Type', 'Tier', 'Created', 'Slug'].map(h => (
+              {['Business name', 'Owner email', 'Type', 'Tier', 'Created', 'Clients', 'Bookings', 'Last activity', 'Slug'].map(h => (
                 <th
                   key={h}
                   style={{
@@ -141,44 +232,65 @@ export default async function AdminPage() {
             </tr>
           </thead>
           <tbody>
-            {rows.map((b, i) => (
-              <tr
-                key={b.id}
-                style={{
-                  borderBottom: i < rows.length - 1 ? '1px solid #f3f4f6' : undefined,
-                  background: i % 2 === 0 ? '#fff' : '#fafafa',
-                }}
-              >
-                <td style={{ padding: '12px 16px', color: '#111', fontWeight: 500 }}>
-                  <a
-                    href={`https://${b.slug}.trypronto.app`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    style={{ color: '#2563eb', textDecoration: 'none' }}
-                  >
-                    {b.name}
-                  </a>
-                </td>
-                <td style={{ padding: '12px 16px', color: '#374151' }}>
-                  {emailById[b.owner_id] ?? '—'}
-                </td>
-                <td style={{ padding: '12px 16px', color: '#6b7280', textTransform: 'capitalize' }}>
-                  {b.type ?? '—'}
-                </td>
-                <td style={{ padding: '12px 16px' }}>
-                  <TierBadge tier={b.subscription_tier ?? 'free'} />
-                </td>
-                <td style={{ padding: '12px 16px', color: '#6b7280', whiteSpace: 'nowrap' }}>
-                  {formatDate(b.created_at)}
-                </td>
-                <td style={{ padding: '12px 16px', color: '#9ca3af', fontFamily: 'monospace', fontSize: '12px' }}>
-                  {b.slug}
-                </td>
-              </tr>
-            ))}
+            {rows.map((b, i) => {
+              const bkCount = bookingsCount[b.id] ?? 0
+              const clCount = clientsCount[b.id] ?? 0
+              const lastAt = getLastActivity(b.id)
+              const fourteenDaysAgo = Date.now() - 14 * 24 * 60 * 60 * 1000
+              const isStale = lastAt ? new Date(lastAt).getTime() < fourteenDaysAgo : true
+
+              return (
+                <tr
+                  key={b.id}
+                  style={{
+                    borderBottom: i < rows.length - 1 ? '1px solid #f3f4f6' : undefined,
+                    background: i % 2 === 0 ? '#fff' : '#fafafa',
+                  }}
+                >
+                  <td style={{ padding: '12px 16px', color: '#111', fontWeight: 500 }}>
+                    <a
+                      href={`https://${b.slug}.trypronto.app`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      style={{ color: '#2563eb', textDecoration: 'none' }}
+                    >
+                      {b.name}
+                    </a>
+                  </td>
+                  <td style={{ padding: '12px 16px', color: '#374151' }}>
+                    {emailById[b.owner_id] ?? '—'}
+                  </td>
+                  <td style={{ padding: '12px 16px', color: '#6b7280', textTransform: 'capitalize' }}>
+                    {b.type ?? '—'}
+                  </td>
+                  <td style={{ padding: '12px 16px' }}>
+                    <TierBadge
+                      tier={b.subscription_tier ?? 'free'}
+                      bookingsCount={bkCount}
+                      createdAt={b.created_at}
+                    />
+                  </td>
+                  <td style={{ padding: '12px 16px', color: '#6b7280', whiteSpace: 'nowrap' }}>
+                    {formatDate(b.created_at)}
+                  </td>
+                  <td style={{ padding: '12px 16px', color: clCount > 0 ? '#374151' : '#9ca3af', fontWeight: clCount > 0 ? 500 : 400 }}>
+                    {clCount}
+                  </td>
+                  <td style={{ padding: '12px 16px', color: bkCount > 0 ? '#15803d' : '#9ca3af', fontWeight: bkCount > 0 ? 600 : 400 }}>
+                    {bkCount}
+                  </td>
+                  <td style={{ padding: '12px 16px', color: isStale ? '#9ca3af' : '#374151', fontStyle: isStale ? 'italic' : 'normal', whiteSpace: 'nowrap' }}>
+                    {lastAt ? relativeTime(lastAt) : '—'}
+                  </td>
+                  <td style={{ padding: '12px 16px', color: '#9ca3af', fontFamily: 'monospace', fontSize: '12px' }}>
+                    {b.slug}
+                  </td>
+                </tr>
+              )
+            })}
             {rows.length === 0 && (
               <tr>
-                <td colSpan={6} style={{ padding: '32px 16px', textAlign: 'center', color: '#9ca3af' }}>
+                <td colSpan={9} style={{ padding: '32px 16px', textAlign: 'center', color: '#9ca3af' }}>
                   No businesses yet
                 </td>
               </tr>
