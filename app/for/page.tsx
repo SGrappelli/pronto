@@ -9,9 +9,10 @@ export const metadata: Metadata = {
   alternates: {
     canonical: 'https://trypronto.app/for',
     languages: {
-      en: 'https://trypronto.app/for',
-      es: 'https://trypronto.app/es/para',
-      'x-default': 'https://trypronto.app/for',
+      en: 'https://trypronto.app/for/',
+      es: 'https://trypronto.app/es/para/',
+      'pt-BR': 'https://trypronto.app/pt/para/',
+      'x-default': 'https://trypronto.app/for/',
     },
   },
   openGraph: {
