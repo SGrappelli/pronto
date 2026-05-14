@@ -208,7 +208,7 @@ export default async function AdminPage() {
         <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '13px' }}>
           <thead>
             <tr style={{ background: '#f9fafb', borderBottom: '1px solid #e5e7eb' }}>
-              {['Business name', 'Owner email', 'Type', 'Tier', 'Created', 'Clients', 'Bookings', 'Last activity', 'Slug'].map(h => (
+              {['Business name', 'Owner email', 'Type', 'Tier', 'Created', 'Clients', 'Bookings', 'Last activity'].map(h => (
                 <th
                   key={h}
                   style={{
@@ -275,15 +275,13 @@ export default async function AdminPage() {
                   <td style={{ padding: '12px 16px', color: isStale ? '#9ca3af' : '#374151', fontStyle: isStale ? 'italic' : 'normal', whiteSpace: 'nowrap' }}>
                     {lastAt ? relativeTime(lastAt) : '—'}
                   </td>
-                  <td style={{ padding: '12px 16px', color: '#9ca3af', fontFamily: 'monospace', fontSize: '12px' }}>
-                    {b.slug}
-                  </td>
+
                 </tr>
               )
             })}
             {rows.length === 0 && (
               <tr>
-                <td colSpan={9} style={{ padding: '32px 16px', textAlign: 'center', color: '#9ca3af' }}>
+                <td colSpan={8} style={{ padding: '32px 16px', textAlign: 'center', color: '#9ca3af' }}>
                   No businesses yet
                 </td>
               </tr>
