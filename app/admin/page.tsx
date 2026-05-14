@@ -100,18 +100,16 @@ export default async function AdminPage() {
   const [
     { data: businesses },
     { data: { users } },
-    { data: allBookings },
+    { data: allAppointments },
     { data: allClients },
-    { data: allServices },
   ] = await Promise.all([
     svc
       .from('businesses')
       .select('id, name, slug, type, subscription_tier, owner_id, created_at')
       .order('created_at', { ascending: false }),
     svc.auth.admin.listUsers({ page: 1, perPage: 1000 }),
-    svc.from('bookings').select('business_id, updated_at'),
+    svc.from('appointments').select('business_id, updated_at'),
     svc.from('clients').select('business_id, created_at'),
-    svc.from('services').select('business_id'),
   ])
 
   const rows = businesses ?? []
@@ -123,34 +121,29 @@ export default async function AdminPage() {
   }
 
   // Build per-business stats
-  const bookingsCount: Record<string, number> = {}
-  const bookingsLastAt: Record<string, string> = {}
-  for (const bk of allBookings ?? []) {
-    const id = bk.business_id as string
-    bookingsCount[id] = (bookingsCount[id] ?? 0) + 1
-    if (!bookingsLastAt[id] || bk.updated_at > bookingsLastAt[id]) {
-      bookingsLastAt[id] = bk.updated_at as string
+  const apptCount: Record<string, number> = {}
+  const apptLastAt: Record<string, string> = {}
+  for (const ap of allAppointments ?? []) {
+    const id = ap.business_id
+    apptCount[id] = (apptCount[id] ?? 0) + 1
+    if (!apptLastAt[id] || ap.updated_at > apptLastAt[id]) {
+      apptLastAt[id] = ap.updated_at
     }
   }
 
   const clientsCount: Record<string, number> = {}
   const clientsLastAt: Record<string, string> = {}
   for (const cl of allClients ?? []) {
-    const id = cl.business_id as string
+    const id = cl.business_id
     clientsCount[id] = (clientsCount[id] ?? 0) + 1
     if (!clientsLastAt[id] || cl.created_at > clientsLastAt[id]) {
-      clientsLastAt[id] = cl.created_at as string
+      clientsLastAt[id] = cl.created_at
     }
   }
 
-  const servicesCount: Record<string, number> = {}
-  for (const sv of allServices ?? []) {
-    const id = sv.business_id as string
-    servicesCount[id] = (servicesCount[id] ?? 0) + 1
-  }
 
   function getLastActivity(businessId: string): string | null {
-    const a = bookingsLastAt[businessId] ?? null
+    const a = apptLastAt[businessId] ?? null
     const b = clientsLastAt[businessId] ?? null
     if (!a && !b) return null
     if (!a) return b
@@ -168,7 +161,7 @@ export default async function AdminPage() {
 
   const weekAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString()
   const thisWeek = rows.filter(b => b.created_at >= weekAgo).length
-  const activeCount = rows.filter(b => (bookingsCount[b.id] ?? 0) > 0).length
+  const activeCount = rows.filter(b => (apptCount[b.id] ?? 0) > 0).length
 
   // ── Render ────────────────────────────────────────────────────────────────
   return (
@@ -233,7 +226,7 @@ export default async function AdminPage() {
           </thead>
           <tbody>
             {rows.map((b, i) => {
-              const bkCount = bookingsCount[b.id] ?? 0
+              const bkCount = apptCount[b.id] ?? 0
               const clCount = clientsCount[b.id] ?? 0
               const lastAt = getLastActivity(b.id)
               const fourteenDaysAgo = Date.now() - 14 * 24 * 60 * 60 * 1000
