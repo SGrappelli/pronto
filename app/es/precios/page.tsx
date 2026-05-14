@@ -40,6 +40,7 @@ export const metadata: Metadata = {
     languages: {
       en: 'https://trypronto.app/pricing',
       es: 'https://trypronto.app/es/precios',
+      'pt-BR': 'https://trypronto.app/pt/precos',
       'x-default': 'https://trypronto.app/pricing',
     },
   },
