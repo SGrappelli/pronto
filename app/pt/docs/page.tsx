@@ -151,7 +151,7 @@ export default function PtDocsPage() {
           Pronto<span>.</span>
         </Link>
         <div className={styles.navRight}>
-          <TrackedLink href="/pricing" className={`${styles.navLink} ${styles.hideMob}`} eventName="pricing_click" eventParams={{ source: '/pt/docs' }}>
+          <TrackedLink href="/pt/precos" className={`${styles.navLink} ${styles.hideMob}`} eventName="pricing_click" eventParams={{ source: '/pt/docs' }}>
             Preços
           </TrackedLink>
           <TrackedLink href="/login" className={`${styles.navLink} ${styles.hideTablet}`} eventName="login_click" eventParams={{ label: 'nav_signin' }}>
@@ -531,8 +531,8 @@ export default function PtDocsPage() {
         </div>
         <div className={styles.footerLinks}>
           <Link href="/pt/" style={{ fontSize: '15px' }}>Início</Link>
-          <Link href="/pricing" style={{ fontSize: '15px' }}>Preços</Link>
-          <Link href="/pt/docs" style={{ fontSize: '15px' }}>Documentação</Link>
+          <Link href="/pt/precos" style={{ fontSize: '15px' }}>Preços</Link>
+          <Link href="/pt/para" style={{ fontSize: '15px' }}>Para negócios</Link>
           <Link href="/terms" style={{ fontSize: '15px' }}>Termos</Link>
           <Link href="/privacy" style={{ fontSize: '15px' }}>Privacidade</Link>
           <Link href="/refund" style={{ fontSize: '15px' }}>Reembolsos</Link>
