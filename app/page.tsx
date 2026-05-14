@@ -36,6 +36,12 @@ export const metadata: Metadata = {
   ],
   alternates: {
     canonical: 'https://trypronto.app/',
+    languages: {
+      en: 'https://trypronto.app/',
+      es: 'https://trypronto.app/es/',
+      'pt-BR': 'https://trypronto.app/pt/',
+      'x-default': 'https://trypronto.app/',
+    },
   },
   openGraph: {
     type: 'website',
