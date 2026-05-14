@@ -165,17 +165,40 @@ export default function RootPage() {
       <main>
         {/* HERO */}
         <section className={styles.hero}>
-          <h1>
-            Stop paying
-            <br />
-            <em>20% commission</em>
-            <br />
-            on your own clients
-          </h1>
-          <p className={styles.heroDesc}>
-            POS · CRM · Booking · Inventory · Omnichannel notifications — for any service business.
-            Self-hosted or cloud, your choice.
-          </p>
+          <div className={styles.heroInner}>
+            <div className={styles.heroText}>
+              <h1>
+                Stop paying
+                <br />
+                <em>20% commission</em>
+                <br />
+                on your own clients
+              </h1>
+              <p className={styles.heroDesc}>
+                POS · CRM · Booking · Inventory · Omnichannel notifications — for any service business.
+                Self-hosted or cloud, your choice.
+              </p>
+            </div>
+            <div className={styles.heroVideoCol}>
+              <div className={styles.browserMockup}>
+                <div className={styles.browserBar}>
+                  <span className={`${styles.browserDot} ${styles.browserDotRed}`} />
+                  <span className={`${styles.browserDot} ${styles.browserDotYellow}`} />
+                  <span className={`${styles.browserDot} ${styles.browserDotGreen}`} />
+                </div>
+                <video
+                  src="/demo-booking.mp4"
+                  poster="/demo-booking-poster.png"
+                  autoPlay
+                  loop
+                  muted
+                  playsInline
+                  preload="metadata"
+                  className={styles.browserVideo}
+                />
+              </div>
+            </div>
+          </div>
         </section>
 
         {/* EVERYTHING IN ONE PLACE */}
@@ -223,6 +246,25 @@ export default function RootPage() {
                 <h4>PWA</h4>
                 <p>Install on any device directly from the browser. Works offline.</p>
               </div>
+            </div>
+          </div>
+          <div className={styles.demoWrap}>
+            <div className={styles.browserMockup}>
+              <div className={styles.browserBar}>
+                <span className={`${styles.browserDot} ${styles.browserDotRed}`} />
+                <span className={`${styles.browserDot} ${styles.browserDotYellow}`} />
+                <span className={`${styles.browserDot} ${styles.browserDotGreen}`} />
+              </div>
+              <video
+                src="/demo-calendar.mp4"
+                poster="/demo-calendar-poster.png"
+                autoPlay
+                loop
+                muted
+                playsInline
+                preload="metadata"
+                className={styles.browserVideo}
+              />
             </div>
           </div>
         </section>
