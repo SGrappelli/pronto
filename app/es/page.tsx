@@ -182,17 +182,40 @@ export default function EsPage() {
       <main>
         {/* HERO */}
         <section className={styles.hero}>
-          <h1>
-            Deja de pagar
-            <br />
-            <em>20% de comisión</em>
-            <br />
-            por tus propios clientes
-          </h1>
-          <p className={styles.heroDesc}>
-            POS · CRM · Reservas · Inventario · Notificaciones omnicanal — para cualquier negocio
-            de servicios. En tu servidor o en la nube, tú eliges.
-          </p>
+          <div className={styles.heroInner}>
+            <div className={styles.heroText}>
+              <h1>
+                Deja de pagar
+                <br />
+                <em>20% de comisión</em>
+                <br />
+                por tus propios clientes
+              </h1>
+              <p className={styles.heroDesc}>
+                POS · CRM · Reservas · Inventario · Notificaciones omnicanal — para cualquier negocio
+                de servicios. En tu servidor o en la nube, tú eliges.
+              </p>
+            </div>
+            <div className={styles.heroVideoCol}>
+              <div className={styles.browserMockup}>
+                <div className={styles.browserBar}>
+                  <span className={`${styles.browserDot} ${styles.browserDotRed}`} />
+                  <span className={`${styles.browserDot} ${styles.browserDotYellow}`} />
+                  <span className={`${styles.browserDot} ${styles.browserDotGreen}`} />
+                </div>
+                <video
+                  src="/demo-booking.mp4"
+                  poster="/demo-booking-poster.png"
+                  autoPlay
+                  loop
+                  muted
+                  playsInline
+                  preload="metadata"
+                  className={styles.browserVideo}
+                />
+              </div>
+            </div>
+          </div>
         </section>
 
         {/* TODO EN UN SOLO LUGAR */}
@@ -239,6 +262,25 @@ export default function EsPage() {
               <div className={styles.featCard}>
                 <h4>PWA</h4>
                 <p>Se instala en cualquier dispositivo desde el navegador. Funciona sin conexión.</p>
+              </div>
+            </div>
+            <div className={styles.demoWrap}>
+              <div className={styles.browserMockup}>
+                <div className={styles.browserBar}>
+                  <span className={`${styles.browserDot} ${styles.browserDotRed}`} />
+                  <span className={`${styles.browserDot} ${styles.browserDotYellow}`} />
+                  <span className={`${styles.browserDot} ${styles.browserDotGreen}`} />
+                </div>
+                <video
+                  src="/demo-calendar.mp4"
+                  poster="/demo-calendar-poster.png"
+                  autoPlay
+                  loop
+                  muted
+                  playsInline
+                  preload="metadata"
+                  className={styles.browserVideo}
+                />
               </div>
             </div>
           </div>
