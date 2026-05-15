@@ -708,7 +708,6 @@ const pageContent = `
       <a href="/pt/para/saloes">Sal&otilde;es de Beleza</a>
       <a href="/pt/para/barbearia">Barbearias</a>
       <a href="/pt/para/academia">Academias</a>
-      <a href="/pt/para/clinica-dental">Cl&iacute;nicas Odontol&oacute;gicas</a>
       <a href="/pt/">&Iacute;nicio</a>
       <a href="/pt/precos">Pre&ccedil;os</a>
       <a href="/terms">Termos de Uso</a>

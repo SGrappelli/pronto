@@ -704,7 +704,6 @@ const pageContent = `
   <div class="footer-right">
     <div class="footer-links">
       <a href="/pt/para/">Para neg&oacute;cios</a>
-      <a href="/pt/para/saloes">Sal&otilde;es de Beleza</a>
       <a href="/pt/para/barbearia">Barbearias</a>
       <a href="/pt/para/spa">Spa e Massagem</a>
       <a href="/pt/para/academia">Academias</a>
