@@ -11,6 +11,7 @@ export const metadata: Metadata = {
     languages: {
       en: 'https://trypronto.app/for/barbershops',
       es: 'https://trypronto.app/es/para/barberia',
+      'pt-BR': 'https://trypronto.app/pt/para/barbearia',
       'x-default': 'https://trypronto.app/for/barbershops',
     },
   },

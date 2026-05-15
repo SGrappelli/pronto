@@ -6,7 +6,15 @@ export const metadata: Metadata = {
     'Free barbershop management software with appointment booking, walk-in support, POS, CRM and automated client reminders via WhatsApp, Telegram & Email. Zero commission. Self-hosted or cloud.',
   keywords:
     'barbershop management software, barbershop booking software, barbershop POS system, barber shop scheduling software, barbershop CRM, free barbershop software, barber appointment booking, barbershop software no commission, self-hosted barbershop software',
-  alternates: { canonical: 'https://trypronto.app/for/barbershops' },
+  alternates: {
+    canonical: 'https://trypronto.app/for/barbershops',
+    languages: {
+      en: 'https://trypronto.app/for/barbershops',
+      es: 'https://trypronto.app/es/para/barberia',
+      'pt-BR': 'https://trypronto.app/pt/para/barbearia',
+      'x-default': 'https://trypronto.app/for/barbershops',
+    },
+  },
   openGraph: {
     type: 'website',
     url: 'https://trypronto.app/for/barbershops',
