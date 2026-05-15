@@ -86,6 +86,21 @@ const LANGUAGE_ALTERNATES: Record<string, Record<string, string>> = {
     es: 'https://trypronto.app/es/para/auto-repair',
     'pt-BR': 'https://trypronto.app/pt/para/auto-repair',
   },
+  '/for/dental': {
+    en: 'https://trypronto.app/for/dental',
+    es: 'https://trypronto.app/es/para/clinica-dental',
+    'pt-BR': 'https://trypronto.app/pt/para/clinica-dental',
+  },
+  '/es/para/clinica-dental': {
+    en: 'https://trypronto.app/for/dental',
+    es: 'https://trypronto.app/es/para/clinica-dental',
+    'pt-BR': 'https://trypronto.app/pt/para/clinica-dental',
+  },
+  '/pt/para/clinica-dental': {
+    en: 'https://trypronto.app/for/dental',
+    es: 'https://trypronto.app/es/para/clinica-dental',
+    'pt-BR': 'https://trypronto.app/pt/para/clinica-dental',
+  },
 }
 
 const ROUTE_PRIORITIES: Record<string, number> = {
@@ -101,6 +116,7 @@ const ROUTE_PRIORITIES: Record<string, number> = {
   '/pt/para/auto-repair': 0.7,
   '/es/para/autoservicio': 0.8,
   '/es/para/clinica-dental': 0.8,
+  '/pt/para/clinica-dental': 0.7,
   '/for': 0.8,
   '/pricing': 0.8,
   '/es/precios': 0.8,
@@ -185,7 +201,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     .filter(({ file }) => !hasNoIndex(file))
     .map(({ route }) => ({
       url: `${BASE_URL}${route}`,
-      changeFrequency: (['/', '/es', '/pt', '/for', '/for/salons', '/es/para', '/pt/para', '/es/para/salones', '/for/barbershops', '/es/para/barberia', '/for/auto-repair', '/es/para/autoservicio', '/es/para/clinica-dental', '/pt/para/saloes', '/pt/para/barbearia', '/pt/para/auto-repair', '/docs', '/es/docs', '/pt/docs'].includes(route) ? 'weekly' : 'monthly') as MetadataRoute.Sitemap[number]['changeFrequency'],
+      changeFrequency: (['/', '/es', '/pt', '/for', '/for/salons', '/es/para', '/pt/para', '/es/para/salones', '/for/barbershops', '/es/para/barberia', '/for/auto-repair', '/es/para/autoservicio', '/es/para/clinica-dental', '/pt/para/clinica-dental', '/pt/para/saloes', '/pt/para/barbearia', '/pt/para/auto-repair', '/docs', '/es/docs', '/pt/docs'].includes(route) ? 'weekly' : 'monthly') as MetadataRoute.Sitemap[number]['changeFrequency'],
       priority: getPriority(route),
       lastModified: new Date(),
       ...(LANGUAGE_ALTERNATES[route] ? { alternates: { languages: LANGUAGE_ALTERNATES[route] } } : {}),
