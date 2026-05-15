@@ -158,11 +158,11 @@ export default function RootPage() {
           <TrackedLink href="/pricing" className={`${styles.navLink} ${styles.hideMob}`} eventName="pricing_click" eventParams={{ source: '/' }}>
             Pricing
           </TrackedLink>
-          <TrackedLink href="/login" className={styles.navLink} eventName="login_click" eventParams={{ label: 'nav_signin' }}>
+          <TrackedLink href="/login" className={styles.navLink} eventName="sign_in_click" eventParams={{ location: 'navbar', language: 'en' }}>
             Sign in
           </TrackedLink>
           <LangSwitcher />
-          <TrackedLink href="/register" className={styles.btnNav} eventName="cta_click" eventParams={{ label: 'start_free', page: '/' }}>
+          <TrackedLink href="/register" className={styles.btnNav} eventName="sign_up_click" eventParams={{ location: 'navbar', language: 'en' }}>
             Start free
           </TrackedLink>
         </div>
@@ -492,7 +492,7 @@ export default function RootPage() {
                   </div>
                 </div>
               </div>
-              <TrackedLink href="/register" className={styles.btnPrimary} eventName="cta_click" eventParams={{ label: 'start_free', page: '/' }}>
+              <TrackedLink href="/register" className={styles.btnPrimary} eventName="sign_up_click" eventParams={{ location: 'hero', language: 'en' }}>
                 Start free — no credit card
               </TrackedLink>
             </div>

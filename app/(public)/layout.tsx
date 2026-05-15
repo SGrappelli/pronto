@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import { LangSwitcher } from '@/components/LangSwitcher'
+import { TrackedLink } from '@/components/tracked-link'
 import { Bricolage_Grotesque, DM_Sans } from 'next/font/google'
 import styles from './public-layout.module.css'
 
@@ -26,13 +27,13 @@ export default function PublicLayout({ children }: { children: React.ReactNode }
           <Link href="/pricing" className={`${styles.navLink} ${styles.hideMob}`}>
             Pricing
           </Link>
-          <Link href="/login" className={styles.navLink}>
+          <TrackedLink href="/login" className={styles.navLink} eventName="sign_in_click" eventParams={{ location: 'navbar', language: 'en' }}>
             Sign in
-          </Link>
+          </TrackedLink>
           <LangSwitcher />
-          <Link href="/register" className={styles.btnNav}>
+          <TrackedLink href="/register" className={styles.btnNav} eventName="sign_up_click" eventParams={{ location: 'navbar', language: 'en' }}>
             Start free
-          </Link>
+          </TrackedLink>
         </div>
       </nav>
 

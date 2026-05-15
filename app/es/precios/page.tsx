@@ -215,11 +215,11 @@ export default function EsPreciosPage() {
           <TrackedLink href="/es/precios" className={`${styles.navLink} ${styles.hideMob}`} eventName="pricing_click" eventParams={{ source: '/es/precios' }}>
             Precios
           </TrackedLink>
-          <TrackedLink href="/login" className={`${styles.navLink} ${styles.hideTablet}`} eventName="login_click" eventParams={{ label: 'nav_signin' }}>
+          <TrackedLink href="/login" className={`${styles.navLink} ${styles.hideTablet}`} eventName="sign_in_click" eventParams={{ location: 'navbar', language: 'es' }}>
             Iniciar sesión
           </TrackedLink>
           <LangSwitcher />
-          <TrackedLink href="/register" className={styles.btnNav} eventName="cta_click" eventParams={{ label: 'start_free', page: '/es/precios' }}>
+          <TrackedLink href="/register" className={styles.btnNav} eventName="sign_up_click" eventParams={{ location: 'navbar', language: 'es' }}>
             Empezar gratis
           </TrackedLink>
         </div>
@@ -380,8 +380,8 @@ export default function EsPreciosPage() {
                 <TrackedAnchor
                   href="/register"
                   className="bg-blue-600 text-white font-semibold px-7 py-3 rounded-xl hover:bg-blue-700 transition-colors text-sm"
-                  eventName="cta_click"
-                  eventParams={{ label: 'start_free', page: '/es/precios' }}
+                  eventName="sign_up_click"
+                  eventParams={{ location: 'pricing', language: 'es' }}
                 >
                   Empezar gratis — sin tarjeta
                 </TrackedAnchor>
