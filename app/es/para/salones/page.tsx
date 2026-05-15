@@ -11,6 +11,7 @@ export const metadata: Metadata = {
     languages: {
       en: 'https://trypronto.app/for/salons',
       es: 'https://trypronto.app/es/para/salones',
+      'pt-BR': 'https://trypronto.app/pt/para/saloes',
       'x-default': 'https://trypronto.app/for/salons',
     },
   },

@@ -46,6 +46,21 @@ const LANGUAGE_ALTERNATES: Record<string, Record<string, string>> = {
     es: 'https://trypronto.app/es/para/',
     'pt-BR': 'https://trypronto.app/pt/para/',
   },
+  '/for/salons': {
+    en: 'https://trypronto.app/for/salons',
+    es: 'https://trypronto.app/es/para/salones',
+    'pt-BR': 'https://trypronto.app/pt/para/saloes',
+  },
+  '/es/para/salones': {
+    en: 'https://trypronto.app/for/salons',
+    es: 'https://trypronto.app/es/para/salones',
+    'pt-BR': 'https://trypronto.app/pt/para/saloes',
+  },
+  '/pt/para/saloes': {
+    en: 'https://trypronto.app/for/salons',
+    es: 'https://trypronto.app/es/para/salones',
+    'pt-BR': 'https://trypronto.app/pt/para/saloes',
+  },
 }
 
 const ROUTE_PRIORITIES: Record<string, number> = {
@@ -55,6 +70,7 @@ const ROUTE_PRIORITIES: Record<string, number> = {
   '/pt/para': 0.8,
   '/for/salons': 0.9,
   '/es/para/salones': 0.8,
+  '/pt/para/saloes': 0.8,
   '/es/para/barberia': 0.8,
   '/es/para/autoservicio': 0.8,
   '/es/para/clinica-dental': 0.8,
@@ -142,7 +158,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     .filter(({ file }) => !hasNoIndex(file))
     .map(({ route }) => ({
       url: `${BASE_URL}${route}`,
-      changeFrequency: (['/', '/es', '/pt', '/for', '/for/salons', '/es/para', '/pt/para', '/es/para/salones', '/for/barbershops', '/es/para/barberia', '/for/auto-repair', '/es/para/autoservicio', '/es/para/clinica-dental', '/docs', '/es/docs', '/pt/docs'].includes(route) ? 'weekly' : 'monthly') as MetadataRoute.Sitemap[number]['changeFrequency'],
+      changeFrequency: (['/', '/es', '/pt', '/for', '/for/salons', '/es/para', '/pt/para', '/es/para/salones', '/for/barbershops', '/es/para/barberia', '/for/auto-repair', '/es/para/autoservicio', '/es/para/clinica-dental', '/pt/para/saloes', '/docs', '/es/docs', '/pt/docs'].includes(route) ? 'weekly' : 'monthly') as MetadataRoute.Sitemap[number]['changeFrequency'],
       priority: getPriority(route),
       lastModified: new Date(),
       ...(LANGUAGE_ALTERNATES[route] ? { alternates: { languages: LANGUAGE_ALTERNATES[route] } } : {}),
