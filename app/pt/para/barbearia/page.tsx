@@ -21,6 +21,7 @@ export const metadata: Metadata = {
     title: 'Software Grátis para Barbearia — Agenda e PDV',
     description:
       'Agendamento online, fila de espera, PDV e WhatsApp para barbearias. Sem comissão. Instale em 1 comando ou use no SaaS.',
+    // TODO: replace with og-barbearia-pt.png when image is ready
     images: [{ url: 'https://trypronto.app/og-image.png' }],
     locale: 'pt_BR',
     siteName: 'Pronto',
@@ -30,6 +31,7 @@ export const metadata: Metadata = {
     title: 'Software Grátis para Barbearia — Agenda e PDV',
     description:
       'Agendamento, fila de espera e WhatsApp para barbearias. Sem comissão. Grátis para sempre na versão self-hosted.',
+    // TODO: replace with og-barbearia-pt.png when image is ready
     images: ['https://trypronto.app/og-image.png'],
   },
 }

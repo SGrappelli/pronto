@@ -21,7 +21,7 @@ const dmSans = DM_Sans({
 export const metadata: Metadata = {
   title: 'Pronto — Free Open Source POS, CRM & Booking for Service Businesses',
   description:
-    'Pronto is a free, open-source POS, CRM, and appointment booking system for salons, barbershops, auto repair shops, cafes and any service SMB. Self-hosted or cloud. Zero commission. One command install.',
+    'Free open-source POS, CRM and booking for salons, barbershops, cafes & auto repair. WhatsApp & Telegram alerts. Zero commission. Self-hosted or cloud.',
   keywords: [
     'open source POS',
     'self-hosted CRM',

@@ -21,7 +21,7 @@ const dmSans = DM_Sans({
 export const metadata: Metadata = {
   title: 'Pronto — Software Grátis para Gestão de Negócios',
   description:
-    'Software gratuito de POS, CRM e agendamentos para pequenas empresas. Notificações por WhatsApp, Telegram e Email. Self-hosted ou SaaS. Instale em 1 comando',
+    'Software gratuito de POS, CRM e agendamentos para pequenas empresas. Notificações por WhatsApp, Telegram e Email. Self-hosted ou SaaS.',
   keywords: [
     'software para salão de beleza',
     'sistema PDV grátis',
