@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import { trackEvent } from '@/lib/analytics'
 
 const paidPlans = [
   {
@@ -89,6 +90,7 @@ export function PricingCards() {
           <a
             href="/register"
             className="mt-auto w-full text-center py-2.5 rounded-lg text-sm font-semibold transition-colors border border-gray-300 text-gray-700 hover:bg-gray-50"
+            onClick={() => trackEvent('sign_up_click', { location: 'pricing', language: 'en' })}
           >
             Get started free
           </a>

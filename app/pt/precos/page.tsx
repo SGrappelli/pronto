@@ -243,11 +243,11 @@ export default function PtPrecosPage() {
           <TrackedLink href="/pt/precos" className={`${styles.navLink} ${styles.hideMob}`} eventName="pricing_click" eventParams={{ source: '/pt/precos' }}>
             Preços
           </TrackedLink>
-          <TrackedLink href="/login" className={`${styles.navLink} ${styles.hideTablet}`} eventName="login_click" eventParams={{ label: 'nav_signin' }}>
+          <TrackedLink href="/login" className={`${styles.navLink} ${styles.hideTablet}`} eventName="sign_in_click" eventParams={{ location: 'navbar', language: 'pt' }}>
             Entrar
           </TrackedLink>
           <LangSwitcher />
-          <TrackedLink href="/register" className={styles.btnNav} eventName="cta_click" eventParams={{ label: 'start_free', page: '/pt/precos' }}>
+          <TrackedLink href="/register" className={styles.btnNav} eventName="sign_up_click" eventParams={{ location: 'navbar', language: 'pt' }}>
             Começar grátis
           </TrackedLink>
         </div>
@@ -412,8 +412,8 @@ export default function PtPrecosPage() {
                 <TrackedAnchor
                   href="/register"
                   className="bg-blue-600 text-white font-semibold px-7 py-3 rounded-xl hover:bg-blue-700 transition-colors text-sm"
-                  eventName="cta_click"
-                  eventParams={{ label: 'start_free', page: '/pt/precos' }}
+                  eventName="sign_up_click"
+                  eventParams={{ location: 'pricing', language: 'pt' }}
                 >
                   Começar grátis — sem cartão
                 </TrackedAnchor>

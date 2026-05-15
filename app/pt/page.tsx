@@ -196,11 +196,11 @@ export default function PtPage() {
           <TrackedLink href="/pt/precos" className={`${styles.navLink} ${styles.hideMob}`} eventName="pricing_click" eventParams={{ source: '/pt' }}>
             Preços
           </TrackedLink>
-          <TrackedLink href="/login" className={`${styles.navLink} ${styles.hideTablet}`} eventName="login_click" eventParams={{ label: 'nav_signin' }}>
+          <TrackedLink href="/login" className={`${styles.navLink} ${styles.hideTablet}`} eventName="sign_in_click" eventParams={{ location: 'navbar', language: 'pt' }}>
             Entrar
           </TrackedLink>
           <LangSwitcher />
-          <TrackedLink href="/register" className={styles.btnNav} eventName="cta_click" eventParams={{ label: 'start_free', page: '/pt' }}>
+          <TrackedLink href="/register" className={styles.btnNav} eventName="sign_up_click" eventParams={{ location: 'navbar', language: 'pt' }}>
             Começar grátis
           </TrackedLink>
         </div>
@@ -526,7 +526,7 @@ export default function PtPage() {
                   </div>
                 </div>
               </div>
-              <TrackedLink href="/register" className={styles.btnPrimary} eventName="cta_click" eventParams={{ label: 'start_free', page: '/pt' }}>
+              <TrackedLink href="/register" className={styles.btnPrimary} eventName="sign_up_click" eventParams={{ location: 'hero', language: 'pt' }}>
                 Começar grátis — sem cartão
               </TrackedLink>
             </div>
