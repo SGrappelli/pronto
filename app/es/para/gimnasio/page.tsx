@@ -9,8 +9,9 @@ export const metadata: Metadata = {
   alternates: {
     canonical: 'https://trypronto.app/es/para/gimnasio',
     languages: {
-      es: 'https://trypronto.app/es/para/gimnasio',
       en: 'https://trypronto.app/for/fitness',
+      es: 'https://trypronto.app/es/para/gimnasio',
+      'pt-BR': 'https://trypronto.app/pt/para/academia',
       'x-default': 'https://trypronto.app/for/fitness',
     },
   },

@@ -6,7 +6,15 @@ export const metadata: Metadata = {
     'Free fitness club management software with class booking, member CRM, POS and automated reminders via WhatsApp, Telegram & Email. Zero commission. Self-hosted or cloud.',
   keywords:
     'fitness club management software, gym management software free, fitness studio booking software, gym POS system, personal trainer scheduling software, fitness club CRM, gym booking software, free gym software, yoga studio software, fitness software no commission, self-hosted gym software',
-  alternates: { canonical: 'https://trypronto.app/for/fitness' },
+  alternates: {
+    canonical: 'https://trypronto.app/for/fitness',
+    languages: {
+      en: 'https://trypronto.app/for/fitness',
+      es: 'https://trypronto.app/es/para/gimnasio',
+      'pt-BR': 'https://trypronto.app/pt/para/academia',
+      'x-default': 'https://trypronto.app/for/fitness',
+    },
+  },
   openGraph: {
     type: 'website',
     url: 'https://trypronto.app/for/fitness',
