@@ -251,7 +251,7 @@ export default function PricingPage() {
             ].map(({ q, a }) => (
               <div key={q} className="py-5">
                 <h3 className="text-base font-semibold text-gray-900 mb-2" style={{ fontFamily: "var(--font-bricolage, 'Bricolage Grotesque'), sans-serif" }}>{q}</h3>
-                <p className="text-sm text-gray-600 leading-relaxed">{a}</p>
+                <p className="text-base text-gray-600 leading-relaxed">{a}</p>
               </div>
             ))}
           </div>

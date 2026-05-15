@@ -14,7 +14,7 @@ const TO_EN: Record<string, string> = {
   '/for/dental': '/for/dental', '/es/para/clinica-dental': '/for/dental', '/pt/para/clinica-dental': '/for/dental',
   '/for/cafes': '/for/cafes', '/es/para/cafeteria': '/for/cafes', '/pt/para/cafeteria': '/for/cafes',
   '/for/tattoo': '/for/tattoo', '/es/para/tatuajes': '/for/tattoo', '/pt/para/tatuagens': '/for/tattoo',
-  '/docs': '/docs',
+  '/docs': '/docs', '/es/docs': '/docs', '/pt/docs': '/docs',
 }
 
 const BY_LANG: Record<string, Record<string, string>> = {
