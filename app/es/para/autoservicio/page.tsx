@@ -812,7 +812,6 @@ const pageContent = `
     <div class="footer-links">
       <a href="/es/">Inicio</a>
       <a href="/es/para">Para negocios</a>
-      <a href="/es/docs">Documentaci&oacute;n</a>
       <a href="/es/para/gimnasio">Gimnasios</a>
       <a href="/es/para/clinica-dental">Cl&iacute;nicas Dentales</a>
       <a href="/terms">T&eacute;rminos</a>

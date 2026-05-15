@@ -840,7 +840,6 @@ De cualquier forma &mdash; sin comisiones por corte, para siempre.</p>
       <a href="/es/">Inicio</a>
       <a href="/es/precios">Precios</a>
       <a href="/es/para">Para negocios</a>
-      <a href="/es/docs">Documentaci&oacute;n</a>
       <a href="/es/para/barberia">Barber&iacute;as</a>
       <a href="/es/para/clinica-dental">Cl&iacute;nicas Dentales</a>
       <a href="/es/para/gimnasio">Gimnasios</a>
