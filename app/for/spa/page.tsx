@@ -6,7 +6,15 @@ export const metadata: Metadata = {
     'Free massage and spa management software with appointment booking, client CRM, POS and automated reminders via WhatsApp, Telegram & Email. Zero commission. Self-hosted or cloud.',
   keywords:
     'massage spa management software, spa booking software free, massage therapy scheduling software, spa POS system, spa CRM software, free spa software, massage studio software, day spa management software, wellness center software, spa software no commission, self-hosted spa software',
-  alternates: { canonical: 'https://trypronto.app/for/spa' },
+  alternates: {
+    canonical: 'https://trypronto.app/for/spa',
+    languages: {
+      en: 'https://trypronto.app/for/spa',
+      es: 'https://trypronto.app/es/para/spa',
+      'pt-BR': 'https://trypronto.app/pt/para/spa',
+      'x-default': 'https://trypronto.app/for/spa',
+    },
+  },
   openGraph: {
     type: 'website',
     url: 'https://trypronto.app/for/spa',

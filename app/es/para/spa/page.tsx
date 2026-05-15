@@ -9,8 +9,9 @@ export const metadata: Metadata = {
   alternates: {
     canonical: 'https://trypronto.app/es/para/spa',
     languages: {
-      es: 'https://trypronto.app/es/para/spa',
       en: 'https://trypronto.app/for/spa',
+      es: 'https://trypronto.app/es/para/spa',
+      'pt-BR': 'https://trypronto.app/pt/para/spa',
       'x-default': 'https://trypronto.app/for/spa',
     },
   },
