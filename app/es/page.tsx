@@ -38,7 +38,8 @@ export const metadata: Metadata = {
     canonical: 'https://trypronto.app/es',
     languages: {
       en: 'https://trypronto.app/',
-      es: 'https://trypronto.app/es',
+      es: 'https://trypronto.app/es/',
+      'pt-BR': 'https://trypronto.app/pt/',
       'x-default': 'https://trypronto.app/',
     },
   },

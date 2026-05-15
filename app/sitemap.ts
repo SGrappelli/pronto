@@ -15,9 +15,44 @@ const EXCLUDED_ROUTE_PREFIXES = [
 ]
 
 // Priority map for known routes; everything else gets 0.6
+const LANGUAGE_ALTERNATES: Record<string, Record<string, string>> = {
+  '/': {
+    en: 'https://trypronto.app/',
+    es: 'https://trypronto.app/es/',
+    'pt-BR': 'https://trypronto.app/pt/',
+  },
+  '/es': {
+    en: 'https://trypronto.app/',
+    es: 'https://trypronto.app/es/',
+    'pt-BR': 'https://trypronto.app/pt/',
+  },
+  '/pt': {
+    en: 'https://trypronto.app/',
+    es: 'https://trypronto.app/es/',
+    'pt-BR': 'https://trypronto.app/pt/',
+  },
+  '/for': {
+    en: 'https://trypronto.app/for/',
+    es: 'https://trypronto.app/es/para/',
+    'pt-BR': 'https://trypronto.app/pt/para/',
+  },
+  '/es/para': {
+    en: 'https://trypronto.app/for/',
+    es: 'https://trypronto.app/es/para/',
+    'pt-BR': 'https://trypronto.app/pt/para/',
+  },
+  '/pt/para': {
+    en: 'https://trypronto.app/for/',
+    es: 'https://trypronto.app/es/para/',
+    'pt-BR': 'https://trypronto.app/pt/para/',
+  },
+}
+
 const ROUTE_PRIORITIES: Record<string, number> = {
   '/': 1.0,
   '/es': 0.9,
+  '/pt': 0.9,
+  '/pt/para': 0.8,
   '/for/salons': 0.9,
   '/es/para/salones': 0.8,
   '/es/para/barberia': 0.8,
@@ -107,8 +142,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
     .filter(({ file }) => !hasNoIndex(file))
     .map(({ route }) => ({
       url: `${BASE_URL}${route}`,
-      changeFrequency: (['/', '/es', '/for', '/for/salons', '/es/para', '/es/para/salones', '/for/barbershops', '/es/para/barberia', '/for/auto-repair', '/es/para/autoservicio', '/es/para/clinica-dental', '/docs', '/es/docs', '/pt/docs'].includes(route) ? 'weekly' : 'monthly') as MetadataRoute.Sitemap[number]['changeFrequency'],
+      changeFrequency: (['/', '/es', '/pt', '/for', '/for/salons', '/es/para', '/pt/para', '/es/para/salones', '/for/barbershops', '/es/para/barberia', '/for/auto-repair', '/es/para/autoservicio', '/es/para/clinica-dental', '/docs', '/es/docs', '/pt/docs'].includes(route) ? 'weekly' : 'monthly') as MetadataRoute.Sitemap[number]['changeFrequency'],
       priority: getPriority(route),
       lastModified: new Date(),
+      ...(LANGUAGE_ALTERNATES[route] ? { alternates: { languages: LANGUAGE_ALTERNATES[route] } } : {}),
     }))
 }
