@@ -334,8 +334,8 @@ export default function PtPrecosPage() {
               O faturamento é processado com segurança pelo Whop.{' '}
               Os planos anuais incluem 2 meses grátis.{' '}
               Dúvidas?{' '}
-              <a href="mailto:hello@trypronto.app" className="text-blue-600 hover:underline">
-                Fale conosco em hello@trypronto.app
+              <a href="mailto:support@trypronto.app" className="text-blue-600 hover:underline">
+                Fale conosco em support@trypronto.app
               </a>
             </p>
 

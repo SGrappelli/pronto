@@ -301,7 +301,7 @@ export default function EsPreciosPage() {
             <p className="text-center text-sm text-gray-500 mt-10">
               Todos los precios en USD. Facturación mensual.{' '}
               ¿Tienes preguntas?{' '}
-              <a href="mailto:hello@trypronto.app" className="text-blue-600 hover:underline">
+              <a href="mailto:support@trypronto.app" className="text-blue-600 hover:underline">
                 Escríbenos
               </a>
               .
