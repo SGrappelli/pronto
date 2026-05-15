@@ -190,8 +190,6 @@ const ROUTE_PRIORITIES: Record<string, number> = {
   '/es/para': 0.85,
   '/es/para/gimnasio': 0.8,
   '/es/para/spa': 0.8,
-  '/es/para/cafeteria': 0.8,
-  '/es/para/tatuajes': 0.8,
   '/for/fitness': 0.8,
   '/docs': 0.8,
   '/es/docs': 0.8,
