@@ -361,8 +361,8 @@ const pageContent = `
   <div class="nav-right">
     <a href="/pt/precos" class="nav-link hide-mob" onclick="window.gtag&&window.gtag('event','pricing_click',{source:'/pt/para/saloes'})">Pre&ccedil;os</a>
     <select aria-label="Language" onchange="var l=this.value;var m={en:'/for/salons',es:'/es/para/salones',pt:'/pt/para/saloes'};if(window.gtag)window.gtag('event','language_switch',{to:l});window.location.href=m[l]||'/';" style="font-size:0.85rem;font-family:inherit;font-weight:500;border:1px solid #d1d5db;border-radius:6px;padding:4px 6px;background:transparent;cursor:pointer;color:inherit;appearance:none;-webkit-appearance:none;min-width:52px;"><option value="en">EN</option><option value="es">ES</option><option value="pt" selected>PT</option></select>
-    <a href="/login" class="nav-link hide-tablet" onclick="window.gtag&&window.gtag('event','login_click',{label:'nav_signin'})">Entrar</a>
-    <a href="/register" class="btn-nav" onclick="window.gtag&&window.gtag('event','cta_click',{label:'start_free',page:'/pt/para/saloes'})">Come&ccedil;ar gr&aacute;tis</a>
+    <a href="/login" class="nav-link hide-tablet" onclick="window.gtag&&window.gtag('event','sign_in_click',{location:'navbar',language:'pt'})">Entrar</a>
+    <a href="/register" class="btn-nav" onclick="window.gtag&&window.gtag('event','sign_up_click',{location:'navbar',language:'pt'})">Come&ccedil;ar gr&aacute;tis</a>
   </div>
 </nav>
 
@@ -387,7 +387,7 @@ Self-hosted ou na nuvem.</p>
     <p class="hero-platforms">A maioria das plataformas de reservas cobra <strong>20&ndash;30%</strong>
 de cada agendamento dos seus pr&oacute;prios clientes. O Pronto cobra <strong>$0</strong>.</p>
     <div class="hero-ctas">
-      <a href="/register" class="btn-primary" onclick="window.gtag&&window.gtag('event','cta_click',{label:'start_free',page:'/pt/para/saloes'})">Come&ccedil;ar gr&aacute;tis &mdash; sem cart&atilde;o</a>
+      <a href="/register" class="btn-primary" onclick="window.gtag&&window.gtag('event','sign_up_click',{location:'hero',language:'pt'})">Come&ccedil;ar gr&aacute;tis &mdash; sem cart&atilde;o</a>
       <a href="https://github.com/SGrappelli/pronto" class="btn-outline" onclick="window.gtag&&window.gtag('event','github_click',{label:'cta_button',page:'/pt/para/saloes'})">Self-host gr&aacute;tis &rarr;</a>
     </div>
     <div class="hero-stats">
@@ -708,7 +708,7 @@ N&oacute;s gerenciamos atualiza&ccedil;&otilde;es, backups e uptime.</p>
         <div class="path-point"><div class="path-point-dot"></div><div class="path-point-text"><strong>Seu pr&oacute;prio subdom&iacute;nio</strong> &mdash; salon-maya.trypronto.app ou dom&iacute;nio personalizado no Pro+</div></div>
         <div class="path-point"><div class="path-point-dot"></div><div class="path-point-text"><strong>N&oacute;s cuidamos de tudo</strong> &mdash; atualiza&ccedil;&otilde;es, backups e monitoramento de uptime</div></div>
       </div>
-      <a href="/register" class="btn-primary" onclick="window.gtag&&window.gtag('event','cta_click',{label:'start_free',page:'/pt/para/saloes'})">Come&ccedil;ar gr&aacute;tis &mdash; sem cart&atilde;o</a>
+      <a href="/register" class="btn-primary" onclick="window.gtag&&window.gtag('event','sign_up_click',{location:'pricing',language:'pt'})">Come&ccedil;ar gr&aacute;tis &mdash; sem cart&atilde;o</a>
     </div>
   </div>
 
@@ -818,7 +818,7 @@ N&oacute;s gerenciamos atualiza&ccedil;&otilde;es, backups e uptime.</p>
   <p>A nuvem leva 5 minutos. Self-hosted &eacute; um &uacute;nico comando.
 De qualquer forma &mdash; sem comiss&atilde;o, para sempre.</p>
   <div>
-    <a href="/register" class="btn-cta-white" onclick="window.gtag&&window.gtag('event','cta_click',{label:'start_free',page:'/pt/para/saloes'})">Come&ccedil;ar gr&aacute;tis &mdash; nuvem</a>
+    <a href="/register" class="btn-cta-white" onclick="window.gtag&&window.gtag('event','sign_up_click',{location:'footer',language:'pt'})">Come&ccedil;ar gr&aacute;tis &mdash; nuvem</a>
     <a href="https://github.com/SGrappelli/pronto" class="btn-cta-outline" onclick="window.gtag&&window.gtag('event','github_click',{label:'cta_button',page:'/pt/para/saloes'})">Self-host no GitHub</a>
   </div>
 </section>

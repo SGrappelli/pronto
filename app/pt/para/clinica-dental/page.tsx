@@ -1,35 +1,35 @@
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: 'Software Grátis para Oficina Mecânica — Pronto',
+  title: 'Software Grátis para Clínica Odontológica — Pronto',
   description:
-    'Software gratuito para oficinas mecânicas com ordens de serviço, CRM, controle de peças e lembretes por WhatsApp. Sem comissão. Self-hosted ou SaaS.',
+    'Software gratuito para clínicas odontológicas com agendamento, prontuário de pacientes, controle de materiais e lembretes por WhatsApp. Sem comissão. Self-hosted ou SaaS.',
   keywords:
-    'software para oficina mecânica, sistema de ordem de serviço para oficina, programa para oficina grátis, controle de peças oficina, CRM para oficina mecânica, software gestão oficina, lembretes automáticos WhatsApp oficina, software oficina sem comissão, software código aberto oficina, OS para oficina gratuito',
+    'software para clínica odontológica, sistema de agendamento para dentista gratuito, prontuário eletrônico odontológico gratuito, controle de materiais odontológicos, CRM para dentista, software gestão clínica dental, lembretes automáticos WhatsApp dentista, software odontologia sem comissão, software código aberto odontologia, alternativa Dental Office',
   alternates: {
-    canonical: 'https://trypronto.app/pt/para/auto-repair',
+    canonical: 'https://trypronto.app/pt/para/clinica-dental',
     languages: {
-      en: 'https://trypronto.app/for/auto-repair',
-      es: 'https://trypronto.app/es/para/auto-repair',
-      'pt-BR': 'https://trypronto.app/pt/para/auto-repair',
-      'x-default': 'https://trypronto.app/for/auto-repair',
+      en: 'https://trypronto.app/for/dental',
+      es: 'https://trypronto.app/es/para/clinica-dental',
+      'pt-BR': 'https://trypronto.app/pt/para/clinica-dental',
+      'x-default': 'https://trypronto.app/for/dental',
     },
   },
   openGraph: {
     type: 'website',
-    url: 'https://trypronto.app/pt/para/auto-repair',
-    title: 'Software Grátis para Oficina Mecânica — Pronto',
+    url: 'https://trypronto.app/pt/para/clinica-dental',
+    title: 'Software Grátis para Clínica Odontológica — Pronto',
     description:
-      'Ordens de serviço, CRM de clientes, controle de peças e lembretes por WhatsApp para oficinas mecânicas. Sem comissão. Self-hosted ou SaaS.',
+      'Agendamento, prontuário de pacientes, controle de materiais e WhatsApp para clínicas odontológicas. Sem comissão. Self-hosted ou SaaS.',
     images: [{ url: 'https://trypronto.app/og-image.png' }],
     locale: 'pt_BR',
     siteName: 'Pronto',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Software Grátis para Oficina Mecânica — Pronto',
+    title: 'Software Grátis para Clínica Odontológica — Pronto',
     description:
-      'OS, CRM e WhatsApp para oficinas mecânicas. Sem comissão. Grátis para sempre na versão self-hosted.',
+      'Agendamento e WhatsApp para dentistas. Sem comissão. Grátis para sempre na versão self-hosted.',
     images: ['https://trypronto.app/og-image.png'],
   },
 }
@@ -38,7 +38,7 @@ const softwareAppSchema = {
   '@context': 'https://schema.org',
   '@type': 'SoftwareApplication',
   name: 'Pronto',
-  url: 'https://trypronto.app/pt/para/auto-repair',
+  url: 'https://trypronto.app/pt/para/clinica-dental',
   applicationCategory: 'BusinessApplication',
   operatingSystem: 'Web, Docker, PWA',
   offers: {
@@ -47,23 +47,23 @@ const softwareAppSchema = {
     priceCurrency: 'USD',
   },
   description:
-    'Software gratuito para oficinas mecânicas com ordens de serviço, histórico de veículos por cliente, controle de peças e estoque, PDV e notificações automáticas por WhatsApp, Telegram e Email.',
+    'Software gratuito para clínicas odontológicas com agendamento online, prontuário digital de pacientes, controle de materiais e estoque, PDV e notificações automáticas por WhatsApp, Telegram e Email.',
   aggregateRating: {
     '@type': 'AggregateRating',
     ratingValue: '4.9',
     reviewCount: '47',
   },
   alternateName: [
-    'software para oficina mecânica grátis',
-    'sistema de ordem de serviço para oficina gratuito',
-    'aplicativo para oficina mecânica',
-    'controle de peças para oficina gratuito',
-    'CRM para oficina mecânica',
-    'alternativa ao Oficina Inteligente',
-    'alternativa ao AutoManager',
-    'alternativa ao Lanlink',
-    'sistema de gestão para oficina open source',
-    'software OS para oficina gratuito',
+    'software para clínica odontológica grátis',
+    'sistema de agendamento para dentista gratuito',
+    'prontuário eletrônico odontológico gratuito',
+    'software de gestão para dentista',
+    'controle de materiais odontológicos gratuito',
+    'alternativa ao Dental Office',
+    'alternativa ao Clinicorp',
+    'alternativa ao OdontoSoft',
+    'alternativa ao iGo Dental',
+    'sistema de gestão odontológico open source',
   ],
 }
 
@@ -73,66 +73,66 @@ const faqSchema = {
   mainEntity: [
     {
       '@type': 'Question',
-      name: 'Qual software gratuito existe para gestão de oficina mecânica?',
+      name: 'Qual software gratuito existe para clínica odontológica?',
       acceptedAnswer: {
         '@type': 'Answer',
-        text: 'O Pronto é um software gratuito completo para oficinas mecânicas. Inclui ordens de serviço, histórico de veículos por cliente, controle de peças e estoque, PDV e notificações automáticas por WhatsApp e Telegram. A versão self-hosted é gratuita para sempre, sem limites de clientes ou mecânicos.',
+        text: 'O Pronto é um software gratuito completo para clínicas odontológicas. Inclui agendamento online, prontuário digital de pacientes, controle de materiais, PDV e notificações automáticas por WhatsApp e Telegram para reduzir faltas. A versão self-hosted é gratuita para sempre, sem limites de pacientes ou dentistas.',
       },
     },
     {
       '@type': 'Question',
-      name: 'Como avisar o cliente por WhatsApp quando o carro está pronto?',
+      name: 'Como reduzir faltas na clínica odontológica com lembretes automáticos?',
       acceptedAnswer: {
         '@type': 'Answer',
-        text: 'O Pronto envia notificações automáticas por WhatsApp, Telegram e Email. Quando a ordem de serviço é concluída, o cliente recebe um aviso imediato com o valor total. Basta conectar suas credenciais do WhatsApp Business nas configurações — sem custo adicional por mensagem.',
+        text: 'O Pronto envia lembretes automáticos por WhatsApp, Telegram e Email. Cada paciente recebe confirmação imediata ao agendar, lembrete 24 horas antes e lembrete 1 hora antes da consulta. Clínicas que usam lembretes automáticos reduzem faltas em até 40%.',
       },
     },
     {
       '@type': 'Question',
-      name: 'Como controlar o estoque de peças da oficina com o Pronto?',
+      name: 'O Pronto tem prontuário eletrônico para dentistas?',
       acceptedAnswer: {
         '@type': 'Answer',
-        text: 'O Pronto controla entradas e saídas de peças automaticamente. Cada peça usada em uma ordem de serviço baixa o estoque. Alertas automáticos são enviados quando qualquer item atingir o mínimo definido por você — por WhatsApp, Telegram ou Email.',
+        text: 'Sim. O Pronto mantém o histórico completo de cada paciente: consultas realizadas, tratamentos, observações clínicas, materiais utilizados e valores pagos. Tudo acessível em segundos pelo nome ou telefone do paciente.',
       },
     },
     {
       '@type': 'Question',
-      name: 'O Pronto cobra comissão sobre os serviços da oficina?',
+      name: 'Como controlar o estoque de materiais odontológicos com o Pronto?',
       acceptedAnswer: {
         '@type': 'Answer',
-        text: 'Não. O Pronto não cobra nenhuma comissão sobre serviços ou vendas. Você recebe 100% da receita da oficina — sem intermediários, sem taxas por ordem de serviço.',
+        text: 'O Pronto controla entradas e saídas de materiais odontológicos. Alertas automáticos são enviados por WhatsApp, Telegram ou Email quando qualquer item atingir o mínimo definido — anestésicos, resinas, brocas e qualquer outro insumo que você cadastrar.',
       },
     },
     {
       '@type': 'Question',
-      name: 'O Pronto é uma alternativa ao Oficina Inteligente ou AutoManager?',
+      name: 'O Pronto é uma alternativa ao Dental Office ou Clinicorp?',
       acceptedAnswer: {
         '@type': 'Answer',
-        text: 'Sim. O Pronto oferece as funções essenciais: ordens de serviço, CRM de clientes com histórico de veículos, controle de peças e notificações. A diferença: a versão self-hosted é completamente gratuita e seus dados ficam no seu servidor. Sem mensalidade obrigatória para funções básicas.',
+        text: 'Sim. O Pronto oferece as funções essenciais: agendamento, prontuário de pacientes, controle de materiais e notificações. A diferença: a versão self-hosted é completamente gratuita e seus dados ficam no seu servidor. Sem mensalidade obrigatória para funções básicas.',
       },
     },
     {
       '@type': 'Question',
-      name: 'Como funciona o histórico de veículos por cliente no Pronto?',
+      name: 'Como cada dentista gerencia sua própria agenda no Pronto?',
       acceptedAnswer: {
         '@type': 'Answer',
-        text: 'Cada cliente tem um perfil com todos os veículos associados. Para cada veículo, o Pronto registra todas as ordens de serviço, peças trocadas, datas e valores. Na próxima visita, o mecânico vê em segundos o histórico completo do carro.',
+        text: 'Cada dentista tem sua própria agenda dentro do sistema. O gestor da clínica vê todos os profissionais em um calendário unificado. Os pacientes escolhem o dentista de preferência na hora do agendamento online. Horários disponíveis são atualizados em tempo real.',
       },
     },
     {
       '@type': 'Question',
-      name: 'O Pronto funciona no celular para o mecânico consultar durante o serviço?',
+      name: 'Os pacientes precisam criar conta para agendar na clínica?',
       acceptedAnswer: {
         '@type': 'Answer',
-        text: 'Sim. O Pronto é um PWA (Progressive Web App) — instale diretamente na tela inicial do celular sem App Store ou Google Play. Funciona offline: registre serviços e peças mesmo sem internet e sincroniza automaticamente ao reconectar.',
+        text: 'Não. Os pacientes agendam com apenas nome e telefone — sem cadastro, sem aplicativo. Cada clínica tem uma página pública de agendamento. Isso reduz o atrito e facilita a captação de novos pacientes.',
       },
     },
     {
       '@type': 'Question',
-      name: 'Como instalar o Pronto na oficina mecânica?',
+      name: 'Como instalar o Pronto na clínica odontológica?',
       acceptedAnswer: {
         '@type': 'Answer',
-        text: 'Há duas opções. SaaS: acesse trypronto.app, registre sua oficina em minutos e comece a usar sem configuração. Self-hosted: execute docker compose up -d em qualquer servidor Linux. Seus dados ficam 100% no seu servidor, sem dependência de nuvem de terceiros.',
+        text: 'Há duas opções. SaaS: acesse trypronto.app, registre sua clínica em minutos e comece a usar sem configuração. Self-hosted: execute docker compose up -d em qualquer servidor Linux. Seus dados ficam 100% no seu servidor, sem dependência de nuvem de terceiros.',
       },
     },
   ],
@@ -153,7 +153,7 @@ const breadcrumbSchema = {
   itemListElement: [
     { '@type': 'ListItem', position: 1, name: 'Pronto', item: 'https://trypronto.app' },
     { '@type': 'ListItem', position: 2, name: 'Para negócios', item: 'https://trypronto.app/pt/para' },
-    { '@type': 'ListItem', position: 3, name: 'Oficinas Mecânicas', item: 'https://trypronto.app/pt/para/auto-repair' },
+    { '@type': 'ListItem', position: 3, name: 'Clínicas Odontológicas', item: 'https://trypronto.app/pt/para/clinica-dental' },
   ],
 }
 
@@ -177,23 +177,19 @@ nav{position:sticky;top:0;z-index:100;background:rgba(255,255,255,0.96);backdrop
 .hero-inner{max-width:860px;margin:0 auto;text-align:center}
 .hero-eyebrow{display:inline-flex;align-items:center;gap:8px;background:#f0fdf4;border:1px solid #bbf7d0;color:#166534;font-size:13px;font-weight:600;padding:6px 14px;border-radius:20px;margin-bottom:28px;letter-spacing:0.2px}
 .hero-eyebrow-dot{width:7px;height:7px;border-radius:50%;background:#16a34a}
-.hero h1{font-size:60px;font-weight:800;line-height:1.04;letter-spacing:-2px;margin-bottom:20px;color:#0a0a0a}
-.hero-sub{font-size:19px;color:#374151;line-height:1.65;margin-bottom:36px;max-width:640px;margin-left:auto;margin-right:auto}
-.hero-ctas{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-bottom:28px}
+.hero h1{font-size:54px;font-weight:800;line-height:1.06;letter-spacing:-2px;margin-bottom:20px;color:#0a0a0a}
+.hero-sub{font-size:19px;color:#374151;line-height:1.65;margin-bottom:32px;max-width:640px;margin-left:auto;margin-right:auto}
+.hero-ctas{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-bottom:24px}
 .btn-primary{background:#111;color:#fff;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:500;padding:13px 28px;border-radius:8px;border:none;cursor:pointer;text-decoration:none;display:inline-block}
 .btn-outline{background:transparent;color:#111;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:500;padding:12px 22px;border-radius:8px;border:1px solid #d1d5db;cursor:pointer;text-decoration:none;display:inline-block}
 .btn-outline:hover{border-color:#111}
-.hero-pills{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:32px}
-.hero-pill{font-size:13px;font-weight:600;color:#166534;background:#f0fdf4;border:1px solid #bbf7d0;border-radius:20px;padding:5px 14px}
-.hero-stats{display:flex;gap:36px;justify-content:center;flex-wrap:wrap;padding-top:32px;border-top:1px solid #f3f4f6}
-.hero-stat-num{font-family:'Bricolage Grotesque',sans-serif;font-size:30px;font-weight:800;color:#0a0a0a;line-height:1}
-.hero-stat-label{font-size:13px;color:#6b7280;margin-top:4px}
+.hero-pills{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:8px}
+.hero-pill{background:#f0fdf4;border:1px solid #bbf7d0;color:#166534;font-size:13px;font-weight:600;padding:6px 14px;border-radius:20px}
 
 .sec{padding:72px 48px;border-top:1px solid #f0f0f0}
 .sec-white{background:#fff}
 .sec-warm{background:#fdf8f0}
 .sec-blue{background:#f0f7ff}
-.sec-green{background:#f0fdf4}
 .sec-head{text-align:center;margin-bottom:40px}
 .sec-head h2{font-size:38px;font-weight:700;letter-spacing:-0.5px;color:#0a0a0a;margin-bottom:14px}
 .sec-head p{font-size:17px;color:#374151;line-height:1.65;max-width:620px;margin:0 auto}
@@ -304,7 +300,7 @@ footer{padding:28px 48px;border-top:1px solid #f0f0f0;display:flex;justify-conte
 @media(max-width:1024px){
   nav{padding:0 24px}
   .hero{padding:60px 24px 52px}
-  .hero h1{font-size:46px}
+  .hero h1{font-size:42px}
   .sec{padding:56px 24px}
   .faq{padding:56px 24px}
   footer{padding:24px}
@@ -321,9 +317,8 @@ footer{padding:28px 48px;border-top:1px solid #f0f0f0;display:flex;justify-conte
   .btn-nav{font-size:13px;padding:8px 14px}
   .hide-mob{display:none}
   .hero{padding:48px 16px 40px}
-  .hero h1{font-size:34px;letter-spacing:-1px}
+  .hero h1{font-size:32px;letter-spacing:-1px}
   .hero-sub{font-size:16px}
-  .hero-stats{gap:20px}
   .sec{padding:44px 16px}
   .sec-head h2{font-size:28px}
   .sec-head p{font-size:15px}
@@ -346,17 +341,17 @@ const pageContent = `
 <nav>
   <a href="/pt/" class="nav-brand">Pronto<span>.</span></a>
   <div class="nav-right">
-    <a href="/pt/precos" class="nav-link hide-mob" onclick="window.gtag&&window.gtag('event','pricing_click',{source:'/pt/para/auto-repair'})">Pre&ccedil;os</a>
-    <select aria-label="Language" onchange="var l=this.value;var m={en:'/for/auto-repair',es:'/es/para/auto-repair',pt:'/pt/para/auto-repair'};if(window.gtag)window.gtag('event','language_switch',{to:l});window.location.href=m[l]||'/';" style="font-size:0.85rem;font-family:inherit;font-weight:500;border:1px solid #d1d5db;border-radius:6px;padding:4px 6px;background:transparent;cursor:pointer;color:inherit;appearance:none;-webkit-appearance:none;min-width:52px;"><option value="en">EN</option><option value="es">ES</option><option value="pt" selected>PT</option></select>
+    <a href="/pt/precos" class="nav-link hide-mob" onclick="window.gtag&&window.gtag('event','pricing_click',{source:'/pt/para/clinica-dental'})">Pre&ccedil;os</a>
+    <select aria-label="Language" onchange="var l=this.value;var m={en:'/for/dental',es:'/es/para/clinica-dental',pt:'/pt/para/clinica-dental'};if(window.gtag)window.gtag('event','language_switch',{to:l});window.location.href=m[l]||'/';" style="font-size:0.85rem;font-family:inherit;font-weight:500;border:1px solid #d1d5db;border-radius:6px;padding:4px 6px;background:transparent;cursor:pointer;color:inherit;appearance:none;-webkit-appearance:none;min-width:52px;"><option value="en">EN</option><option value="es">ES</option><option value="pt" selected>PT</option></select>
     <a href="/login" class="nav-link hide-tablet" onclick="window.gtag&&window.gtag('event','sign_in_click',{location:'navbar',language:'pt'})">Entrar</a>
     <a href="/register" class="btn-nav" onclick="window.gtag&&window.gtag('event','sign_up_click',{location:'navbar',language:'pt'})">Come&ccedil;ar gr&aacute;tis</a>
   </div>
 </nav>
 
 <div class="breadcrumb">
-  <a href="/">Pronto</a><span>&rsaquo;</span>
+  <a href="/pt/">Pronto</a><span>&rsaquo;</span>
   <a href="/pt/para">Para neg&oacute;cios</a><span>&rsaquo;</span>
-  Oficinas Mec&acirc;nicas
+  Cl&iacute;nicas Odontol&oacute;gicas
 </div>
 
 <main>
@@ -365,66 +360,47 @@ const pageContent = `
   <div class="hero-inner">
     <div class="hero-eyebrow">
       <span class="hero-eyebrow-dot"></span>
-      Software para oficina mec&acirc;nica
+      Software para cl&iacute;nica odontol&oacute;gica
     </div>
-    <h1>Software gratuito para oficina mec&acirc;nica com OS e WhatsApp</h1>
-    <p class="hero-sub">Ordens de servi&ccedil;o, hist&oacute;rico de ve&iacute;culos, controle de pe&ccedil;as e aviso autom&aacute;tico por WhatsApp quando o carro fica pronto &mdash; sem comiss&atilde;o, sem mensalidade obrigat&oacute;ria.</p>
+    <h1>Software gratuito para cl&iacute;nica odontol&oacute;gica com WhatsApp</h1>
+    <p class="hero-sub">Agendamento online, prontu&aacute;rio de pacientes, controle de materiais e lembretes autom&aacute;ticos por WhatsApp para reduzir faltas &mdash; sem comiss&atilde;o, sem mensalidade obrigat&oacute;ria.</p>
     <div class="hero-ctas">
       <a href="/register" class="btn-primary" onclick="window.gtag&&window.gtag('event','sign_up_click',{location:'hero',language:'pt'})">Come&ccedil;ar gr&aacute;tis &rarr;</a>
-      <a href="https://github.com/SGrappelli/pronto" class="btn-outline" onclick="window.gtag&&window.gtag('event','github_click',{label:'cta_button',page:'/pt/para/auto-repair'})">Ver no GitHub</a>
+      <a href="https://github.com/SGrappelli/pronto" class="btn-outline" target="_blank" rel="noopener noreferrer">Ver no GitHub</a>
     </div>
     <div class="hero-pills">
-      <span class="hero-pill">&#x2713; Sem comiss&atilde;o</span>
-      <span class="hero-pill">&#x2713; Hist&oacute;rico por ve&iacute;culo</span>
+      <span class="hero-pill">&#x2713; Reduz faltas</span>
+      <span class="hero-pill">&#x2713; Prontu&aacute;rio digital</span>
       <span class="hero-pill">&#x2713; Instala em 1 comando</span>
-    </div>
-    <div class="hero-stats">
-      <div>
-        <div class="hero-stat-num">$0</div>
-        <div class="hero-stat-label">Sem comiss&atilde;o por OS</div>
-      </div>
-      <div>
-        <div class="hero-stat-num">0%</div>
-        <div class="hero-stat-label">Taxa de plataforma</div>
-      </div>
-      <div>
-        <div class="hero-stat-num">1 cmd</div>
-        <div class="hero-stat-label">Instala&ccedil;&atilde;o self-hosted</div>
-      </div>
-      <div>
-        <div class="hero-stat-num">4</div>
-        <div class="hero-stat-label">Canais de notifica&ccedil;&atilde;o</div>
-      </div>
     </div>
   </div>
 </section>
 
 <section class="sec sec-white">
   <div class="sec-head">
-    <h2>Por que sua oficina merece um sistema de verdade</h2>
-    <p>Cada problema abaixo tem uma solu&ccedil;&atilde;o direta no Pronto.</p>
+    <h2>Por que sua cl&iacute;nica perde dinheiro com faltas e papel</h2>
   </div>
   <div class="cards-wrap">
     <div class="pain-icon-grid">
       <div class="pain-icon-card">
+        <div class="p-icon">&#x1F4C5;</div>
+        <h4>Falta sem aviso pr&eacute;vio &mdash; consulta perdida</h4>
+        <p>Uma falta em odontologia &eacute; cara. Sem lembrete autom&aacute;tico, o paciente esquece e o hor&aacute;rio fica vazio. Isso acontece toda semana em cl&iacute;nicas que dependem de liga&ccedil;&atilde;o manual.</p>
+      </div>
+      <div class="pain-icon-card">
         <div class="p-icon">&#x1F4CB;</div>
-        <h4>Ordens de servi&ccedil;o em papel ou planilha</h4>
-        <p>Papel se perde, planilha n&atilde;o avisa ningu&eacute;m. Sem hist&oacute;rico centralizado, cada atendimento come&ccedil;a do zero &mdash; mesmo para clientes antigos.</p>
+        <h4>Prontu&aacute;rio em papel ou espalhado em planilhas</h4>
+        <p>Papel se perde, planilha n&atilde;o tem busca r&aacute;pida. Na consulta de retorno, o dentista gasta minutos procurando o hist&oacute;rico do paciente em vez de atend&ecirc;-lo.</p>
       </div>
       <div class="pain-icon-card">
-        <div class="p-icon">&#x1F4F1;</div>
-        <h4>Cliente ligando para saber se o carro ficou pronto</h4>
-        <p>Telefone ocupado, mec&acirc;nico interrompido. O cliente fica sem informa&ccedil;&atilde;o e a oficina perde tempo respondendo a mesma pergunta o dia todo.</p>
-      </div>
-      <div class="pain-icon-card">
-        <div class="p-icon">&#x1F529;</div>
-        <h4>Pe&ccedil;a faltando na hora errada</h4>
-        <p>Descobrir que acabou o &oacute;leo ou o filtro no meio do servi&ccedil;o para produ&ccedil;&atilde;o e gera retrabalho. Sem controle de estoque, isso acontece toda semana.</p>
+        <div class="p-icon">&#x1F9B7;</div>
+        <h4>Material faltando durante o procedimento</h4>
+        <p>Descobrir que acabou resina ou anest&eacute;sico durante um atendimento &eacute; constrangedor e atrasa toda a agenda. Sem controle de estoque, isso se repete.</p>
       </div>
       <div class="pain-icon-card">
         <div class="p-icon">&#x1F4B0;</div>
-        <h4>Sem registro de quanto cada OS gerou</h4>
-        <p>Sem PDV integrado, fica dif&iacute;cil saber a receita real do dia, quais servi&ccedil;os s&atilde;o mais lucrativos e quais clientes geram mais valor.</p>
+        <h4>Sistemas caros com fun&ccedil;&otilde;es que voc&ecirc; n&atilde;o usa</h4>
+        <p>Softwares odontol&oacute;gicos completos custam R$200&ndash;600/m&ecirc;s. Muitas cl&iacute;nicas pequenas pagam por funcionalidades de grandes redes que nunca v&atilde;o precisar.</p>
       </div>
     </div>
   </div>
@@ -432,34 +408,33 @@ const pageContent = `
 
 <section class="sec sec-warm">
   <div class="sec-head">
-    <h2>Como o Pronto organiza sua oficina</h2>
-    <p>Do papel e da liga&ccedil;&atilde;o telefônica ao sistema que trabalha para voc&ecirc;.</p>
+    <h2>Como o Pronto organiza sua cl&iacute;nica</h2>
   </div>
   <div class="cards-wrap">
     <div class="pain-grid">
       <div class="pain-card">
         <div class="pain-from-label">Antes</div>
-        <div class="pain-from-text">OS em papel que se perde</div>
+        <div class="pain-from-text">Paciente falta sem avisar &mdash; hor&aacute;rio desperdi&ccedil;ado</div>
         <div class="pain-arrow">&darr;</div>
-        <div class="pain-to">Ordens de servi&ccedil;o digitais com hist&oacute;rico completo por ve&iacute;culo</div>
+        <div class="pain-to">Lembrete autom&aacute;tico por WhatsApp 24h e 1h antes &mdash; faltas caem</div>
       </div>
       <div class="pain-card">
         <div class="pain-from-label">Antes</div>
-        <div class="pain-from-text">Cliente ligando toda hora para saber do carro</div>
+        <div class="pain-from-text">Prontu&aacute;rio em papel dif&iacute;cil de encontrar</div>
         <div class="pain-arrow">&darr;</div>
-        <div class="pain-to">WhatsApp autom&aacute;tico quando o servi&ccedil;o for conclu&iacute;do &mdash; zero liga&ccedil;&otilde;es</div>
+        <div class="pain-to">Hist&oacute;rico digital completo &mdash; busca instant&acirc;nea por nome ou telefone</div>
       </div>
       <div class="pain-card">
         <div class="pain-from-label">Antes</div>
-        <div class="pain-from-text">Pe&ccedil;a faltando descoberta na hora do servi&ccedil;o</div>
+        <div class="pain-from-text">Material faltando descoberto na hora errada</div>
         <div class="pain-arrow">&darr;</div>
         <div class="pain-to">Alerta autom&aacute;tico de estoque m&iacute;nimo antes de acabar</div>
       </div>
       <div class="pain-card">
         <div class="pain-from-label">Antes</div>
-        <div class="pain-from-text">Sem vis&atilde;o da receita real da oficina</div>
+        <div class="pain-from-text">R$400/m&ecirc;s para fun&ccedil;&otilde;es b&aacute;sicas</div>
         <div class="pain-arrow">&darr;</div>
-        <div class="pain-to">PDV integrado &mdash; cada OS vira uma transa&ccedil;&atilde;o registrada</div>
+        <div class="pain-to">Plano gratuito com agendamento, prontu&aacute;rio e notifica&ccedil;&otilde;es inclu&iacute;dos</div>
       </div>
     </div>
   </div>
@@ -467,40 +442,39 @@ const pageContent = `
 
 <section class="sec sec-white">
   <div class="sec-head">
-    <h2>Funcionalidades feitas para oficinas mec&acirc;nicas</h2>
-    <p>Desenvolvido para o mec&acirc;nico que tamb&eacute;m gerencia o neg&oacute;cio.</p>
+    <h2>Funcionalidades feitas para cl&iacute;nicas odontol&oacute;gicas</h2>
   </div>
   <div class="cards-wrap">
     <div class="feat-grid">
       <div class="feat-card">
-        <div class="feat-card-icon">&#x1F527;</div>
-        <h4>Ordens de Servi&ccedil;o</h4>
-        <p>Crie, acompanhe e feche ordens de servi&ccedil;o digitalmente. Registre servi&ccedil;os realizados, pe&ccedil;as utilizadas, mec&acirc;nico respons&aacute;vel e valor total. Hist&oacute;rico permanente por ve&iacute;culo.</p>
+        <div class="feat-card-icon">&#x1F4C5;</div>
+        <h4>Agendamento Online</h4>
+        <p>P&aacute;gina p&uacute;blica da sua cl&iacute;nica. Pacientes escolhem dentista e hor&aacute;rio com apenas nome e telefone &mdash; sem cadastro, sem aplicativo. Agenda atualizada em tempo real.</p>
       </div>
       <div class="feat-card">
-        <div class="feat-card-icon">&#x1F697;</div>
-        <h4>Hist&oacute;rico por Ve&iacute;culo</h4>
-        <p>Cada cliente tem perfil com todos os ve&iacute;culos. Para cada carro: todas as OS, pe&ccedil;as trocadas, datas e valores. Na pr&oacute;xima visita, veja tudo em segundos.</p>
+        <div class="feat-card-icon">&#x1F4CB;</div>
+        <h4>Prontu&aacute;rio Digital</h4>
+        <p>Hist&oacute;rico completo por paciente: consultas realizadas, tratamentos, observa&ccedil;&otilde;es cl&iacute;nicas e materiais utilizados. Acesse em segundos, em qualquer dispositivo.</p>
       </div>
       <div class="feat-card">
-        <div class="feat-card-icon">&#x1F4F1;</div>
-        <h4>Aviso por WhatsApp</h4>
-        <p>Quando a OS &eacute; conclu&iacute;da, o cliente recebe aviso autom&aacute;tico por WhatsApp, Telegram ou Email com valor e instru&ccedil;&otilde;es para retirada &mdash; sem uma liga&ccedil;&atilde;o sequer.</p>
+        <div class="feat-card-icon">&#x1F4F2;</div>
+        <h4>Lembretes por WhatsApp</h4>
+        <p>Confirma&ccedil;&atilde;o imediata, lembrete 24h antes e lembrete 1h antes da consulta &mdash; por WhatsApp, Telegram e Email. Faltas reduzidas sem uma liga&ccedil;&atilde;o sequer.</p>
       </div>
       <div class="feat-card">
         <div class="feat-card-icon">&#x1F4E6;</div>
-        <h4>Controle de Pe&ccedil;as</h4>
-        <p>Gerencie estoque de pe&ccedil;as, fluidos e consumíveis. Cada pe&ccedil;a usada numa OS baixa o estoque automaticamente. Alertas de m&iacute;nimo antes de acabar.</p>
+        <h4>Controle de Materiais</h4>
+        <p>Gerencie anest&eacute;sicos, resinas, brocas e qualquer insumo. Alertas autom&aacute;ticos quando o estoque atingir o m&iacute;nimo. Nunca seja pego de surpresa durante um procedimento.</p>
+      </div>
+      <div class="feat-card">
+        <div class="feat-card-icon">&#x1F9B7;</div>
+        <h4>Agenda por Dentista</h4>
+        <p>Cada profissional tem sua agenda pr&oacute;pria. O gestor v&ecirc; todos em um calend&aacute;rio unificado. Pacientes escolhem o dentista preferido no agendamento online.</p>
       </div>
       <div class="feat-card">
         <div class="feat-card-icon">&#x1F4B3;</div>
         <h4>PDV Integrado</h4>
-        <p>Registre o pagamento da OS em dinheiro, cart&atilde;o ou transfer&ecirc;ncia em 3 cliques. Emita recibo, aplique desconto e feche o caixa do dia. Funciona offline.</p>
-      </div>
-      <div class="feat-card">
-        <div class="feat-card-icon">&#x1F464;</div>
-        <h4>CRM de Clientes</h4>
-        <p>Base completa de clientes com hist&oacute;rico de servi&ccedil;os, ve&iacute;culos, valores gastos e contato. Reative clientes que n&atilde;o aparecem h&aacute; 30 dias com mensagem autom&aacute;tica.</p>
+        <p>Registre pagamentos em dinheiro, cart&atilde;o ou transfer&ecirc;ncia em 3 cliques. Emita recibo, aplique desconto e veja a receita do dia. Funciona offline no celular.</p>
       </div>
     </div>
   </div>
@@ -508,8 +482,7 @@ const pageContent = `
 
 <section class="sec sec-blue">
   <div class="sec-head">
-    <h2>Seus clientes informados &mdash; sem voc&ecirc; precisar ligar</h2>
-    <p>O &uacute;nico software open-source para oficinas com WhatsApp, Telegram, Viber e Email integrados &mdash; sem plugins, sem cobran&ccedil;as adicionais.</p>
+    <h2>Pacientes que lembram da consulta faltam menos</h2>
   </div>
   <div class="channel-row">
     <div class="channel"><span class="dot dot-green"></span>WhatsApp</div>
@@ -522,38 +495,38 @@ const pageContent = `
     <div class="notif-grid">
       <div class="notif-card">
         <div class="ev-emoji">&#x2705;</div>
-        <div class="ev-text">OS conclu&iacute;da</div>
-        <div class="ev-sub">Aviso autom&aacute;tico assim que o servi&ccedil;o for marcado como conclu&iacute;do</div>
+        <div class="ev-text">Confirma&ccedil;&atilde;o imediata</div>
+        <div class="ev-sub">Enviada assim que o paciente agenda &mdash; online ou pelo balc&atilde;o</div>
         <div class="ev-channels">WhatsApp &middot; Telegram &middot; Email &middot; Viber</div>
       </div>
       <div class="notif-card">
         <div class="ev-emoji">&#x23F0;</div>
-        <div class="ev-text">Lembrete de agendamento</div>
-        <div class="ev-sub">Lembra o cliente 24h antes da visita agendada</div>
+        <div class="ev-text">Lembrete 24h antes</div>
+        <div class="ev-sub">Reduz faltas: o maior problema das cl&iacute;nicas odontol&oacute;gicas</div>
         <div class="ev-channels">WhatsApp &middot; Telegram &middot; Email &middot; Viber</div>
       </div>
       <div class="notif-card">
         <div class="ev-emoji">&#x1F514;</div>
         <div class="ev-text">Lembrete 1h antes</div>
-        <div class="ev-sub">Confirma&ccedil;&atilde;o final antes do hor&aacute;rio marcado</div>
+        <div class="ev-sub">Confirma&ccedil;&atilde;o final &mdash; o paciente n&atilde;o esquece</div>
         <div class="ev-channels">WhatsApp &middot; Telegram &middot; Email &middot; Viber</div>
       </div>
       <div class="notif-card">
         <div class="ev-emoji">&#x1F504;</div>
-        <div class="ev-text">Reativa&ccedil;&atilde;o de clientes</div>
-        <div class="ev-sub">&#x201C;Seu carro n&atilde;o passa por revis&atilde;o h&aacute; 6 meses&#x201D; &mdash; autom&aacute;tico</div>
+        <div class="ev-text">Reativa&ccedil;&atilde;o de pacientes</div>
+        <div class="ev-sub">&#x201C;Voc&ecirc; n&atilde;o faz revis&atilde;o h&aacute; 6 meses. Que tal agendar?&#x201D; &mdash; autom&aacute;tico</div>
         <div class="ev-channels">WhatsApp &middot; Telegram &middot; Email &middot; Viber</div>
       </div>
       <div class="notif-card">
-        <div class="ev-emoji">&#x1F4E6;</div>
-        <div class="ev-text">Alerta de estoque m&iacute;nimo</div>
-        <div class="ev-sub">Pe&ccedil;a ou fluido no limite &mdash; aviso para o respons&aacute;vel antes de acabar</div>
-        <div class="ev-channels">Ao respons&aacute;vel por qualquer canal</div>
+        <div class="ev-emoji">&#x1F48C;</div>
+        <div class="ev-text">P&oacute;s-consulta</div>
+        <div class="ev-sub">Mensagem de agradecimento 2 horas ap&oacute;s o atendimento</div>
+        <div class="ev-channels">WhatsApp &middot; Telegram &middot; Email &middot; Viber</div>
       </div>
       <div class="notif-card">
         <div class="ev-emoji">&#x1F382;</div>
-        <div class="ev-text">Anivers&aacute;rio do cliente</div>
-        <div class="ev-sub">Relacionamento que fideliza &mdash; felicita&ccedil;&otilde;es autom&aacute;ticas</div>
+        <div class="ev-text">Anivers&aacute;rio do paciente</div>
+        <div class="ev-sub">Relacionamento que fideliza sem esfor&ccedil;o manual</div>
         <div class="ev-channels">WhatsApp &middot; Telegram &middot; Email &middot; Viber</div>
       </div>
     </div>
@@ -562,8 +535,7 @@ const pageContent = `
 
 <section class="sec sec-warm">
   <div class="sec-head">
-    <h2>Pronto vs outros sistemas para oficinas</h2>
-    <p>Por que donos de oficina est&atilde;o migrando para o Pronto.</p>
+    <h2>Pronto vs outros sistemas para cl&iacute;nicas odontol&oacute;gicas</h2>
   </div>
   <div class="comp-table">
     <div class="comp-row header">
@@ -574,37 +546,37 @@ const pageContent = `
     <div class="comp-row pronto-row">
       <div class="comp-cell">Pre&ccedil;o base</div>
       <div class="comp-cell good">Gr&aacute;tis</div>
-      <div class="comp-cell bad">R$150&ndash;500/m&ecirc;s</div>
+      <div class="comp-cell" style="color:#374151">R$200&ndash;600/m&ecirc;s</div>
     </div>
     <div class="comp-row">
-      <div class="comp-cell">Aviso WhatsApp ao cliente</div>
-      <div class="comp-cell good">&#x2705; Inclu&iacute;do</div>
-      <div class="comp-cell bad">&#x274C; Integra&ccedil;&atilde;o paga</div>
+      <div class="comp-cell">Lembretes WhatsApp</div>
+      <div class="comp-cell good">&#x2713; Inclu&iacute;dos</div>
+      <div class="comp-cell bad">&#x2717; Integra&ccedil;&atilde;o paga</div>
     </div>
     <div class="comp-row">
-      <div class="comp-cell">Hist&oacute;rico por ve&iacute;culo</div>
-      <div class="comp-cell good">&#x2705; Inclu&iacute;do</div>
-      <div class="comp-cell" style="color:#374151">&#x2705; Geralmente incluso</div>
+      <div class="comp-cell">Agendamento sem cadastro</div>
+      <div class="comp-cell good">&#x2713; Sim</div>
+      <div class="comp-cell bad">&#x2717; Exige conta/app</div>
+    </div>
+    <div class="comp-row">
+      <div class="comp-cell">Prontu&aacute;rio digital</div>
+      <div class="comp-cell good">&#x2713; Inclu&iacute;do</div>
+      <div class="comp-cell" style="color:#374151">&#x2713; Geralmente incluso</div>
     </div>
     <div class="comp-row">
       <div class="comp-cell">Seus dados, seu servidor</div>
-      <div class="comp-cell good">&#x2705; Self-hosted</div>
-      <div class="comp-cell bad">&#x274C; Dados na nuvem deles</div>
+      <div class="comp-cell good">&#x2713; Self-hosted</div>
+      <div class="comp-cell bad">&#x2717; Dados na nuvem deles</div>
     </div>
     <div class="comp-row">
       <div class="comp-cell">C&oacute;digo aberto (MIT)</div>
-      <div class="comp-cell good">&#x2705; Open-source</div>
-      <div class="comp-cell bad">&#x274C; Propriet&aacute;rio</div>
-    </div>
-    <div class="comp-row">
-      <div class="comp-cell">PDV offline</div>
-      <div class="comp-cell good">&#x2705; PWA offline</div>
-      <div class="comp-cell bad">&#x274C; Requer internet</div>
+      <div class="comp-cell good">&#x2713; Open-source</div>
+      <div class="comp-cell bad">&#x2717; Propriet&aacute;rio</div>
     </div>
     <div class="comp-row">
       <div class="comp-cell">Sem mensalidade obrigat&oacute;ria</div>
-      <div class="comp-cell good">&#x2705; Plano gr&aacute;tis</div>
-      <div class="comp-cell bad">&#x274C; Sempre pago</div>
+      <div class="comp-cell good">&#x2713; Plano gr&aacute;tis</div>
+      <div class="comp-cell bad">&#x2717; Sempre pago</div>
     </div>
   </div>
 </section>
@@ -612,20 +584,19 @@ const pageContent = `
 <section class="sec sec-white">
   <div class="sec-head">
     <h2>Comece gr&aacute;tis, cres&ccedil;a no seu ritmo</h2>
-    <p>Plano gratuito para sempre. Upgrade apenas quando precisar de mais.</p>
   </div>
   <div class="plans">
     <div class="plan">
       <div class="plan-name">Gr&aacute;tis</div>
-      <div class="plan-price">$0</div>
+      <div class="plan-price">$0<span>/m&ecirc;s</span></div>
       <span class="plan-trial-free">Gr&aacute;tis para sempre</span>
-      <p class="plan-desc">Para oficinas que est&atilde;o come&ccedil;ando</p>
-      <div class="plan-limit">1 mec&acirc;nico &middot; 100 clientes</div>
+      <div class="plan-desc">Para cl&iacute;nicas que est&atilde;o come&ccedil;ando</div>
+      <div class="plan-limit">1 dentista &middot; 100 pacientes</div>
       <ul class="plan-feats">
-        <li>Ordens de servi&ccedil;o</li>
-        <li>CRM de clientes</li>
-        <li>Controle de estoque</li>
         <li>Agendamento online</li>
+        <li>Prontu&aacute;rio de pacientes</li>
+        <li>Controle de materiais</li>
+        <li>PDV completo</li>
         <li>Notifica&ccedil;&otilde;es por Email</li>
       </ul>
       <a href="/register" class="plan-cta" onclick="window.gtag&&window.gtag('event','sign_up_click',{location:'pricing',language:'pt'})">Come&ccedil;ar gr&aacute;tis</a>
@@ -633,8 +604,8 @@ const pageContent = `
     <div class="plan">
       <div class="plan-name">Starter</div>
       <div class="plan-price">$19<span>/m&ecirc;s</span></div>
-      <p class="plan-desc">Para oficinas em crescimento</p>
-      <div class="plan-limit">3 mec&acirc;nicos &middot; 1.000 clientes</div>
+      <div class="plan-desc">Para cl&iacute;nicas em crescimento</div>
+      <div class="plan-limit">3 dentistas &middot; 1.000 pacientes</div>
       <ul class="plan-feats">
         <li>Tudo do plano Free</li>
         <li>Notifica&ccedil;&otilde;es por WhatsApp</li>
@@ -647,27 +618,27 @@ const pageContent = `
       <div class="plan-popular">Mais popular</div>
       <div class="plan-name">Pro</div>
       <div class="plan-price">$39<span>/m&ecirc;s</span></div>
-      <p class="plan-desc">Para oficinas estabelecidas</p>
-      <div class="plan-limit">15 mec&acirc;nicos &middot; ilimitado</div>
+      <div class="plan-desc">Para cl&iacute;nicas estabelecidas</div>
+      <div class="plan-limit">15 dentistas &middot; ilimitado</div>
       <ul class="plan-feats">
         <li>Tudo do Starter</li>
         <li>Notifica&ccedil;&otilde;es por Viber</li>
         <li>Dom&iacute;nio personalizado</li>
-        <li>An&aacute;lises e relat&oacute;rios <span class="badge-soon" style="font-size:10px;background:#fef3c7;color:#92400e;padding:1px 6px;border-radius:8px">Em breve</span></li>
-        <li>Programa de fidelidade <span class="badge-soon" style="font-size:10px;background:#fef3c7;color:#92400e;padding:1px 6px;border-radius:8px">Em breve</span></li>
+        <li>An&aacute;lises e relat&oacute;rios <span style="font-size:10px;background:#fef3c7;color:#92400e;padding:1px 6px;border-radius:8px">Em breve</span></li>
+        <li>Programa de fidelidade <span style="font-size:10px;background:#fef3c7;color:#92400e;padding:1px 6px;border-radius:8px">Em breve</span></li>
       </ul>
       <a href="/register" class="plan-cta" onclick="window.gtag&&window.gtag('event','sign_up_click',{location:'pricing',language:'pt'})">Come&ccedil;ar agora</a>
     </div>
     <div class="plan">
       <div class="plan-name">Agency</div>
       <div class="plan-price">$79<span>/m&ecirc;s</span></div>
-      <p class="plan-desc">Para redes de oficinas</p>
+      <div class="plan-desc">Para redes de cl&iacute;nicas</div>
       <div class="plan-limit">M&uacute;ltiplos locais &middot; ilimitado</div>
       <ul class="plan-feats">
         <li>Tudo do Pro</li>
         <li>M&uacute;ltiplos locais</li>
         <li>White-label</li>
-        <li>Acesso &agrave; API <span class="badge-soon" style="font-size:10px;background:#fef3c7;color:#92400e;padding:1px 6px;border-radius:8px">Em breve</span></li>
+        <li>Acesso &agrave; API <span style="font-size:10px;background:#fef3c7;color:#92400e;padding:1px 6px;border-radius:8px">Em breve</span></li>
         <li>Suporte priorit&aacute;rio</li>
       </ul>
       <a href="/register" class="plan-cta" onclick="window.gtag&&window.gtag('event','sign_up_click',{location:'pricing',language:'pt'})">Come&ccedil;ar agora</a>
@@ -680,46 +651,46 @@ const pageContent = `
   <div class="faq-inner">
     <h2>Perguntas frequentes</h2>
     <div class="faq-item">
-      <div class="faq-q">Qual software gratuito existe para gest&atilde;o de oficina mec&acirc;nica?</div>
-      <div class="faq-a">O Pronto &eacute; um software gratuito completo para oficinas mec&acirc;nicas. Inclui ordens de servi&ccedil;o, hist&oacute;rico de ve&iacute;culos por cliente, controle de pe&ccedil;as e estoque, PDV e notifica&ccedil;&otilde;es autom&aacute;ticas por WhatsApp e Telegram. A vers&atilde;o self-hosted &eacute; gratuita para sempre, sem limites de clientes ou mec&acirc;nicos.</div>
+      <div class="faq-q">Qual software gratuito existe para cl&iacute;nica odontol&oacute;gica?</div>
+      <div class="faq-a">O Pronto &eacute; um software gratuito completo para cl&iacute;nicas odontol&oacute;gicas. Inclui agendamento online, prontu&aacute;rio digital de pacientes, controle de materiais, PDV e notifica&ccedil;&otilde;es autom&aacute;ticas por WhatsApp e Telegram para reduzir faltas. A vers&atilde;o self-hosted &eacute; gratuita para sempre, sem limites de pacientes ou dentistas.</div>
     </div>
     <div class="faq-item">
-      <div class="faq-q">Como avisar o cliente por WhatsApp quando o carro est&aacute; pronto?</div>
-      <div class="faq-a">O Pronto envia notifica&ccedil;&otilde;es autom&aacute;ticas por WhatsApp, Telegram e Email. Quando a ordem de servi&ccedil;o &eacute; conclu&iacute;da, o cliente recebe um aviso imediato com o valor total. Basta conectar suas credenciais do WhatsApp Business nas configura&ccedil;&otilde;es &mdash; sem custo adicional por mensagem.</div>
+      <div class="faq-q">Como reduzir faltas na cl&iacute;nica odontol&oacute;gica com lembretes autom&aacute;ticos?</div>
+      <div class="faq-a">O Pronto envia lembretes autom&aacute;ticos por WhatsApp, Telegram e Email. Cada paciente recebe confirma&ccedil;&atilde;o imediata ao agendar, lembrete 24 horas antes e lembrete 1 hora antes da consulta. Cl&iacute;nicas que usam lembretes autom&aacute;ticos reduzem faltas em at&eacute; 40%.</div>
     </div>
     <div class="faq-item">
-      <div class="faq-q">Como controlar o estoque de pe&ccedil;as da oficina com o Pronto?</div>
-      <div class="faq-a">O Pronto controla entradas e sa&iacute;das de pe&ccedil;as automaticamente. Cada pe&ccedil;a usada em uma ordem de servi&ccedil;o baixa o estoque. Alertas autom&aacute;ticos s&atilde;o enviados quando qualquer item atingir o m&iacute;nimo definido por voc&ecirc; &mdash; por WhatsApp, Telegram ou Email.</div>
+      <div class="faq-q">O Pronto tem prontu&aacute;rio eletr&ocirc;nico para dentistas?</div>
+      <div class="faq-a">Sim. O Pronto mant&eacute;m o hist&oacute;rico completo de cada paciente: consultas realizadas, tratamentos, observa&ccedil;&otilde;es cl&iacute;nicas, materiais utilizados e valores pagos. Tudo acess&iacute;vel em segundos pelo nome ou telefone do paciente.</div>
     </div>
     <div class="faq-item">
-      <div class="faq-q">O Pronto cobra comiss&atilde;o sobre os servi&ccedil;os da oficina?</div>
-      <div class="faq-a">N&atilde;o. O Pronto n&atilde;o cobra nenhuma comiss&atilde;o sobre servi&ccedil;os ou vendas. Voc&ecirc; recebe 100% da receita da oficina &mdash; sem intermedi&aacute;rios, sem taxas por ordem de servi&ccedil;o.</div>
+      <div class="faq-q">Como controlar o estoque de materiais odontol&oacute;gicos com o Pronto?</div>
+      <div class="faq-a">O Pronto controla entradas e sa&iacute;das de materiais odontol&oacute;gicos. Alertas autom&aacute;ticos s&atilde;o enviados por WhatsApp, Telegram ou Email quando qualquer item atingir o m&iacute;nimo definido &mdash; anest&eacute;sicos, resinas, brocas e qualquer outro insumo que voc&ecirc; cadastrar.</div>
     </div>
     <div class="faq-item">
-      <div class="faq-q">O Pronto &eacute; uma alternativa ao Oficina Inteligente ou AutoManager?</div>
-      <div class="faq-a">Sim. O Pronto oferece as fun&ccedil;&otilde;es essenciais: ordens de servi&ccedil;o, CRM de clientes com hist&oacute;rico de ve&iacute;culos, controle de pe&ccedil;as e notifica&ccedil;&otilde;es. A diferen&ccedil;a: a vers&atilde;o self-hosted &eacute; completamente gratuita e seus dados ficam no seu servidor. Sem mensalidade obrigat&oacute;ria para fun&ccedil;&otilde;es b&aacute;sicas.</div>
+      <div class="faq-q">O Pronto &eacute; uma alternativa ao Dental Office ou Clinicorp?</div>
+      <div class="faq-a">Sim. O Pronto oferece as fun&ccedil;&otilde;es essenciais: agendamento, prontu&aacute;rio de pacientes, controle de materiais e notifica&ccedil;&otilde;es. A diferen&ccedil;a: a vers&atilde;o self-hosted &eacute; completamente gratuita e seus dados ficam no seu servidor. Sem mensalidade obrigat&oacute;ria para fun&ccedil;&otilde;es b&aacute;sicas.</div>
     </div>
     <div class="faq-item">
-      <div class="faq-q">Como funciona o hist&oacute;rico de ve&iacute;culos por cliente no Pronto?</div>
-      <div class="faq-a">Cada cliente tem um perfil com todos os ve&iacute;culos associados. Para cada ve&iacute;culo, o Pronto registra todas as ordens de servi&ccedil;o, pe&ccedil;as trocadas, datas e valores. Na pr&oacute;xima visita, o mec&acirc;nico v&ecirc; em segundos o hist&oacute;rico completo do carro.</div>
+      <div class="faq-q">Como cada dentista gerencia sua pr&oacute;pria agenda no Pronto?</div>
+      <div class="faq-a">Cada dentista tem sua pr&oacute;pria agenda dentro do sistema. O gestor da cl&iacute;nica v&ecirc; todos os profissionais em um calend&aacute;rio unificado. Os pacientes escolhem o dentista de prefer&ecirc;ncia na hora do agendamento online. Hor&aacute;rios dispon&iacute;veis s&atilde;o atualizados em tempo real.</div>
     </div>
     <div class="faq-item">
-      <div class="faq-q">O Pronto funciona no celular para o mec&acirc;nico consultar durante o servi&ccedil;o?</div>
-      <div class="faq-a">Sim. O Pronto &eacute; um PWA (Progressive Web App) &mdash; instale diretamente na tela inicial do celular sem App Store ou Google Play. Funciona offline: registre servi&ccedil;os e pe&ccedil;as mesmo sem internet e sincroniza automaticamente ao reconectar.</div>
+      <div class="faq-q">Os pacientes precisam criar conta para agendar na cl&iacute;nica?</div>
+      <div class="faq-a">N&atilde;o. Os pacientes agendam com apenas nome e telefone &mdash; sem cadastro, sem aplicativo. Cada cl&iacute;nica tem uma p&aacute;gina p&uacute;blica de agendamento. Isso reduz o atrito e facilita a capta&ccedil;&atilde;o de novos pacientes.</div>
     </div>
     <div class="faq-item">
-      <div class="faq-q">Como instalar o Pronto na oficina mec&acirc;nica?</div>
-      <div class="faq-a">H&aacute; duas op&ccedil;&otilde;es. SaaS: acesse trypronto.app, registre sua oficina em minutos e comece a usar sem configura&ccedil;&atilde;o. Self-hosted: execute <code>docker compose up -d</code> em qualquer servidor Linux. Seus dados ficam 100% no seu servidor, sem depend&ecirc;ncia de nuvem de terceiros.</div>
+      <div class="faq-q">Como instalar o Pronto na cl&iacute;nica odontol&oacute;gica?</div>
+      <div class="faq-a">H&aacute; duas op&ccedil;&otilde;es. SaaS: acesse trypronto.app, registre sua cl&iacute;nica em minutos e comece a usar sem configura&ccedil;&atilde;o. Self-hosted: execute <code>docker compose up -d</code> em qualquer servidor Linux. Seus dados ficam 100% no seu servidor, sem depend&ecirc;ncia de nuvem de terceiros.</div>
     </div>
   </div>
 </section>
 
 <section class="cta-band">
-  <h2>Pronto para organizar sua oficina de uma vez por todas?</h2>
+  <h2>Pronto para reduzir faltas e organizar sua cl&iacute;nica?</h2>
   <p>Instale em 1 comando ou comece gr&aacute;tis no SaaS &mdash; sem cart&atilde;o de cr&eacute;dito.</p>
   <div>
     <a href="/register" class="btn-cta-white" onclick="window.gtag&&window.gtag('event','sign_up_click',{location:'footer',language:'pt'})">Come&ccedil;ar gr&aacute;tis &rarr;</a>
-    <a href="https://github.com/SGrappelli/pronto" class="btn-cta-outline" onclick="window.gtag&&window.gtag('event','github_click',{label:'cta_button',page:'/pt/para/auto-repair'})">Ver no GitHub</a>
+    <a href="https://github.com/SGrappelli/pronto" class="btn-cta-outline" target="_blank" rel="noopener noreferrer">Ver no GitHub</a>
   </div>
 </section>
 
@@ -732,27 +703,27 @@ const pageContent = `
   </div>
   <div class="footer-right">
     <div class="footer-links">
-      <a href="/pt/">&Iacute;nicio</a>
-      <a href="/pt/precos">Pre&ccedil;os</a>
-      <a href="/pt/para">Para neg&oacute;cios</a>
+      <a href="/pt/para/">Para neg&oacute;cios</a>
       <a href="/pt/para/saloes">Sal&otilde;es de Beleza</a>
       <a href="/pt/para/barbearia">Barbearias</a>
       <a href="/pt/para/academia">Academias</a>
+      <a href="/pt/">&Iacute;nicio</a>
+      <a href="/pt/precos">Pre&ccedil;os</a>
       <a href="/terms">Termos de Uso</a>
       <a href="/privacy">Pol&iacute;tica de Privacidade</a>
       <a href="/refund">Pol&iacute;tica de Reembolso</a>
     </div>
     <div class="footer-social">
-      <a href="https://x.com/prontopos" target="_blank" rel="noopener noreferrer" aria-label="Pronto on X" onclick="window.gtag&&window.gtag('event','social_click',{platform:'twitter',page:'/pt/para/auto-repair'})"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.76l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a>
-      <a href="https://www.linkedin.com/in/konstantinumnov/" target="_blank" rel="noopener noreferrer" aria-label="Pronto on LinkedIn" onclick="window.gtag&&window.gtag('event','social_click',{platform:'linkedin',page:'/pt/para/auto-repair'})"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg></a>
-      <a href="https://www.youtube.com/@trypronto" target="_blank" rel="noopener noreferrer" aria-label="Pronto on YouTube" onclick="window.gtag&&window.gtag('event','social_click',{platform:'youtube',page:'/pt/para/auto-repair'})"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg></a>
-      <a href="https://github.com/SGrappelli/pronto" target="_blank" rel="noopener noreferrer" aria-label="Pronto on GitHub" onclick="window.gtag&&window.gtag('event','github_click',{label:'footer_link',page:'/pt/para/auto-repair'})"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg></a>
+      <a href="https://x.com/prontopos" target="_blank" rel="noopener noreferrer" aria-label="Pronto on X" onclick="window.gtag&&window.gtag('event','social_click',{platform:'twitter',page:'/pt/para/clinica-dental'})"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.76l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a>
+      <a href="https://www.linkedin.com/in/konstantinumnov/" target="_blank" rel="noopener noreferrer" aria-label="Pronto on LinkedIn" onclick="window.gtag&&window.gtag('event','social_click',{platform:'linkedin',page:'/pt/para/clinica-dental'})"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg></a>
+      <a href="https://www.youtube.com/@trypronto" target="_blank" rel="noopener noreferrer" aria-label="Pronto on YouTube" onclick="window.gtag&&window.gtag('event','social_click',{platform:'youtube',page:'/pt/para/clinica-dental'})"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg></a>
+      <a href="https://github.com/SGrappelli/pronto" target="_blank" rel="noopener noreferrer" aria-label="Pronto on GitHub" onclick="window.gtag&&window.gtag('event','github_click',{label:'footer_link',page:'/pt/para/clinica-dental'})"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg></a>
     </div>
   </div>
 </footer>
 `
 
-export default function PtParaAutoRepairPage() {
+export default function PtParaClinicaDentalPage() {
   return (
     <>
       <script
@@ -772,7 +743,7 @@ export default function PtParaAutoRepairPage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
       />
       <style dangerouslySetInnerHTML={{ __html: pageStyles }} />
-      <div dangerouslySetInnerHTML={{ __html: pageContent }} />
+      <div lang="pt-BR" dangerouslySetInnerHTML={{ __html: pageContent }} />
     </>
   )
 }

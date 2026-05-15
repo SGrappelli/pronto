@@ -11,6 +11,7 @@ export const metadata: Metadata = {
     languages: {
       en: 'https://trypronto.app/for/dental',
       es: 'https://trypronto.app/es/para/clinica-dental',
+      'pt-BR': 'https://trypronto.app/pt/para/clinica-dental',
       'x-default': 'https://trypronto.app/for/dental',
     },
   },

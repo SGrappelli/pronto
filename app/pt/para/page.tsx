@@ -249,9 +249,9 @@ const pageContent = `
   <a href="/pt/" class="nav-brand">Pronto<span>.</span></a>
   <div class="nav-right">
     <a href="/pt/precos" class="nav-link hide-mob" onclick="window.gtag&&window.gtag('event','pricing_click',{source:'/pt/para'})">Pre&ccedil;os</a>
-    <a href="/login" class="nav-link hide-tablet" onclick="window.gtag&&window.gtag('event','login_click',{label:'nav_signin'})">Entrar</a>
+    <a href="/login" class="nav-link hide-tablet" onclick="window.gtag&&window.gtag('event','sign_in_click',{location:'navbar',language:'pt'})">Entrar</a>
     <select aria-label="Language" onchange="var l=this.value;var m={en:'/for',es:'/es/para',pt:'/pt/para'};if(window.gtag)window.gtag('event','language_switch',{to:l});window.location.href=m[l]||'/';" style="font-size:0.85rem;font-family:inherit;font-weight:500;border:1px solid #d1d5db;border-radius:6px;padding:4px 6px;background:transparent;cursor:pointer;color:inherit;appearance:none;-webkit-appearance:none;min-width:52px;"><option value="en">EN</option><option value="es">ES</option><option value="pt" selected>PT</option></select>
-    <a href="/register" class="btn-nav" onclick="window.gtag&&window.gtag('event','cta_click',{label:'start_free',page:'/pt/para'})">Come&ccedil;ar gr&aacute;tis</a>
+    <a href="/register" class="btn-nav" onclick="window.gtag&&window.gtag('event','sign_up_click',{location:'navbar',language:'pt'})">Come&ccedil;ar gr&aacute;tis</a>
   </div>
 </nav>
 
@@ -425,7 +425,7 @@ const pageContent = `
 <section class="cta">
   <h2>Pronto para come&ccedil;ar?</h2>
   <p>Instale em 1 comando ou comece gr&aacute;tis no SaaS.</p>
-  <a href="/register" class="btn-primary" onclick="window.gtag&&window.gtag('event','cta_click',{label:'start_free',page:'/pt/para'})">Come&ccedil;ar gr&aacute;tis &rarr;</a>
+  <a href="/register" class="btn-primary" onclick="window.gtag&&window.gtag('event','sign_up_click',{location:'footer',language:'pt'})">Come&ccedil;ar gr&aacute;tis &rarr;</a>
   <a href="https://github.com/SGrappelli/pronto" class="btn-outline" target="_blank" rel="noopener noreferrer" onclick="window.gtag&&window.gtag('event','github_click',{label:'cta_button',page:'/pt/para'})">Ver no GitHub &rarr;</a>
 </section>
 

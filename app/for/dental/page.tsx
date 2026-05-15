@@ -6,7 +6,15 @@ export const metadata: Metadata = {
     'Free dental clinic management software with appointment scheduling, patient CRM, treatment history and automated reminders via WhatsApp, Telegram & Email. No per-seat fees. Self-hosted or cloud.',
   keywords:
     'dental clinic software, dental appointment scheduling software, dental practice management software, free dental software, dentist booking software, dental office management software, dental CRM, dental clinic software no subscription, self-hosted dental software, dental patient management',
-  alternates: { canonical: 'https://trypronto.app/for/dental' },
+  alternates: {
+    canonical: 'https://trypronto.app/for/dental',
+    languages: {
+      en: 'https://trypronto.app/for/dental',
+      es: 'https://trypronto.app/es/para/clinica-dental',
+      'pt-BR': 'https://trypronto.app/pt/para/clinica-dental',
+      'x-default': 'https://trypronto.app/for/dental',
+    },
+  },
   openGraph: {
     type: 'website',
     url: 'https://trypronto.app/for/dental',
