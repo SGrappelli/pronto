@@ -599,7 +599,6 @@ const pageContent = `
         <li>Reservas online</li>
         <li>Notifica&ccedil;&otilde;es por Email</li>
       </ul>
-      <a href="/register" class="plan-cta" onclick="window.gtag&&window.gtag('event','sign_up_click',{location:'pricing',language:'pt'})">Come&ccedil;ar gr&aacute;tis</a>
     </div>
     <div class="plan">
       <div class="plan-name">Starter</div>
@@ -612,7 +611,6 @@ const pageContent = `
         <li>Notifica&ccedil;&otilde;es por Telegram</li>
         <li>Link p&uacute;blico de reservas</li>
       </ul>
-      <a href="/register" class="plan-cta" onclick="window.gtag&&window.gtag('event','sign_up_click',{location:'pricing',language:'pt'})">Come&ccedil;ar agora</a>
     </div>
     <div class="plan featured">
       <div class="plan-popular">Mais popular</div>
@@ -627,7 +625,6 @@ const pageContent = `
         <li>An&aacute;lises e relat&oacute;rios <span style="font-size:10px;background:#fef3c7;color:#92400e;padding:1px 6px;border-radius:8px">Em breve</span></li>
         <li>Programa de fidelidade <span style="font-size:10px;background:#fef3c7;color:#92400e;padding:1px 6px;border-radius:8px">Em breve</span></li>
       </ul>
-      <a href="/register" class="plan-cta" onclick="window.gtag&&window.gtag('event','sign_up_click',{location:'pricing',language:'pt'})">Come&ccedil;ar agora</a>
     </div>
     <div class="plan">
       <div class="plan-name">Agency</div>
@@ -641,7 +638,6 @@ const pageContent = `
         <li>Acesso &agrave; API <span style="font-size:10px;background:#fef3c7;color:#92400e;padding:1px 6px;border-radius:8px">Em breve</span></li>
         <li>Suporte priorit&aacute;rio</li>
       </ul>
-      <a href="/register" class="plan-cta" onclick="window.gtag&&window.gtag('event','sign_up_click',{location:'pricing',language:'pt'})">Come&ccedil;ar agora</a>
     </div>
   </div>
   <p class="pricing-note">Planos pagos cobrados via Whop &middot; Cancele a qualquer momento &middot; <a href="/pt/precos">Ver pre&ccedil;os completos &rarr;</a></p>

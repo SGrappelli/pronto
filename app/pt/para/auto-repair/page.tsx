@@ -347,7 +347,7 @@ const pageContent = `
   <a href="/pt/" class="nav-brand">Pronto<span>.</span></a>
   <div class="nav-right">
     <a href="/pt/precos" class="nav-link hide-mob" onclick="window.gtag&&window.gtag('event','pricing_click',{source:'/pt/para/auto-repair'})">Pre&ccedil;os</a>
-    <select aria-label="Language" onchange="var l=this.value;var m={en:'/for/auto-repair',es:'/es/para/auto-repair',pt:'/pt/para/auto-repair'};if(window.gtag)window.gtag('event','language_switch',{to:l});window.location.href=m[l]||'/';" style="font-size:0.85rem;font-family:inherit;font-weight:500;border:1px solid #d1d5db;border-radius:6px;padding:4px 6px;background:transparent;cursor:pointer;color:inherit;appearance:none;-webkit-appearance:none;min-width:52px;"><option value="en">EN</option><option value="es">ES</option><option value="pt" selected>PT</option></select>
+    <select aria-label="Language" onchange="var l=this.value;var m={en:'/for/auto-repair',es:'/es/para/autoservicio',pt:'/pt/para/auto-repair'};if(window.gtag)window.gtag('event','language_switch',{to:l});window.location.href=m[l]||'/';" style="font-size:0.85rem;font-family:inherit;font-weight:500;border:1px solid #d1d5db;border-radius:6px;padding:4px 6px;background:transparent;cursor:pointer;color:inherit;appearance:none;-webkit-appearance:none;min-width:52px;"><option value="en">EN</option><option value="es">ES</option><option value="pt" selected>PT</option></select>
     <a href="/login" class="nav-link hide-tablet" onclick="window.gtag&&window.gtag('event','sign_in_click',{location:'navbar',language:'pt'})">Entrar</a>
     <a href="/register" class="btn-nav" onclick="window.gtag&&window.gtag('event','sign_up_click',{location:'navbar',language:'pt'})">Come&ccedil;ar gr&aacute;tis</a>
   </div>
@@ -628,7 +628,6 @@ const pageContent = `
         <li>Agendamento online</li>
         <li>Notifica&ccedil;&otilde;es por Email</li>
       </ul>
-      <a href="/register" class="plan-cta" onclick="window.gtag&&window.gtag('event','sign_up_click',{location:'pricing',language:'pt'})">Come&ccedil;ar gr&aacute;tis</a>
     </div>
     <div class="plan">
       <div class="plan-name">Starter</div>
@@ -641,7 +640,6 @@ const pageContent = `
         <li>Notifica&ccedil;&otilde;es por Telegram</li>
         <li>Link p&uacute;blico de agendamento</li>
       </ul>
-      <a href="/register" class="plan-cta" onclick="window.gtag&&window.gtag('event','sign_up_click',{location:'pricing',language:'pt'})">Come&ccedil;ar agora</a>
     </div>
     <div class="plan featured">
       <div class="plan-popular">Mais popular</div>
@@ -656,7 +654,6 @@ const pageContent = `
         <li>An&aacute;lises e relat&oacute;rios <span class="badge-soon" style="font-size:10px;background:#fef3c7;color:#92400e;padding:1px 6px;border-radius:8px">Em breve</span></li>
         <li>Programa de fidelidade <span class="badge-soon" style="font-size:10px;background:#fef3c7;color:#92400e;padding:1px 6px;border-radius:8px">Em breve</span></li>
       </ul>
-      <a href="/register" class="plan-cta" onclick="window.gtag&&window.gtag('event','sign_up_click',{location:'pricing',language:'pt'})">Come&ccedil;ar agora</a>
     </div>
     <div class="plan">
       <div class="plan-name">Agency</div>
@@ -670,7 +667,6 @@ const pageContent = `
         <li>Acesso &agrave; API <span class="badge-soon" style="font-size:10px;background:#fef3c7;color:#92400e;padding:1px 6px;border-radius:8px">Em breve</span></li>
         <li>Suporte priorit&aacute;rio</li>
       </ul>
-      <a href="/register" class="plan-cta" onclick="window.gtag&&window.gtag('event','sign_up_click',{location:'pricing',language:'pt'})">Come&ccedil;ar agora</a>
     </div>
   </div>
   <p class="pricing-note">Planos pagos cobrados via Whop &middot; Cancele a qualquer momento &middot; <a href="/pt/precos">Ver pre&ccedil;os completos &rarr;</a></p>
