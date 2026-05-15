@@ -6,7 +6,15 @@ export const metadata: Metadata = {
     'Free salon management software with POS, appointment booking, CRM and automated reminders via WhatsApp, Telegram & Email. Zero commission. Self-hosted or cloud.',
   keywords:
     'salon management software, beauty salon POS, salon booking software, appointment booking software for salons, salon CRM, free salon software, hair salon management, beauty salon scheduling software, salon software no commission, self-hosted salon software',
-  alternates: { canonical: 'https://trypronto.app/for/salons' },
+  alternates: {
+    canonical: 'https://trypronto.app/for/salons',
+    languages: {
+      en: 'https://trypronto.app/for/salons',
+      es: 'https://trypronto.app/es/para/salones',
+      'pt-BR': 'https://trypronto.app/pt/para/saloes',
+      'x-default': 'https://trypronto.app/for/salons',
+    },
+  },
   openGraph: {
     type: 'website',
     url: 'https://trypronto.app/for/salons',
