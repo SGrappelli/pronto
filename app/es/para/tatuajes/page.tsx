@@ -9,8 +9,9 @@ export const metadata: Metadata = {
   alternates: {
     canonical: 'https://trypronto.app/es/para/tatuajes',
     languages: {
-      es: 'https://trypronto.app/es/para/tatuajes',
       en: 'https://trypronto.app/for/tattoo',
+      es: 'https://trypronto.app/es/para/tatuajes',
+      'pt-BR': 'https://trypronto.app/pt/para/tatuagens',
       'x-default': 'https://trypronto.app/for/tattoo',
     },
   },

@@ -6,7 +6,15 @@ export const metadata: Metadata = {
     'Free tattoo studio management software with appointment booking, deposit tracking, client CRM and automated reminders via WhatsApp, Telegram & Email. Zero commission. Self-hosted or cloud.',
   keywords:
     'tattoo studio management software, tattoo shop booking software, tattoo artist scheduling software, tattoo studio POS, tattoo client management, free tattoo shop software, tattoo appointment software, piercing studio software, tattoo CRM, tattoo studio software no commission, self-hosted tattoo software',
-  alternates: { canonical: 'https://trypronto.app/for/tattoo' },
+  alternates: {
+    canonical: 'https://trypronto.app/for/tattoo',
+    languages: {
+      en: 'https://trypronto.app/for/tattoo',
+      es: 'https://trypronto.app/es/para/tatuajes',
+      'pt-BR': 'https://trypronto.app/pt/para/tatuagens',
+      'x-default': 'https://trypronto.app/for/tattoo',
+    },
+  },
   openGraph: {
     type: 'website',
     url: 'https://trypronto.app/for/tattoo',
