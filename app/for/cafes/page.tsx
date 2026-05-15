@@ -6,7 +6,15 @@ export const metadata: Metadata = {
     'Free cafe management software with fast POS, order tracking, inventory and automated customer messages via WhatsApp, Telegram & Email. Zero commission. Self-hosted or cloud.',
   keywords:
     'cafe management software, cafe POS system free, coffee shop POS software, cafe ordering software, small cafe software, coffee shop management system, cafe CRM, free cafe software, bakery POS software, cafe inventory management, self-hosted cafe software',
-  alternates: { canonical: 'https://trypronto.app/for/cafes' },
+  alternates: {
+    canonical: 'https://trypronto.app/for/cafes',
+    languages: {
+      en: 'https://trypronto.app/for/cafes',
+      es: 'https://trypronto.app/es/para/cafeteria',
+      'pt-BR': 'https://trypronto.app/pt/para/cafeteria',
+      'x-default': 'https://trypronto.app/for/cafes',
+    },
+  },
   openGraph: {
     type: 'website',
     url: 'https://trypronto.app/for/cafes',

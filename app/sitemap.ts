@@ -116,6 +116,51 @@ const LANGUAGE_ALTERNATES: Record<string, Record<string, string>> = {
     es: 'https://trypronto.app/es/para/gimnasio',
     'pt-BR': 'https://trypronto.app/pt/para/academia',
   },
+  '/for/spa': {
+    en: 'https://trypronto.app/for/spa',
+    es: 'https://trypronto.app/es/para/spa',
+    'pt-BR': 'https://trypronto.app/pt/para/spa',
+  },
+  '/es/para/spa': {
+    en: 'https://trypronto.app/for/spa',
+    es: 'https://trypronto.app/es/para/spa',
+    'pt-BR': 'https://trypronto.app/pt/para/spa',
+  },
+  '/pt/para/spa': {
+    en: 'https://trypronto.app/for/spa',
+    es: 'https://trypronto.app/es/para/spa',
+    'pt-BR': 'https://trypronto.app/pt/para/spa',
+  },
+  '/for/tattoo': {
+    en: 'https://trypronto.app/for/tattoo',
+    es: 'https://trypronto.app/es/para/tatuajes',
+    'pt-BR': 'https://trypronto.app/pt/para/tatuagens',
+  },
+  '/es/para/tatuajes': {
+    en: 'https://trypronto.app/for/tattoo',
+    es: 'https://trypronto.app/es/para/tatuajes',
+    'pt-BR': 'https://trypronto.app/pt/para/tatuagens',
+  },
+  '/pt/para/tatuagens': {
+    en: 'https://trypronto.app/for/tattoo',
+    es: 'https://trypronto.app/es/para/tatuajes',
+    'pt-BR': 'https://trypronto.app/pt/para/tatuagens',
+  },
+  '/for/cafes': {
+    en: 'https://trypronto.app/for/cafes',
+    es: 'https://trypronto.app/es/para/cafeteria',
+    'pt-BR': 'https://trypronto.app/pt/para/cafeteria',
+  },
+  '/es/para/cafeteria': {
+    en: 'https://trypronto.app/for/cafes',
+    es: 'https://trypronto.app/es/para/cafeteria',
+    'pt-BR': 'https://trypronto.app/pt/para/cafeteria',
+  },
+  '/pt/para/cafeteria': {
+    en: 'https://trypronto.app/for/cafes',
+    es: 'https://trypronto.app/es/para/cafeteria',
+    'pt-BR': 'https://trypronto.app/pt/para/cafeteria',
+  },
 }
 
 const ROUTE_PRIORITIES: Record<string, number> = {
@@ -133,6 +178,11 @@ const ROUTE_PRIORITIES: Record<string, number> = {
   '/es/para/clinica-dental': 0.8,
   '/pt/para/clinica-dental': 0.7,
   '/pt/para/academia': 0.7,
+  '/pt/para/spa': 0.7,
+  '/pt/para/cafeteria': 0.7,
+  '/es/para/cafeteria': 0.8,
+  '/pt/para/tatuagens': 0.7,
+  '/es/para/tatuajes': 0.8,
   '/for': 0.8,
   '/pricing': 0.8,
   '/es/precios': 0.8,
@@ -217,7 +267,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     .filter(({ file }) => !hasNoIndex(file))
     .map(({ route }) => ({
       url: `${BASE_URL}${route}`,
-      changeFrequency: (['/', '/es', '/pt', '/for', '/for/salons', '/es/para', '/pt/para', '/es/para/salones', '/for/barbershops', '/es/para/barberia', '/for/auto-repair', '/es/para/autoservicio', '/es/para/clinica-dental', '/pt/para/clinica-dental', '/es/para/gimnasio', '/pt/para/academia', '/pt/para/saloes', '/pt/para/barbearia', '/pt/para/auto-repair', '/docs', '/es/docs', '/pt/docs'].includes(route) ? 'weekly' : 'monthly') as MetadataRoute.Sitemap[number]['changeFrequency'],
+      changeFrequency: (['/', '/es', '/pt', '/for', '/for/salons', '/es/para', '/pt/para', '/es/para/salones', '/for/barbershops', '/es/para/barberia', '/for/auto-repair', '/es/para/autoservicio', '/es/para/clinica-dental', '/pt/para/clinica-dental', '/es/para/gimnasio', '/pt/para/academia', '/pt/para/saloes', '/pt/para/barbearia', '/pt/para/auto-repair', '/pt/para/spa', '/for/spa', '/es/para/spa', '/for/cafes', '/es/para/cafeteria', '/pt/para/cafeteria', '/for/tattoo', '/es/para/tatuajes', '/pt/para/tatuagens', '/docs', '/es/docs', '/pt/docs'].includes(route) ? 'weekly' : 'monthly') as MetadataRoute.Sitemap[number]['changeFrequency'],
       priority: getPriority(route),
       lastModified: new Date(),
       ...(LANGUAGE_ALTERNATES[route] ? { alternates: { languages: LANGUAGE_ALTERNATES[route] } } : {}),

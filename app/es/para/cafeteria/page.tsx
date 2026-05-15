@@ -9,8 +9,9 @@ export const metadata: Metadata = {
   alternates: {
     canonical: 'https://trypronto.app/es/para/cafeteria',
     languages: {
-      es: 'https://trypronto.app/es/para/cafeteria',
       en: 'https://trypronto.app/for/cafes',
+      es: 'https://trypronto.app/es/para/cafeteria',
+      'pt-BR': 'https://trypronto.app/pt/para/cafeteria',
       'x-default': 'https://trypronto.app/for/cafes',
     },
   },
