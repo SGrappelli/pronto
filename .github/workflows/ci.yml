@@ -40,4 +40,5 @@ jobs:
 
       - name: Ping IndexNow
         if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+        continue-on-error: true
         run: npx tsx scripts/ping-indexnow.ts
