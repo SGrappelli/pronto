@@ -325,7 +325,6 @@ const pageContent = `
     <div class="footer-col">
       <div class="footer-col-head">Product</div>
       <a href="/pricing">Pricing</a>
-      <a href="/for">For businesses</a>
     </div>
     <div class="footer-col">
       <div class="footer-col-head">Compare</div>

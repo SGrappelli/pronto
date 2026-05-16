@@ -306,9 +306,9 @@ export default function EsPreciosPage() {
               </a>
               .
             </p>
-            <p className="text-center text-sm font-medium text-green-600 mt-4">
+            <p className="text-center text-sm text-muted-foreground mt-4">
               ¿Vienes de otra plataforma?{' '}
-              <Link href="/es/vs/" className="underline-offset-2 hover:underline hover:text-green-700">
+              <Link href="/es/vs/" className="underline hover:text-foreground">
                 Compara Pronto con la competencia →
               </Link>
             </p>
@@ -417,7 +417,6 @@ export default function EsPreciosPage() {
           </div>
           <div>
             <div style={{ fontSize: '11px', fontWeight: 700, letterSpacing: '1.2px', textTransform: 'uppercase' as const, color: '#9ca3af', marginBottom: '14px' }}>Producto</div>
-            <Link href="/es/precios" style={{ display: 'block', fontSize: '14px', color: '#6b7280', textDecoration: 'none', marginBottom: '10px' }}>Precios</Link>
             <Link href="/es/para" style={{ display: 'block', fontSize: '14px', color: '#6b7280', textDecoration: 'none', marginBottom: '10px' }}>Para negocios</Link>
           </div>
           <div>

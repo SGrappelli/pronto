@@ -581,10 +581,10 @@ export default function EsPage() {
                 </ul>
               </div>
             </div>
-            <p className="text-center text-sm font-medium text-green-600 mt-3">
-              <Link href="/es/precios" className="underline-offset-2 hover:underline hover:text-green-700">Ver precios completos →</Link>
+            <p className="text-center text-sm text-muted-foreground mt-3">
+              <Link href="/es/precios" className="underline hover:text-foreground">Ver precios completos →</Link>
             </p>
-            <p className="text-center text-sm font-medium text-green-600 mt-2">¿Vienes de otra plataforma? <Link href="/es/vs/" className="underline-offset-2 hover:underline hover:text-green-700">Compara aquí →</Link></p>
+            <p className="text-center text-sm text-muted-foreground mt-2">¿Vienes de otra plataforma? <Link href="/es/vs/" className="underline hover:text-foreground">Compara aquí →</Link></p>
           </div>
         </section>
       </main>

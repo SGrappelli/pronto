@@ -338,9 +338,9 @@ export default function PtPrecosPage() {
                 Fale conosco em support@trypronto.app
               </a>
             </p>
-            <p className="text-center text-sm font-medium text-green-600 mt-4">
+            <p className="text-center text-sm text-muted-foreground mt-4">
               Vindo de outra plataforma?{' '}
-              <Link href="/pt/vs/" className="underline-offset-2 hover:underline hover:text-green-700">
+              <Link href="/pt/vs/" className="underline hover:text-foreground">
                 Compare o Pronto com a concorrência →
               </Link>
             </p>
@@ -449,7 +449,6 @@ export default function PtPrecosPage() {
           </div>
           <div>
             <div style={{ fontSize: '11px', fontWeight: 700, letterSpacing: '1.2px', textTransform: 'uppercase' as const, color: '#9ca3af', marginBottom: '14px' }}>Produto</div>
-            <Link href="/pt/precos" style={{ display: 'block', fontSize: '14px', color: '#6b7280', textDecoration: 'none', marginBottom: '10px' }}>Preços</Link>
             <Link href="/pt/para" style={{ display: 'block', fontSize: '14px', color: '#6b7280', textDecoration: 'none', marginBottom: '10px' }}>Para negócios</Link>
           </div>
           <div>

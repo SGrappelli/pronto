@@ -441,7 +441,6 @@ const pageContent = `
     <div class="footer-col">
       <div class="footer-col-head">Produto</div>
       <a href="/pt/precos">Pre&ccedil;os</a>
-      <a href="/pt/para/">Para neg&oacute;cios</a>
     </div>
     <div class="footer-col">
       <div class="footer-col-head">Comparar</div>
