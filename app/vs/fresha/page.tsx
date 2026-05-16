@@ -515,7 +515,6 @@ const pageContent = `
     </div>
     <div class="footer-col">
       <div class="footer-col-head">Compare</div>
-      <a href="/vs/fresha">vs Fresha</a>
       <a href="/vs/booksy">vs Booksy</a>
       <a href="/vs/mindbody">vs Mindbody</a>
       <a href="/vs/vagaro">vs Vagaro</a>
