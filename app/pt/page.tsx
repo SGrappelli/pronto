@@ -728,6 +728,13 @@ export default function PtPage() {
           <Link href="/terms" style={{ fontSize: '15px' }}>Termos de Uso</Link>
           <Link href="/privacy" style={{ fontSize: '15px' }}>Política de Privacidade</Link>
           <Link href="/refund" style={{ fontSize: '15px' }}>Política de Reembolso</Link>
+          <Link href="/vs/fresha" style={{ fontSize: '15px' }}>vs Fresha</Link>
+          <Link href="/vs/booksy" style={{ fontSize: '15px' }}>vs Booksy</Link>
+          <Link href="/vs/mindbody" style={{ fontSize: '15px' }}>vs Mindbody</Link>
+          <Link href="/vs/vagaro" style={{ fontSize: '15px' }}>vs Vagaro</Link>
+          <Link href="/vs/square" style={{ fontSize: '15px' }}>vs Square</Link>
+          <Link href="/pt/vs/trinks" style={{ fontSize: '15px' }}>vs Trinks</Link>
+          <Link href="/pt/vs/isalon" style={{ fontSize: '15px' }}>vs iSalon</Link>
         </div>
       </footer>
     </div>

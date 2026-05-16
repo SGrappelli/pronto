@@ -333,6 +333,11 @@ const pageContent = `
     <a href="/terms">Terms</a>
     <a href="/privacy">Privacy</a>
     <a href="/refund">Refund policy</a>
+    <a href="/vs/fresha">vs Fresha</a>
+    <a href="/vs/booksy">vs Booksy</a>
+    <a href="/vs/mindbody">vs Mindbody</a>
+    <a href="/vs/vagaro">vs Vagaro</a>
+    <a href="/vs/square">vs Square</a>
   </div>
 </footer>
 `
