@@ -663,6 +663,11 @@ export default function RootPage() {
           <Link href="/terms">Terms</Link>
           <Link href="/privacy">Privacy</Link>
           <Link href="/refund">Refund policy</Link>
+          <Link href="/vs/fresha">vs Fresha</Link>
+          <Link href="/vs/booksy">vs Booksy</Link>
+          <Link href="/vs/mindbody">vs Mindbody</Link>
+          <Link href="/vs/vagaro">vs Vagaro</Link>
+          <Link href="/vs/square">vs Square</Link>
         </div>
       </footer>
     </div>

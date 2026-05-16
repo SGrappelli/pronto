@@ -186,6 +186,7 @@ const ROUTE_PRIORITIES: Record<string, number> = {
   '/pt/para/tatuagens': 0.7,
   '/es/para/tatuajes': 0.8,
   '/for': 0.8,
+  '/vs': 0.8,
   '/pricing': 0.8,
   '/es/precios': 0.8,
   '/pt/precos': 0.9,
