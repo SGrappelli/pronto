@@ -428,7 +428,7 @@ const pageContent = `
   <a href="/register" class="btn-primary" onclick="window.gtag&&window.gtag('event','sign_up_click',{location:'footer',language:'pt'})">Come&ccedil;ar gr&aacute;tis &rarr;</a>
   <a href="https://github.com/SGrappelli/pronto" class="btn-outline" target="_blank" rel="noopener noreferrer" onclick="window.gtag&&window.gtag('event','github_click',{label:'cta_button',page:'/pt/para'})">Ver no GitHub &rarr;</a>
 </section>
-<p style="text-align:center;font-size:13px;color:#9ca3af;padding:0 48px 32px;">Quer comparar? <a href="/vs/" style="color:#6b7280;text-decoration:underline;">Pronto vs concorrentes &rarr;</a></p>
+<p style="text-align:center;font-size:13px;color:#9ca3af;padding:0 48px 32px;">Quer comparar? <a href="/pt/vs/" style="color:#6b7280;text-decoration:underline;">Pronto vs concorrentes &rarr;</a></p>
 
 </main>
 
@@ -445,11 +445,11 @@ const pageContent = `
     </div>
     <div class="footer-col">
       <div class="footer-col-head">Comparar</div>
-      <a href="/vs/fresha">vs Fresha</a>
-      <a href="/vs/booksy">vs Booksy</a>
-      <a href="/vs/mindbody">vs Mindbody</a>
-      <a href="/vs/vagaro">vs Vagaro</a>
-      <a href="/vs/square">vs Square</a>
+      <a href="/pt/vs/fresha">vs Fresha</a>
+      <a href="/pt/vs/booksy">vs Booksy</a>
+      <a href="/pt/vs/mindbody">vs Mindbody</a>
+      <a href="/pt/vs/vagaro">vs Vagaro</a>
+      <a href="/pt/vs/square">vs Square</a>
       <a href="/pt/vs/trinks">vs Trinks</a>
       <a href="/pt/vs/isalon">vs iSalon</a>
     </div>
