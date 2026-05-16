@@ -197,27 +197,29 @@ nav{position:sticky;top:0;z-index:100;background:rgba(255,255,255,0.96);backdrop
 .btn-outline{background:transparent;color:#111;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:500;padding:12px 22px;border-radius:8px;border:1px solid #d1d5db;cursor:pointer;text-decoration:none;display:inline-block;margin:6px}
 .btn-outline:hover{border-color:#111}
 
-footer{padding:28px 48px;border-top:1px solid #f0f0f0;display:flex;justify-content:space-between;align-items:center;background:#fff}
-.footer-brand{font-size:22px;font-weight:800;color:#111;letter-spacing:-0.5px}
+footer{padding:48px;border-top:1px solid #f0f0f0;background:#fff}
+.footer-top{display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;gap:32px;margin-bottom:32px}
+.footer-brand{font-size:22px;font-weight:800;color:#111;letter-spacing:-0.5px;text-decoration:none}
 .footer-brand span{color:#16a34a}
-.footer-copy{font-size:13px;color:#9ca3af;margin-top:2px}
-.footer-right{display:flex;align-items:center;gap:20px}
-.footer-links{display:flex;gap:16px;flex-wrap:wrap;justify-content:flex-end}
-.footer-links a{font-size:13px;color:#9ca3af;text-decoration:none}
-.footer-links a:hover{color:#111}
-.footer-social{display:flex;gap:10px;align-items:center;flex-shrink:0}
-.footer-social a{color:#9ca3af;display:flex;align-items:center;line-height:1}
+.footer-tagline{font-size:13px;color:#6b7280;margin-top:6px}
+.footer-col-head{font-size:11px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:#9ca3af;margin-bottom:14px}
+.footer-col a{display:block;font-size:14px;color:#6b7280;text-decoration:none;margin-bottom:10px;transition:color 0.15s}
+.footer-col a:hover{color:#16a34a}
+.footer-bottom{display:flex;justify-content:space-between;align-items:center;padding-top:24px;border-top:1px solid #f0f0f0}
+.footer-copy{font-size:13px;color:#9ca3af}
+.footer-social{display:flex;gap:16px;align-items:center}
+.footer-social a{color:#9ca3af;display:flex;line-height:1;text-decoration:none}
 .footer-social a:hover{color:#111}
 
 @media(max-width:1024px){
-  nav,footer{padding:0 24px}
-  footer{padding:24px}
+  nav{padding:0 24px}
   .hero,.grid-section,.shared,.faq,.cta{padding-left:24px;padding-right:24px}
   .breadcrumb{padding:14px 24px}
   .biz-grid{grid-template-columns:repeat(2,1fr)}
   .shared-grid{grid-template-columns:repeat(2,1fr)}
   .hero h1{font-size:40px}
 }
+@media(max-width:900px){footer{padding:32px 24px}.footer-top{grid-template-columns:1fr 1fr;gap:24px}}
 @media(max-width:640px){
   nav{padding:0 16px;height:56px}
   .nav-right{gap:8px}
@@ -235,9 +237,7 @@ footer{padding:28px 48px;border-top:1px solid #f0f0f0;display:flex;justify-conte
   .breadcrumb{padding:12px 16px}
   .biz-grid{grid-template-columns:1fr 1fr}
   .shared-grid{grid-template-columns:1fr 1fr}
-  footer{flex-direction:column;align-items:flex-start;gap:16px;padding:24px 16px}
-  .footer-right{flex-direction:column;align-items:flex-start;gap:12px}
-  .footer-links{flex-wrap:wrap;gap:12px}
+  footer{padding:32px 16px}.footer-top{grid-template-columns:1fr}.footer-bottom{flex-direction:column;align-items:flex-start;gap:16px}
 }
 @media(max-width:400px){
   .biz-grid{grid-template-columns:1fr}
@@ -428,30 +428,45 @@ const pageContent = `
   <a href="/register" class="btn-primary" onclick="window.gtag&&window.gtag('event','sign_up_click',{location:'footer',language:'pt'})">Come&ccedil;ar gr&aacute;tis &rarr;</a>
   <a href="https://github.com/SGrappelli/pronto" class="btn-outline" target="_blank" rel="noopener noreferrer" onclick="window.gtag&&window.gtag('event','github_click',{label:'cta_button',page:'/pt/para'})">Ver no GitHub &rarr;</a>
 </section>
+<p style="text-align:center;font-size:13px;color:#9ca3af;padding:0 48px 32px;">Quer comparar? <a href="/vs/" style="color:#6b7280;text-decoration:underline;">Pronto vs concorrentes &rarr;</a></p>
 
 </main>
 
 <footer>
-  <div>
-    <div class="footer-brand">Pronto<span>.</span></div>
-    <div class="footer-copy">&copy; 2025 Pronto. Todos os direitos reservados.</div>
-  </div>
-  <div class="footer-right">
-    <div class="footer-links">
-      <a href="/pt/">&Iacute;nicio</a>
+  <div class="footer-top">
+    <div>
+      <a href="/pt/" class="footer-brand">Pronto<span>.</span></a>
+      <div class="footer-tagline">Your data, your server.</div>
+    </div>
+    <div class="footer-col">
+      <div class="footer-col-head">Produto</div>
       <a href="/pt/precos">Pre&ccedil;os</a>
-      <a href="/pt/docs">Documenta&ccedil;&atilde;o</a>
-      <a href="/pt/para/saloes">Sal&otilde;es</a>
-      <a href="/pt/para/barbearia">Barbearias</a>
+      <a href="/pt/para/">Para neg&oacute;cios</a>
+    </div>
+    <div class="footer-col">
+      <div class="footer-col-head">Comparar</div>
+      <a href="/vs/fresha">vs Fresha</a>
+      <a href="/vs/booksy">vs Booksy</a>
+      <a href="/vs/mindbody">vs Mindbody</a>
+      <a href="/vs/vagaro">vs Vagaro</a>
+      <a href="/vs/square">vs Square</a>
+      <a href="/pt/vs/trinks">vs Trinks</a>
+      <a href="/pt/vs/isalon">vs iSalon</a>
+    </div>
+    <div class="footer-col">
+      <div class="footer-col-head">Legal</div>
       <a href="/terms">Termos de Uso</a>
       <a href="/privacy">Pol&iacute;tica de Privacidade</a>
       <a href="/refund">Pol&iacute;tica de Reembolso</a>
     </div>
+  </div>
+  <div class="footer-bottom">
+    <div class="footer-copy">&copy; 2026 Pronto. Todos os direitos reservados.</div>
     <div class="footer-social">
-      <a href="https://x.com/prontopos" target="_blank" rel="noopener noreferrer" aria-label="Pronto on X" onclick="window.gtag&&window.gtag('event','social_click',{platform:'twitter',page:'/pt/para'})"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.76l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a>
-      <a href="https://www.linkedin.com/in/konstantinumnov/" target="_blank" rel="noopener noreferrer" aria-label="Pronto on LinkedIn" onclick="window.gtag&&window.gtag('event','social_click',{platform:'linkedin',page:'/pt/para'})"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg></a>
-      <a href="https://www.youtube.com/@trypronto" target="_blank" rel="noopener noreferrer" aria-label="Pronto on YouTube" onclick="window.gtag&&window.gtag('event','social_click',{platform:'youtube',page:'/pt/para'})"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg></a>
-      <a href="https://github.com/SGrappelli/pronto" target="_blank" rel="noopener noreferrer" aria-label="Pronto on GitHub" onclick="window.gtag&&window.gtag('event','github_click',{label:'footer_link',page:'/pt/para'})"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg></a>
+      <a href="https://x.com/prontopos" target="_blank" rel="noopener noreferrer" aria-label="Pronto on X" onclick="window.gtag&&window.gtag('event','social_click',{platform:'twitter',page:'/pt/para'})"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.76l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a>
+      <a href="https://www.linkedin.com/in/konstantinumnov/" target="_blank" rel="noopener noreferrer" aria-label="Pronto on LinkedIn" onclick="window.gtag&&window.gtag('event','social_click',{platform:'linkedin',page:'/pt/para'})"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg></a>
+      <a href="https://www.youtube.com/@trypronto" target="_blank" rel="noopener noreferrer" aria-label="Pronto on YouTube" onclick="window.gtag&&window.gtag('event','social_click',{platform:'youtube',page:'/pt/para'})"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg></a>
+      <a href="https://github.com/SGrappelli/pronto" target="_blank" rel="noopener noreferrer" aria-label="Pronto on GitHub" onclick="window.gtag&&window.gtag('event','github_click',{label:'footer_link',page:'/pt/para'})"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg></a>
     </div>
   </div>
 </footer>
