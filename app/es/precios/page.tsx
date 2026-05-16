@@ -306,9 +306,9 @@ export default function EsPreciosPage() {
               </a>
               .
             </p>
-            <p className="text-center text-sm text-gray-500 mt-4">
+            <p className="text-center text-sm font-medium text-green-600 mt-4">
               ¿Vienes de otra plataforma?{' '}
-              <Link href="/es/vs/" className="text-blue-600 hover:underline">
+              <Link href="/es/vs/" className="underline-offset-2 hover:underline hover:text-green-700">
                 Compara Pronto con la competencia →
               </Link>
             </p>

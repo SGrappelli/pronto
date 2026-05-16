@@ -612,10 +612,10 @@ export default function PtPage() {
             <p className={styles.pricingNote}>
               Planos pagos cobrados via Whop · Cancele a qualquer momento
             </p>
-            <p className={styles.pricingNote}>
-              <Link href="/pt/precos">Ver preços completos →</Link>
+            <p className="text-center text-sm font-medium text-green-600 mt-3">
+              <Link href="/pt/precos" className="underline-offset-2 hover:underline hover:text-green-700">Ver preços completos →</Link>
             </p>
-            <p className={styles.pricingNote}>Vindo de outra plataforma? <Link href="/pt/vs/">Compare aqui →</Link></p>
+            <p className="text-center text-sm font-medium text-green-600 mt-2">Vindo de outra plataforma? <Link href="/pt/vs/" className="underline-offset-2 hover:underline hover:text-green-700">Compare aqui →</Link></p>
           </div>
         </section>
       </main>
