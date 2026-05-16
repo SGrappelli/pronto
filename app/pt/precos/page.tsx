@@ -340,7 +340,7 @@ export default function PtPrecosPage() {
             </p>
             <p className="text-center text-sm text-gray-500 mt-4">
               Vindo de outra plataforma?{' '}
-              <Link href="/vs/" className="text-blue-600 hover:underline">
+              <Link href="/pt/vs/" className="text-blue-600 hover:underline">
                 Compare o Pronto com a concorrência →
               </Link>
             </p>
@@ -454,11 +454,11 @@ export default function PtPrecosPage() {
           </div>
           <div>
             <div style={{ fontSize: '11px', fontWeight: 700, letterSpacing: '1.2px', textTransform: 'uppercase' as const, color: '#9ca3af', marginBottom: '14px' }}>Comparar</div>
-            <Link href="/vs/fresha" style={{ display: 'block', fontSize: '14px', color: '#6b7280', textDecoration: 'none', marginBottom: '10px' }}>vs Fresha</Link>
-            <Link href="/vs/booksy" style={{ display: 'block', fontSize: '14px', color: '#6b7280', textDecoration: 'none', marginBottom: '10px' }}>vs Booksy</Link>
-            <Link href="/vs/mindbody" style={{ display: 'block', fontSize: '14px', color: '#6b7280', textDecoration: 'none', marginBottom: '10px' }}>vs Mindbody</Link>
-            <Link href="/vs/vagaro" style={{ display: 'block', fontSize: '14px', color: '#6b7280', textDecoration: 'none', marginBottom: '10px' }}>vs Vagaro</Link>
-            <Link href="/vs/square" style={{ display: 'block', fontSize: '14px', color: '#6b7280', textDecoration: 'none', marginBottom: '10px' }}>vs Square</Link>
+            <Link href="/pt/vs/fresha" style={{ display: 'block', fontSize: '14px', color: '#6b7280', textDecoration: 'none', marginBottom: '10px' }}>vs Fresha</Link>
+            <Link href="/pt/vs/booksy" style={{ display: 'block', fontSize: '14px', color: '#6b7280', textDecoration: 'none', marginBottom: '10px' }}>vs Booksy</Link>
+            <Link href="/pt/vs/mindbody" style={{ display: 'block', fontSize: '14px', color: '#6b7280', textDecoration: 'none', marginBottom: '10px' }}>vs Mindbody</Link>
+            <Link href="/pt/vs/vagaro" style={{ display: 'block', fontSize: '14px', color: '#6b7280', textDecoration: 'none', marginBottom: '10px' }}>vs Vagaro</Link>
+            <Link href="/pt/vs/square" style={{ display: 'block', fontSize: '14px', color: '#6b7280', textDecoration: 'none', marginBottom: '10px' }}>vs Square</Link>
             <Link href="/pt/vs/trinks" style={{ display: 'block', fontSize: '14px', color: '#6b7280', textDecoration: 'none', marginBottom: '10px' }}>vs Trinks</Link>
             <Link href="/pt/vs/isalon" style={{ display: 'block', fontSize: '14px', color: '#6b7280', textDecoration: 'none', marginBottom: '10px' }}>vs iSalon</Link>
           </div>

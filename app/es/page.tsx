@@ -584,7 +584,7 @@ export default function EsPage() {
             <p className={styles.pricingNote}>
               <Link href="/es/precios">Ver precios completos →</Link>
             </p>
-            <p className={styles.pricingNote}>¿Vienes de otra plataforma? <Link href="/vs/">Compara aquí →</Link></p>
+            <p className={styles.pricingNote}>¿Vienes de otra plataforma? <Link href="/es/vs/">Compara aquí →</Link></p>
           </div>
         </section>
       </main>
@@ -663,11 +663,11 @@ export default function EsPage() {
           </div>
           <div>
             <div style={{fontSize:'11px',fontWeight:700,letterSpacing:'1.2px',textTransform:'uppercase' as const,color:'#9ca3af',marginBottom:'14px'}}>Comparar</div>
-            <Link href="/vs/fresha" style={{display:'block',fontSize:'14px',color:'#6b7280',textDecoration:'none',marginBottom:'10px'}}>vs Fresha</Link>
-            <Link href="/vs/booksy" style={{display:'block',fontSize:'14px',color:'#6b7280',textDecoration:'none',marginBottom:'10px'}}>vs Booksy</Link>
-            <Link href="/vs/mindbody" style={{display:'block',fontSize:'14px',color:'#6b7280',textDecoration:'none',marginBottom:'10px'}}>vs Mindbody</Link>
-            <Link href="/vs/vagaro" style={{display:'block',fontSize:'14px',color:'#6b7280',textDecoration:'none',marginBottom:'10px'}}>vs Vagaro</Link>
-            <Link href="/vs/square" style={{display:'block',fontSize:'14px',color:'#6b7280',textDecoration:'none',marginBottom:'10px'}}>vs Square</Link>
+            <Link href="/es/vs/fresha" style={{display:'block',fontSize:'14px',color:'#6b7280',textDecoration:'none',marginBottom:'10px'}}>vs Fresha</Link>
+            <Link href="/es/vs/booksy" style={{display:'block',fontSize:'14px',color:'#6b7280',textDecoration:'none',marginBottom:'10px'}}>vs Booksy</Link>
+            <Link href="/es/vs/mindbody" style={{display:'block',fontSize:'14px',color:'#6b7280',textDecoration:'none',marginBottom:'10px'}}>vs Mindbody</Link>
+            <Link href="/es/vs/vagaro" style={{display:'block',fontSize:'14px',color:'#6b7280',textDecoration:'none',marginBottom:'10px'}}>vs Vagaro</Link>
+            <Link href="/es/vs/square" style={{display:'block',fontSize:'14px',color:'#6b7280',textDecoration:'none',marginBottom:'10px'}}>vs Square</Link>
           </div>
           <div>
             <div style={{fontSize:'11px',fontWeight:700,letterSpacing:'1.2px',textTransform:'uppercase' as const,color:'#9ca3af',marginBottom:'14px'}}>Legal</div>
