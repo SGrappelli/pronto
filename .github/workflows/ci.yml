@@ -37,3 +37,7 @@ jobs:
           NEXT_PUBLIC_APP_URL: http://localhost:3000
           NEXT_PUBLIC_DEPLOYMENT_MODE: selfhosted
           CRON_SECRET: ci-secret
+
+      - name: Ping IndexNow
+        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+        run: npx tsx scripts/ping-indexnow.ts
