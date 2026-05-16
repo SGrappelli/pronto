@@ -33,6 +33,21 @@ const LANGUAGE_ALTERNATES: Record<string, Record<string, string>> = {
     es: 'https://trypronto.app/es/',
     'pt-BR': 'https://trypronto.app/pt/',
   },
+  '/vs': {
+    en: 'https://trypronto.app/vs/',
+    es: 'https://trypronto.app/es/vs/',
+    'pt-BR': 'https://trypronto.app/pt/vs/',
+  },
+  '/es/vs': {
+    en: 'https://trypronto.app/vs/',
+    es: 'https://trypronto.app/es/vs/',
+    'pt-BR': 'https://trypronto.app/pt/vs/',
+  },
+  '/pt/vs': {
+    en: 'https://trypronto.app/vs/',
+    es: 'https://trypronto.app/es/vs/',
+    'pt-BR': 'https://trypronto.app/pt/vs/',
+  },
   '/for': {
     en: 'https://trypronto.app/for/',
     es: 'https://trypronto.app/es/para/',
@@ -187,6 +202,8 @@ const ROUTE_PRIORITIES: Record<string, number> = {
   '/es/para/tatuajes': 0.8,
   '/for': 0.8,
   '/vs': 0.8,
+  '/es/vs': 0.8,
+  '/pt/vs': 0.8,
   '/vs/fresha': 0.8,
   '/pricing': 0.8,
   '/es/precios': 0.8,
