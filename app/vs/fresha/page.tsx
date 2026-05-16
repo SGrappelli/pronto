@@ -411,7 +411,7 @@ const pageContent = `
         <div class="pricing-highlight">Starting at $0/month</div>
         <ul class="pricing-list">
           <li>&#10003; Free plan: $0/month &mdash; 1 staff, 100 clients</li>
-          <li>&#10003; Starter: $19/month &mdash; 3 staff, 1,000 clients</li>
+          <li>&#10003; Starter: $19/month &mdash; 3 staff, unlimited clients</li>
           <li>&#10003; Pro: $39/month &mdash; 15 staff, unlimited</li>
           <li>&#10003; Agency: $79/month &mdash; multi-location</li>
           <li>&#10003; 0% commission on all bookings</li>
