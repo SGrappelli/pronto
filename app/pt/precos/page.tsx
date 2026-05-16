@@ -454,6 +454,7 @@ export default function PtPrecosPage() {
           </div>
           <div>
             <div style={{ fontSize: '11px', fontWeight: 700, letterSpacing: '1.2px', textTransform: 'uppercase' as const, color: '#9ca3af', marginBottom: '14px' }}>Comparar</div>
+            <Link href="/pt/vs/" style={{ display: 'block', fontSize: '14px', color: '#6b7280', textDecoration: 'none', marginBottom: '10px' }}>Comparativos</Link>
             <Link href="/pt/vs/fresha" style={{ display: 'block', fontSize: '14px', color: '#6b7280', textDecoration: 'none', marginBottom: '10px' }}>vs Fresha</Link>
             <Link href="/pt/vs/booksy" style={{ display: 'block', fontSize: '14px', color: '#6b7280', textDecoration: 'none', marginBottom: '10px' }}>vs Booksy</Link>
             <Link href="/pt/vs/mindbody" style={{ display: 'block', fontSize: '14px', color: '#6b7280', textDecoration: 'none', marginBottom: '10px' }}>vs Mindbody</Link>

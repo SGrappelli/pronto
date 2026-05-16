@@ -333,6 +333,7 @@ const pageContent = `
     </div>
     <div class="footer-col">
       <div class="footer-col-head">Comparar</div>
+      <a href="/es/vs/">Comparativas</a>
       <a href="/es/vs/fresha">vs Fresha</a>
       <a href="/es/vs/booksy">vs Booksy</a>
       <a href="/es/vs/mindbody">vs Mindbody</a>
