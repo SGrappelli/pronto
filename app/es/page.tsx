@@ -649,8 +649,8 @@ export default function EsPage() {
         </div>
       </section>
 
-      <footer style={{padding:'48px',borderTop:'1px solid #f0f0f0',background:'#fff'}}>
-        <div style={{display:'grid',gridTemplateColumns:'1.5fr 1fr 1fr 1fr',gap:'32px',marginBottom:'32px'}}>
+      <footer className={styles.footerGridWrap}>
+        <div className={styles.footerGrid}>
           <div>
             <Link href="/es/" style={{fontSize:'22px',fontWeight:800,color:'#111',letterSpacing:'-0.5px',textDecoration:'none'}}>Pronto<span style={{color:'#16a34a'}}>.</span></Link>
             <div style={{fontSize:'13px',color:'#6b7280',marginTop:'6px'}}>Your data, your server.</div>
@@ -676,7 +676,7 @@ export default function EsPage() {
             <Link href="/refund" style={{display:'block',fontSize:'14px',color:'#6b7280',textDecoration:'none',marginBottom:'10px'}}>Reembolsos</Link>
           </div>
         </div>
-        <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',paddingTop:'24px',borderTop:'1px solid #f0f0f0'}}>
+        <div className={styles.footerGridBottom}>
           <div style={{fontSize:'13px',color:'#9ca3af'}}>© 2026 Pronto. Todos los derechos reservados.</div>
           <div style={{display:'flex',gap:'16px',alignItems:'center'}}>
             <TrackedAnchor href="https://x.com/prontopos" target="_blank" rel="noopener noreferrer" aria-label="Pronto on X" eventName="social_click" eventParams={{ platform: 'twitter' }} style={{color:'#9ca3af',display:'flex',lineHeight:'1',textDecoration:'none'}}>

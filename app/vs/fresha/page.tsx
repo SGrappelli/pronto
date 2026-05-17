@@ -261,7 +261,7 @@ footer{padding:48px;border-top:1px solid #f0f0f0;background:#fff}
   .pain-grid{grid-template-columns:1fr}
   .wins-grid{grid-template-columns:1fr}
   .pricing-cols{grid-template-columns:1fr}
-  footer{padding:32px 16px}.footer-top{grid-template-columns:1fr}.footer-bottom{flex-direction:column;align-items:flex-start;gap:16px}
+  footer{padding:32px 16px}.footer-bottom{flex-direction:column;align-items:flex-start;gap:16px}
 }
 `
 

@@ -333,7 +333,7 @@ footer{padding:28px 48px;border-top:1px solid #f0f0f0;display:flex;justify-conte
   .faq{padding:44px 16px}
   footer{flex-direction:column;align-items:flex-start;gap:16px;padding:24px 16px}
   .footer-right{flex-direction:column;align-items:flex-start;gap:12px}
-  .footer-links{flex-wrap:wrap;gap:12px}
+  .footer-links{flex-wrap:wrap;gap:12px;justify-content:flex-start}
   .breadcrumb{padding:12px 16px}
   .feat-grid,.notif-grid{grid-template-columns:1fr}
   .pain-grid,.pain-icon-grid{grid-template-columns:1fr}

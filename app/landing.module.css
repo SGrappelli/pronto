@@ -732,7 +732,7 @@
   line-height: 1.75;
 }
 
-/* FOOTER */
+/* FOOTER — bar style (used by some internal pages) */
 .footer {
   padding: 28px 48px;
   border-top: 1px solid #f0f0f0;
@@ -742,6 +742,26 @@
   background: #fff;
   flex-wrap: wrap;
   gap: 12px;
+}
+
+/* FOOTER — 4-column grid (main / pricing / vs pages) */
+.footerGridWrap {
+  padding: 48px;
+  border-top: 1px solid #f0f0f0;
+  background: #fff;
+}
+.footerGrid {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr 1fr 1fr;
+  gap: 32px;
+  margin-bottom: 32px;
+}
+.footerGridBottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 24px;
+  border-top: 1px solid #f0f0f0;
 }
 
 .footerBrand {
@@ -849,6 +869,7 @@
   .sec    { padding: 56px 24px; }
   .faq    { padding: 56px 24px; }
   .footer { padding: 24px; }
+  .footerGridWrap { padding: 32px 24px; }
   .featGrid   { grid-template-columns: repeat(2, 1fr); }
   .painGrid   { grid-template-columns: repeat(2, 1fr); }
   .notifGrid  { grid-template-columns: repeat(2, 1fr); }
@@ -859,6 +880,10 @@
   .heroInner  { flex-direction: column; }
   .heroText   { text-align: center; }
   .heroVideoCol { max-width: 100%; }
+}
+
+@media (max-width: 900px) {
+  .footerGrid { grid-template-columns: 1fr 1fr; gap: 24px; }
 }
 
 @media (max-width: 640px) {
@@ -875,6 +900,8 @@
   .faq    { padding: 44px 16px; }
   .footer { flex-direction: column; align-items: flex-start; gap: 16px; padding: 24px 16px; }
   .footerLinks { flex-wrap: wrap; gap: 16px; }
+  .footerGridWrap { padding: 32px 16px; }
+  .footerGridBottom { flex-direction: column; align-items: flex-start; gap: 16px; }
   .featGrid, .painGrid, .notifGrid, .eventsGrid { grid-template-columns: 1fr; }
   .plans  { grid-template-columns: 1fr; }
   .shHighlights { grid-template-columns: repeat(2, 1fr); }
