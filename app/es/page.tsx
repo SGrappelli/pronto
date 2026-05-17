@@ -535,7 +535,6 @@ export default function EsPage() {
                 <div className={styles.planPrice}>
                   $19<span>/mes</span>
                 </div>
-                <div className={styles.planTrial}>14 días de prueba gratis</div>
                 <div className={styles.planLimit}>3 empleados · clientes ilimitados · reservas ilimitadas</div>
                 <ul className={styles.planFeats}>
                   <li>Todo lo incluido en Gratis</li>
@@ -581,10 +580,10 @@ export default function EsPage() {
                 </ul>
               </div>
             </div>
-            <p className="text-center text-sm text-muted-foreground mt-3">
-              <Link href="/es/precios" className="underline hover:text-foreground">Ver precios completos →</Link>
+            <p className="text-center text-base font-medium mt-3">
+              <Link href="/es/precios" className="text-blue-600 hover:text-blue-800 underline underline-offset-2">Ver precios completos →</Link>
             </p>
-            <p className="text-center text-sm text-muted-foreground mt-2">¿Vienes de otra plataforma? <Link href="/es/vs/" className="underline hover:text-foreground">Compara aquí →</Link></p>
+            <p className="text-center text-base font-medium text-gray-700 mt-2">¿Vienes de otra plataforma? <Link href="/es/vs/" className="text-blue-600 hover:text-blue-800 underline underline-offset-2">Compara aquí →</Link></p>
           </div>
         </section>
       </main>

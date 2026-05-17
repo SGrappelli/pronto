@@ -563,10 +563,10 @@ export default function RootPage() {
                 </ul>
               </div>
             </div>
-            <p className="text-center text-sm text-muted-foreground mt-3">
-              <Link href="/pricing" className="underline hover:text-foreground">See full pricing →</Link>
+            <p className="text-center text-base font-medium mt-3">
+              <Link href="/pricing" className="text-blue-600 hover:text-blue-800 underline underline-offset-2">See full pricing →</Link>
             </p>
-            <p className="text-center text-sm text-muted-foreground mt-2">Switching from another tool? <Link href="/vs/" className="underline hover:text-foreground">See how we compare →</Link></p>
+            <p className="text-center text-base font-medium text-gray-700 mt-2">Switching from another tool? <Link href="/vs/" className="text-blue-600 hover:text-blue-800 underline underline-offset-2">See how we compare →</Link></p>
           </div>
         </section>
       </main>
