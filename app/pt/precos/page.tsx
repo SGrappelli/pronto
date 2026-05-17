@@ -338,9 +338,9 @@ export default function PtPrecosPage() {
                 Fale conosco em support@trypronto.app
               </a>
             </p>
-            <p className="text-center text-sm text-muted-foreground mt-4">
+            <p className="text-center text-base font-medium text-gray-700 mt-4">
               Vindo de outra plataforma?{' '}
-              <Link href="/pt/vs/" className="underline hover:text-foreground">
+              <Link href="/pt/vs/" className="text-blue-600 hover:text-blue-800 underline underline-offset-2">
                 Compare o Pronto com a concorrência →
               </Link>
             </p>

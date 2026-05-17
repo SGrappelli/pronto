@@ -497,7 +497,7 @@ export default function PtPage() {
                 Sem servidor, sem DevOps. Pronto para usar em minutos.
               </p>
               <div className={styles.trialBanner}>
-                <div className={styles.trialText}>14 dias grátis · sem cartão de crédito</div>
+                <div className={styles.trialText}>Plano gratuito — sem cartão de crédito.</div>
               </div>
               <div className={styles.pathPoints}>
                 <div className={styles.pathPoint}>
@@ -608,14 +608,13 @@ export default function PtPage() {
                 </ul>
               </div>
             </div>
-            <p className={styles.pricingNote}>Todos os planos incluem teste grátis de 14 dias</p>
             <p className={styles.pricingNote}>
               Planos pagos cobrados via Whop · Cancele a qualquer momento
             </p>
-            <p className="text-center text-sm text-muted-foreground mt-3">
-              <Link href="/pt/precos" className="underline hover:text-foreground">Ver preços completos →</Link>
+            <p className="text-center text-base font-medium mt-3">
+              <Link href="/pt/precos" className="text-blue-600 hover:text-blue-800 underline underline-offset-2">Ver preços completos →</Link>
             </p>
-            <p className="text-center text-sm text-muted-foreground mt-2">Vindo de outra plataforma? <Link href="/pt/vs/" className="underline hover:text-foreground">Compare aqui →</Link></p>
+            <p className="text-center text-base font-medium text-gray-700 mt-2">Vindo de outra plataforma? <Link href="/pt/vs/" className="text-blue-600 hover:text-blue-800 underline underline-offset-2">Compare aqui →</Link></p>
           </div>
         </section>
       </main>
