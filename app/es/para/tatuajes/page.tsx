@@ -375,8 +375,8 @@ const pageContent = `
   <div class="nav-right">
     <a href="/es/precios" class="nav-link hide-mob" onclick="window.gtag&&window.gtag('event','pricing_click',{source:'/es/para/tatuajes'})">Precios</a>
     <select aria-label="Language" onchange="var l=this.value;var m={en:'/for/tattoo',es:'/es/para/tatuajes',pt:'/pt/para/tatuagens'};if(window.gtag)window.gtag('event','language_switch',{to:l});window.location.href=m[l]||'/';" style="font-size:0.85rem;font-family:inherit;font-weight:500;border:1px solid #d1d5db;border-radius:6px;padding:4px 6px;background:transparent;cursor:pointer;color:inherit;appearance:none;-webkit-appearance:none;min-width:52px;"><option value="en">EN</option><option value="es" selected>ES</option><option value="pt">PT</option></select>
-    <a href="/login" class="nav-link hide-tablet" onclick="window.gtag&&window.gtag('event','login_click',{label:'nav_signin'})">Iniciar sesi&oacute;n</a>
-    <a href="/register" class="btn-nav" onclick="window.gtag&&window.gtag('event','cta_click',{label:'start_free',page:'/es/para/tatuajes'})">Empezar gratis</a>
+    <a href="/login" class="nav-link hide-tablet" onclick="window.gtag&&window.gtag('event','sign_in_click',{location:'navbar',language:'es'})">Iniciar sesi&oacute;n</a>
+    <a href="/register" class="btn-nav" onclick="window.gtag&&window.gtag('event','sign_up_click',{label:'start_free',page:'/es/para/tatuajes'})">Empezar gratis</a>
   </div>
 </nav>
 
@@ -398,7 +398,7 @@ const pageContent = `
     <p class="hero-sub">Pronto reemplaza las hojas de c&aacute;lculo y las apps dispersas. Reservas de citas, gesti&oacute;n de dep&oacute;sitos, CRM de clientes, control de tinta y materiales, y recordatorios autom&aacute;ticos por WhatsApp, Telegram y Email &mdash; todo en una sola herramienta que tus clientes encuentran sin registrarse en ninguna plataforma.</p>
     <p class="hero-platforms">Las plataformas de reservas cobran una <strong>comisi&oacute;n por cada cita</strong> de clientes que ya son tuyos. Pronto cobra <strong>$0</strong>.</p>
     <div class="hero-ctas">
-      <a href="/register" class="btn-primary" onclick="window.gtag&&window.gtag('event','cta_click',{label:'start_free',page:'/es/para/tatuajes'})">Empieza gratis</a>
+      <a href="/register" class="btn-primary" onclick="window.gtag&&window.gtag('event','sign_up_click',{label:'start_free',page:'/es/para/tatuajes'})">Empieza gratis</a>
       <a href="https://github.com/SGrappelli/pronto" class="btn-outline" onclick="window.gtag&&window.gtag('event','github_click',{label:'hero_cta',page:'/es/para/tatuajes'})">Ver en GitHub &rarr;</a>
     </div>
     <div class="hero-stats">
@@ -693,7 +693,7 @@ const pageContent = `
         <div class="path-point"><div class="path-point-dot"></div><div class="path-point-text"><strong>Tu subdominio</strong> &mdash; miestudio.trypronto.app o dominio propio en Pro+</div></div>
         <div class="path-point"><div class="path-point-dot"></div><div class="path-point-text"><strong>Nos encargamos de todo</strong> &mdash; actualizaciones, backups y monitoreo de uptime</div></div>
       </div>
-      <a href="/register" class="btn-primary" onclick="window.gtag&&window.gtag('event','cta_click',{label:'start_free',page:'/es/para/tatuajes'})">Empieza gratis</a>
+      <a href="/register" class="btn-primary" onclick="window.gtag&&window.gtag('event','sign_up_click',{label:'start_free',page:'/es/para/tatuajes'})">Empieza gratis</a>
     </div>
   </div>
 
@@ -792,7 +792,7 @@ const pageContent = `
   <h2>Empieza a gestionar tu estudio de tatuajes gratis</h2>
   <p>Sin tarjeta de cr&eacute;dito. Sin comisiones. Tus datos, tu servidor.</p>
   <div>
-    <a href="/register" class="btn-cta-white" onclick="window.gtag&&window.gtag('event','cta_click',{label:'start_free',page:'/es/para/tatuajes'})">Crear cuenta gratis</a>
+    <a href="/register" class="btn-cta-white" onclick="window.gtag&&window.gtag('event','sign_up_click',{label:'start_free',page:'/es/para/tatuajes'})">Crear cuenta gratis</a>
     <a href="https://github.com/SGrappelli/pronto" class="btn-cta-outline" onclick="window.gtag&&window.gtag('event','github_click',{label:'cta_band',page:'/es/para/tatuajes'})">Ver en GitHub</a>
   </div>
 </section>

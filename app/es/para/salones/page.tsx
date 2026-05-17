@@ -367,8 +367,8 @@ const pageContent = `
   <div class="nav-right">
     <a href="/es/precios" class="nav-link hide-mob" onclick="window.gtag&&window.gtag('event','pricing_click',{source:'/es/para/salones'})">Precios</a>
     <select aria-label="Language" onchange="var l=this.value;var m={en:'/for/salons',es:'/es/para/salones',pt:'/pt/para/saloes'};if(window.gtag)window.gtag('event','language_switch',{to:l});window.location.href=m[l]||'/';" style="font-size:0.85rem;font-family:inherit;font-weight:500;border:1px solid #d1d5db;border-radius:6px;padding:4px 6px;background:transparent;cursor:pointer;color:inherit;appearance:none;-webkit-appearance:none;min-width:52px;"><option value="en">EN</option><option value="es" selected>ES</option><option value="pt">PT</option></select>
-    <a href="/login" class="nav-link hide-tablet" onclick="window.gtag&&window.gtag('event','login_click',{label:'nav_signin'})">Iniciar sesi&oacute;n</a>
-    <a href="/register" class="btn-nav" onclick="window.gtag&&window.gtag('event','cta_click',{label:'start_free',page:'/es/para/salones'})">Empezar gratis</a>
+    <a href="/login" class="nav-link hide-tablet" onclick="window.gtag&&window.gtag('event','sign_in_click',{location:'navbar',language:'es'})">Iniciar sesi&oacute;n</a>
+    <a href="/register" class="btn-nav" onclick="window.gtag&&window.gtag('event','sign_up_click',{label:'start_free',page:'/es/para/salones'})">Empezar gratis</a>
   </div>
 </nav>
 
@@ -393,7 +393,7 @@ Self-hosted o en la nube.</p>
     <p class="hero-platforms">La mayor&iacute;a de las plataformas de reservas cobran <strong>20&ndash;30%</strong>
 de cada cita de tus propios clientes. Pronto cobra <strong>$0</strong>.</p>
     <div class="hero-ctas">
-      <a href="/register" class="btn-primary" onclick="window.gtag&&window.gtag('event','cta_click',{label:'start_free',page:'/es/para/salones'})">Empezar gratis &mdash; sin tarjeta</a>
+      <a href="/register" class="btn-primary" onclick="window.gtag&&window.gtag('event','sign_up_click',{label:'start_free',page:'/es/para/salones'})">Empezar gratis &mdash; sin tarjeta</a>
       <a href="https://github.com/SGrappelli/pronto" class="btn-outline" onclick="window.gtag&&window.gtag('event','github_click',{label:'cta_button',page:'/es/para/salones'})">Self-host gratis &rarr;</a>
     </div>
     <div class="hero-stats">
@@ -714,7 +714,7 @@ Nosotros gestionamos actualizaciones, backups y uptime.</p>
         <div class="path-point"><div class="path-point-dot"></div><div class="path-point-text"><strong>Tu propio subdominio</strong> &mdash; salon-maya.trypronto.app o dominio personalizado en Pro+</div></div>
         <div class="path-point"><div class="path-point-dot"></div><div class="path-point-text"><strong>Nos encargamos de todo</strong> &mdash; actualizaciones, backups y monitoreo de uptime</div></div>
       </div>
-      <a href="/register" class="btn-primary" onclick="window.gtag&&window.gtag('event','cta_click',{label:'start_free',page:'/es/para/salones'})">Empezar gratis &mdash; sin tarjeta</a>
+      <a href="/register" class="btn-primary" onclick="window.gtag&&window.gtag('event','sign_up_click',{label:'start_free',page:'/es/para/salones'})">Empezar gratis &mdash; sin tarjeta</a>
     </div>
   </div>
 
@@ -824,7 +824,7 @@ Nosotros gestionamos actualizaciones, backups y uptime.</p>
   <p>La nube tarda 5 minutos. Self-hosted es un solo comando.
 De cualquier forma &mdash; sin comisiones, para siempre.</p>
   <div>
-    <a href="/register" class="btn-cta-white" onclick="window.gtag&&window.gtag('event','cta_click',{label:'start_free',page:'/es/para/salones'})">Empezar gratis &mdash; nube</a>
+    <a href="/register" class="btn-cta-white" onclick="window.gtag&&window.gtag('event','sign_up_click',{label:'start_free',page:'/es/para/salones'})">Empezar gratis &mdash; nube</a>
     <a href="https://github.com/SGrappelli/pronto" class="btn-cta-outline" onclick="window.gtag&&window.gtag('event','github_click',{label:'cta_button',page:'/es/para/salones'})">Self-host en GitHub</a>
   </div>
 </section>

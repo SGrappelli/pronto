@@ -154,11 +154,11 @@ export default function PtDocsPage() {
           <TrackedLink href="/pt/precos" className={`${styles.navLink} ${styles.hideMob}`} eventName="pricing_click" eventParams={{ source: '/pt/docs' }}>
             Preços
           </TrackedLink>
-          <TrackedLink href="/login" className={`${styles.navLink} ${styles.hideTablet}`} eventName="login_click" eventParams={{ label: 'nav_signin' }}>
+          <TrackedLink href="/login" className={`${styles.navLink} ${styles.hideTablet}`} eventName="sign_in_click" eventParams={{ location: 'navbar', language: 'pt' }}>
             Entrar
           </TrackedLink>
           <LangSwitcher />
-          <TrackedLink href="/register" className={styles.btnNav} eventName="cta_click" eventParams={{ label: 'start_free', page: '/pt/docs' }}>
+          <TrackedLink href="/register" className={styles.btnNav} eventName="sign_up_click" eventParams={{ label: 'start_free', page: '/pt/docs' }}>
             Começar grátis
           </TrackedLink>
         </div>

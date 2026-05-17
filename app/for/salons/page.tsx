@@ -361,9 +361,9 @@ const pageContent = `
   <a href="/" class="nav-brand">Pronto<span>.</span></a>
   <div class="nav-right">
     <a href="/pricing" class="nav-link hide-mob" onclick="window.gtag&&window.gtag('event','pricing_click',{source:'/for/salons'})">Pricing</a>
-    <a href="/login" class="nav-link" onclick="window.gtag&&window.gtag('event','login_click',{label:'nav_signin'})">Sign in</a>
+    <a href="/login" class="nav-link" onclick="window.gtag&&window.gtag('event','sign_in_click',{location:'navbar',language:'en'})">Sign in</a>
     <select aria-label="Language" onchange="var l=this.value;var m={en:'/for/salons',es:'/es/para/salones',pt:'/pt/para/saloes'};if(window.gtag)window.gtag('event','language_switch',{to:l});window.location.href=m[l]||'/';" style="font-size:0.85rem;font-family:inherit;font-weight:500;border:1px solid #d1d5db;border-radius:6px;padding:4px 6px;background:transparent;cursor:pointer;color:inherit;appearance:none;-webkit-appearance:none;min-width:52px;"><option value="en" selected>EN</option><option value="es">ES</option><option value="pt">PT</option></select>
-    <a href="/register" class="btn-nav" onclick="window.gtag&&window.gtag('event','cta_click',{label:'start_free',page:'/for/salons'})">Start free</a>
+    <a href="/register" class="btn-nav" onclick="window.gtag&&window.gtag('event','sign_up_click',{label:'start_free',page:'/for/salons'})">Start free</a>
   </div>
 </nav>
 
@@ -385,7 +385,7 @@ const pageContent = `
     <p class="hero-sub">Free POS, appointment booking, CRM and automated client reminders &mdash; for beauty salons, hair salons, nail salons and barbershops. Self-hosted or cloud.</p>
     <p class="hero-platforms">Most booking platforms take <strong>20&ndash;30%</strong> of every booking from your own clients. Pronto takes <strong>$0</strong>.</p>
     <div class="hero-ctas">
-      <a href="/register" class="btn-primary" onclick="window.gtag&&window.gtag('event','cta_click',{label:'start_free',page:'/for/salons'})">Start free &mdash; no credit card</a>
+      <a href="/register" class="btn-primary" onclick="window.gtag&&window.gtag('event','sign_up_click',{label:'start_free',page:'/for/salons'})">Start free &mdash; no credit card</a>
       <a href="https://github.com/SGrappelli/pronto" class="btn-outline" onclick="window.gtag&&window.gtag('event','github_click',{label:'cta_button',page:'/for/salons'})">Self-host for free &rarr;</a>
     </div>
     <div class="hero-stats">
@@ -683,7 +683,7 @@ const pageContent = `
         <div class="path-point"><div class="path-point-dot"></div><div class="path-point-text"><strong>Your subdomain</strong> &mdash; salon-maya.trypronto.app or custom domain on Pro+</div></div>
         <div class="path-point"><div class="path-point-dot"></div><div class="path-point-text"><strong>We handle updates</strong> &mdash; backups, uptime monitoring, new features automatically</div></div>
       </div>
-      <a href="/register" class="btn-primary" onclick="window.gtag&&window.gtag('event','cta_click',{label:'start_free',page:'/for/salons'})">Start free &mdash; no credit card</a>
+      <a href="/register" class="btn-primary" onclick="window.gtag&&window.gtag('event','sign_up_click',{label:'start_free',page:'/for/salons'})">Start free &mdash; no credit card</a>
     </div>
   </div>
 
@@ -782,7 +782,7 @@ const pageContent = `
   <h2>Start managing your salon for free</h2>
   <p>Cloud setup takes 5 minutes. Self-hosted is one command. Either way &mdash; zero commission, forever.</p>
   <div>
-    <a href="/register" class="btn-cta-white" onclick="window.gtag&&window.gtag('event','cta_click',{label:'start_free',page:'/for/salons'})">Start free &mdash; cloud</a>
+    <a href="/register" class="btn-cta-white" onclick="window.gtag&&window.gtag('event','sign_up_click',{label:'start_free',page:'/for/salons'})">Start free &mdash; cloud</a>
     <a href="https://github.com/SGrappelli/pronto" class="btn-cta-outline" onclick="window.gtag&&window.gtag('event','github_click',{label:'cta_button',page:'/for/salons'})">Self-host on GitHub</a>
   </div>
 </section>

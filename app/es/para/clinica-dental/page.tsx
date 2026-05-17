@@ -347,8 +347,8 @@ const pageContent = `
   <div class="nav-right">
     <a href="/es/precios" class="nav-link hide-mob" onclick="window.gtag&&window.gtag('event','pricing_click',{source:'/es/para/clinica-dental'})">Precios</a>
     <select aria-label="Language" onchange="var l=this.value;var m={en:'/for/dental',es:'/es/para/clinica-dental',pt:'/pt/para/clinica-dental'};if(window.gtag)window.gtag('event','language_switch',{to:l});window.location.href=m[l]||'/';" style="font-size:0.85rem;font-family:inherit;font-weight:500;border:1px solid #d1d5db;border-radius:6px;padding:4px 6px;background:transparent;cursor:pointer;color:inherit;appearance:none;-webkit-appearance:none;min-width:52px;"><option value="en">EN</option><option value="es" selected>ES</option><option value="pt">PT</option></select>
-    <a href="/login" class="nav-link hide-tablet" onclick="window.gtag&&window.gtag('event','login_click',{label:'nav_signin'})">Iniciar sesi&oacute;n</a>
-    <a href="https://app.trypronto.app/register" class="btn-nav" onclick="window.gtag&&window.gtag('event','cta_click',{label:'start_free',page:'/es/para/clinica-dental'})">Empezar gratis</a>
+    <a href="/login" class="nav-link hide-tablet" onclick="window.gtag&&window.gtag('event','sign_in_click',{location:'navbar',language:'es'})">Iniciar sesi&oacute;n</a>
+    <a href="/register" class="btn-nav" onclick="window.gtag&&window.gtag('event','sign_up_click',{label:'start_free',page:'/es/para/clinica-dental'})">Empezar gratis</a>
   </div>
 </nav>
 
@@ -369,7 +369,7 @@ const pageContent = `
     <h1>Software de gesti&oacute;n para cl&iacute;nicas dentales</h1>
     <p class="hero-sub">Reservas online, historial de pacientes, recordatorios autom&aacute;ticos y caja registradora &mdash; todo en una sola herramienta. Sin comisiones. Sin registros para tus pacientes.</p>
     <div class="hero-ctas">
-      <a href="https://app.trypronto.app/register" class="btn-primary" onclick="window.gtag&&window.gtag('event','cta_click',{label:'start_free',page:'/es/para/clinica-dental'})">Empezar gratis</a>
+      <a href="/register" class="btn-primary" onclick="window.gtag&&window.gtag('event','sign_up_click',{label:'start_free',page:'/es/para/clinica-dental'})">Empezar gratis</a>
       <a href="https://github.com/SGrappelli/pronto" class="btn-outline" onclick="window.gtag&&window.gtag('event','github_click',{label:'cta_button',page:'/es/para/clinica-dental'})">Ver en GitHub &rarr;</a>
     </div>
     <div class="hero-stats">
@@ -515,7 +515,7 @@ const pageContent = `
         <div class="path-point"><div class="path-point-dot"></div><div class="path-point-text">Plan gratuito disponible &mdash; sin tarjeta de cr&eacute;dito</div></div>
         <div class="path-point"><div class="path-point-dot"></div><div class="path-point-text">Escala con tu cl&iacute;nica: Free &rarr; Starter &rarr; Pro</div></div>
       </div>
-      <a href="https://app.trypronto.app/register" class="btn-primary" onclick="window.gtag&&window.gtag('event','cta_click',{label:'start_free',page:'/es/para/clinica-dental'})">Empezar gratis &rarr;</a>
+      <a href="/register" class="btn-primary" onclick="window.gtag&&window.gtag('event','sign_up_click',{label:'start_free',page:'/es/para/clinica-dental'})">Empezar gratis &rarr;</a>
     </div>
   </div>
 </section>
@@ -625,7 +625,7 @@ const pageContent = `
   <h2>Empieza hoy &mdash; es gratis</h2>
   <p>Sin tarjeta de cr&eacute;dito. Sin instalaci&oacute;n. Tu cl&iacute;nica online en minutos.</p>
   <div>
-    <a href="https://app.trypronto.app/register" class="btn-cta-white" onclick="window.gtag&&window.gtag('event','cta_click',{label:'start_free',page:'/es/para/clinica-dental'})">Crear cuenta gratis</a>
+    <a href="/register" class="btn-cta-white" onclick="window.gtag&&window.gtag('event','sign_up_click',{label:'start_free',page:'/es/para/clinica-dental'})">Crear cuenta gratis</a>
     <a href="https://github.com/SGrappelli/pronto" class="btn-cta-outline" onclick="window.gtag&&window.gtag('event','github_click',{label:'cta_button',page:'/es/para/clinica-dental'})">Ver en GitHub</a>
   </div>
 </section>

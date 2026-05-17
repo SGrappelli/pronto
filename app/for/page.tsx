@@ -172,9 +172,9 @@ const pageContent = `
   <a href="/" class="nav-brand">Pronto<span>.</span></a>
   <div class="nav-right">
     <a href="/pricing" class="nav-link hide-mob" onclick="window.gtag&&window.gtag('event','pricing_click',{source:'/for'})">Pricing</a>
-    <a href="/login" class="nav-link" onclick="window.gtag&&window.gtag('event','login_click',{label:'nav_signin'})">Sign in</a>
+    <a href="/login" class="nav-link" onclick="window.gtag&&window.gtag('event','sign_in_click',{location:'navbar',language:'en'})">Sign in</a>
     <select aria-label="Language" onchange="var l=this.value;var m={en:'/for',es:'/es/para',pt:'/pt/para'};if(window.gtag)window.gtag('event','language_switch',{to:l});window.location.href=m[l]||'/';" style="font-size:0.85rem;font-family:inherit;font-weight:500;border:1px solid #d1d5db;border-radius:6px;padding:4px 6px;background:transparent;cursor:pointer;color:inherit;appearance:none;-webkit-appearance:none;min-width:52px;"><option value="en" selected>EN</option><option value="es">ES</option><option value="pt">PT</option></select>
-    <a href="/register" class="btn-nav" onclick="window.gtag&&window.gtag('event','cta_click',{label:'start_free',page:'/for'})">Start free</a>
+    <a href="/register" class="btn-nav" onclick="window.gtag&&window.gtag('event','sign_up_click',{label:'start_free',page:'/for'})">Start free</a>
   </div>
 </nav>
 
@@ -309,7 +309,7 @@ const pageContent = `
 <section class="cta">
   <h2>Not sure which fits?</h2>
   <p>Start with the cloud free tier &mdash; it works for every service business, no setup needed.</p>
-  <a href="/register" class="btn-primary" onclick="window.gtag&&window.gtag('event','cta_click',{label:'start_free',page:'/for'})">Start free &mdash; no credit card</a>
+  <a href="/register" class="btn-primary" onclick="window.gtag&&window.gtag('event','sign_up_click',{label:'start_free',page:'/for'})">Start free &mdash; no credit card</a>
   <a href="https://github.com/SGrappelli/pronto" class="btn-outline" onclick="window.gtag&&window.gtag('event','github_click',{label:'cta_button',page:'/for'})">Self-host on GitHub &rarr;</a>
 </section>
 <p style="text-align:center;font-size:13px;color:#9ca3af;padding:0 48px 32px;">Looking for a comparison? <a href="/vs/" style="color:#6b7280;text-decoration:underline;">See Pronto vs competitors &rarr;</a></p>
