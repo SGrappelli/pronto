@@ -63,6 +63,21 @@ const LANGUAGE_ALTERNATES: Record<string, Record<string, string>> = {
     es: 'https://trypronto.app/es/vs/fresha',
     'pt-BR': 'https://trypronto.app/pt/vs/fresha',
   },
+  '/vs/booksy': {
+    en: 'https://trypronto.app/vs/booksy',
+    es: 'https://trypronto.app/es/vs/booksy',
+    'pt-BR': 'https://trypronto.app/pt/vs/booksy',
+  },
+  '/es/vs/booksy': {
+    en: 'https://trypronto.app/vs/booksy',
+    es: 'https://trypronto.app/es/vs/booksy',
+    'pt-BR': 'https://trypronto.app/pt/vs/booksy',
+  },
+  '/pt/vs/booksy': {
+    en: 'https://trypronto.app/vs/booksy',
+    es: 'https://trypronto.app/es/vs/booksy',
+    'pt-BR': 'https://trypronto.app/pt/vs/booksy',
+  },
   '/for': {
     en: 'https://trypronto.app/for/',
     es: 'https://trypronto.app/es/para/',
@@ -227,6 +242,9 @@ const ROUTE_PRIORITIES: Record<string, number> = {
   '/vs/fresha': 0.8,
   '/es/vs/fresha': 0.8,
   '/pt/vs/fresha': 0.8,
+  '/vs/booksy': 0.8,
+  '/es/vs/booksy': 0.8,
+  '/pt/vs/booksy': 0.8,
   '/pricing': 0.8,
   '/es/precios': 0.8,
   '/pt/precos': 0.9,
