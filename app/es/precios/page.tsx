@@ -407,8 +407,8 @@ export default function EsPreciosPage() {
         </div>
       </main>
 
-      <footer style={{ padding: '48px', borderTop: '1px solid #f0f0f0', background: '#fff' }}>
-        <div style={{ display: 'grid', gridTemplateColumns: '1.5fr 1fr 1fr 1fr', gap: '32px', marginBottom: '32px' }}>
+      <footer className={styles.footerGridWrap}>
+        <div className={styles.footerGrid}>
           <div>
             <div style={{ fontSize: '22px', fontWeight: 800, color: '#111', letterSpacing: '-0.5px' }}>
               Pronto<span style={{ color: '#16a34a' }}>.</span>
@@ -435,7 +435,7 @@ export default function EsPreciosPage() {
             <Link href="/refund" style={{ display: 'block', fontSize: '14px', color: '#6b7280', textDecoration: 'none', marginBottom: '10px' }}>Política de Reembolso</Link>
           </div>
         </div>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingTop: '24px', borderTop: '1px solid #f0f0f0' }}>
+        <div className={styles.footerGridBottom}>
           <div style={{ fontSize: '13px', color: '#9ca3af' }}>© 2026 Pronto. Todos los derechos reservados.</div>
           <div style={{ display: 'flex', gap: '16px', alignItems: 'center' }}>
             <TrackedAnchor href="https://x.com/prontopos" target="_blank" rel="noopener noreferrer" aria-label="Pronto on X" eventName="social_click" eventParams={{ platform: 'twitter' }} style={{ color: '#9ca3af', display: 'flex', lineHeight: '1', textDecoration: 'none' }}>

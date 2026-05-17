@@ -237,7 +237,7 @@ footer{padding:48px;border-top:1px solid #f0f0f0;background:#fff}
   .breadcrumb{padding:12px 16px}
   .biz-grid{grid-template-columns:1fr 1fr}
   .shared-grid{grid-template-columns:1fr 1fr}
-  footer{padding:32px 16px}.footer-top{grid-template-columns:1fr}.footer-bottom{flex-direction:column;align-items:flex-start;gap:16px}
+  footer{padding:32px 16px}.footer-bottom{flex-direction:column;align-items:flex-start;gap:16px}
 }
 @media(max-width:400px){
   .biz-grid{grid-template-columns:1fr}

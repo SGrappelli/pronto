@@ -87,9 +87,34 @@
 .footerSocial a { color: #9ca3af; display: flex; line-height: 1; }
 .footerSocial a:hover { color: #111; }
 
+/* FOOTER — 4-column grid (es/precios, pt/precos pages) */
+.footerGridWrap {
+  padding: 48px;
+  border-top: 1px solid #f0f0f0;
+  background: #fff;
+}
+.footerGrid {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr 1fr 1fr;
+  gap: 32px;
+  margin-bottom: 32px;
+}
+.footerGridBottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 24px;
+  border-top: 1px solid #f0f0f0;
+}
+
 @media (max-width: 1024px) {
   .nav    { padding: 0 24px; }
   .footer { padding: 24px; }
+  .footerGridWrap { padding: 32px 24px; }
+}
+
+@media (max-width: 900px) {
+  .footerGrid { grid-template-columns: 1fr 1fr; gap: 24px; }
 }
 
 @media (max-width: 640px) {
@@ -100,4 +125,6 @@
   .hideMob     { display: none; }
   .footer      { flex-direction: column; align-items: flex-start; gap: 16px; padding: 24px 16px; }
   .footerLinks { flex-wrap: wrap; gap: 16px; }
+  .footerGridWrap { padding: 32px 16px; }
+  .footerGridBottom { flex-direction: column; align-items: flex-start; gap: 16px; }
 }
