@@ -375,8 +375,8 @@ const pageContent = `
   <div class="nav-right">
     <a href="/es/precios" class="nav-link hide-mob" onclick="window.gtag&&window.gtag('event','pricing_click',{source:'/es/para/gimnasio'})">Precios</a>
     <select aria-label="Language" onchange="var l=this.value;var m={en:'/for/fitness',es:'/es/para/gimnasio',pt:'/pt/para/academia'};if(window.gtag)window.gtag('event','language_switch',{to:l});window.location.href=m[l]||'/';" style="font-size:0.85rem;font-family:inherit;font-weight:500;border:1px solid #d1d5db;border-radius:6px;padding:4px 6px;background:transparent;cursor:pointer;color:inherit;appearance:none;-webkit-appearance:none;min-width:52px;"><option value="en">EN</option><option value="es" selected>ES</option><option value="pt">PT</option></select>
-    <a href="/login" class="nav-link hide-tablet" onclick="window.gtag&&window.gtag('event','login_click',{label:'nav_signin'})">Iniciar sesi&oacute;n</a>
-    <a href="/register" class="btn-nav" onclick="window.gtag&&window.gtag('event','cta_click',{label:'start_free',page:'/es/para/gimnasio'})">Empezar gratis</a>
+    <a href="/login" class="nav-link hide-tablet" onclick="window.gtag&&window.gtag('event','sign_in_click',{location:'navbar',language:'es'})">Iniciar sesi&oacute;n</a>
+    <a href="/register" class="btn-nav" onclick="window.gtag&&window.gtag('event','sign_up_click',{label:'start_free',page:'/es/para/gimnasio'})">Empezar gratis</a>
   </div>
 </nav>
 

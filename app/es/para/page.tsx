@@ -175,9 +175,9 @@ const pageContent = `
   <a href="/es/" class="nav-brand">Pronto<span>.</span></a>
   <div class="nav-right">
     <a href="/es/precios" class="nav-link hide-mob" onclick="window.gtag&&window.gtag('event','pricing_click',{source:'/es/para'})">Precios</a>
-    <a href="/login" class="nav-link hide-tablet" onclick="window.gtag&&window.gtag('event','login_click',{label:'nav_signin'})">Iniciar sesi&oacute;n</a>
+    <a href="/login" class="nav-link hide-tablet" onclick="window.gtag&&window.gtag('event','sign_in_click',{location:'navbar',language:'es'})">Iniciar sesi&oacute;n</a>
     <select aria-label="Language" onchange="var l=this.value;var m={en:'/for',es:'/es/para',pt:'/pt/para'};if(window.gtag)window.gtag('event','language_switch',{to:l});window.location.href=m[l]||'/';" style="font-size:0.85rem;font-family:inherit;font-weight:500;border:1px solid #d1d5db;border-radius:6px;padding:4px 6px;background:transparent;cursor:pointer;color:inherit;appearance:none;-webkit-appearance:none;min-width:52px;"><option value="en">EN</option><option value="es" selected>ES</option><option value="pt">PT</option></select>
-    <a href="/register" class="btn-nav" onclick="window.gtag&&window.gtag('event','cta_click',{label:'start_free',page:'/es/para'})">Empezar gratis</a>
+    <a href="/register" class="btn-nav" onclick="window.gtag&&window.gtag('event','sign_up_click',{label:'start_free',page:'/es/para'})">Empezar gratis</a>
   </div>
 </nav>
 
@@ -313,7 +313,7 @@ const pageContent = `
 <section class="cta">
   <h2>&iquest;No sabes cu&aacute;l es el tuyo?</h2>
   <p>Empieza con el plan gratuito en la nube &mdash; funciona para cualquier negocio de servicios, sin configuraci&oacute;n.</p>
-  <a href="/register" class="btn-primary" onclick="window.gtag&&window.gtag('event','cta_click',{label:'start_free',page:'/es/para'})">Empezar gratis &mdash; sin tarjeta</a>
+  <a href="/register" class="btn-primary" onclick="window.gtag&&window.gtag('event','sign_up_click',{label:'start_free',page:'/es/para'})">Empezar gratis &mdash; sin tarjeta</a>
   <a href="https://github.com/SGrappelli/pronto" class="btn-outline" onclick="window.gtag&&window.gtag('event','github_click',{label:'cta_button',page:'/es/para'})">Self-host en GitHub &rarr;</a>
 </section>
 <p style="text-align:center;font-size:13px;color:#9ca3af;padding:0 48px 32px;">&iquest;Buscas una comparativa? <a href="/es/vs/" style="color:#6b7280;text-decoration:underline;">Pronto vs competidores &rarr;</a></p>

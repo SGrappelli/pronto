@@ -366,7 +366,7 @@ const pageContent = `
     <p class="hero-sub">Agendamento online, prontu&aacute;rio de pacientes, controle de materiais e lembretes autom&aacute;ticos por WhatsApp para reduzir faltas &mdash; sem comiss&atilde;o, sem mensalidade obrigat&oacute;ria.</p>
     <div class="hero-ctas">
       <a href="/register" class="btn-primary" onclick="window.gtag&&window.gtag('event','sign_up_click',{location:'hero',language:'pt'})">Come&ccedil;ar gr&aacute;tis &rarr;</a>
-      <a href="https://github.com/SGrappelli/pronto" class="btn-outline" target="_blank" rel="noopener noreferrer">Ver no GitHub</a>
+      <a href="https://github.com/SGrappelli/pronto" class="btn-outline" target="_blank" rel="noopener noreferrer" onclick="window.gtag&&window.gtag('event','github_click',{label:'cta_button',page:'/pt/para/clinica-dental'})">Ver no GitHub</a>
     </div>
     <div class="hero-pills">
       <span class="hero-pill">&#x2713; Reduz faltas</span>
@@ -686,7 +686,7 @@ const pageContent = `
   <p>Instale em 1 comando ou comece gr&aacute;tis no SaaS &mdash; sem cart&atilde;o de cr&eacute;dito.</p>
   <div>
     <a href="/register" class="btn-cta-white" onclick="window.gtag&&window.gtag('event','sign_up_click',{location:'footer',language:'pt'})">Come&ccedil;ar gr&aacute;tis &rarr;</a>
-    <a href="https://github.com/SGrappelli/pronto" class="btn-cta-outline" target="_blank" rel="noopener noreferrer">Ver no GitHub</a>
+    <a href="https://github.com/SGrappelli/pronto" class="btn-cta-outline" target="_blank" rel="noopener noreferrer" onclick="window.gtag&&window.gtag('event','github_click',{label:'cta_button',page:'/pt/para/clinica-dental'})">Ver no GitHub</a>
   </div>
 </section>
 

@@ -154,11 +154,11 @@ export default function EsDocsPage() {
           <TrackedLink href="/es/precios" className={`${styles.navLink} ${styles.hideMob}`} eventName="pricing_click" eventParams={{ source: '/es/docs' }}>
             Precios
           </TrackedLink>
-          <TrackedLink href="/login" className={`${styles.navLink} ${styles.hideTablet}`} eventName="login_click" eventParams={{ label: 'nav_signin' }}>
+          <TrackedLink href="/login" className={`${styles.navLink} ${styles.hideTablet}`} eventName="sign_in_click" eventParams={{ location: 'navbar', language: 'es' }}>
             Iniciar sesión
           </TrackedLink>
           <LangSwitcher />
-          <TrackedLink href="/register" className={styles.btnNav} eventName="cta_click" eventParams={{ label: 'start_free', page: '/es/docs' }}>
+          <TrackedLink href="/register" className={styles.btnNav} eventName="sign_up_click" eventParams={{ label: 'start_free', page: '/es/docs' }}>
             Empezar gratis
           </TrackedLink>
         </div>
