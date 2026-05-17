@@ -95,12 +95,17 @@ const LANGUAGE_ALTERNATES: Record<string, Record<string, string>> = {
   },
   '/for/auto-repair': {
     en: 'https://trypronto.app/for/auto-repair',
-    es: 'https://trypronto.app/es/para/auto-repair',
+    es: 'https://trypronto.app/es/para/autoservicio',
+    'pt-BR': 'https://trypronto.app/pt/para/auto-repair',
+  },
+  '/es/para/autoservicio': {
+    en: 'https://trypronto.app/for/auto-repair',
+    es: 'https://trypronto.app/es/para/autoservicio',
     'pt-BR': 'https://trypronto.app/pt/para/auto-repair',
   },
   '/pt/para/auto-repair': {
     en: 'https://trypronto.app/for/auto-repair',
-    es: 'https://trypronto.app/es/para/auto-repair',
+    es: 'https://trypronto.app/es/para/autoservicio',
     'pt-BR': 'https://trypronto.app/pt/para/auto-repair',
   },
   '/for/dental': {
