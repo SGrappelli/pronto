@@ -8,6 +8,8 @@ export const metadata: Metadata = {
     canonical: 'https://trypronto.app/vs/fresha',
     languages: {
       en: 'https://trypronto.app/vs/fresha',
+      es: 'https://trypronto.app/es/vs/fresha',
+      'pt-BR': 'https://trypronto.app/pt/vs/fresha',
       'x-default': 'https://trypronto.app/vs/fresha',
     },
   },
