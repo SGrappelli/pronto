@@ -274,16 +274,15 @@ nav{position:sticky;top:0;z-index:100;background:rgba(255,255,255,0.96);backdrop
 .faq-a{font-size:14px;color:#374151;line-height:1.75}
 .faq-a code{background:#f3f4f6;padding:2px 6px;border-radius:4px;font-size:13px}
 
-footer{padding:28px 48px;border-top:1px solid #f0f0f0;display:flex;justify-content:space-between;align-items:center;background:#fff}
-.footer-brand{font-size:22px;font-weight:800;color:#111;letter-spacing:-0.5px}
-.footer-brand span{color:#16a34a}
-.footer-copy{font-size:13px;color:#9ca3af;margin-top:2px}
-.footer-right{display:flex;align-items:center;gap:20px}
-.footer-links{display:flex;gap:16px;flex-wrap:wrap;justify-content:flex-end}
-.footer-links a{font-size:13px;color:#9ca3af;text-decoration:none}
-.footer-links a:hover{color:#111}
-.footer-social{display:flex;gap:10px;align-items:center;flex-shrink:0}
-.footer-social a{color:#9ca3af;display:flex;align-items:center;line-height:1}
+footer{border-top:1px solid #f0f0f0;background:#fff;padding:48px 48px 32px}
+.footer-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:40px;max-width:960px;margin:0 auto 32px}
+.footer-col-head{font-size:11px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:#9ca3af;margin-bottom:14px}
+.footer-col a{display:block;font-size:14px;color:#6b7280;text-decoration:none;padding:6px 0;min-height:44px;display:flex;align-items:center}
+.footer-col a:hover{color:#16a34a}
+.footer-bottom{display:flex;justify-content:space-between;align-items:center;padding-top:24px;border-top:1px solid #f0f0f0;max-width:960px;margin:0 auto}
+.footer-copy{font-size:13px;color:#9ca3af}
+.footer-social{display:flex;gap:4px;align-items:center}
+.footer-social a{color:#9ca3af;display:flex;line-height:1;text-decoration:none;padding:10px;min-width:44px;min-height:44px;align-items:center;justify-content:center}
 .footer-social a:hover{color:#111}
 
 .breadcrumb{padding:14px 48px;background:#fafafa;border-bottom:1px solid #f0f0f0;font-size:13px;color:#9ca3af}
@@ -303,7 +302,7 @@ footer{padding:28px 48px;border-top:1px solid #f0f0f0;display:flex;justify-conte
   .hero h1{font-size:42px}
   .sec{padding:56px 24px}
   .faq{padding:56px 24px}
-  footer{padding:24px}
+  footer{padding:48px 24px 32px}
   .breadcrumb{padding:14px 24px}
   .feat-grid,.notif-grid{grid-template-columns:repeat(2,1fr)}
   .pain-grid,.pain-icon-grid{grid-template-columns:repeat(2,1fr)}
@@ -323,9 +322,9 @@ footer{padding:28px 48px;border-top:1px solid #f0f0f0;display:flex;justify-conte
   .sec-head h2{font-size:28px}
   .sec-head p{font-size:15px}
   .faq{padding:44px 16px}
-  footer{flex-direction:column;align-items:flex-start;gap:16px;padding:24px 16px}
-  .footer-right{flex-direction:column;align-items:flex-start;gap:12px}
-  .footer-links{flex-wrap:wrap;gap:12px;justify-content:flex-start}
+  footer{padding:40px 16px 28px}
+  .footer-grid{grid-template-columns:1fr;gap:28px}
+  .footer-bottom{flex-direction:column;align-items:center;gap:16px;text-align:center}
   .breadcrumb{padding:12px 16px}
   .feat-grid,.notif-grid{grid-template-columns:1fr}
   .pain-grid,.pain-icon-grid{grid-template-columns:1fr}
@@ -693,22 +692,35 @@ const pageContent = `
 </main>
 
 <footer>
-  <div>
-    <div class="footer-brand">Pronto<span>.</span></div>
-    <div class="footer-copy">&copy; 2026 Pronto. Todos os direitos reservados.</div>
-  </div>
-  <div class="footer-right">
-    <div class="footer-links">
-      <a href="/pt/para/">Para neg&oacute;cios</a>
-      <a href="/pt/para/saloes">Sal&otilde;es de Beleza</a>
+  <div class="footer-grid">
+    <div class="footer-col">
+      <div class="footer-col-head">Para neg&oacute;cios</div>
+      <a href="/pt/para">Todos os neg&oacute;cios</a>
+      <a href="/pt/para/saloes">Sal&otilde;es</a>
       <a href="/pt/para/barbearia">Barbearias</a>
+      <a href="/pt/para/tatuagens">Est&uacute;dios de tatuagem</a>
       <a href="/pt/para/academia">Academias</a>
-      <a href="/pt/">&Iacute;nicio</a>
-      <a href="/pt/precos">Pre&ccedil;os</a>
+      <a href="/pt/para/spa">Spa e massagem</a>
+      <a href="/pt/para/cafeteria">Cafeterias</a>
+      <a href="/pt/para/auto-repair">Auto Repair</a>
+    </div>
+    <div class="footer-col">
+      <div class="footer-col-head">Comparar</div>
+      <a href="/pt/vs/fresha">vs Fresha</a>
+      <a href="/pt/vs/booksy">vs Booksy</a>
+      <a href="/pt/vs/mindbody">vs Mindbody</a>
+      <a href="/pt/vs/square">vs Square</a>
+      <a href="/pt/vs/trinks">vs Trinks</a>
+    </div>
+    <div class="footer-col">
+      <div class="footer-col-head">Legal</div>
       <a href="/terms">Termos de Uso</a>
       <a href="/privacy">Pol&iacute;tica de Privacidade</a>
       <a href="/refund">Pol&iacute;tica de Reembolso</a>
     </div>
+  </div>
+  <div class="footer-bottom">
+    <div class="footer-copy">&copy; 2026 Pronto. Todos os direitos reservados.</div>
     <div class="footer-social">
       <a href="https://x.com/prontopos" target="_blank" rel="noopener noreferrer" aria-label="Pronto on X" onclick="window.gtag&&window.gtag('event','social_click',{platform:'twitter',page:'/pt/para/clinica-dental'})"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.76l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a>
       <a href="https://www.linkedin.com/in/konstantinumnov/" target="_blank" rel="noopener noreferrer" aria-label="Pronto on LinkedIn" onclick="window.gtag&&window.gtag('event','social_click',{platform:'linkedin',page:'/pt/para/clinica-dental'})"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg></a>
