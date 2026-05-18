@@ -94,6 +94,7 @@ nav{position:sticky;top:0;z-index:100;background:rgba(255,255,255,0.96);backdrop
 .nav-link:hover{color:#111}
 .btn-nav{background:#111;color:#fff;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:500;padding:10px 22px;border-radius:8px;border:none;cursor:pointer;text-decoration:none;white-space:nowrap}
 .hide-mob{display:inline}
+.hide-tablet{display:inline}
 
 .breadcrumb{padding:12px 48px;background:#fafafa;border-bottom:1px solid #f0f0f0;font-size:13px;color:#9ca3af}
 .breadcrumb a{color:#9ca3af;text-decoration:none}
@@ -165,7 +166,7 @@ footer{padding:48px;border-top:1px solid #f0f0f0;background:#fff}
   .switch-grid{grid-template-columns:repeat(2,1fr)}
   .hero h1{font-size:40px}
 }
-@media(max-width:900px){footer{padding:32px 24px}.footer-top{grid-template-columns:1fr 1fr;gap:24px}}
+@media(max-width:900px){footer{padding:32px 24px}.footer-top{grid-template-columns:1fr 1fr;gap:24px}.hide-tablet{display:none}}
 @media(max-width:640px){
   nav{padding:0 16px;height:56px}
   .nav-right{gap:8px}
@@ -191,7 +192,7 @@ const pageContent = `
   <a href="/pt/" class="nav-brand">Pronto<span>.</span></a>
   <div class="nav-right">
     <a href="/pt/precos" class="nav-link hide-mob" onclick="window.gtag&&window.gtag('event','pricing_click',{source:'/pt/vs'})">Pre&ccedil;os</a>
-    <a href="/login" class="nav-link" onclick="window.gtag&&window.gtag('event','sign_in_click',{location:'navbar',language:'pt'})">Entrar</a>
+    <a href="/login" class="nav-link hide-tablet" onclick="window.gtag&&window.gtag('event','sign_in_click',{location:'navbar',language:'pt'})">Entrar</a>
     <select aria-label="Language" style="font-size:0.85rem;font-family:inherit;font-weight:500;border:1px solid #d1d5db;border-radius:6px;padding:4px 6px;background:transparent;cursor:pointer;color:inherit;appearance:none;-webkit-appearance:none;min-width:52px;" onchange="var m={en:'/vs/',es:'/es/vs/'};if(m[this.value])location.href=m[this.value]"><option value="en">EN</option><option value="es">ES</option><option value="pt" selected>PT</option></select>
     <a href="/register" class="btn-nav" onclick="window.gtag&&window.gtag('event','sign_up_click',{location:'navbar',language:'pt'})">Come&ccedil;ar gr&aacute;tis</a>
   </div>
@@ -222,21 +223,21 @@ const pageContent = `
     <div class="grid-label">Escolha um concorrente</div>
     <div class="biz-grid">
 
-      <a href="/vs/fresha" class="biz-card">
+      <a href="/pt/vs/fresha" class="biz-card">
         <span class="biz-card-arrow">&rarr;</span>
         <div class="biz-card-title">Pronto vs Fresha</div>
         <div class="biz-card-desc">O Fresha eliminou seu plano gratuito em 2025 e cobra 20% de comiss&atilde;o por cada novo cliente do marketplace. O Pronto come&ccedil;a em $0 e cobra zero comiss&atilde;o.</div>
         <span class="biz-card-link">Ver comparativo completo &rarr;</span>
       </a>
 
-      <a href="/vs/booksy" class="biz-card">
+      <a href="/pt/vs/booksy" class="biz-card">
         <span class="biz-card-arrow">&rarr;</span>
         <div class="biz-card-title">Pronto vs Booksy</div>
         <div class="biz-card-desc">O Booksy cobra $29.99/m&ecirc;s mais $10 por cada funcion&aacute;rio adicional. O Pronto tem plano gratuito e n&atilde;o cobra comiss&atilde;o por agendamentos.</div>
         <span class="biz-card-link">Ver comparativo completo &rarr;</span>
       </a>
 
-      <a href="/vs/mindbody" class="biz-card">
+      <a href="/pt/vs/mindbody" class="biz-card">
         <span class="biz-card-arrow">&rarr;</span>
         <div class="biz-card-title">Pronto vs Mindbody</div>
         <div class="biz-card-desc">O Mindbody come&ccedil;a em $129/m&ecirc;s com pre&ccedil;os complexos por n&iacute;veis. O Pronto come&ccedil;a em $0 com as mesmas fun&ccedil;&otilde;es essenciais que o seu neg&oacute;cio realmente precisa.</div>
