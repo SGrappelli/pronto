@@ -244,7 +244,7 @@ const pageContent = `
         <span class="biz-card-link">Ver comparativo completo &rarr;</span>
       </a>
 
-      <a href="/vs/vagaro" class="biz-card">
+      <a href="/pt/vs/vagaro" class="biz-card">
         <span class="biz-card-arrow">&rarr;</span>
         <div class="biz-card-title">Pronto vs Vagaro</div>
         <div class="biz-card-desc">O Vagaro cobra por localiza&ccedil;&atilde;o e por funcionalidade. O Pronto tem um pre&ccedil;o simples &mdash; ou nada, se voc&ecirc; hospedar por conta pr&oacute;pria.</div>
