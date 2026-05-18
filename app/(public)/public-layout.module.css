@@ -115,6 +115,7 @@
 
 @media (max-width: 900px) {
   .footerGrid { grid-template-columns: 1fr 1fr; gap: 24px; }
+  .hideTablet { display: none; }
 }
 
 @media (max-width: 640px) {
@@ -123,6 +124,7 @@
   .navLink     { font-size: 14px; }
   .btnNav      { font-size: 13px; padding: 8px 14px; white-space: nowrap; }
   .hideMob     { display: none; }
+  .hideTablet  { display: none; }
   .footer      { flex-direction: column; align-items: flex-start; gap: 16px; padding: 24px 16px; }
   .footerLinks { flex-wrap: wrap; gap: 16px; }
   .footerGridWrap { padding: 32px 16px; }
