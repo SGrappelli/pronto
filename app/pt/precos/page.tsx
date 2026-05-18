@@ -460,7 +460,6 @@ export default function PtPrecosPage() {
             <Link href="/pt/vs/vagaro" style={{ display: 'block', fontSize: '14px', color: '#6b7280', textDecoration: 'none', marginBottom: '10px' }}>vs Vagaro</Link>
             <Link href="/pt/vs/square" style={{ display: 'block', fontSize: '14px', color: '#6b7280', textDecoration: 'none', marginBottom: '10px' }}>vs Square</Link>
             <Link href="/pt/vs/trinks" style={{ display: 'block', fontSize: '14px', color: '#6b7280', textDecoration: 'none', marginBottom: '10px' }}>vs Trinks</Link>
-            <Link href="/pt/vs/isalon" style={{ display: 'block', fontSize: '14px', color: '#6b7280', textDecoration: 'none', marginBottom: '10px' }}>vs iSalon</Link>
           </div>
           <div>
             <div style={{ fontSize: '11px', fontWeight: 700, letterSpacing: '1.2px', textTransform: 'uppercase' as const, color: '#9ca3af', marginBottom: '14px' }}>Legal</div>
