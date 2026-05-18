@@ -249,7 +249,7 @@ const pageContent = `
         <span class="biz-card-link">Ver comparativa completa &rarr;</span>
       </a>
 
-      <a href="/vs/square" class="biz-card">
+      <a href="/es/vs/square" class="biz-card">
         <span class="biz-card-arrow">&rarr;</span>
         <div class="biz-card-title">Pronto vs Square Appointments</div>
         <div class="biz-card-desc">Square Appointments te ata al ecosistema Square. Pronto es independiente, open-source y funciona con cualquier m&eacute;todo de pago.</div>
