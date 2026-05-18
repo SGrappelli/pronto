@@ -63,7 +63,6 @@ const softwareAppSchema = {
     'sistema de fila de espera para barbearia',
     'alternativa ao Trinks barbearia',
     'alternativa ao Booksy barbearia',
-    'alternativa ao iSalon barbearia',
     'alternativa ao Barberix',
     'sistema de gestão para barbearia open source',
     'CRM para barbearia gratuito',

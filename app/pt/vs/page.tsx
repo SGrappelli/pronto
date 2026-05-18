@@ -3,7 +3,7 @@ import type { Metadata } from 'next'
 export const metadata: Metadata = {
   title: 'Pronto vs Concorrentes — Alternativa Gratuita',
   description:
-    'Compare Pronto com Fresha, Booksy, Mindbody, Trinks e iSalon. Sem comissão, open-source e self-hosted. Veja qual é o melhor para o seu negócio.',
+    'Compare Pronto com Fresha, Booksy, Mindbody e Trinks. Sem comissão, open-source e self-hosted. Veja qual é o melhor para o seu negócio.',
   alternates: {
     canonical: 'https://trypronto.app/pt/vs/',
     languages: {
@@ -18,7 +18,7 @@ export const metadata: Metadata = {
     url: 'https://trypronto.app/pt/vs/',
     title: 'Pronto vs Concorrentes — Alternativa Gratuita',
     description:
-      'Compare Pronto com Fresha, Booksy, Mindbody, Trinks e iSalon. Sem comissão, open-source, self-hosted.',
+      'Compare Pronto com Fresha, Booksy, Mindbody e Trinks. Sem comissão, open-source, self-hosted.',
     images: [{ url: 'https://trypronto.app/og-image.png' }],
     locale: 'pt_BR',
     siteName: 'Pronto',
@@ -27,7 +27,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'Pronto vs Concorrentes — Alternativa Gratuita',
     description:
-      'Compare Pronto com Fresha, Booksy, Mindbody, Trinks e iSalon. Sem comissão, open-source, self-hosted.',
+      'Compare Pronto com Fresha, Booksy, Mindbody e Trinks. Sem comissão, open-source, self-hosted.',
     images: ['https://trypronto.app/og-image.png'],
   },
 }
@@ -38,7 +38,7 @@ const itemListSchema = {
   name: 'Pronto vs Concorrentes',
   description: 'Comparativo do Pronto com os principais softwares de gestão para salões, barbearias e academias',
   url: 'https://trypronto.app/pt/vs/',
-  numberOfItems: 7,
+  numberOfItems: 6,
   itemListElement: [
     { '@type': 'ListItem', position: 1, name: 'Pronto vs Fresha',              url: 'https://trypronto.app/vs/fresha' },
     { '@type': 'ListItem', position: 2, name: 'Pronto vs Booksy',              url: 'https://trypronto.app/vs/booksy' },
@@ -46,7 +46,6 @@ const itemListSchema = {
     { '@type': 'ListItem', position: 4, name: 'Pronto vs Vagaro',              url: 'https://trypronto.app/vs/vagaro' },
     { '@type': 'ListItem', position: 5, name: 'Pronto vs Square Appointments', url: 'https://trypronto.app/vs/square' },
     { '@type': 'ListItem', position: 6, name: 'Pronto vs Trinks',              url: 'https://trypronto.app/pt/vs/trinks' },
-    { '@type': 'ListItem', position: 7, name: 'Pronto vs iSalon',              url: 'https://trypronto.app/pt/vs/isalon' },
   ],
 }
 
@@ -265,13 +264,6 @@ const pageContent = `
         <span class="biz-card-link">Ver comparativo completo &rarr;</span>
       </a>
 
-      <a href="/pt/vs/isalon" class="biz-card">
-        <span class="biz-card-arrow">&rarr;</span>
-        <div class="biz-card-title">Pronto vs iSalon</div>
-        <div class="biz-card-desc">O iSalon &eacute; um dos sistemas mais usados em sal&otilde;es brasileiros, mas cobra mensalidade sem plano gratuito. O Pronto oferece todas as fun&ccedil;&otilde;es essenciais a partir de $0.</div>
-        <span class="biz-card-link">Ver comparativo completo &rarr;</span>
-      </a>
-
     </div>
   </div>
 </section>
@@ -350,7 +342,6 @@ const pageContent = `
       <a href="/pt/vs/vagaro">vs Vagaro</a>
       <a href="/pt/vs/square">vs Square</a>
       <a href="/pt/vs/trinks">vs Trinks</a>
-      <a href="/pt/vs/isalon">vs iSalon</a>
     </div>
     <div class="footer-col">
       <div class="footer-col-head">Legal</div>

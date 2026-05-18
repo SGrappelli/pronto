@@ -533,7 +533,6 @@ const pageContent = `
       <a href="/pt/vs/mindbody">vs Mindbody</a>
       <a href="/pt/vs/vagaro">vs Vagaro</a>
       <a href="/pt/vs/square">vs Square</a>
-      <a href="/pt/vs/isalon">vs iSalon</a>
     </div>
     <div class="footer-col">
       <div class="footer-col-head">Legal</div>
