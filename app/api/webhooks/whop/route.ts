@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import crypto from 'crypto'
 import { createClient } from '@supabase/supabase-js'
 import { sendMail, getFromAddress } from '@/lib/mailer'
+import { tierFromPlanName } from '@/lib/whop'
 
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -14,14 +15,6 @@ function verifySignature(body: string, signature: string): boolean {
   const expected = crypto.createHmac('sha256', secret).update(body).digest('hex')
   if (expected.length !== signature.length) return false
   return crypto.timingSafeEqual(Buffer.from(expected), Buffer.from(signature))
-}
-
-export function tierFromPlanName(name: string): 'free' | 'starter' | 'pro' | 'agency' {
-  const n = name.toLowerCase()
-  if (n.includes('agency')) return 'agency'
-  if (n.includes('pro')) return 'pro'
-  if (n.includes('starter')) return 'starter'
-  return 'free'
 }
 
 export async function POST(req: NextRequest) {
