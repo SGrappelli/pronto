@@ -18,7 +18,7 @@ FROM base AS builder
 WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
-RUN NODE_OPTIONS=--max-old-space-size=3072 npm run build
+RUN NODE_OPTIONS=--max-old-space-size=1536 npm run build
 
 # ── Production runner ─────────────────────────────
 FROM base AS runner
