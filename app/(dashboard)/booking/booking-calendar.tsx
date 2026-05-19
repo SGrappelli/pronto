@@ -9,6 +9,7 @@ import { ChevronLeft, ChevronRight, ExternalLink, CreditCard, AlertCircle } from
 import Link from 'next/link'
 import { useTranslations } from 'next-intl'
 import { useRouter } from 'next/navigation'
+import { sanitizeText } from '@/lib/sanitize'
 import {
   DndContext,
   DragEndEvent,
@@ -332,7 +333,7 @@ export function BookingCalendar({ businessId, slug, timezone, appointments: init
     const { data, error } = await supabase.from('appointments').insert({
       business_id: businessId, client_id: form.client_id || null, employee_id: form.employee_id || null,
       service_id: form.service_id, starts_at: startsAt.toISOString(), ends_at: endsAt.toISOString(),
-      notes: form.notes || null, price: service.price, status: 'confirmed', source: 'manual',
+      notes: form.notes ? sanitizeText(form.notes) || null : null, price: service.price, status: 'confirmed', source: 'manual',
     }).select('id, starts_at, ends_at, status, source, notes, clients(id, name), employees(id, name), services(id, name, price)').single()
 
     if (!error && data) {

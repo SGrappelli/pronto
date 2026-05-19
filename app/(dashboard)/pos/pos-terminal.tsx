@@ -29,6 +29,7 @@ import {
   type CachedEmployee,
   type CachedClient,
 } from '@/lib/offline-db'
+import { sanitizeName, sanitizeText } from '@/lib/sanitize'
 
 interface Service { id: string; name: string; price: number; duration_min: number; category: string | null }
 interface Employee { id: string; name: string }
@@ -288,15 +289,17 @@ export function POSTerminal({ businessId, currency, services: initialServices, e
   // ─── Save walk-in as client ───────────────────────────────────────────────
   async function saveWalkinAsClient() {
     if (!saveForm.name.trim()) return
+    const name = sanitizeName(saveForm.name)
+    if (!name) return
     setSavingClient(true)
     const { data: client } = await supabase
       .from('clients')
       .insert({
         business_id: businessId,
-        name: saveForm.name.trim(),
+        name,
         phone: saveForm.phone || null,
         email: saveForm.email || null,
-        notes: saveForm.notes || null,
+        notes: saveForm.notes ? sanitizeText(saveForm.notes) || null : null,
       })
       .select('id')
       .single()
@@ -305,7 +308,7 @@ export function POSTerminal({ businessId, currency, services: initialServices, e
       if (walkinTxId) {
         await supabase.from('transactions').update({ client_id: client.id }).eq('id', walkinTxId)
       }
-      setActiveClients((prev) => [...prev, { id: client.id, name: saveForm.name.trim(), phone: saveForm.phone || null }])
+      setActiveClients((prev) => [...prev, { id: client.id, name, phone: saveForm.phone || null }])
     }
     setSavingClient(false)
     setShowSaveModal(false)

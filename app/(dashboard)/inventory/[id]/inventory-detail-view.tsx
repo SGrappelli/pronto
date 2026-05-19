@@ -5,6 +5,7 @@ import { createClient } from '@/lib/supabase/client'
 import { useRouter } from 'next/navigation'
 import { formatCurrency, formatInBusinessTimezone } from '@/lib/utils'
 import { useTranslations } from 'next-intl'
+import { sanitizeShort } from '@/lib/sanitize'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
@@ -111,7 +112,7 @@ export function InventoryDetailView({ item: initial, movements: initialMovements
       item_id: item.id,
       type: movForm.type,
       quantity: qty,
-      note: movForm.note || null,
+      note: movForm.note ? sanitizeShort(movForm.note, 500) || null : null,
     }).select().single()
 
     if (mov) {

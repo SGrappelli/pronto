@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
+import { sanitizeName, sanitizeShort } from '@/lib/sanitize'
 
 export async function POST(request: Request) {
   const supabase = createClient()
@@ -12,12 +13,15 @@ export async function POST(request: Request) {
 
   const body = await request.json()
 
+  const name = sanitizeName(String(body.name ?? ''))
+  if (!name) return NextResponse.json({ error: 'name_required' }, { status: 400 })
+
   const { data: item, error } = await supabase.from('inventory_items').insert({
     business_id: business.id,
-    name: (body.name as string)?.trim(),
-    sku: (body.sku as string) || null,
-    category: (body.category as string) || null,
-    unit: (body.unit as string) || 'pcs',
+    name,
+    sku: body.sku ? sanitizeShort(String(body.sku)) || null : null,
+    category: body.category ? sanitizeShort(String(body.category)) || null : null,
+    unit: body.unit ? sanitizeShort(String(body.unit), 20) || 'pcs' : 'pcs',
     quantity: Number(body.quantity) || 0,
     cost_price: body.cost_price ? Number(body.cost_price) : null,
     sell_price: body.sell_price ? Number(body.sell_price) : null,
