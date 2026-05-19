@@ -1,7 +1,7 @@
 ﻿import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: 'Software Gratis para Salones de Belleza — POS, Reservas y CRM | Pronto',
+  title: 'Software Gratis para Salones de Belleza | Pronto',
   description:
     'Software gratuito para salones de belleza con POS, reservas de citas, CRM y recordatorios automáticos por WhatsApp, Telegram y Email. Sin comisiones. Self-hosted o en la nube.',
   keywords:
@@ -18,7 +18,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: 'website',
     url: 'https://trypronto.app/es/para/salones',
-    title: 'Software Gratis para Salones de Belleza — POS, Reservas y CRM | Pronto',
+    title: 'Software Gratis para Salones de Belleza | Pronto',
     description:
       'POS, reservas y CRM gratis para salones de belleza. Los clientes reservan sin crear cuenta. Sin comisiones. Self-hosted o en la nube.',
     images: [{ url: 'https://trypronto.app/og-salons-es.png' }],
@@ -27,7 +27,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Software Gratis para Salones de Belleza — POS, Reservas y CRM | Pronto',
+    title: 'Software Gratis para Salones de Belleza | Pronto',
     description:
       'POS, reservas y CRM gratis para salones de belleza. Los clientes reservan sin crear cuenta. Sin comisiones. Self-hosted o en la nube.',
     images: ['https://trypronto.app/og-salons-es.png'],

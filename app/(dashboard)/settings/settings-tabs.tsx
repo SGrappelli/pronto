@@ -9,6 +9,7 @@ import { Plus, Pencil, Trash2, Check, Loader2, CheckCircle2, AlertCircle, Zap, B
 import { UpgradeBanner } from '@/components/ui/upgrade-banner'
 import { useTranslations } from 'next-intl'
 import { getWhopCheckoutUrl } from '@/lib/whop'
+import { sanitizeName, sanitizeText, sanitizeShort } from '@/lib/sanitize'
 
 interface Business {
   id: string; name: string; slug: string; type: string | null; phone: string | null
@@ -157,9 +158,11 @@ export function SettingsTabs({ business: initial, services: initServices, employ
     if (slugError) return
     setSaving(true)
     const cleanSlug = biz.slug.toLowerCase().replace(/[^a-z0-9-]/g, '-').replace(/-+/g, '-').replace(/^-|-$/g, '') || initial.slug
+    const bizName = sanitizeName(biz.name || '')
+    const bizAddress = biz.address ? sanitizeShort(biz.address, 200) || null : null
     setBiz((b) => ({ ...b, slug: cleanSlug }))
     await supabase.from('businesses').update({
-      name: biz.name, slug: cleanSlug, type: biz.type, phone: biz.phone, email: biz.email, address: biz.address,
+      name: bizName, slug: cleanSlug, type: biz.type, phone: biz.phone, email: biz.email, address: bizAddress,
       timezone: biz.timezone, currency: biz.currency,
       telegram_bot_token: biz.telegram_bot_token, viber_bot_token: biz.viber_bot_token,
       owner_whatsapp: biz.owner_whatsapp,
@@ -176,13 +179,18 @@ export function SettingsTabs({ business: initial, services: initServices, employ
 
   async function saveService() {
     if (!svcForm.name || svcForm.price == null) return
+    const svcName = sanitizeName(svcForm.name)
+    if (!svcName) return
+    const svcDescription = svcForm.description ? sanitizeText(svcForm.description) || null : null
+    const svcCategory = svcForm.category ? sanitizeShort(svcForm.category) || null : null
+    const sanitizedForm = { ...svcForm, name: svcName, description: svcDescription, category: svcCategory }
     if (editingSvc) {
-      await supabase.from('services').update(svcForm).eq('id', editingSvc)
-      setServices((prev) => prev.map((s) => s.id === editingSvc ? { ...s, ...svcForm } as Service : s))
+      await supabase.from('services').update(sanitizedForm).eq('id', editingSvc)
+      setServices((prev) => prev.map((s) => s.id === editingSvc ? { ...s, ...sanitizedForm } as Service : s))
     } else {
       const { data } = await supabase.from('services').insert({
-        business_id: biz.id, name: svcForm.name!, description: svcForm.description ?? null,
-        price: svcForm.price!, duration_min: svcForm.duration_min ?? 60, category: svcForm.category ?? null,
+        business_id: biz.id, name: svcName, description: svcDescription,
+        price: svcForm.price!, duration_min: svcForm.duration_min ?? 60, category: svcCategory,
         capacity: svcForm.capacity ?? 1,
       }).select().single()
       if (data) setServices((prev) => [...prev, data as Service])
@@ -200,9 +208,12 @@ export function SettingsTabs({ business: initial, services: initServices, employ
 
   async function saveEmployee() {
     if (!empForm.name) return
+    const empName = sanitizeName(empForm.name)
+    if (!empName) return
+    const sanitizedEmp = { ...empForm, name: empName }
     if (editingEmp) {
-      await supabase.from('employees').update(empForm).eq('id', editingEmp)
-      setEmployees((prev) => prev.map((e) => e.id === editingEmp ? { ...e, ...empForm } as Employee : e))
+      await supabase.from('employees').update(sanitizedEmp).eq('id', editingEmp)
+      setEmployees((prev) => prev.map((e) => e.id === editingEmp ? { ...e, ...sanitizedEmp } as Employee : e))
     } else {
       const activeCount = employees.filter((e) => e.is_active).length
       if (activeCount >= empLimit) {
@@ -210,7 +221,7 @@ export function SettingsTabs({ business: initial, services: initServices, employ
         return
       }
       const { data } = await supabase.from('employees').insert({
-        business_id: biz.id, name: empForm.name!, role: empForm.role ?? 'employee',
+        business_id: biz.id, name: empName, role: empForm.role ?? 'employee',
         email: empForm.email ?? null, phone: empForm.phone ?? null,
       }).select().single()
       if (data) setEmployees((prev) => [...prev, data as Employee])

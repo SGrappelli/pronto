@@ -5,6 +5,7 @@ import { createClient } from '@/lib/supabase/client'
 import { DatePicker } from '@/components/ui/date-picker'
 import Link from 'next/link'
 import { useTranslations } from 'next-intl'
+import { sanitizeName, sanitizeText, sanitizeShort } from '@/lib/sanitize'
 
 interface Props {
   businessId: string
@@ -63,16 +64,20 @@ export function NewClientForm({ businessId }: Props) {
     }
 
     setSaving(true)
-    const tags = form.tags ? form.tags.split(',').map((t) => t.trim()).filter(Boolean) : []
+    const name = sanitizeName(form.name)
+    if (!name) { setSaving(false); return }
+    const tags = form.tags
+      ? form.tags.split(',').map((t) => sanitizeShort(t.trim())).filter(Boolean)
+      : []
 
     const { data: client } = await supabase.from('clients').insert({
       business_id: businessId,
-      name: form.name.trim(),
+      name,
       phone: form.phone || null,
       email: form.email || null,
       whatsapp_number: form.whatsapp_number || null,
       birthday: form.birthday || null,
-      notes: form.notes || null,
+      notes: form.notes ? sanitizeText(form.notes) || null : null,
       tags,
     }).select('id').single()
 

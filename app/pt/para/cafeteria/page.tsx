@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: 'Software Grátis para Cafeteria e Café — PDV e Estoque — Pronto',
+  title: 'Software Grátis para Cafeteria e Café | Pronto',
   description:
     'Software gratuito para cafeterias com PDV, controle de estoque, CRM de clientes e lembretes automáticos por WhatsApp e Telegram. Sem comissão. Self-hosted ou SaaS.',
   keywords:
@@ -18,7 +18,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: 'website',
     url: 'https://trypronto.app/pt/para/cafeteria',
-    title: 'Software Grátis para Cafeteria e Café — PDV e Estoque — Pronto',
+    title: 'Software Grátis para Cafeteria e Café | Pronto',
     description:
       'Gerencie sua cafeteria sem comissão. PDV, controle de estoque, CRM de clientes e lembretes automáticos por WhatsApp, Telegram e Email. Um só comando para instalar.',
     images: [{ url: 'https://trypronto.app/og-image.png' }],
@@ -27,7 +27,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Software Grátis para Cafeteria e Café — PDV e Estoque — Pronto',
+    title: 'Software Grátis para Cafeteria e Café | Pronto',
     description:
       'PDV, controle de estoque e lembretes automáticos para sua cafeteria. Sem comissão, sem vendor lock-in. Instale com Docker em um só comando.',
     images: ['https://trypronto.app/og-image.png'],

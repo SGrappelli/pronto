@@ -1,7 +1,7 @@
 ﻿import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: 'Free Barbershop Management Software — Booking, POS & CRM | Pronto',
+  title: 'Free Barbershop Software — Booking & CRM | Pronto',
   description:
     'Free barbershop management software with appointment booking, walk-in support, POS, CRM and automated client reminders via WhatsApp, Telegram & Email. Zero commission. Self-hosted or cloud.',
   keywords:
@@ -18,7 +18,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: 'website',
     url: 'https://trypronto.app/for/barbershops',
-    title: 'Free Barbershop Management Software — Booking, POS & CRM | Pronto',
+    title: 'Free Barbershop Software — Booking & CRM | Pronto',
     description:
       'Free barbershop management software with appointment booking, walk-in support, POS, CRM and automated client reminders via WhatsApp, Telegram & Email. Zero commission. Self-hosted or cloud.',
     images: [{ url: 'https://trypronto.app/og-barbershops.png' }],
@@ -27,7 +27,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Free Barbershop Management Software — Booking, POS & CRM | Pronto',
+    title: 'Free Barbershop Software — Booking & CRM | Pronto',
     description:
       'Free barbershop management software with appointment booking, walk-in support, POS, CRM and automated client reminders via WhatsApp, Telegram & Email. Zero commission. Self-hosted or cloud.',
     images: ['https://trypronto.app/og-barbershops.png'],

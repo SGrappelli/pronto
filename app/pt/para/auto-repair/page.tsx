@@ -10,7 +10,7 @@ export const metadata: Metadata = {
     canonical: 'https://trypronto.app/pt/para/auto-repair',
     languages: {
       en: 'https://trypronto.app/for/auto-repair',
-      es: 'https://trypronto.app/es/para/auto-repair',
+      es: 'https://trypronto.app/es/para/autoservicio',
       'pt-BR': 'https://trypronto.app/pt/para/auto-repair',
       'x-default': 'https://trypronto.app/for/auto-repair',
     },

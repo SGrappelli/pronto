@@ -1,7 +1,7 @@
 ﻿import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: 'Free Massage & Spa Management Software — Booking, POS & CRM | Pronto',
+  title: 'Free Massage & Spa Software — Booking & CRM | Pronto',
   description:
     'Free massage and spa management software with appointment booking, client CRM, POS and automated reminders via WhatsApp, Telegram & Email. Zero commission. Self-hosted or cloud.',
   keywords:
@@ -18,7 +18,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: 'website',
     url: 'https://trypronto.app/for/spa',
-    title: 'Free Massage & Spa Management Software — Booking, POS & CRM | Pronto',
+    title: 'Free Massage & Spa Software — Booking & CRM | Pronto',
     description:
       'Free spa appointment booking, client CRM and POS. Clients book without creating an account. Zero commission. Self-hosted or cloud.',
     images: [{ url: 'https://trypronto.app/og-spa.png' }],
@@ -27,7 +27,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Free Massage & Spa Management Software — Booking, POS & CRM | Pronto',
+    title: 'Free Massage & Spa Software — Booking & CRM | Pronto',
     description:
       'Free spa appointment booking, client CRM and POS. Zero commission. Clients book without an account.',
     images: ['https://trypronto.app/og-spa.png'],

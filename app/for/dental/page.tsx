@@ -1,7 +1,7 @@
 ﻿import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: 'Free Dental Clinic Software — Appointments, POS & Patient CRM | Pronto',
+  title: 'Free Dental Clinic Software — Appointments | Pronto',
   description:
     'Free dental clinic management software with appointment scheduling, patient CRM, treatment history and automated reminders via WhatsApp, Telegram & Email. No per-seat fees. Self-hosted or cloud.',
   keywords:
@@ -18,7 +18,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: 'website',
     url: 'https://trypronto.app/for/dental',
-    title: 'Free Dental Clinic Software — Appointments, POS & Patient CRM | Pronto',
+    title: 'Free Dental Clinic Software — Appointments | Pronto',
     description:
       'Free dental appointment scheduling, patient CRM and automated reminders. No commission, no per-seat fees. Self-hosted or cloud.',
     images: [{ url: 'https://trypronto.app/og-dental.png' }],
@@ -27,7 +27,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Free Dental Clinic Software — Appointments, POS & Patient CRM | Pronto',
+    title: 'Free Dental Clinic Software — Appointments | Pronto',
     description:
       'Free dental appointment scheduling, patient CRM and automated reminders. No commission, no per-seat fees. Self-hosted or cloud.',
     images: ['https://trypronto.app/og-dental.png'],

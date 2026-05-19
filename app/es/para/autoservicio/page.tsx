@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: 'Software Gratis para Talleres Mecánicos — Órdenes de Servicio, POS y CRM | Pronto',
+  title: 'Software Gratis para Talleres Mecánicos | Pronto',
   description:
     'Software gratuito para talleres mecánicos y autoservicios con órdenes de servicio, inventario de repuestos, CRM de clientes y recordatorios automáticos por WhatsApp y Telegram. Sin comisiones. Self-hosted o en la nube.',
   keywords:
@@ -18,7 +18,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: 'website',
     url: 'https://trypronto.app/es/para/autoservicio',
-    title: 'Software Gratis para Talleres Mecánicos — Órdenes de Servicio, POS y CRM | Pronto',
+    title: 'Software Gratis para Talleres Mecánicos | Pronto',
     description:
       'Órdenes de servicio, inventario de repuestos y CRM gratis para talleres mecánicos. Los clientes reciben notificaciones automáticas. Sin comisiones. Self-hosted o en la nube.',
     images: [{ url: 'https://trypronto.app/og-auto-repair-es.png' }],
@@ -27,7 +27,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Software Gratis para Talleres Mecánicos — Órdenes de Servicio, POS y CRM | Pronto',
+    title: 'Software Gratis para Talleres Mecánicos | Pronto',
     description:
       'Órdenes de servicio, inventario de repuestos y CRM gratis para talleres mecánicos. Los clientes reciben notificaciones automáticas. Sin comisiones. Self-hosted o en la nube.',
     images: ['https://trypronto.app/og-auto-repair-es.png'],

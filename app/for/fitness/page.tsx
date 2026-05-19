@@ -1,7 +1,7 @@
 ﻿import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: 'Free Fitness Club Management Software — Class Booking, POS & CRM | Pronto',
+  title: 'Free Fitness Studio Software — Booking & CRM | Pronto',
   description:
     'Free fitness club management software with class booking, member CRM, POS and automated reminders via WhatsApp, Telegram & Email. Zero commission. Self-hosted or cloud.',
   keywords:
@@ -18,7 +18,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: 'website',
     url: 'https://trypronto.app/for/fitness',
-    title: 'Free Fitness Club Management Software — Class Booking, POS & CRM | Pronto',
+    title: 'Free Fitness Studio Software — Booking & CRM | Pronto',
     description:
       'Free fitness class booking, member CRM and POS. Members book without creating an account. Zero commission. Self-hosted or cloud.',
     images: [{ url: 'https://trypronto.app/og-fitness.png' }],
@@ -27,7 +27,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Free Fitness Club Management Software — Class Booking, POS & CRM | Pronto',
+    title: 'Free Fitness Studio Software — Booking & CRM | Pronto',
     description:
       'Free fitness class booking, member CRM and POS. Members book without creating an account. Zero commission. Self-hosted or cloud.',
     images: ['https://trypronto.app/og-fitness.png'],

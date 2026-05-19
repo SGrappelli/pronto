@@ -19,7 +19,7 @@ export const metadata: Metadata = {
     languages: {
       en: 'https://trypronto.app/docs',
       es: 'https://trypronto.app/es/docs',
-      pt: 'https://trypronto.app/pt/docs',
+      'pt-BR': 'https://trypronto.app/pt/docs',
       'x-default': 'https://trypronto.app/docs',
     },
   },

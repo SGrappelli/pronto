@@ -1,7 +1,7 @@
 ﻿import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: 'Free Auto Repair Shop Software — Bookings, POS & CRM | Pronto',
+  title: 'Free Auto Repair Shop Software | Pronto',
   description:
     'Free auto repair shop management software with service order tracking, appointment booking, parts inventory and automated client notifications via WhatsApp, Telegram & Email. Zero commission. Self-hosted or cloud.',
   keywords:
@@ -10,7 +10,7 @@ export const metadata: Metadata = {
     canonical: 'https://trypronto.app/for/auto-repair',
     languages: {
       en: 'https://trypronto.app/for/auto-repair',
-      es: 'https://trypronto.app/es/para/auto-repair',
+      es: 'https://trypronto.app/es/para/autoservicio',
       'pt-BR': 'https://trypronto.app/pt/para/auto-repair',
       'x-default': 'https://trypronto.app/for/auto-repair',
     },
@@ -18,7 +18,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: 'website',
     url: 'https://trypronto.app/for/auto-repair',
-    title: 'Free Auto Repair Shop Software — Bookings, POS & CRM | Pronto',
+    title: 'Free Auto Repair Shop Software | Pronto',
     description:
       'Free auto repair shop POS, service order tracking and CRM. Clients book without creating an account. Zero commission. Self-hosted or cloud.',
     images: [{ url: 'https://trypronto.app/og-auto-repair.png' }],
@@ -27,7 +27,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Free Auto Repair Shop Software — Bookings, POS & CRM | Pronto',
+    title: 'Free Auto Repair Shop Software | Pronto',
     description:
       'Free auto repair shop POS, service order tracking and CRM. Zero commission. Clients book without an account.',
     images: ['https://trypronto.app/og-auto-repair.png'],

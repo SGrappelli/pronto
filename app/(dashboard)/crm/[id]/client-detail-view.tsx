@@ -5,6 +5,7 @@ import { createClient } from '@/lib/supabase/client'
 import { useRouter } from 'next/navigation'
 import { formatCurrency, formatDate, formatInBusinessTimezone } from '@/lib/utils'
 import { useTranslations } from 'next-intl'
+import { sanitizeName, sanitizeText, sanitizeShort } from '@/lib/sanitize'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
@@ -112,13 +113,15 @@ export function ClientDetailView({ client: initial, appointments, currency, time
     }
     setEditErrors({})
     setSaving(true)
-    const tags = form.tags.split(',').map((t) => t.trim()).filter(Boolean)
+    const name = sanitizeName(form.name)
+    if (!name) { setSaving(false); return }
+    const tags = form.tags.split(',').map((t) => sanitizeShort(t.trim())).filter(Boolean)
     const { data } = await supabase.from('clients').update({
-      name: form.name,
+      name,
       phone: form.phone || null,
       email: form.email || null,
       birthday: form.birthday || null,
-      notes: form.notes || null,
+      notes: form.notes ? sanitizeText(form.notes) || null : null,
       tags,
       whatsapp_number: form.whatsapp_number || null,
     }).eq('id', client.id).select().single()

@@ -1,7 +1,7 @@
 ﻿import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: 'Pronto para Negocios de Servicios — POS, Reservas y CRM Gratis',
+  title: 'Pronto para Negocios de Servicios | Gratis',
   description:
     'Software gratis de POS, CRM y reservas para salones, barberías, talleres de autos, clínicas dentales, gimnasios, spas, cafeterías y cualquier negocio de servicios. Sin comisiones.',
   keywords:
@@ -18,7 +18,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: 'website',
     url: 'https://trypronto.app/es/para',
-    title: 'Pronto para Negocios de Servicios — POS, Reservas y CRM Gratis',
+    title: 'Pronto para Negocios de Servicios | Gratis',
     description:
       'POS, CRM y reservas gratis para cualquier negocio de servicios. Sin comisiones. Self-hosted o en la nube.',
     images: [{ url: 'https://trypronto.app/og-image-es.png' }],
@@ -27,7 +27,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Pronto para Negocios de Servicios — POS, Reservas y CRM Gratis',
+    title: 'Pronto para Negocios de Servicios | Gratis',
     description:
       'POS, CRM y reservas gratis para cualquier negocio de servicios. Sin comisiones. Self-hosted o en la nube.',
     images: ['https://trypronto.app/og-image-es.png'],
