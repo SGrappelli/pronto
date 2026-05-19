@@ -5,7 +5,7 @@ import { useRouter, useSearchParams } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
-import { Plus, Pencil, Trash2, Check, Loader2, CheckCircle2, AlertCircle, Zap, Building2, Users, Eye, EyeOff, X } from 'lucide-react'
+import { Plus, Pencil, Trash2, Check, Loader2, CheckCircle2, AlertCircle, Zap, Building2, Users, Eye, EyeOff, X, RefreshCw } from 'lucide-react'
 import { UpgradeBanner } from '@/components/ui/upgrade-banner'
 import { useTranslations } from 'next-intl'
 import { getWhopCheckoutUrl } from '@/lib/whop'
@@ -1078,6 +1078,7 @@ export function SettingsTabs({ business: initial, services: initServices, employ
 type PlanTier = 'free' | 'starter' | 'pro' | 'agency'
 
 const PLANS: { tier: PlanTier; name: string; price: string; features: string[] }[] = [
+
   {
     tier: 'free',
     name: 'Free',
@@ -1107,6 +1108,31 @@ const PLANS: { tier: PlanTier; name: string; price: string; features: string[] }
 const TIER_ORDER: PlanTier[] = ['free', 'starter', 'pro', 'agency']
 
 function BillingTab({ businessId, currentTier }: { businessId: string; currentTier: PlanTier }) {
+  const router = useRouter()
+  const [syncStatus, setSyncStatus] = useState<'idle' | 'loading' | 'ok' | 'error' | 'not_found'>('idle')
+  const [syncedTier, setSyncedTier] = useState<string>('')
+
+  async function syncPlan() {
+    setSyncStatus('loading')
+    try {
+      const res = await fetch('/api/billing/sync', { method: 'POST' })
+      const json = await res.json()
+      if (!res.ok) {
+        setSyncStatus('error')
+        return
+      }
+      if (json.notFound) {
+        setSyncStatus('not_found')
+        return
+      }
+      setSyncedTier(json.tier)
+      setSyncStatus('ok')
+      setTimeout(() => router.refresh(), 800)
+    } catch {
+      setSyncStatus('error')
+    }
+  }
+
   return (
     <div className="space-y-6">
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -1174,6 +1200,44 @@ function BillingTab({ businessId, currentTier }: { businessId: string; currentTi
         </a>
         .
       </p>
+
+      {/* Plan sync */}
+      <div className="bg-gray-50 rounded-xl border border-gray-200 p-4">
+        <div className="flex items-center justify-between gap-4">
+          <div>
+            <p className="text-sm font-medium text-gray-700">Plan not updating after purchase?</p>
+            <p className="text-xs text-gray-500 mt-0.5">Sync your subscription status from Whop.</p>
+          </div>
+          <button
+            onClick={syncPlan}
+            disabled={syncStatus === 'loading'}
+            className="shrink-0 flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium rounded-lg border border-gray-300 bg-white text-gray-700 hover:bg-gray-50 disabled:opacity-50 transition-colors"
+          >
+            {syncStatus === 'loading' ? (
+              <Loader2 className="w-3.5 h-3.5 animate-spin" />
+            ) : (
+              <RefreshCw className="w-3.5 h-3.5" />
+            )}
+            Sync plan
+          </button>
+        </div>
+        {syncStatus === 'ok' && (
+          <div className="mt-2 flex items-center gap-2 text-xs text-green-700 bg-green-50 border border-green-200 rounded-lg px-3 py-2">
+            <CheckCircle2 className="w-3.5 h-3.5 shrink-0" />
+            Plan updated to <strong className="capitalize">{syncedTier}</strong>. Refreshing…
+          </div>
+        )}
+        {syncStatus === 'not_found' && (
+          <div className="mt-2 text-xs text-orange-700 bg-orange-50 border border-orange-200 rounded-lg px-3 py-2">
+            No active Whop membership found for this account. Make sure you purchased using the same email address.
+          </div>
+        )}
+        {syncStatus === 'error' && (
+          <div className="mt-2 text-xs text-red-700 bg-red-50 border border-red-200 rounded-lg px-3 py-2">
+            Sync failed. Please contact support at support@trypronto.app.
+          </div>
+        )}
+      </div>
     </div>
   )
 }
