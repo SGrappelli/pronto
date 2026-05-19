@@ -1,3 +1,11 @@
+export function tierFromPlanName(name: string): 'free' | 'starter' | 'pro' | 'agency' {
+  const n = name.toLowerCase()
+  if (n.includes('agency')) return 'agency'
+  if (n.includes('pro')) return 'pro'
+  if (n.includes('starter')) return 'starter'
+  return 'free'
+}
+
 export function getWhopCheckoutUrl(
   plan: 'free' | 'starter' | 'pro' | 'agency',
   businessId: string,
