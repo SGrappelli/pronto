@@ -6,6 +6,7 @@ import { Users, Package, CalendarDays, TrendingUp, ArrowUpRight } from 'lucide-r
 import Link from 'next/link'
 import { redirect } from 'next/navigation'
 import { getTranslations } from 'next-intl/server'
+import { OnboardingChecklist } from '@/components/onboarding-checklist'
 
 export default async function DashboardPage() {
   const supabase = createClient()
@@ -80,6 +81,7 @@ export default async function DashboardPage() {
     <>
       <Header title={t('title')} />
       <main className="p-6 space-y-6">
+        <OnboardingChecklist businessId={business.id} />
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
           {stats.map((s) => (
             <Link key={s.label} href={s.href}>
