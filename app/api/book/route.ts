@@ -6,8 +6,13 @@
 
 import { NextRequest, NextResponse } from 'next/server'
 import { z } from 'zod'
+import DOMPurify from 'isomorphic-dompurify'
 import { createServiceClient } from '@/lib/supabase/service'
 import { rateLimit, getIp } from '@/lib/rate-limit'
+
+function sanitize(s: string): string {
+  return DOMPurify.sanitize(s, { ALLOWED_TAGS: [] }).trim()
+}
 
 /** Convert a wall-clock date+time (e.g. "2024-03-15", "14:30") in a named IANA timezone to a UTC Date. */
 function parseDateTimeInTz(date: string, time: string, timezone: string): Date {
@@ -63,7 +68,8 @@ export async function POST(req: NextRequest) {
     )
   }
 
-  const { businessId, serviceId, employeeId, date, time, name, phone, email } = parsed.data
+  const { businessId, serviceId, employeeId, date, time, phone, email } = parsed.data
+  const name = sanitize(parsed.data.name)
 
   if (!phone && !email) {
     return NextResponse.json(

@@ -2,6 +2,11 @@
 
 import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
+import DOMPurify from 'isomorphic-dompurify'
+
+function sanitize(s: string): string {
+  return DOMPurify.sanitize(s, { ALLOWED_TAGS: [] }).trim()
+}
 
 export async function completeOnboarding(data: {
   bizType: string
@@ -24,6 +29,11 @@ export async function completeOnboarding(data: {
 
   if (!business) redirect('/login')
 
+  // Sanitize and validate text fields
+  const bizName = data.bizName ? sanitize(data.bizName).slice(0, 100) : undefined
+  const serviceName = sanitize(data.serviceName).slice(0, 100)
+  if (!serviceName) throw new Error('Service name is required')
+
   // Server-side slug validation (defence against bypassed client checks)
   const finalSlug = data.slug ?? business.slug
   if (data.slug) {
@@ -36,7 +46,7 @@ export async function completeOnboarding(data: {
     .from('businesses')
     .update({
       ...(data.bizType ? { type: data.bizType } : {}),
-      ...(data.bizName ? { name: data.bizName } : {}),
+      ...(bizName ? { name: bizName } : {}),
       ...(data.slug ? { slug: data.slug } : {}),
       onboarding_completed: true,
     })
@@ -47,10 +57,10 @@ export async function completeOnboarding(data: {
     throw new Error(updateError.message)
   }
 
-  if (data.serviceName && data.servicePrice) {
+  if (serviceName && data.servicePrice) {
     await supabase.from('services').insert({
       business_id: business.id,
-      name: data.serviceName,
+      name: serviceName,
       price: data.servicePrice,
       duration_min: data.serviceDuration || 60,
     })

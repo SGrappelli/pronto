@@ -1,11 +1,19 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@supabase/supabase-js'
+import { createClient as createServerClient } from '@/lib/supabase/server'
 import { sendLowStockAlert } from '@/lib/email'
 import { sendTelegramMessage, tplLowStock } from '@/lib/telegram'
 import { sendViberMessage, tplLowStock as viberTplLowStock } from '@/lib/viber'
 import { sendWhatsAppMessage, tplLowStock as waTplLowStock } from '@/lib/whatsapp'
 
 export async function POST(req: NextRequest) {
+  // Verify the caller is an authenticated user who owns the business for this item.
+  const sessionClient = createServerClient()
+  const { data: { user } } = await sessionClient.auth.getUser()
+  if (!user) {
+    return NextResponse.json({ error: 'unauthorized' }, { status: 401 })
+  }
+
   try {
     const { itemId } = await req.json()
     if (!itemId) return NextResponse.json({ error: 'missing itemId' }, { status: 400 })
@@ -19,6 +27,19 @@ export async function POST(req: NextRequest) {
       .single()
 
     if (!item) return NextResponse.json({ error: 'not found' }, { status: 404 })
+
+    // Confirm the authenticated user owns this business
+    const { data: ownership } = await supabase
+      .from('businesses')
+      .select('id')
+      .eq('id', item.business_id)
+      .eq('owner_id', user.id)
+      .maybeSingle()
+
+    if (!ownership) {
+      return NextResponse.json({ error: 'forbidden' }, { status: 403 })
+    }
+
     if (item.quantity > item.low_stock_threshold) return NextResponse.json({ skipped: 'stock ok' })
 
     // Dedup — SELECT first so a failed send remains retryable (INSERT happens after)
@@ -82,8 +103,7 @@ export async function POST(req: NextRequest) {
     }
 
     // ── Email → владельцу ────────────────────────────────────────────────────
-    // FIX: businesses.email is NULL for most businesses (not populated at registration).
-    // Fall back to the owner's Supabase auth email so the alert always reaches someone.
+    // businesses.email may be NULL — fall back to the owner's Supabase auth email.
     let recipientEmail: string | null = biz?.email ?? null
     if (!recipientEmail && biz?.owner_id) {
       const { data: authData } = await supabase.auth.admin.getUserById(biz.owner_id)
