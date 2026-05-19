@@ -274,15 +274,18 @@ nav{position:sticky;top:0;z-index:100;background:rgba(255,255,255,0.96);backdrop
 .faq-a{font-size:14px;color:#374151;line-height:1.75}
 .faq-a code{background:#f3f4f6;padding:2px 6px;border-radius:4px;font-size:13px}
 
-footer{border-top:1px solid #f0f0f0;background:#fff;padding:48px 48px 32px}
-.footer-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:40px;max-width:960px;margin:0 auto 32px}
+footer{padding:48px;border-top:1px solid #f0f0f0;background:#fff}
+.footer-top{display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;gap:32px;margin-bottom:32px}
+.footer-brand{font-size:22px;font-weight:800;color:#111;letter-spacing:-0.5px;text-decoration:none}
+.footer-brand span{color:#16a34a}
+.footer-tagline{font-size:13px;color:#6b7280;margin-top:6px}
 .footer-col-head{font-size:11px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:#9ca3af;margin-bottom:14px}
-.footer-col a{display:block;font-size:14px;color:#6b7280;text-decoration:none;padding:6px 0;min-height:44px;display:flex;align-items:center}
+.footer-col a{display:block;font-size:14px;color:#6b7280;text-decoration:none;margin-bottom:10px;transition:color 0.15s}
 .footer-col a:hover{color:#16a34a}
-.footer-bottom{display:flex;justify-content:space-between;align-items:center;padding-top:24px;border-top:1px solid #f0f0f0;max-width:960px;margin:0 auto}
+.footer-bottom{display:flex;justify-content:space-between;align-items:center;padding-top:24px;border-top:1px solid #f0f0f0}
 .footer-copy{font-size:13px;color:#9ca3af}
-.footer-social{display:flex;gap:4px;align-items:center}
-.footer-social a{color:#9ca3af;display:flex;line-height:1;text-decoration:none;padding:10px;min-width:44px;min-height:44px;align-items:center;justify-content:center}
+.footer-social{display:flex;gap:16px;align-items:center}
+.footer-social a{color:#9ca3af;display:flex;line-height:1;text-decoration:none}
 .footer-social a:hover{color:#111}
 
 .breadcrumb{padding:14px 48px;background:#fafafa;border-bottom:1px solid #f0f0f0;font-size:13px;color:#9ca3af}
@@ -302,13 +305,14 @@ footer{border-top:1px solid #f0f0f0;background:#fff;padding:48px 48px 32px}
   .hero h1{font-size:42px}
   .sec{padding:56px 24px}
   .faq{padding:56px 24px}
-  footer{padding:48px 24px 32px}
+  footer{padding:48px 24px}
   .breadcrumb{padding:14px 24px}
   .feat-grid,.notif-grid{grid-template-columns:repeat(2,1fr)}
   .pain-grid,.pain-icon-grid{grid-template-columns:repeat(2,1fr)}
   .plans{grid-template-columns:repeat(2,1fr)}
   .cta-band{padding:52px 24px}
 }
+@media(max-width:900px){.footer-top{grid-template-columns:1fr 1fr;gap:24px}}
 @media(max-width:640px){
   nav{padding:0 16px;height:56px}
   .nav-right{gap:8px}
@@ -322,9 +326,9 @@ footer{border-top:1px solid #f0f0f0;background:#fff;padding:48px 48px 32px}
   .sec-head h2{font-size:28px}
   .sec-head p{font-size:15px}
   .faq{padding:44px 16px}
-  footer{padding:40px 16px 28px}
-  .footer-grid{grid-template-columns:1fr;gap:28px}
-  .footer-bottom{flex-direction:column;align-items:center;gap:16px;text-align:center}
+  footer{padding:32px 16px}
+  .footer-top{grid-template-columns:1fr;gap:28px}
+  .footer-bottom{flex-direction:column;align-items:flex-start;gap:16px}
   .breadcrumb{padding:12px 16px}
   .feat-grid,.notif-grid{grid-template-columns:1fr}
   .pain-grid,.pain-icon-grid{grid-template-columns:1fr}
@@ -692,17 +696,15 @@ const pageContent = `
 </main>
 
 <footer>
-  <div class="footer-grid">
+  <div class="footer-top">
+    <div>
+      <a href="/pt" class="footer-brand">Pronto<span>.</span></a>
+      <div class="footer-tagline">Seus dados, seu servidor.</div>
+    </div>
     <div class="footer-col">
       <div class="footer-col-head">Para neg&oacute;cios</div>
       <a href="/pt/para">Todos os neg&oacute;cios</a>
-      <a href="/pt/para/saloes">Sal&otilde;es</a>
-      <a href="/pt/para/barbearia">Barbearias</a>
-      <a href="/pt/para/tatuagens">Est&uacute;dios de tatuagem</a>
       <a href="/pt/para/academia">Academias</a>
-      <a href="/pt/para/spa">Spa e massagem</a>
-      <a href="/pt/para/cafeteria">Cafeterias</a>
-      <a href="/pt/para/auto-repair">Auto Repair</a>
     </div>
     <div class="footer-col">
       <div class="footer-col-head">Comparar</div>
@@ -722,10 +724,10 @@ const pageContent = `
   <div class="footer-bottom">
     <div class="footer-copy">&copy; 2026 Pronto. Todos os direitos reservados.</div>
     <div class="footer-social">
-      <a href="https://x.com/prontopos" target="_blank" rel="noopener noreferrer" aria-label="Pronto on X" onclick="window.gtag&&window.gtag('event','social_click',{platform:'twitter',page:'/pt/para/clinica-dental'})"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.76l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a>
-      <a href="https://www.linkedin.com/in/konstantinumnov/" target="_blank" rel="noopener noreferrer" aria-label="Pronto on LinkedIn" onclick="window.gtag&&window.gtag('event','social_click',{platform:'linkedin',page:'/pt/para/clinica-dental'})"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg></a>
-      <a href="https://www.youtube.com/@trypronto" target="_blank" rel="noopener noreferrer" aria-label="Pronto on YouTube" onclick="window.gtag&&window.gtag('event','social_click',{platform:'youtube',page:'/pt/para/clinica-dental'})"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg></a>
-      <a href="https://github.com/SGrappelli/pronto" target="_blank" rel="noopener noreferrer" aria-label="Pronto on GitHub" onclick="window.gtag&&window.gtag('event','github_click',{label:'footer_link',page:'/pt/para/clinica-dental'})"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg></a>
+      <a href="https://x.com/prontopos" target="_blank" rel="noopener noreferrer" aria-label="Pronto on X" onclick="window.gtag&&window.gtag('event','social_click',{platform:'twitter',page:'/pt/para/clinica-dental'})"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.76l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a>
+      <a href="https://www.linkedin.com/in/konstantinumnov/" target="_blank" rel="noopener noreferrer" aria-label="Pronto on LinkedIn" onclick="window.gtag&&window.gtag('event','social_click',{platform:'linkedin',page:'/pt/para/clinica-dental'})"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg></a>
+      <a href="https://www.youtube.com/@trypronto" target="_blank" rel="noopener noreferrer" aria-label="Pronto on YouTube" onclick="window.gtag&&window.gtag('event','social_click',{platform:'youtube',page:'/pt/para/clinica-dental'})"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg></a>
+      <a href="https://github.com/SGrappelli/pronto" target="_blank" rel="noopener noreferrer" aria-label="Pronto on GitHub" onclick="window.gtag&&window.gtag('event','github_click',{label:'footer_link',page:'/pt/para/clinica-dental'})"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg></a>
     </div>
   </div>
 </footer>
