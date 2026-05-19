@@ -77,7 +77,7 @@ export function PricingCards() {
 
       {/* Plan cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
-        {/* Free plan — unchanged regardless of billing period */}
+        {/* Free plan */}
         <div className="relative rounded-2xl border border-gray-200 shadow-sm p-6 flex flex-col">
           <div className="mb-4">
             <h2 className="text-lg font-bold text-gray-900">Free</h2>
