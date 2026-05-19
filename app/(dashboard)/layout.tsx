@@ -39,7 +39,7 @@ export default async function DashboardLayout({
   return (
     <div className="fixed inset-0 flex overflow-hidden bg-gray-50">
       <Sidebar businessName={business.name} />
-      <div className="flex-1 flex flex-col min-w-0 overflow-y-auto">
+      <div className="flex-1 flex flex-col min-w-0 overflow-y-auto pt-14 md:pt-0">
         {children}
       </div>
     </div>
