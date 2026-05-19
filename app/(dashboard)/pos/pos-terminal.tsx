@@ -67,6 +67,7 @@ export function POSTerminal({ businessId, currency, services: initialServices, e
   const [discount, setDiscount] = useState(0)
   const [loading, setLoading] = useState(false)
   const [success, setSuccess] = useState(false)
+  const [activeTab, setActiveTab] = useState<'services' | 'cart'>('services')
   const [receiptNumber, setReceiptNumber] = useState('')
   const [successAmount, setSuccessAmount] = useState(0)
   // bookingId to update appointment status after checkout
@@ -438,9 +439,30 @@ export function POSTerminal({ businessId, currency, services: initialServices, e
         </div>
       )}
 
+      {/* Mobile tab bar */}
+      <div className="md:hidden flex border-b border-gray-200 bg-white sticky top-0 z-10 shrink-0">
+        <button
+          onClick={() => setActiveTab('services')}
+          className={`flex-1 py-3 text-sm font-medium transition-colors ${activeTab === 'services' ? 'text-blue-600 border-b-2 border-blue-600' : 'text-gray-500'}`}
+        >
+          {t('servicesTab')}
+        </button>
+        <button
+          onClick={() => setActiveTab('cart')}
+          className={`flex-1 py-3 text-sm font-medium transition-colors flex items-center justify-center gap-1.5 ${activeTab === 'cart' ? 'text-blue-600 border-b-2 border-blue-600' : 'text-gray-500'}`}
+        >
+          {t('cart')}
+          {cart.length > 0 && (
+            <span className="bg-blue-600 text-white text-xs w-5 h-5 rounded-full flex items-center justify-center leading-none">
+              {cart.reduce((s, i) => s + i.qty, 0)}
+            </span>
+          )}
+        </button>
+      </div>
+
       <div className="flex-1 flex gap-0 min-h-0">
         {/* ── Service grid ──────────────────────────────────────────────── */}
-        <div className="flex-1 p-6 overflow-y-auto">
+        <div className={`flex-1 p-6 overflow-y-auto ${activeTab !== 'services' ? 'hidden md:block' : ''}`}>
           <div className="space-y-6">
             {categories.map((cat) => (
               <div key={cat}>
@@ -472,7 +494,7 @@ export function POSTerminal({ businessId, currency, services: initialServices, e
         </div>
 
         {/* ── Cart ──────────────────────────────────────────────────────── */}
-        <div className="w-80 shrink-0 bg-white border-l border-gray-200 flex flex-col">
+        <div className={`bg-white border-l border-gray-200 flex-col md:w-80 md:shrink-0 ${activeTab !== 'cart' ? 'hidden md:flex' : 'flex w-full'}`}>
           <div className="p-4 border-b border-gray-100">
             <div className="flex items-center gap-2 text-sm font-semibold text-gray-900">
               <ShoppingCart className="w-4 h-4" />
