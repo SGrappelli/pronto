@@ -843,6 +843,7 @@ De qualquer forma &mdash; sem comiss&atilde;o, para sempre.</p>
     </div>
     <div class="footer-col">
       <div class="footer-col-head">Comparar</div>
+      <a href="/pt/vs">Comparativos</a>
       <a href="/pt/vs/fresha">vs Fresha</a>
       <a href="/pt/vs/booksy">vs Booksy</a>
       <a href="/pt/vs/mindbody">vs Mindbody</a>
