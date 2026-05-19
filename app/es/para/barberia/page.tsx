@@ -848,6 +848,7 @@ De cualquier forma &mdash; sin comisiones por corte, para siempre.</p>
     </div>
     <div class="footer-col">
       <div class="footer-col-head">Comparar</div>
+      <a href="/es/vs">Comparativas</a>
       <a href="/es/vs/fresha">vs Fresha</a>
       <a href="/es/vs/vagaro">vs Vagaro</a>
       <a href="/es/vs/square">vs Square</a>

@@ -646,6 +646,7 @@ export default function RootPage() {
           </div>
           <div>
             <div style={{fontSize:'11px',fontWeight:700,letterSpacing:'1.2px',textTransform:'uppercase' as const,color:'#9ca3af',marginBottom:'14px'}}>Compare</div>
+            <Link href="/vs" style={{display:'block',fontSize:'14px',color:'#6b7280',textDecoration:'none',marginBottom:'10px'}}>All comparisons</Link>
             <Link href="/vs/fresha" style={{display:'block',fontSize:'14px',color:'#6b7280',textDecoration:'none',marginBottom:'10px'}}>vs Fresha</Link>
             <Link href="/vs/booksy" style={{display:'block',fontSize:'14px',color:'#6b7280',textDecoration:'none',marginBottom:'10px'}}>vs Booksy</Link>
             <Link href="/vs/mindbody" style={{display:'block',fontSize:'14px',color:'#6b7280',textDecoration:'none',marginBottom:'10px'}}>vs Mindbody</Link>
