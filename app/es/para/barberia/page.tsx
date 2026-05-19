@@ -1,7 +1,7 @@
 ﻿import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: 'Software Gratis para Barberías — Reservas, POS y CRM | Pronto',
+  title: 'Software Gratis para Barberías | Pronto',
   description:
     'Software gratuito para barberías con reservas de citas, POS, CRM de clientes y recordatorios automáticos por WhatsApp, Telegram y Email. Sin comisiones. Self-hosted o en la nube.',
   keywords:
@@ -18,7 +18,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: 'website',
     url: 'https://trypronto.app/es/para/barberia',
-    title: 'Software Gratis para Barberías — Reservas, POS y CRM | Pronto',
+    title: 'Software Gratis para Barberías | Pronto',
     description:
       'Reservas, POS y CRM gratis para barberías. Los clientes reservan sin crear cuenta. Sin comisiones. Self-hosted o en la nube.',
     images: [{ url: 'https://trypronto.app/og-barbershops-es.png' }],
@@ -27,7 +27,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Software Gratis para Barberías — Reservas, POS y CRM | Pronto',
+    title: 'Software Gratis para Barberías | Pronto',
     description:
       'Reservas, POS y CRM gratis para barberías. Los clientes reservan sin crear cuenta. Sin comisiones. Self-hosted o en la nube.',
     images: ['https://trypronto.app/og-barbershops-es.png'],

@@ -1,7 +1,7 @@
 ﻿import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: 'Free Salon Management Software — POS, Booking & CRM | Pronto',
+  title: 'Free Salon Management Software | Pronto',
   description:
     'Free salon management software with POS, appointment booking, CRM and automated reminders via WhatsApp, Telegram & Email. Zero commission. Self-hosted or cloud.',
   keywords:
@@ -18,7 +18,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: 'website',
     url: 'https://trypronto.app/for/salons',
-    title: 'Free Salon Management Software — POS, Booking & CRM | Pronto',
+    title: 'Free Salon Management Software | Pronto',
     description:
       'Free salon POS, appointment booking and CRM. Clients book without creating an account. Zero commission. Self-hosted or cloud.',
     images: [{ url: 'https://trypronto.app/og-salons.png' }],
@@ -27,7 +27,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Free Salon Management Software — POS, Booking & CRM | Pronto',
+    title: 'Free Salon Management Software | Pronto',
     description:
       'Free salon POS, appointment booking and CRM. Zero commission. Clients book without an account.',
     images: ['https://trypronto.app/og-salons.png'],

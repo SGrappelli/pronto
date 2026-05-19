@@ -14,6 +14,7 @@ const TO_EN: Record<string, string> = {
   '/for/dental': '/for/dental', '/es/para/clinica-dental': '/for/dental', '/pt/para/clinica-dental': '/for/dental',
   '/for/cafes': '/for/cafes', '/es/para/cafeteria': '/for/cafes', '/pt/para/cafeteria': '/for/cafes',
   '/for/tattoo': '/for/tattoo', '/es/para/tatuajes': '/for/tattoo', '/pt/para/tatuagens': '/for/tattoo',
+  '/for/auto-repair': '/for/auto-repair', '/es/para/autoservicio': '/for/auto-repair', '/pt/para/auto-repair': '/for/auto-repair',
   '/docs': '/docs', '/es/docs': '/docs', '/pt/docs': '/docs',
 }
 
@@ -22,21 +23,21 @@ const BY_LANG: Record<string, Record<string, string>> = {
     '/': '/', '/pricing': '/pricing', '/for': '/for',
     '/for/salons': '/for/salons', '/for/barbershops': '/for/barbershops',
     '/for/fitness': '/for/fitness', '/for/spa': '/for/spa',
-    '/for/dental': '/for/dental', '/for/cafes': '/for/cafes', '/for/tattoo': '/for/tattoo',
+    '/for/dental': '/for/dental', '/for/cafes': '/for/cafes', '/for/tattoo': '/for/tattoo', '/for/auto-repair': '/for/auto-repair',
     '/docs': '/docs',
   },
   es: {
     '/': '/es/', '/pricing': '/es/precios', '/for': '/es/para',
     '/for/salons': '/es/para/salones', '/for/barbershops': '/es/para/barberia',
     '/for/fitness': '/es/para/gimnasio', '/for/spa': '/es/para/spa',
-    '/for/dental': '/es/para/clinica-dental', '/for/cafes': '/es/para/cafeteria', '/for/tattoo': '/es/para/tatuajes',
+    '/for/dental': '/es/para/clinica-dental', '/for/cafes': '/es/para/cafeteria', '/for/tattoo': '/es/para/tatuajes', '/for/auto-repair': '/es/para/autoservicio',
     '/docs': '/es/docs',
   },
   pt: {
     '/': '/pt/', '/pricing': '/pt/precos', '/for': '/pt/para',
     '/for/salons': '/pt/para/saloes', '/for/barbershops': '/pt/para/barbearia',
     '/for/fitness': '/pt/para/academia', '/for/spa': '/pt/para/spa',
-    '/for/dental': '/pt/para/clinica-dental', '/for/cafes': '/pt/para/cafeteria', '/for/tattoo': '/pt/para/tatuagens',
+    '/for/dental': '/pt/para/clinica-dental', '/for/cafes': '/pt/para/cafeteria', '/for/tattoo': '/pt/para/tatuagens', '/for/auto-repair': '/pt/para/auto-repair',
     '/docs': '/pt/docs',
   },
 }

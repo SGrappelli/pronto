@@ -1,7 +1,7 @@
 ﻿import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: 'Free Tattoo Studio Management Software — Booking, Deposits & CRM | Pronto',
+  title: 'Free Tattoo Studio Software — Booking & CRM | Pronto',
   description:
     'Free tattoo studio management software with appointment booking, deposit tracking, client CRM and automated reminders via WhatsApp, Telegram & Email. Zero commission. Self-hosted or cloud.',
   keywords:
@@ -18,7 +18,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: 'website',
     url: 'https://trypronto.app/for/tattoo',
-    title: 'Free Tattoo Studio Management Software — Booking, Deposits & CRM | Pronto',
+    title: 'Free Tattoo Studio Software — Booking & CRM | Pronto',
     description:
       'Free tattoo studio booking, deposit tracking and client CRM. Clients book without creating an account. Zero commission. Self-hosted or cloud.',
     images: [{ url: 'https://trypronto.app/og-tattoo.png' }],
@@ -27,7 +27,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Free Tattoo Studio Management Software — Booking, Deposits & CRM | Pronto',
+    title: 'Free Tattoo Studio Software — Booking & CRM | Pronto',
     description:
       'Free tattoo studio booking, deposit tracking and client CRM. Clients book without creating an account. Zero commission. Self-hosted or cloud.',
     images: ['https://trypronto.app/og-tattoo.png'],

@@ -258,6 +258,21 @@ const LANGUAGE_ALTERNATES: Record<string, Record<string, string>> = {
     es: 'https://trypronto.app/es/para/cafeteria',
     'pt-BR': 'https://trypronto.app/pt/para/cafeteria',
   },
+  '/pricing': {
+    en: 'https://trypronto.app/pricing',
+    es: 'https://trypronto.app/es/precios',
+    'pt-BR': 'https://trypronto.app/pt/precos',
+  },
+  '/es/precios': {
+    en: 'https://trypronto.app/pricing',
+    es: 'https://trypronto.app/es/precios',
+    'pt-BR': 'https://trypronto.app/pt/precos',
+  },
+  '/pt/precos': {
+    en: 'https://trypronto.app/pricing',
+    es: 'https://trypronto.app/es/precios',
+    'pt-BR': 'https://trypronto.app/pt/precos',
+  },
 }
 
 const ROUTE_PRIORITIES: Record<string, number> = {
