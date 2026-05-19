@@ -3,16 +3,13 @@ import { createClient as createServerClient } from '@/lib/supabase/server'
 import { createClient } from '@supabase/supabase-js'
 import { tierFromPlanName } from '@/lib/whop'
 
-const WHOP_API = 'https://api.whop.com/api/v2'
-
-async function whopGet(path: string, apiKey: string) {
-  const res = await fetch(`${WHOP_API}${path}`, {
-    headers: { Authorization: `Bearer ${apiKey}` },
+async function whopFetch(url: string, apiKey: string) {
+  const res = await fetch(url, {
+    headers: { Authorization: `Bearer ${apiKey}`, 'Content-Type': 'application/json' },
   })
   const text = await res.text()
-  console.log('[billing/sync] Whop', path, res.status, text.slice(0, 300))
-  if (!res.ok) return { ok: false, status: res.status, data: null }
-  return { ok: true, status: res.status, data: JSON.parse(text) }
+  console.log('[billing/sync] GET', url, '→', res.status, text.slice(0, 400))
+  return { status: res.status, ok: res.ok, body: text }
 }
 
 export async function POST(req: NextRequest) {
@@ -38,20 +35,38 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'Sync unavailable — WHOP_API_KEY not configured' }, { status: 503 })
   }
 
-  try {
-    // Fetch all valid memberships for this API key and match by business_id or email
-    const result = await whopGet('/memberships?valid=true&per_page=50', apiKey)
+  // Try multiple Whop API URL patterns — logs will show which one works
+  const candidates = [
+    'https://api.whop.com/api/v2/memberships?valid=true&per_page=10',
+    'https://api.whop.com/v2/memberships?valid=true&per_page=10',
+    'https://api.whop.com/api/v5/memberships?valid=true&per_page=10',
+    'https://api.whop.com/v5/memberships?valid=true&per_page=10',
+  ]
 
-    if (!result.ok) {
-      return NextResponse.json(
-        { error: `Whop API error ${result.status} — check server logs` },
-        { status: 502 }
-      )
+  let memberships: Record<string, unknown>[] = []
+  let foundUrl = ''
+
+  for (const url of candidates) {
+    const { ok, body } = await whopFetch(url, apiKey)
+    if (ok) {
+      try {
+        const json = JSON.parse(body)
+        memberships = json.data ?? json.memberships ?? []
+        foundUrl = url
+        console.log('[billing/sync] working URL:', url, 'memberships:', memberships.length)
+      } catch { /* ignore parse errors */ }
+      break
     }
+  }
 
-    const memberships: Record<string, unknown>[] = result.data?.data ?? []
-    console.log('[billing/sync] total memberships:', memberships.length)
+  if (!foundUrl) {
+    return NextResponse.json(
+      { error: 'Whop API unreachable — check server logs for details' },
+      { status: 502 }
+    )
+  }
 
+  try {
     // 1. Match by metadata.business_id
     let match = memberships.find((m) => {
       const meta = (m.metadata ?? {}) as Record<string, unknown>
@@ -66,7 +81,7 @@ export async function POST(req: NextRequest) {
       })
     }
 
-    // 3. If only one membership exists — take it
+    // 3. Only one membership — take it
     if (!match && memberships.length === 1) {
       match = memberships[0]
     }
@@ -82,7 +97,7 @@ export async function POST(req: NextRequest) {
         .update({ subscription_tier: tier, whop_membership_id: membershipId })
         .eq('id', biz.id)
 
-      console.log('[billing/sync] updated to', tier, membershipId)
+      console.log('[billing/sync] updated to', tier)
       return NextResponse.json({ tier, membershipId })
     }
 
