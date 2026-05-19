@@ -46,7 +46,7 @@ export function OnboardingChecklist({ businessId }: Props) {
       supabase.from('appointments').select('id', { count: 'exact', head: true }).eq('business_id', businessId),
       supabase
         .from('businesses')
-        .select('telegram_bot_token, viber_bot_token, meta_whatsapp_phone_number_id, smtp_host')
+        .select('telegram_bot_token, viber_bot_token, owner_whatsapp, smtp_host')
         .eq('id', businessId)
         .maybeSingle(),
     ]).then(([svc, cli, appt, bizResult]) => {
@@ -58,7 +58,7 @@ export function OnboardingChecklist({ businessId }: Props) {
         hasBooking: (appt.count ?? 0) > 0,
         hasNotification: !!(
           b?.telegram_bot_token ||
-          b?.meta_whatsapp_phone_number_id ||
+          b?.owner_whatsapp ||
           b?.viber_bot_token ||
           (b?.smtp_host && b.smtp_host.trim() !== '')
         ),
