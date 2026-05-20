@@ -1126,6 +1126,7 @@ function BillingTab({ businessId, currentTier, onTierUpdate }: { businessId: str
       }
       if (json.notFound) {
         setSyncStatus('not_found')
+        onTierUpdate('free')
         return
       }
       setSyncedTier(json.tier)
@@ -1227,7 +1228,7 @@ function BillingTab({ businessId, currentTier, onTierUpdate }: { businessId: str
         {syncStatus === 'ok' && (
           <div className="mt-2 flex items-center gap-2 text-xs text-green-700 bg-green-50 border border-green-200 rounded-lg px-3 py-2">
             <CheckCircle2 className="w-3.5 h-3.5 shrink-0" />
-            Plan updated to <strong className="capitalize">{syncedTier}</strong>. Refreshing…
+            Plan updated to <strong className="capitalize">{syncedTier}</strong>!
           </div>
         )}
         {syncStatus === 'not_found' && (

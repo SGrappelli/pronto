@@ -47,7 +47,8 @@ export async function POST(req: NextRequest) {
     const memberships: Record<string, unknown>[] = json.data ?? []
     console.log('[billing/sync] memberships found:', memberships.length)
 
-    // Match by metadata.business_id → email → first (if only one)
+    // Match by metadata.business_id → email only
+    // Never use "only one membership" fallback — that can assign another user's subscription
     let match = memberships.find((m) => {
       const meta = (m.metadata ?? {}) as Record<string, unknown>
       return meta.business_id === biz.id
@@ -55,12 +56,15 @@ export async function POST(req: NextRequest) {
     if (!match) {
       match = memberships.find((m) => m.email === user.email)
     }
-    if (!match && memberships.length === 1) {
-      match = memberships[0]
-    }
 
     if (!match) {
-      return NextResponse.json({ tier: biz.subscription_tier ?? 'free', notFound: true })
+      // No active subscription — reset tier to free in DB
+      await supabaseAdmin
+        .from('businesses')
+        .update({ subscription_tier: 'free', whop_membership_id: null })
+        .eq('id', biz.id)
+      console.log('[billing/sync] no match — reset to free for business:', biz.id)
+      return NextResponse.json({ tier: 'free', notFound: true })
     }
 
     const membershipId = match.id as string
