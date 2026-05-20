@@ -1114,6 +1114,8 @@ const TIER_ORDER: PlanTier[] = ['free', 'starter', 'pro', 'agency']
 function BillingTab({ businessId, currentTier, onTierUpdate }: { businessId: string; currentTier: PlanTier; onTierUpdate: (tier: PlanTier) => void }) {
   const [syncStatus, setSyncStatus] = useState<'idle' | 'loading' | 'ok' | 'error' | 'not_found'>('idle')
   const [syncedTier, setSyncedTier] = useState<string>('')
+  // Local copy of tier so UI updates immediately without waiting for parent re-render
+  const [displayTier, setDisplayTier] = useState<PlanTier>(currentTier)
 
   async function syncPlan() {
     setSyncStatus('loading')
@@ -1125,13 +1127,16 @@ function BillingTab({ businessId, currentTier, onTierUpdate }: { businessId: str
         return
       }
       if (json.notFound) {
-        setSyncStatus('not_found')
+        setDisplayTier('free')
         onTierUpdate('free')
+        setSyncStatus('not_found')
         return
       }
+      const newTier = json.tier as PlanTier
+      setDisplayTier(newTier)
       setSyncedTier(json.tier)
       setSyncStatus('ok')
-      onTierUpdate(json.tier as PlanTier)
+      onTierUpdate(newTier)
     } catch {
       setSyncStatus('error')
     }
@@ -1141,8 +1146,8 @@ function BillingTab({ businessId, currentTier, onTierUpdate }: { businessId: str
     <div className="space-y-6">
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {PLANS.map((plan) => {
-          const isCurrent = plan.tier === currentTier
-          const isUpgrade = TIER_ORDER.indexOf(plan.tier) > TIER_ORDER.indexOf(currentTier)
+          const isCurrent = plan.tier === displayTier
+          const isUpgrade = TIER_ORDER.indexOf(plan.tier) > TIER_ORDER.indexOf(displayTier)
           const checkoutUrl = getWhopCheckoutUrl(plan.tier, businessId)
 
           return (
