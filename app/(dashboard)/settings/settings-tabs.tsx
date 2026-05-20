@@ -964,7 +964,11 @@ export function SettingsTabs({ business: initial, services: initServices, employ
 
       {/* Billing */}
       {tab === 'billing' && (
-        <BillingTab businessId={biz.id} currentTier={(biz.subscription_tier ?? 'free') as PlanTier} />
+        <BillingTab
+          businessId={biz.id}
+          currentTier={(biz.subscription_tier ?? 'free') as PlanTier}
+          onTierUpdate={(tier) => setBiz((b) => ({ ...b, subscription_tier: tier }))}
+        />
       )}
 
       {/* Account */}
@@ -1107,8 +1111,7 @@ const PLANS: { tier: PlanTier; name: string; price: string; features: string[] }
 
 const TIER_ORDER: PlanTier[] = ['free', 'starter', 'pro', 'agency']
 
-function BillingTab({ businessId, currentTier }: { businessId: string; currentTier: PlanTier }) {
-  const router = useRouter()
+function BillingTab({ businessId, currentTier, onTierUpdate }: { businessId: string; currentTier: PlanTier; onTierUpdate: (tier: PlanTier) => void }) {
   const [syncStatus, setSyncStatus] = useState<'idle' | 'loading' | 'ok' | 'error' | 'not_found'>('idle')
   const [syncedTier, setSyncedTier] = useState<string>('')
 
@@ -1127,7 +1130,7 @@ function BillingTab({ businessId, currentTier }: { businessId: string; currentTi
       }
       setSyncedTier(json.tier)
       setSyncStatus('ok')
-      setTimeout(() => router.refresh(), 800)
+      onTierUpdate(json.tier as PlanTier)
     } catch {
       setSyncStatus('error')
     }
