@@ -1,8 +1,9 @@
 export function tierFromPlanName(name: string): 'free' | 'starter' | 'pro' | 'agency' {
   const n = name.toLowerCase()
   if (n.includes('agency')) return 'agency'
-  if (n.includes('pro')) return 'pro'
   if (n.includes('starter')) return 'starter'
+  // Use word boundary so "pronto" doesn't match "pro"
+  if (/\bpro\b/.test(n)) return 'pro'
   return 'free'
 }
 
