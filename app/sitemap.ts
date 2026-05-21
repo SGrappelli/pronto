@@ -13,7 +13,8 @@ const EXCLUDED_ROUTE_PREFIXES = [
   '/check-email', '/offline', '/onboarding',
   '/forgot-password', '/reset-password',
   '/book',           // subdomain booking page — returns 404 on main domain
-  '/es/para/dental', // legacy redirect slug — canonical is /es/para/clinica-dental
+  '/es/para/dental',      // legacy redirect slug — canonical is /es/para/clinica-dental
+  '/es/para/auto-repair', // legacy redirect slug — canonical is /es/para/autoservicio
 ]
 
 // Priority map for known routes; everything else gets 0.6
