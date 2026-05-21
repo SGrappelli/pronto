@@ -22,8 +22,12 @@ export default async function CRMPage({
 
   if (!business) return null
 
+  // ── Clients query — includes trigger-maintained aggregate fields ──────────
+  // total_visits, total_spent, last_visit_at are kept in sync by the
+  // update_client_stats() trigger (migration 008) on every completed transaction.
+  // No separate transactions aggregation query needed.
   let query = supabase.from('clients')
-    .select('id, name, phone, email, tags, created_at')
+    .select('id, name, phone, email, tags, created_at, total_visits, total_spent, last_visit_at')
     .eq('business_id', business.id)
     .order('name')
     .limit(50)
@@ -36,34 +40,6 @@ export default async function CRMPage({
   }
 
   const { data: clients } = await query
-
-  // Compute visits, spent, last visit, and last service name live from transactions
-  const clientIds = (clients ?? []).map((c) => c.id)
-  const statsMap: Record<string, { total_visits: number; total_spent: number; last_visit_at: string | null; lastService: string | null }> = {}
-  if (clientIds.length > 0) {
-    const { data: txs } = await supabase
-      .from('transactions')
-      .select('client_id, amount, created_at, items')
-      .eq('business_id', business.id)
-      .eq('status', 'completed')
-      .in('client_id', clientIds)
-      .order('created_at', { ascending: false })
-      .limit(500)
-    for (const tx of txs ?? []) {
-      if (!tx.client_id) continue
-      if (!statsMap[tx.client_id]) {
-        statsMap[tx.client_id] = { total_visits: 0, total_spent: 0, last_visit_at: null, lastService: null }
-      }
-      statsMap[tx.client_id].total_visits++
-      statsMap[tx.client_id].total_spent += tx.amount
-      if (!statsMap[tx.client_id].last_visit_at) statsMap[tx.client_id].last_visit_at = tx.created_at
-      if (!statsMap[tx.client_id].lastService) {
-        const items = Array.isArray(tx.items) ? tx.items : []
-        const name = (items[0] as any)?.name
-        if (name) statsMap[tx.client_id].lastService = name
-      }
-    }
-  }
 
   return (
     <>
@@ -109,7 +85,6 @@ export default async function CRMPage({
                   <th className="text-left px-4 py-3 font-medium">{t('table.name')}</th>
                   <th className="text-left px-4 py-3 font-medium">{t('table.contact')}</th>
                   <th className="text-left px-4 py-3 font-medium hidden md:table-cell">{t('table.tags')}</th>
-                  <th className="text-left px-4 py-3 font-medium hidden xl:table-cell">{t('table.lastService')}</th>
                   <th className="text-right px-4 py-3 font-medium hidden lg:table-cell">{t('table.visits')}</th>
                   <th className="text-right px-4 py-3 font-medium hidden lg:table-cell">{t('table.spent')}</th>
                   <th className="text-right px-4 py-3 font-medium hidden md:table-cell">{t('table.lastVisit')}</th>
@@ -132,15 +107,16 @@ export default async function CRMPage({
                         {c.tags.map((tag) => <Badge key={tag} variant="secondary" className="text-xs">{tag}</Badge>)}
                       </div>
                     </td>
-                    <td className="px-4 py-3 hidden xl:table-cell text-gray-600 text-sm">
-                      {statsMap[c.id]?.lastService ?? <span className="text-gray-300">—</span>}
+                    <td className="px-4 py-3 text-right hidden lg:table-cell text-gray-700">
+                      {c.total_visits ?? 0}
                     </td>
-                    <td className="px-4 py-3 text-right hidden lg:table-cell text-gray-700">{statsMap[c.id]?.total_visits ?? 0}</td>
                     <td className="px-4 py-3 text-right hidden lg:table-cell font-medium text-gray-900">
-                      {formatCurrency(statsMap[c.id]?.total_spent ?? 0, business.currency)}
+                      {formatCurrency(Number(c.total_spent ?? 0), business.currency)}
                     </td>
                     <td className="px-4 py-3 text-right hidden md:table-cell text-gray-500">
-                      {statsMap[c.id]?.last_visit_at ? formatInBusinessTimezone(statsMap[c.id]!.last_visit_at!, business.timezone) : '—'}
+                      {c.last_visit_at
+                        ? formatInBusinessTimezone(c.last_visit_at, business.timezone)
+                        : '—'}
                     </td>
                   </tr>
                 ))}

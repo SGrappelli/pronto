@@ -3,7 +3,6 @@
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { X, TrendingUp } from 'lucide-react'
-import { createClient } from '@/lib/supabase/client'
 
 const DISMISS_KEY = 'pronto_soft_limit_dismiss'
 const DISMISS_DURATION_MS = 7 * 24 * 60 * 60 * 1000 // 7 days
@@ -20,53 +19,41 @@ function isDismissed(): boolean {
   }
 }
 
-export function SoftLimitBanner() {
+interface SoftLimitBannerProps {
+  /** subscription_tier from businesses table ('free' | 'starter' | 'pro' | 'agency') */
+  plan: string
+  /** current total client count for this business */
+  clientCount: number
+  /** current month appointment count for this business */
+  bookingCount: number
+}
+
+// All data is passed from the server-side layout — no Supabase calls here.
+// This eliminates 3 client-side queries (getUser + businesses + 2 counts)
+// that previously ran on every dashboard page load.
+export function SoftLimitBanner({ plan, clientCount, bookingCount }: SoftLimitBannerProps) {
   const [warning, setWarning] = useState<{ label: string; current: number; limit: number } | null>(null)
   const [visible, setVisible] = useState(false)
 
   useEffect(() => {
+    // Paid plans never hit free limits
+    if (plan !== 'free') return
+    // Respect 7-day dismiss (stored in localStorage — client-only check)
     if (isDismissed()) return
 
-    const supabase = createClient()
+    // Priority: bookings first, then clients
+    const hit =
+      bookingCount / FREE_LIMITS.bookings >= 0.8
+        ? { label: 'bookings this month', current: bookingCount, limit: FREE_LIMITS.bookings }
+        : clientCount / FREE_LIMITS.clients >= 0.8
+          ? { label: 'clients', current: clientCount, limit: FREE_LIMITS.clients }
+          : null
 
-    async function check() {
-      const { data: { user } } = await supabase.auth.getUser()
-      if (!user) return
-
-      const { data: biz } = await supabase
-        .from('businesses')
-        .select('id, subscription_tier')
-        .eq('owner_id', user.id)
-        .maybeSingle()
-
-      if (!biz || (biz.subscription_tier && biz.subscription_tier !== 'free')) return
-
-      const now = new Date()
-      const monthStart = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), 1)).toISOString()
-      const monthEnd   = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth() + 1, 1)).toISOString()
-
-      const [{ count: bookingCount }, { count: clientCount }] = await Promise.all([
-        supabase.from('appointments').select('id', { count: 'exact', head: true })
-          .eq('business_id', biz.id).gte('starts_at', monthStart).lt('starts_at', monthEnd),
-        supabase.from('clients').select('id', { count: 'exact', head: true }).eq('business_id', biz.id),
-      ])
-
-      // Priority: bookings first, then clients. Team members excluded from banner.
-      const hit =
-        (bookingCount ?? 0) / FREE_LIMITS.bookings >= 0.8
-          ? { label: 'bookings this month', current: bookingCount ?? 0, limit: FREE_LIMITS.bookings }
-          : (clientCount ?? 0) / FREE_LIMITS.clients >= 0.8
-            ? { label: 'clients', current: clientCount ?? 0, limit: FREE_LIMITS.clients }
-            : null
-
-      if (hit) {
-        setWarning(hit)
-        setVisible(true)
-      }
+    if (hit) {
+      setWarning(hit)
+      setVisible(true)
     }
-
-    check()
-  }, [])
+  }, [plan, clientCount, bookingCount])
 
   function dismiss() {
     try { localStorage.setItem(DISMISS_KEY, String(Date.now())) } catch { /* */ }
