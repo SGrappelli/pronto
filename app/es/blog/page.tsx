@@ -30,7 +30,7 @@ const pageStyles = `
 body{font-family:'DM Sans',sans-serif;color:#111;background:#fff;-webkit-font-smoothing:antialiased}
 h1,h2,h3,h4{font-family:'Bricolage Grotesque',sans-serif}
 nav{position:sticky;top:0;z-index:100;background:rgba(255,255,255,0.96);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border-bottom:1px solid #f0f0f0;padding:0 48px;height:64px;display:flex;align-items:center;justify-content:space-between}
-.nav-brand{font-size:22px;font-weight:800;color:#111;text-decoration:none;letter-spacing:-0.5px}
+.nav-brand{font-family:'Bricolage Grotesque',sans-serif;font-size:22px;font-weight:800;color:#111;text-decoration:none;letter-spacing:-0.5px}
 .nav-brand span{color:#16a34a}
 .nav-right{display:flex;align-items:center;gap:24px}
 .nav-link{font-size:16px;color:#374151;text-decoration:none;font-weight:500}
