@@ -114,17 +114,15 @@ export default function PtBlogPostPage({ params }: { params: { slug: string } })
     mainEntityOfPage: { '@type': 'WebPage', '@id': canonical },
   }
 
-  const langSwitcherMap = JSON.stringify({
-    en: post.translations?.en ? `/blog/${post.translations.en}` : '/blog',
-    es: post.translations?.es ? `/es/blog/${post.translations.es}` : '/es/blog',
-    pt: `/pt/blog/${post.slug}`,
-  })
+  const enHref = post.translations?.en ? `/blog/${post.translations.en}` : '/blog'
+  const esHref = post.translations?.es ? `/es/blog/${post.translations.es}` : '/es/blog'
+  const ptHref = `/pt/blog/${post.slug}`
+  const langSwitcherMap = `{en:'${enHref}',es:'${esHref}',pt:'${ptHref}'}`
 
   const pageContent = `
 <nav>
   <a href="/pt/" class="nav-brand">Pronto<span>.</span></a>
   <div class="nav-right">
-    <a href="/pt/blog" class="nav-link hide-mob">Blog</a>
     <a href="/pt/precos" class="nav-link hide-mob">Pre&ccedil;os</a>
     <a href="/login" class="nav-link" onclick="window.gtag&&window.gtag('event','sign_in_click',{location:'navbar',language:'pt'})">Entrar</a>
     <select aria-label="Idioma" onchange="var l=this.value;var m=${langSwitcherMap};if(window.gtag)window.gtag('event','language_switch',{to:l});window.location.href=m[l]||'/';" style="font-size:0.85rem;font-family:inherit;font-weight:500;border:1px solid #d1d5db;border-radius:6px;padding:4px 6px;background:transparent;cursor:pointer;color:inherit;appearance:none;-webkit-appearance:none;min-width:52px;"><option value="en">EN</option><option value="es">ES</option><option value="pt" selected>PT</option></select>
@@ -170,9 +168,8 @@ export default function PtBlogPostPage({ params }: { params: { slug: string } })
       <a href="/pt/blog">Blog</a>
     </div>
     <div class="footer-col">
-      <div class="footer-col-head">Recursos</div>
-      <a href="/pt/docs">Documenta&ccedil;&atilde;o</a>
-      <a href="https://github.com/SGrappelli/pronto">GitHub</a>
+      <div class="footer-col-head">Comparar</div>
+      <a href="/pt/vs">Comparativos</a>
     </div>
     <div class="footer-col">
       <div class="footer-col-head">Legal</div>

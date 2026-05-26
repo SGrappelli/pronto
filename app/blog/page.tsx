@@ -88,7 +88,6 @@ export default function BlogIndexPage() {
 <nav>
   <a href="/" class="nav-brand">Pronto<span>.</span></a>
   <div class="nav-right">
-    <a href="/blog" class="nav-link hide-mob">Blog</a>
     <a href="/pricing" class="nav-link hide-mob">Pricing</a>
     <a href="/login" class="nav-link" onclick="window.gtag&&window.gtag('event','sign_in_click',{location:'navbar',language:'en'})">Sign in</a>
     <select aria-label="Language" onchange="var l=this.value;var m={en:'/blog',es:'/es/blog',pt:'/pt/blog'};if(window.gtag)window.gtag('event','language_switch',{to:l});window.location.href=m[l]||'/';" style="font-size:0.85rem;font-family:inherit;font-weight:500;border:1px solid #d1d5db;border-radius:6px;padding:4px 6px;background:transparent;cursor:pointer;color:inherit;appearance:none;-webkit-appearance:none;min-width:52px;"><option value="en" selected>EN</option><option value="es">ES</option><option value="pt">PT</option></select>
@@ -120,9 +119,8 @@ export default function BlogIndexPage() {
       <a href="/blog">Blog</a>
     </div>
     <div class="footer-col">
-      <div class="footer-col-head">Resources</div>
-      <a href="/docs">Documentation</a>
-      <a href="https://github.com/SGrappelli/pronto">GitHub</a>
+      <div class="footer-col-head">Compare</div>
+      <a href="/vs">All comparisons</a>
     </div>
     <div class="footer-col">
       <div class="footer-col-head">Legal</div>

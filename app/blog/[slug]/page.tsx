@@ -129,17 +129,15 @@ export default function BlogPostPage({ params }: { params: { slug: string } }) {
     mainEntityOfPage: { '@type': 'WebPage', '@id': canonical },
   }
 
-  const langSwitcherMap = JSON.stringify({
-    en: `/blog/${post.slug}`,
-    es: post.translations?.es ? `/es/blog/${post.translations.es}` : '/es/blog',
-    pt: post.translations?.pt ? `/pt/blog/${post.translations.pt}` : '/pt/blog',
-  })
+  const enHref = `/blog/${post.slug}`
+  const esHref = post.translations?.es ? `/es/blog/${post.translations.es}` : '/es/blog'
+  const ptHref = post.translations?.pt ? `/pt/blog/${post.translations.pt}` : '/pt/blog'
+  const langSwitcherMap = `{en:'${enHref}',es:'${esHref}',pt:'${ptHref}'}`
 
   const pageContent = `
 <nav>
   <a href="/" class="nav-brand">Pronto<span>.</span></a>
   <div class="nav-right">
-    <a href="/blog" class="nav-link hide-mob">Blog</a>
     <a href="/pricing" class="nav-link hide-mob">Pricing</a>
     <a href="/login" class="nav-link" onclick="window.gtag&&window.gtag('event','sign_in_click',{location:'navbar',language:'en'})">Sign in</a>
     <select aria-label="Language" onchange="var l=this.value;var m=${langSwitcherMap};if(window.gtag)window.gtag('event','language_switch',{to:l});window.location.href=m[l]||'/';" style="font-size:0.85rem;font-family:inherit;font-weight:500;border:1px solid #d1d5db;border-radius:6px;padding:4px 6px;background:transparent;cursor:pointer;color:inherit;appearance:none;-webkit-appearance:none;min-width:52px;"><option value="en" selected>EN</option><option value="es">ES</option><option value="pt">PT</option></select>
@@ -185,9 +183,8 @@ export default function BlogPostPage({ params }: { params: { slug: string } }) {
       <a href="/blog">Blog</a>
     </div>
     <div class="footer-col">
-      <div class="footer-col-head">Resources</div>
-      <a href="/docs">Documentation</a>
-      <a href="https://github.com/SGrappelli/pronto">GitHub</a>
+      <div class="footer-col-head">Compare</div>
+      <a href="/vs">All comparisons</a>
     </div>
     <div class="footer-col">
       <div class="footer-col-head">Legal</div>
