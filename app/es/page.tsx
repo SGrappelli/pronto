@@ -659,6 +659,7 @@ export default function EsPage() {
             <div style={{fontSize:'11px',fontWeight:700,letterSpacing:'1.2px',textTransform:'uppercase' as const,color:'#9ca3af',marginBottom:'14px'}}>Producto</div>
             <Link href="/es/precios" style={{display:'block',fontSize:'14px',color:'#6b7280',textDecoration:'none',marginBottom:'10px'}}>Precios</Link>
             <Link href="/es/para/" style={{display:'block',fontSize:'14px',color:'#6b7280',textDecoration:'none',marginBottom:'10px'}}>Para negocios</Link>
+            <Link href="/es/blog" style={{display:'block',fontSize:'14px',color:'#6b7280',textDecoration:'none',marginBottom:'10px'}}>Blog</Link>
           </div>
           <div>
             <div style={{fontSize:'11px',fontWeight:700,letterSpacing:'1.2px',textTransform:'uppercase' as const,color:'#9ca3af',marginBottom:'14px'}}>Comparar</div>

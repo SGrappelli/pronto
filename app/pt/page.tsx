@@ -709,6 +709,7 @@ export default function PtPage() {
             <div style={{fontSize:'11px',fontWeight:700,letterSpacing:'1.2px',textTransform:'uppercase' as const,color:'#9ca3af',marginBottom:'14px'}}>Produto</div>
             <Link href="/pt/precos" style={{display:'block',fontSize:'14px',color:'#6b7280',textDecoration:'none',marginBottom:'10px'}}>Preços</Link>
             <Link href="/pt/para/" style={{display:'block',fontSize:'14px',color:'#6b7280',textDecoration:'none',marginBottom:'10px'}}>Para negócios</Link>
+            <Link href="/pt/blog" style={{display:'block',fontSize:'14px',color:'#6b7280',textDecoration:'none',marginBottom:'10px'}}>Blog</Link>
           </div>
           <div>
             <div style={{fontSize:'11px',fontWeight:700,letterSpacing:'1.2px',textTransform:'uppercase' as const,color:'#9ca3af',marginBottom:'14px'}}>Comparar</div>

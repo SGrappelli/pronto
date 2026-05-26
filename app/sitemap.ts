@@ -1,6 +1,7 @@
 import type { MetadataRoute } from 'next'
 import fs from 'fs'
 import path from 'path'
+import { getPosts } from '@/lib/blog'
 
 const BASE_URL = 'https://trypronto.app'
 
@@ -259,6 +260,21 @@ const LANGUAGE_ALTERNATES: Record<string, Record<string, string>> = {
     es: 'https://trypronto.app/es/para/cafeteria',
     'pt-BR': 'https://trypronto.app/pt/para/cafeteria',
   },
+  '/blog': {
+    en: 'https://trypronto.app/blog',
+    es: 'https://trypronto.app/es/blog',
+    'pt-BR': 'https://trypronto.app/pt/blog',
+  },
+  '/es/blog': {
+    en: 'https://trypronto.app/blog',
+    es: 'https://trypronto.app/es/blog',
+    'pt-BR': 'https://trypronto.app/pt/blog',
+  },
+  '/pt/blog': {
+    en: 'https://trypronto.app/blog',
+    es: 'https://trypronto.app/es/blog',
+    'pt-BR': 'https://trypronto.app/pt/blog',
+  },
   '/pricing': {
     en: 'https://trypronto.app/pricing',
     es: 'https://trypronto.app/es/precios',
@@ -326,6 +342,9 @@ const ROUTE_PRIORITIES: Record<string, number> = {
   '/docs': 0.8,
   '/es/docs': 0.8,
   '/pt/docs': 0.8,
+  '/blog': 0.8,
+  '/es/blog': 0.8,
+  '/pt/blog': 0.8,
   '/register': 0.7,
   '/login': 0.5,
 }
@@ -389,7 +408,19 @@ function getPriority(route: string): number {
 export default function sitemap(): MetadataRoute.Sitemap {
   const appDir = path.join(process.cwd(), 'app')
 
-  return walkPages(appDir)
+  const blogPostEntries: MetadataRoute.Sitemap = (['en', 'es', 'pt'] as const).flatMap(locale => {
+    const posts = getPosts(locale)
+    return posts.map(post => ({
+      url: locale === 'en'
+        ? `${BASE_URL}/blog/${post.slug}`
+        : `${BASE_URL}/${locale}/blog/${post.slug}`,
+      lastModified: new Date(post.date),
+      changeFrequency: 'monthly' as const,
+      priority: 0.7,
+    }))
+  })
+
+  const staticEntries = walkPages(appDir)
     .filter(f => !isExcludedByPath(f))
     .map(f => ({ file: f, route: fileToRoute(f, appDir) }))
     .filter((item): item is { file: string; route: string } => item.route !== null)
@@ -397,9 +428,11 @@ export default function sitemap(): MetadataRoute.Sitemap {
     .filter(({ file }) => !hasNoIndex(file))
     .map(({ route }) => ({
       url: `${BASE_URL}${route}`,
-      changeFrequency: (['/', '/es', '/pt', '/for', '/for/salons', '/es/para', '/pt/para', '/es/para/salones', '/for/barbershops', '/es/para/barberia', '/for/auto-repair', '/es/para/autoservicio', '/es/para/clinica-dental', '/pt/para/clinica-dental', '/es/para/gimnasio', '/pt/para/academia', '/pt/para/saloes', '/pt/para/barbearia', '/pt/para/auto-repair', '/pt/para/spa', '/for/spa', '/es/para/spa', '/for/cafes', '/es/para/cafeteria', '/pt/para/cafeteria', '/for/tattoo', '/es/para/tatuajes', '/pt/para/tatuagens', '/docs', '/es/docs', '/pt/docs'].includes(route) ? 'weekly' : 'monthly') as MetadataRoute.Sitemap[number]['changeFrequency'],
+      changeFrequency: (['/', '/es', '/pt', '/for', '/for/salons', '/es/para', '/pt/para', '/es/para/salones', '/for/barbershops', '/es/para/barberia', '/for/auto-repair', '/es/para/autoservicio', '/es/para/clinica-dental', '/pt/para/clinica-dental', '/es/para/gimnasio', '/pt/para/academia', '/pt/para/saloes', '/pt/para/barbearia', '/pt/para/auto-repair', '/pt/para/spa', '/for/spa', '/es/para/spa', '/for/cafes', '/es/para/cafeteria', '/pt/para/cafeteria', '/for/tattoo', '/es/para/tatuajes', '/pt/para/tatuagens', '/docs', '/es/docs', '/pt/docs', '/blog', '/es/blog', '/pt/blog'].includes(route) ? 'weekly' : 'monthly') as MetadataRoute.Sitemap[number]['changeFrequency'],
       priority: getPriority(route),
       lastModified: new Date(),
       ...(LANGUAGE_ALTERNATES[route] ? { alternates: { languages: LANGUAGE_ALTERNATES[route] } } : {}),
     }))
+
+  return [...staticEntries, ...blogPostEntries]
 }

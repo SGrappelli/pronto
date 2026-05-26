@@ -643,6 +643,7 @@ export default function RootPage() {
             <div style={{fontSize:'11px',fontWeight:700,letterSpacing:'1.2px',textTransform:'uppercase' as const,color:'#9ca3af',marginBottom:'14px'}}>Product</div>
             <Link href="/pricing" style={{display:'block',fontSize:'14px',color:'#6b7280',textDecoration:'none',marginBottom:'10px'}}>Pricing</Link>
             <Link href="/for" style={{display:'block',fontSize:'14px',color:'#6b7280',textDecoration:'none',marginBottom:'10px'}}>For businesses</Link>
+            <Link href="/blog" style={{display:'block',fontSize:'14px',color:'#6b7280',textDecoration:'none',marginBottom:'10px'}}>Blog</Link>
           </div>
           <div>
             <div style={{fontSize:'11px',fontWeight:700,letterSpacing:'1.2px',textTransform:'uppercase' as const,color:'#9ca3af',marginBottom:'14px'}}>Compare</div>
