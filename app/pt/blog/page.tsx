@@ -1,4 +1,4 @@
-import type { Metadata } from 'next'
+﻿import type { Metadata } from 'next'
 import { getPosts } from '@/lib/blog'
 
 export const metadata: Metadata = {
@@ -116,7 +116,6 @@ export default function PtBlogIndexPage() {
       <div class="footer-col-head">Produto</div>
       <a href="/pt/precos">Pre&ccedil;os</a>
       <a href="/pt/para/">Para neg&oacute;cios</a>
-      <a href="/pt/blog">Blog</a>
     </div>
     <div class="footer-col">
       <div class="footer-col-head">Comparar</div>

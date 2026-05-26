@@ -1,4 +1,4 @@
-import type { Metadata } from 'next'
+﻿import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
   title: 'Pronto vs Square Appointments — Global e Self-Hosted',
@@ -530,6 +530,7 @@ const pageContent = `
       <div class="footer-col-head">Produto</div>
       <a href="/pt/precos">Pre&ccedil;os</a>
       <a href="/pt/para/">Para neg&oacute;cios</a>
+      <a href="/pt/blog">Blog</a>
     </div>
     <div class="footer-col">
       <div class="footer-col-head">Comparar</div>

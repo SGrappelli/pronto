@@ -1,4 +1,4 @@
-import type { Metadata } from 'next'
+﻿import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
   title: 'Pronto vs Mindbody — Alternativa Gratis sin Contratos',
@@ -527,6 +527,7 @@ const pageContent = `
       <div class="footer-col-head">Producto</div>
       <a href="/es/precios">Precios</a>
       <a href="/es/para/">Para negocios</a>
+      <a href="/es/blog">Blog</a>
     </div>
     <div class="footer-col">
       <div class="footer-col-head">Comparar</div>

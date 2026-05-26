@@ -1,4 +1,4 @@
-import type { Metadata } from 'next'
+﻿import type { Metadata } from 'next'
 import { getPosts } from '@/lib/blog'
 
 export const metadata: Metadata = {
@@ -116,7 +116,6 @@ export default function BlogIndexPage() {
       <div class="footer-col-head">Product</div>
       <a href="/pricing">Pricing</a>
       <a href="/for">For businesses</a>
-      <a href="/blog">Blog</a>
     </div>
     <div class="footer-col">
       <div class="footer-col-head">Compare</div>

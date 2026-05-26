@@ -1,4 +1,4 @@
-import type { Metadata } from 'next'
+﻿import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
   title: 'Pronto vs Competitors — Free Alternative Comparison',
@@ -308,6 +308,7 @@ const pageContent = `
       <div class="footer-col-head">Product</div>
       <a href="/pricing">Pricing</a>
       <a href="/for">For businesses</a>
+      <a href="/blog">Blog</a>
     </div>
     <div class="footer-col">
       <div class="footer-col-head">Compare</div>
