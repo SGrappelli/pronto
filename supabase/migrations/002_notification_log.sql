@@ -9,6 +9,8 @@ create table if not exists notification_log (
   sent_at      timestamptz not null default now()
 );
 
+GRANT ALL ON TABLE public.notification_log TO anon, authenticated;
+
 create unique index notification_log_unique on notification_log (ref_id, type, channel);
 
 -- RLS

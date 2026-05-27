@@ -39,6 +39,31 @@ DNS changes, etc). Never assume I know what to do next.
 
 Constants in `lib/lemonsqueezy.ts` → `PLAN_LIMITS`. Enforcement in `lib/plan-limits.ts`.
 
+## Database migrations
+
+Every new migration that creates a table MUST include immediately after CREATE TABLE:
+
+```sql
+GRANT ALL ON TABLE public.table_name TO anon, authenticated;
+```
+
+**Why:** Supabase policy change (May 2026) — without this, new tables are inaccessible
+via PostgREST/supabase-js for the `anon` and `authenticated` roles after October 2026.
+RLS policies alone are not enough; the role must also have table-level GRANT.
+
+**Pattern:**
+```sql
+create table public.my_table (
+  id uuid primary key default uuid_generate_v4(),
+  ...
+);
+
+GRANT ALL ON TABLE public.my_table TO anon, authenticated;
+
+alter table public.my_table enable row level security;
+create policy "..." on public.my_table ...;
+```
+
 ## Workflow
 - Always push to private SaaS repo (origin = Pronto-saas)
 - Always commit with clear messages

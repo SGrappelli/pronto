@@ -24,6 +24,8 @@ create table public.businesses (
   updated_at    timestamptz not null default now()
 );
 
+GRANT ALL ON TABLE public.businesses TO anon, authenticated;
+
 -- ========================
 -- EMPLOYEES
 -- ========================
@@ -40,6 +42,8 @@ create table public.employees (
   created_at    timestamptz not null default now()
 );
 
+GRANT ALL ON TABLE public.employees TO anon, authenticated;
+
 -- ========================
 -- SERVICES
 -- ========================
@@ -54,6 +58,8 @@ create table public.services (
   is_active     boolean not null default true,
   created_at    timestamptz not null default now()
 );
+
+GRANT ALL ON TABLE public.services TO anon, authenticated;
 
 -- ========================
 -- CLIENTS
@@ -74,6 +80,8 @@ create table public.clients (
   last_visit_at timestamptz,
   created_at    timestamptz not null default now()
 );
+
+GRANT ALL ON TABLE public.clients TO anon, authenticated;
 
 -- ========================
 -- APPOINTMENTS
@@ -96,6 +104,8 @@ create table public.appointments (
   updated_at    timestamptz not null default now()
 );
 
+GRANT ALL ON TABLE public.appointments TO anon, authenticated;
+
 -- ========================
 -- TRANSACTIONS (POS)
 -- ========================
@@ -115,6 +125,8 @@ create table public.transactions (
   created_at      timestamptz not null default now()
 );
 
+GRANT ALL ON TABLE public.transactions TO anon, authenticated;
+
 -- ========================
 -- INVENTORY
 -- ========================
@@ -133,6 +145,8 @@ create table public.inventory_items (
   updated_at          timestamptz not null default now()
 );
 
+GRANT ALL ON TABLE public.inventory_items TO anon, authenticated;
+
 create table public.inventory_movements (
   id          uuid primary key default uuid_generate_v4(),
   business_id uuid not null references public.businesses(id) on delete cascade,
@@ -143,6 +157,8 @@ create table public.inventory_movements (
   created_by  uuid references auth.users(id) on delete set null,
   created_at  timestamptz not null default now()
 );
+
+GRANT ALL ON TABLE public.inventory_movements TO anon, authenticated;
 
 -- ========================
 -- INDEXES
