@@ -90,7 +90,7 @@ export async function POST(req: NextRequest) {
 
     const { data: biz } = await supabase
       .from('businesses')
-      .select('name, address, slug, timezone, telegram_bot_token, telegram_chat_id, viber_bot_token, viber_chat_id')
+      .select('name, address, slug, timezone, telegram_bot_token, telegram_chat_id, viber_bot_token, viber_chat_id, meta_whatsapp_phone_number_id, meta_whatsapp_access_token')
       .eq('id', appt.business_id)
       .single()
 
@@ -163,6 +163,9 @@ export async function POST(req: NextRequest) {
     }
 
     // ── WhatsApp → клиенту ──────────────────────────────────────────────────
+    const waCredentials = biz?.meta_whatsapp_phone_number_id && biz?.meta_whatsapp_access_token
+      ? { phoneNumberId: biz.meta_whatsapp_phone_number_id, accessToken: biz.meta_whatsapp_access_token }
+      : undefined
     if (client?.whatsapp_number) {
       await sendWhatsAppMessage(
         client.whatsapp_number,
@@ -174,7 +177,8 @@ export async function POST(req: NextRequest) {
           businessName: biz?.name ?? '',
           employeeName: employee?.name,
           address: biz?.address ?? undefined,
-        })
+        }),
+        waCredentials
       )
     }
 

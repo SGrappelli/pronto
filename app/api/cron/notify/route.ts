@@ -152,13 +152,17 @@ export async function GET(req: NextRequest) {
     }
     // Email → клиенту
     if (client?.email) {
-      await sendReminder({
-        to: client.email, clientName: client.name,
-        businessName: biz?.name ?? '', serviceName: service?.name ?? '—',
-        date, time,
-        employeeName: employee?.name ?? undefined,
-        address: biz?.address ?? undefined,
-      })
+      try {
+        await sendReminder({
+          to: client.email, clientName: client.name,
+          businessName: biz?.name ?? '', serviceName: service?.name ?? '—',
+          date, time,
+          employeeName: employee?.name ?? undefined,
+          address: biz?.address ?? undefined,
+        })
+      } catch (err) {
+        console.error('[cron/notify] sendReminder 24h error:', err)
+      }
     }
     results.push(`reminder_24h:${a.id}`)
   }
@@ -227,14 +231,18 @@ export async function GET(req: NextRequest) {
     }
     // Email → клиенту
     if (client?.email) {
-      await sendReminder({
-        to: client.email, clientName: client.name,
-        businessName: biz?.name ?? '', serviceName: service?.name ?? '—',
-        date, time,
-        employeeName: employee?.name ?? undefined,
-        address: biz?.address ?? undefined,
-        isOneHour: true,
-      })
+      try {
+        await sendReminder({
+          to: client.email, clientName: client.name,
+          businessName: biz?.name ?? '', serviceName: service?.name ?? '—',
+          date, time,
+          employeeName: employee?.name ?? undefined,
+          address: biz?.address ?? undefined,
+          isOneHour: true,
+        })
+      } catch (err) {
+        console.error('[cron/notify] sendReminder 1h error:', err)
+      }
     }
     results.push(`reminder_1h:${a.id}`)
   }
