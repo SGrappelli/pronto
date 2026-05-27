@@ -155,7 +155,7 @@ export async function POST(req: NextRequest) {
       starts_at:   startsAt.toISOString(),
       ends_at:     endsAt.toISOString(),
       price:       service.price,
-      status:      'pending',
+      status:      'confirmed',
       source:      'online',
     })
     .select('id')
