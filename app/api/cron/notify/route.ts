@@ -29,7 +29,6 @@ import {
 } from '@/lib/email'
 import {
   sendTelegramMessage,
-  tplReminder,
   tplThankYou,
   tplReactivation as tgTplReactivation,
   tplBirthday as tgTplBirthday,
@@ -40,7 +39,6 @@ import {
 } from '@/lib/telegram'
 import {
   sendViberMessage,
-  tplReminder as viberTplReminder,
   tplThankYou as viberTplThankYou,
   tplReminderClient as viberTplReminderClient,
   tplThankYouClient as viberTplThankYouClient,
@@ -119,22 +117,10 @@ export async function GET(req: NextRequest) {
       ? { phoneNumberId: biz.meta_whatsapp_phone_number_id, accessToken: biz.meta_whatsapp_access_token }
       : undefined
 
-    // Telegram → владельцу
-    if (biz?.telegram_bot_token && biz?.telegram_chat_id) {
-      await sendTelegramMessage(biz.telegram_bot_token, biz.telegram_chat_id,
-        tplReminder({ clientName: client?.name ?? 'Walk-in', serviceName: service?.name ?? '—', date, time })
-      )
-    }
-    // Telegram → клиенту
+    // Telegram → клиенту (владельцу reminder не нужен — он уже получил уведомление при создании записи)
     if (biz?.telegram_bot_token && client?.telegram_id) {
       await sendTelegramMessage(biz.telegram_bot_token, client.telegram_id,
         tgTplReminderClient({ clientName: client.name, serviceName: service?.name ?? '—', date, time, businessName: biz.name, address: biz.address ?? undefined })
-      )
-    }
-    // Viber → владельцу
-    if (biz?.viber_bot_token && biz?.viber_chat_id) {
-      await sendViberMessage(biz.viber_bot_token, biz.viber_chat_id,
-        viberTplReminder({ clientName: client?.name ?? 'Walk-in', serviceName: service?.name ?? '—', date, time })
       )
     }
     // Viber → клиенту
@@ -168,8 +154,8 @@ export async function GET(req: NextRequest) {
   }
 
   // ── 2. 1h reminders ─────────────────────────────────────────────────────────
-  const from1h = new Date(now.getTime() + 55 * 60_000).toISOString()
-  const to1h   = new Date(now.getTime() + 65 * 60_000).toISOString()
+  const from1h = new Date(now.getTime() + 45 * 60_000).toISOString()
+  const to1h   = new Date(now.getTime() + 75 * 60_000).toISOString()
   debug.window_1h = { from: from1h, to: to1h }
 
   const { data: appts1h, error: err1h } = await supabase
@@ -198,22 +184,10 @@ export async function GET(req: NextRequest) {
       ? { phoneNumberId: biz.meta_whatsapp_phone_number_id, accessToken: biz.meta_whatsapp_access_token }
       : undefined
 
-    // Telegram → владельцу
-    if (biz?.telegram_bot_token && biz?.telegram_chat_id) {
-      await sendTelegramMessage(biz.telegram_bot_token, biz.telegram_chat_id,
-        tplReminder({ clientName: client?.name ?? 'Walk-in', serviceName: service?.name ?? '—', date, time, isOneHour: true })
-      )
-    }
-    // Telegram → клиенту
+    // Telegram → клиенту (владельцу reminder не нужен — он уже получил уведомление при создании записи)
     if (biz?.telegram_bot_token && client?.telegram_id) {
       await sendTelegramMessage(biz.telegram_bot_token, client.telegram_id,
         tgTplReminderClient({ clientName: client.name, serviceName: service?.name ?? '—', date, time, businessName: biz.name, address: biz.address ?? undefined, isOneHour: true })
-      )
-    }
-    // Viber → владельцу
-    if (biz?.viber_bot_token && biz?.viber_chat_id) {
-      await sendViberMessage(biz.viber_bot_token, biz.viber_chat_id,
-        viberTplReminder({ clientName: client?.name ?? 'Walk-in', serviceName: service?.name ?? '—', date, time, isOneHour: true })
       )
     }
     // Viber → клиенту
