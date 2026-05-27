@@ -44,6 +44,10 @@ export type Database = {
           resend_api_key: string | null
           meta_whatsapp_phone_number_id: string | null
           meta_whatsapp_access_token: string | null
+          wa_template_confirmation: string | null
+          wa_template_reminder: string | null
+          wa_template_thankyou: string | null
+          wa_template_language: string
           created_at: string
           updated_at: string
         }
@@ -81,6 +85,10 @@ export type Database = {
           resend_api_key?: string | null
           meta_whatsapp_phone_number_id?: string | null
           meta_whatsapp_access_token?: string | null
+          wa_template_confirmation?: string | null
+          wa_template_reminder?: string | null
+          wa_template_thankyou?: string | null
+          wa_template_language?: string
           created_at?: string
           updated_at?: string
         }
@@ -118,6 +126,10 @@ export type Database = {
           resend_api_key?: string | null
           meta_whatsapp_phone_number_id?: string | null
           meta_whatsapp_access_token?: string | null
+          wa_template_confirmation?: string | null
+          wa_template_reminder?: string | null
+          wa_template_thankyou?: string | null
+          wa_template_language?: string
           created_at?: string
           updated_at?: string
         }

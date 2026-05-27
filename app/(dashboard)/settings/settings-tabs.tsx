@@ -179,7 +179,7 @@ export function SettingsTabs({ business: initial, services: initServices, employ
       wa_template_confirmation: biz.wa_template_confirmation,
       wa_template_reminder: biz.wa_template_reminder,
       wa_template_thankyou: biz.wa_template_thankyou,
-      wa_template_language: biz.wa_template_language,
+      wa_template_language: biz.wa_template_language ?? 'en',
     }).eq('id', biz.id)
     setSaving(false); setSaved(true); setTimeout(() => setSaved(false), 2000)
     router.refresh()
