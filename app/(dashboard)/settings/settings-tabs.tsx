@@ -26,6 +26,10 @@ interface Business {
   resend_api_key: string | null
   meta_whatsapp_phone_number_id: string | null
   meta_whatsapp_access_token: string | null
+  wa_template_confirmation: string | null
+  wa_template_reminder: string | null
+  wa_template_thankyou: string | null
+  wa_template_language: string | null
 }
 interface Service { id: string; name: string; description: string | null; price: number; duration_min: number; category: string | null; is_active: boolean; capacity: number }
 interface Employee { id: string; name: string; role: string; email: string | null; phone: string | null; is_active: boolean }
@@ -172,6 +176,10 @@ export function SettingsTabs({ business: initial, services: initServices, employ
       resend_api_key: biz.resend_api_key,
       meta_whatsapp_phone_number_id: biz.meta_whatsapp_phone_number_id,
       meta_whatsapp_access_token: biz.meta_whatsapp_access_token,
+      wa_template_confirmation: biz.wa_template_confirmation,
+      wa_template_reminder: biz.wa_template_reminder,
+      wa_template_thankyou: biz.wa_template_thankyou,
+      wa_template_language: biz.wa_template_language,
     }).eq('id', biz.id)
     setSaving(false); setSaved(true); setTimeout(() => setSaved(false), 2000)
     router.refresh()
@@ -944,6 +952,59 @@ export function SettingsTabs({ business: initial, services: initServices, employ
                 />
               </div>
             )}
+
+            <hr className="border-gray-100" />
+
+            {/* WhatsApp Templates */}
+            <div>
+              <h3 className="text-sm font-medium text-gray-900 mb-1">WhatsApp Templates</h3>
+              <p className="text-xs text-gray-500 mb-3">
+                Enter the template names approved in your Meta Business Manager.
+                Leave empty to skip WhatsApp for that event.
+              </p>
+              <div className="space-y-3">
+                <div>
+                  <label className="text-xs font-medium text-gray-500">Confirmation template name</label>
+                  <input
+                    type="text"
+                    value={biz.wa_template_confirmation ?? ''}
+                    onChange={(e) => setBiz((b) => ({ ...b, wa_template_confirmation: e.target.value || null }))}
+                    placeholder="e.g. booking_confirmation"
+                    className="w-full mt-1 border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  />
+                </div>
+                <div>
+                  <label className="text-xs font-medium text-gray-500">Reminder template name</label>
+                  <input
+                    type="text"
+                    value={biz.wa_template_reminder ?? ''}
+                    onChange={(e) => setBiz((b) => ({ ...b, wa_template_reminder: e.target.value || null }))}
+                    placeholder="e.g. appointment_reminder"
+                    className="w-full mt-1 border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  />
+                </div>
+                <div>
+                  <label className="text-xs font-medium text-gray-500">Thank-you template name</label>
+                  <input
+                    type="text"
+                    value={biz.wa_template_thankyou ?? ''}
+                    onChange={(e) => setBiz((b) => ({ ...b, wa_template_thankyou: e.target.value || null }))}
+                    placeholder="e.g. visit_thankyou"
+                    className="w-full mt-1 border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  />
+                </div>
+                <div>
+                  <label className="text-xs font-medium text-gray-500">Template language</label>
+                  <input
+                    type="text"
+                    value={biz.wa_template_language ?? ''}
+                    onChange={(e) => setBiz((b) => ({ ...b, wa_template_language: e.target.value || null }))}
+                    placeholder="en"
+                    className="w-full mt-1 border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  />
+                </div>
+              </div>
+            </div>
 
             <Button onClick={saveBusiness} disabled={saving}>
               {saving ? t('notifications.saving') : saved ? t('notifications.saved') : t('notifications.save')}

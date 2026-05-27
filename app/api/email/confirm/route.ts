@@ -3,7 +3,7 @@ import { createClient as createAdminClient } from '@supabase/supabase-js'
 import { sendBookingConfirmation, formatEmailDate, formatEmailTime } from '@/lib/email'
 import { sendTelegramMessage, tplNewBooking, tplReminderClient as tgTplConfirmClient } from '@/lib/telegram'
 import { sendViberMessage, tplNewBooking as viberTplNewBooking } from '@/lib/viber'
-import { sendWhatsAppMessage, tplBookingConfirmation as waTplBookingConfirmation } from '@/lib/whatsapp'
+import { sendWhatsAppTemplate, tplBookingConfirmation as waTplBookingConfirmation } from '@/lib/whatsapp'
 
 // Telegram confirmation template for client
 function tplConfirmClient(opts: {
@@ -90,7 +90,7 @@ export async function POST(req: NextRequest) {
 
     const { data: biz } = await supabase
       .from('businesses')
-      .select('name, address, slug, timezone, telegram_bot_token, telegram_chat_id, viber_bot_token, viber_chat_id, meta_whatsapp_phone_number_id, meta_whatsapp_access_token')
+      .select('name, address, slug, timezone, telegram_bot_token, telegram_chat_id, viber_bot_token, viber_chat_id, meta_whatsapp_phone_number_id, meta_whatsapp_access_token, wa_template_confirmation, wa_template_language')
       .eq('id', appt.business_id)
       .single()
 
@@ -162,22 +162,25 @@ export async function POST(req: NextRequest) {
       )
     }
 
-    // ── WhatsApp → клиенту ──────────────────────────────────────────────────
+    // ── WhatsApp → клиенту (HSM template) ──────────────────────────────────
     const waCredentials = biz?.meta_whatsapp_phone_number_id && biz?.meta_whatsapp_access_token
       ? { phoneNumberId: biz.meta_whatsapp_phone_number_id, accessToken: biz.meta_whatsapp_access_token }
       : undefined
-    if (client?.whatsapp_number) {
-      await sendWhatsAppMessage(
+    if (client?.whatsapp_number && biz?.wa_template_confirmation) {
+      const msgText = waTplBookingConfirmation({
+        clientName: client.name,
+        serviceName: service?.name ?? '—',
+        date,
+        time,
+        businessName: biz?.name ?? '',
+        employeeName: employee?.name,
+        address: biz?.address ?? undefined,
+      })
+      await sendWhatsAppTemplate(
         client.whatsapp_number,
-        waTplBookingConfirmation({
-          clientName: client.name,
-          serviceName: service?.name ?? '—',
-          date,
-          time,
-          businessName: biz?.name ?? '',
-          employeeName: employee?.name,
-          address: biz?.address ?? undefined,
-        }),
+        biz.wa_template_confirmation,
+        biz.wa_template_language ?? 'en',
+        [{ type: 'body', parameters: [{ type: 'text', text: msgText }] }],
         waCredentials
       )
     }

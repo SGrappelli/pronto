@@ -57,6 +57,55 @@ export async function sendWhatsAppMessage(
   }
 }
 
+// ─── Отправить HSM-шаблон (Meta Cloud API, business-initiated) ───────────────
+// Использовать для всех исходящих сообщений клиентам: Meta блокирует plain-text
+// business-initiated сообщения в продакшене.
+
+export async function sendWhatsAppTemplate(
+  to: string,
+  templateName: string,
+  languageCode: string,
+  components: object[],
+  credentials?: { phoneNumberId: string; accessToken: string }
+): Promise<boolean> {
+  const phoneNumberId = credentials?.phoneNumberId ?? process.env.META_WHATSAPP_PHONE_NUMBER_ID
+  const accessToken = credentials?.accessToken ?? process.env.META_WHATSAPP_ACCESS_TOKEN
+
+  if (!phoneNumberId || !accessToken) return false
+
+  const normalizedTo = normalizePhone(to)
+  if (!normalizedTo) return false
+
+  try {
+    const res = await fetch(`${BASE}/${phoneNumberId}/messages`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${accessToken}`,
+      },
+      body: JSON.stringify({
+        messaging_product: 'whatsapp',
+        to: normalizedTo,
+        type: 'template',
+        template: {
+          name: templateName,
+          language: { code: languageCode },
+          components,
+        },
+      }),
+    })
+    const json = await res.json()
+    if (!res.ok) {
+      console.error('[whatsapp] sendTemplate error:', json?.error?.message ?? json)
+      return false
+    }
+    return true
+  } catch (err) {
+    console.error('[whatsapp] sendTemplate exception:', err)
+    return false
+  }
+}
+
 // ─── Шаблоны сообщений (plain text, без HTML) ────────────────────────────────
 
 export function tplBookingConfirmation(opts: {

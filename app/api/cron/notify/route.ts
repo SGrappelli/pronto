@@ -48,11 +48,9 @@ import {
   tplBirthday as viberTplBirthday,
 } from '@/lib/viber'
 import {
-  sendWhatsAppMessage,
+  sendWhatsAppTemplate,
   tplReminder as waTplReminder,
   tplThankYou as waTplThankYou,
-  tplReactivation as waTplReactivation,
-  tplBirthday as waTplBirthday,
 } from '@/lib/whatsapp'
 
 const APP_URL = process.env.NEXT_PUBLIC_APP_URL ?? 'http://localhost:3000'
@@ -106,7 +104,7 @@ export async function GET(req: NextRequest) {
 
     const { data: biz } = await supabase
       .from('businesses')
-      .select('name, address, timezone, telegram_bot_token, telegram_chat_id, viber_bot_token, viber_chat_id, meta_whatsapp_phone_number_id, meta_whatsapp_access_token')
+      .select('name, address, timezone, telegram_bot_token, telegram_chat_id, viber_bot_token, viber_chat_id, meta_whatsapp_phone_number_id, meta_whatsapp_access_token, wa_template_reminder, wa_template_language')
       .eq('id', a.business_id).single()
 
     const client   = a.clients   as unknown as { name: string; email: string | null; whatsapp_number: string | null; viber_user_id: string | null; telegram_id: string | null } | null
@@ -143,10 +141,14 @@ export async function GET(req: NextRequest) {
         viberTplReminderClient({ clientName: client.name, serviceName: service?.name ?? '—', date, time, businessName: biz.name, address: biz.address ?? undefined })
       )
     }
-    // WhatsApp → клиенту
-    if (client?.whatsapp_number) {
-      await sendWhatsAppMessage(client.whatsapp_number,
-        waTplReminder({ clientName: client.name, serviceName: service?.name ?? '—', date, time, businessName: biz?.name ?? '' }),
+    // WhatsApp → клиенту (HSM template; skipped if template name not configured)
+    if (client?.whatsapp_number && biz?.wa_template_reminder) {
+      const msgText = waTplReminder({ clientName: client.name, serviceName: service?.name ?? '—', date, time, businessName: biz.name })
+      await sendWhatsAppTemplate(
+        client.whatsapp_number,
+        biz.wa_template_reminder,
+        biz.wa_template_language ?? 'en',
+        [{ type: 'body', parameters: [{ type: 'text', text: msgText }] }],
         waCredentials
       )
     }
@@ -185,7 +187,7 @@ export async function GET(req: NextRequest) {
 
     const { data: biz } = await supabase
       .from('businesses')
-      .select('name, address, timezone, telegram_bot_token, telegram_chat_id, viber_bot_token, viber_chat_id, meta_whatsapp_phone_number_id, meta_whatsapp_access_token')
+      .select('name, address, timezone, telegram_bot_token, telegram_chat_id, viber_bot_token, viber_chat_id, meta_whatsapp_phone_number_id, meta_whatsapp_access_token, wa_template_reminder, wa_template_language')
       .eq('id', a.business_id).single()
 
     const client   = a.clients   as unknown as { name: string; email: string | null; whatsapp_number: string | null; viber_user_id: string | null; telegram_id: string | null } | null
@@ -222,10 +224,14 @@ export async function GET(req: NextRequest) {
         viberTplReminderClient({ clientName: client.name, serviceName: service?.name ?? '—', date, time, businessName: biz.name, address: biz.address ?? undefined, isOneHour: true })
       )
     }
-    // WhatsApp → клиенту
-    if (client?.whatsapp_number) {
-      await sendWhatsAppMessage(client.whatsapp_number,
-        waTplReminder({ clientName: client.name, serviceName: service?.name ?? '—', date, time, businessName: biz?.name ?? '', isOneHour: true }),
+    // WhatsApp → клиенту (HSM template; skipped if template name not configured)
+    if (client?.whatsapp_number && biz?.wa_template_reminder) {
+      const msgText = waTplReminder({ clientName: client.name, serviceName: service?.name ?? '—', date, time, businessName: biz.name, isOneHour: true })
+      await sendWhatsAppTemplate(
+        client.whatsapp_number,
+        biz.wa_template_reminder,
+        biz.wa_template_language ?? 'en',
+        [{ type: 'body', parameters: [{ type: 'text', text: msgText }] }],
         waCredentials
       )
     }
@@ -264,7 +270,7 @@ export async function GET(req: NextRequest) {
 
     const { data: biz } = await supabase
       .from('businesses')
-      .select('name, slug, telegram_bot_token, telegram_chat_id, viber_bot_token, viber_chat_id, meta_whatsapp_phone_number_id, meta_whatsapp_access_token')
+      .select('name, slug, telegram_bot_token, telegram_chat_id, viber_bot_token, viber_chat_id, meta_whatsapp_phone_number_id, meta_whatsapp_access_token, wa_template_thankyou, wa_template_language')
       .eq('id', a.business_id).single()
 
     const client  = a.clients  as unknown as { name: string; email: string | null; whatsapp_number: string | null; viber_user_id: string | null; telegram_id: string | null } | null
@@ -298,10 +304,14 @@ export async function GET(req: NextRequest) {
         viberTplThankYouClient({ clientName: client.name, serviceName: service?.name ?? '—', businessName: biz.name, bookingUrl })
       )
     }
-    // WhatsApp → клиенту
-    if (client?.whatsapp_number) {
-      await sendWhatsAppMessage(client.whatsapp_number,
-        waTplThankYou({ clientName: client.name, serviceName: service?.name ?? '—', businessName: biz?.name ?? '', bookingUrl }),
+    // WhatsApp → клиенту (HSM template; skipped if template name not configured)
+    if (client?.whatsapp_number && biz?.wa_template_thankyou) {
+      const msgText = waTplThankYou({ clientName: client.name, serviceName: service?.name ?? '—', businessName: biz.name, bookingUrl })
+      await sendWhatsAppTemplate(
+        client.whatsapp_number,
+        biz.wa_template_thankyou,
+        biz.wa_template_language ?? 'en',
+        [{ type: 'body', parameters: [{ type: 'text', text: msgText }] }],
         waCredentials
       )
     }
@@ -337,11 +347,8 @@ export async function GET(req: NextRequest) {
     if (!c.email && !c.whatsapp_number && !c.viber_user_id && !c.telegram_id) continue
     if (!await logged(c.business_id, c.id, 'reactivation')) continue
 
-    const { data: biz } = await supabase.from('businesses').select('name, slug, telegram_bot_token, telegram_chat_id, viber_bot_token, meta_whatsapp_phone_number_id, meta_whatsapp_access_token').eq('id', c.business_id).single()
+    const { data: biz } = await supabase.from('businesses').select('name, slug, telegram_bot_token, telegram_chat_id, viber_bot_token').eq('id', c.business_id).single()
     const bookingUrl = biz?.slug ? `${APP_URL}/book/${biz.slug}` : undefined
-    const waCredentials = biz?.meta_whatsapp_phone_number_id && biz?.meta_whatsapp_access_token
-      ? { phoneNumberId: biz.meta_whatsapp_phone_number_id, accessToken: biz.meta_whatsapp_access_token }
-      : undefined
 
     // Telegram → владельцу
     if (biz?.telegram_bot_token && biz?.telegram_chat_id) {
@@ -361,13 +368,7 @@ export async function GET(req: NextRequest) {
         viberTplReactivation({ clientName: c.name, businessName: biz.name, bookingUrl })
       )
     }
-    // WhatsApp → клиенту
-    if (c.whatsapp_number) {
-      await sendWhatsAppMessage(c.whatsapp_number,
-        waTplReactivation({ clientName: c.name, businessName: biz?.name ?? '', bookingUrl }),
-        waCredentials
-      )
-    }
+    // WhatsApp: no pre-approved template configured for reactivation — skipped
     // Email → клиенту
     if (c.email) {
       await sendReactivation({
@@ -397,11 +398,8 @@ export async function GET(req: NextRequest) {
     const year = now.getFullYear()
     if (!await logged(c.business_id, `${c.id}_bday_${year}`, 'birthday')) continue
 
-    const { data: biz } = await supabase.from('businesses').select('name, slug, telegram_bot_token, telegram_chat_id, viber_bot_token, meta_whatsapp_phone_number_id, meta_whatsapp_access_token').eq('id', c.business_id).single()
+    const { data: biz } = await supabase.from('businesses').select('name, slug, telegram_bot_token, telegram_chat_id, viber_bot_token').eq('id', c.business_id).single()
     const bookingUrl = biz?.slug ? `${APP_URL}/book/${biz.slug}` : undefined
-    const waCredentials = biz?.meta_whatsapp_phone_number_id && biz?.meta_whatsapp_access_token
-      ? { phoneNumberId: biz.meta_whatsapp_phone_number_id, accessToken: biz.meta_whatsapp_access_token }
-      : undefined
 
     // Telegram → владельцу
     if (biz?.telegram_bot_token && biz?.telegram_chat_id) {
@@ -421,13 +419,7 @@ export async function GET(req: NextRequest) {
         viberTplBirthday({ clientName: c.name, businessName: biz.name, bookingUrl })
       )
     }
-    // WhatsApp → клиенту
-    if (c.whatsapp_number) {
-      await sendWhatsAppMessage(c.whatsapp_number,
-        waTplBirthday({ clientName: c.name, businessName: biz?.name ?? '', bookingUrl }),
-        waCredentials
-      )
-    }
+    // WhatsApp: no pre-approved template configured for birthday — skipped
     // Email → клиенту
     if (c.email) {
       await sendBirthday({
