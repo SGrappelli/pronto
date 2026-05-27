@@ -158,8 +158,8 @@ export async function GET(req: NextRequest) {
   }
 
   // ── 2. 1h reminders ─────────────────────────────────────────────────────────
-  const from1h = new Date(now.getTime() + 55 * 60_000).toISOString()
-  const to1h   = new Date(now.getTime() + 65 * 60_000).toISOString()
+  const from1h = new Date(now.getTime() + 45 * 60_000).toISOString()
+  const to1h   = new Date(now.getTime() + 75 * 60_000).toISOString()
   debug.window_1h = { from: from1h, to: to1h }
 
   const { data: appts1h, error: err1h } = await supabase
