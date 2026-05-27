@@ -29,6 +29,8 @@ interface Business {
   wa_template_confirmation: string | null
   wa_template_reminder: string | null
   wa_template_thankyou: string | null
+  wa_template_reactivation: string | null
+  wa_template_birthday: string | null
   wa_template_language: string | null
 }
 interface Service { id: string; name: string; description: string | null; price: number; duration_min: number; category: string | null; is_active: boolean; capacity: number }
@@ -179,6 +181,8 @@ export function SettingsTabs({ business: initial, services: initServices, employ
       wa_template_confirmation: biz.wa_template_confirmation,
       wa_template_reminder: biz.wa_template_reminder,
       wa_template_thankyou: biz.wa_template_thankyou,
+      wa_template_reactivation: biz.wa_template_reactivation,
+      wa_template_birthday: biz.wa_template_birthday,
       wa_template_language: biz.wa_template_language ?? 'en',
     }).eq('id', biz.id)
     setSaving(false); setSaved(true); setTimeout(() => setSaved(false), 2000)
@@ -990,6 +994,26 @@ export function SettingsTabs({ business: initial, services: initServices, employ
                     value={biz.wa_template_thankyou ?? ''}
                     onChange={(e) => setBiz((b) => ({ ...b, wa_template_thankyou: e.target.value || null }))}
                     placeholder="e.g. visit_thankyou"
+                    className="w-full mt-1 border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  />
+                </div>
+                <div>
+                  <label className="text-xs font-medium text-gray-500">Re-engagement template name</label>
+                  <input
+                    type="text"
+                    value={biz.wa_template_reactivation ?? ''}
+                    onChange={(e) => setBiz((b) => ({ ...b, wa_template_reactivation: e.target.value || null }))}
+                    placeholder="e.g. client_reactivation"
+                    className="w-full mt-1 border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  />
+                </div>
+                <div>
+                  <label className="text-xs font-medium text-gray-500">Birthday template name</label>
+                  <input
+                    type="text"
+                    value={biz.wa_template_birthday ?? ''}
+                    onChange={(e) => setBiz((b) => ({ ...b, wa_template_birthday: e.target.value || null }))}
+                    placeholder="e.g. happy_birthday"
                     className="w-full mt-1 border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                   />
                 </div>

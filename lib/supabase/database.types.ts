@@ -47,6 +47,8 @@ export type Database = {
           wa_template_confirmation: string | null
           wa_template_reminder: string | null
           wa_template_thankyou: string | null
+          wa_template_reactivation: string | null
+          wa_template_birthday: string | null
           wa_template_language: string
           created_at: string
           updated_at: string
@@ -88,6 +90,8 @@ export type Database = {
           wa_template_confirmation?: string | null
           wa_template_reminder?: string | null
           wa_template_thankyou?: string | null
+          wa_template_reactivation?: string | null
+          wa_template_birthday?: string | null
           wa_template_language?: string
           created_at?: string
           updated_at?: string
@@ -129,6 +133,8 @@ export type Database = {
           wa_template_confirmation?: string | null
           wa_template_reminder?: string | null
           wa_template_thankyou?: string | null
+          wa_template_reactivation?: string | null
+          wa_template_birthday?: string | null
           wa_template_language?: string
           created_at?: string
           updated_at?: string
