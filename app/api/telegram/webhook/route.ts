@@ -53,16 +53,32 @@ export async function POST(req: NextRequest) {
         if (/^[0-9a-f-]{36}$/i.test(clientId)) {
           const { data: client } = await supabase
             .from('clients')
-            .select('id, name')
+            .select('id, name, phone, email')
             .eq('id', clientId)
             .eq('business_id', businessId)
             .maybeSingle()
 
           if (client) {
-            await supabase
-              .from('clients')
-              .update({ telegram_id: chatId })
-              .eq('id', clientId)
+            // Update this client and any duplicate records with the same phone/email
+            // so one /start press covers all bookings made with the same contact info
+            if (client.phone) {
+              await supabase
+                .from('clients')
+                .update({ telegram_id: chatId })
+                .eq('business_id', businessId)
+                .eq('phone', client.phone)
+            } else if (client.email) {
+              await supabase
+                .from('clients')
+                .update({ telegram_id: chatId })
+                .eq('business_id', businessId)
+                .eq('email', client.email)
+            } else {
+              await supabase
+                .from('clients')
+                .update({ telegram_id: chatId })
+                .eq('id', clientId)
+            }
 
             await sendTelegramMessage(
               biz.telegram_bot_token,
@@ -126,23 +142,24 @@ export async function POST(req: NextRequest) {
         return NextResponse.json({ ok: true })
       }
 
-      const { data: client } = await supabase
+      const { data: clients } = await supabase
         .from('clients')
         .select('id, name')
         .eq('business_id', businessId)
         .eq('phone', phone)
-        .maybeSingle()
 
-      if (client) {
+      if (clients && clients.length > 0) {
+        // Update all records with this phone (covers duplicate client entries)
         await supabase
           .from('clients')
           .update({ telegram_id: chatId })
-          .eq('id', client.id)
+          .eq('business_id', businessId)
+          .eq('phone', phone)
 
         await sendTelegramMessage(
           biz.telegram_bot_token,
           chatId,
-          `✅ Hi ${toTitleCase(client.name)}! Your Telegram is linked. You'll receive appointment reminders here.`
+          `✅ Hi ${toTitleCase(clients[0].name)}! Your Telegram is linked. You'll receive appointment reminders here.`
         )
       } else {
         await sendTelegramMessage(

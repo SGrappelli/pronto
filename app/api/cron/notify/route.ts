@@ -100,6 +100,11 @@ export async function GET(req: NextRequest) {
   debug.appts24 = { count: appts24?.length ?? 0, error: err24?.message ?? null }
 
   for (const a of appts24 ?? []) {
+    const client = a.clients as unknown as { name: string; email: string | null; whatsapp_number: string | null; viber_user_id: string | null; telegram_id: string | null } | null
+    // Skip without logging if client has no contact channels at all.
+    // This prevents burning a notification_log entry for a booking that can never
+    // be delivered — which would permanently block retries once contact info is added.
+    if (!client?.telegram_id && !client?.email && !client?.viber_user_id && !client?.whatsapp_number) continue
     if (!await logged(a.business_id, a.id, 'reminder_24h')) continue
 
     const { data: biz } = await supabase
@@ -107,7 +112,6 @@ export async function GET(req: NextRequest) {
       .select('name, address, timezone, telegram_bot_token, telegram_chat_id, viber_bot_token, viber_chat_id, meta_whatsapp_phone_number_id, meta_whatsapp_access_token')
       .eq('id', a.business_id).single()
 
-    const client   = a.clients   as unknown as { name: string; email: string | null; whatsapp_number: string | null; viber_user_id: string | null; telegram_id: string | null } | null
     const service  = a.services  as unknown as { name: string } | null
     const employee = a.employees as unknown as { name: string } | null
     const tz = biz?.timezone ?? 'UTC'
@@ -167,6 +171,11 @@ export async function GET(req: NextRequest) {
   debug.appts1h = { count: appts1h?.length ?? 0, error: err1h?.message ?? null }
 
   for (const a of appts1h ?? []) {
+    const client = a.clients as unknown as { name: string; email: string | null; whatsapp_number: string | null; viber_user_id: string | null; telegram_id: string | null } | null
+    // Skip without logging if client has no contact channels at all.
+    // This prevents burning a notification_log entry for a booking that can never
+    // be delivered — which would permanently block retries once contact info is added.
+    if (!client?.telegram_id && !client?.email && !client?.viber_user_id && !client?.whatsapp_number) continue
     if (!await logged(a.business_id, a.id, 'reminder_1h')) continue
 
     const { data: biz } = await supabase
@@ -174,7 +183,6 @@ export async function GET(req: NextRequest) {
       .select('name, address, timezone, telegram_bot_token, telegram_chat_id, viber_bot_token, viber_chat_id, meta_whatsapp_phone_number_id, meta_whatsapp_access_token')
       .eq('id', a.business_id).single()
 
-    const client   = a.clients   as unknown as { name: string; email: string | null; whatsapp_number: string | null; viber_user_id: string | null; telegram_id: string | null } | null
     const service  = a.services  as unknown as { name: string } | null
     const employee = a.employees as unknown as { name: string } | null
     const tz = biz?.timezone ?? 'UTC'

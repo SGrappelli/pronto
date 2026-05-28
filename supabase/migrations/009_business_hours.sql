@@ -19,6 +19,8 @@ create table public.business_hours (
   unique (business_id, day_of_week)
 );
 
+GRANT ALL ON TABLE public.business_hours TO anon, authenticated;
+
 create index idx_business_hours_business on public.business_hours(business_id);
 
 -- ─── RLS ──────────────────────────────────────────────────────────────────────

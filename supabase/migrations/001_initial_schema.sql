@@ -145,6 +145,19 @@ create table public.inventory_movements (
 );
 
 -- ========================
+-- TABLE GRANTS
+-- ========================
+-- Required for PostgREST/supabase-js access (Supabase policy change, May 2026)
+GRANT ALL ON TABLE public.businesses TO anon, authenticated;
+GRANT ALL ON TABLE public.employees TO anon, authenticated;
+GRANT ALL ON TABLE public.services TO anon, authenticated;
+GRANT ALL ON TABLE public.clients TO anon, authenticated;
+GRANT ALL ON TABLE public.appointments TO anon, authenticated;
+GRANT ALL ON TABLE public.transactions TO anon, authenticated;
+GRANT ALL ON TABLE public.inventory_items TO anon, authenticated;
+GRANT ALL ON TABLE public.inventory_movements TO anon, authenticated;
+
+-- ========================
 -- INDEXES
 -- ========================
 create index idx_businesses_owner on public.businesses(owner_id);
