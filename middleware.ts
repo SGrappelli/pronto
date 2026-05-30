@@ -6,7 +6,7 @@ const tenantCache = new Map<string, { slug: string } | null>()
 const tenantCacheTs = new Map<string, number>()
 const TENANT_TTL = 60_000 // 1 minute
 
-const BYPASS_SUBDOMAINS = new Set(['www', 'app', 'api', 'mail', 'ftp', 'smtp'])
+const BYPASS_SUBDOMAINS = new Set(['www', 'app', 'api', 'mail', 'ftp', 'smtp', 'staging'])
 
 async function resolveTenant(subdomain: string): Promise<{ slug: string } | null> {
   const now = Date.now()
