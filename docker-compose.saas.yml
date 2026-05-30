@@ -21,8 +21,8 @@ services:
       dockerfile: Dockerfile
     image: pronto-app:local
     restart: unless-stopped
-    ports:
-      - '3000:3000'
+    expose:
+      - '3000'
     env_file:
       - .env
     environment:
@@ -38,20 +38,16 @@ services:
       retries: 3
       start_period: 40s
 
-  # Optional: Nginx reverse proxy with SSL termination
-  # Uncomment and configure if not using Cloudflare tunnel
-  #
-  # nginx:
-  #   image: nginx:alpine
-  #   restart: unless-stopped
-  #   ports:
-  #     - '80:80'
-  #     - '443:443'
-  #   volumes:
-  #     - ./nginx.conf:/etc/nginx/conf.d/default.conf:ro
-  #     - ./ssl:/etc/nginx/ssl:ro
-  #   depends_on:
-  #     - app
+  # ── Nginx reverse proxy ────────────────────────────────────────────────────
+  nginx:
+    image: nginx:alpine
+    restart: unless-stopped
+    ports:
+      - '80:80'
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+      - app
 
 networks:
   default:

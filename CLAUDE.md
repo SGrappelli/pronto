@@ -68,3 +68,26 @@ create policy "..." on public.my_table ...;
 - Always push to private SaaS repo (origin = Pronto-saas)
 - Always commit with clear messages
 - After any server-side change, remind me to run git pull on DigitalOcean
+
+## Staging workflow
+
+Branch strategy:
+  develop → staging.trypronto.app  (test here first)
+  main    → trypronto.app          (production)
+
+Rules:
+- All new features: commit to develop, push to saas develop
+- After testing on staging: merge develop → main, push saas main
+- NEVER push untested code directly to main
+
+Push commands:
+  Staging:    git push saas develop
+  Production: git push saas main  (after staging verified)
+
+Deploy staging on server:
+  bash scripts/staging-deploy.sh
+
+Deploy production on server (unchanged):
+  git pull
+  docker-compose -f docker-compose.saas.yml down
+  docker-compose -f docker-compose.saas.yml up -d --build

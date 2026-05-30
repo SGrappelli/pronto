@@ -1,0 +1,26 @@
+version: "3.8"
+
+services:
+  staging-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        - NODE_OPTIONS=--max-old-space-size=1536
+    container_name: pronto-staging
+    restart: unless-stopped
+    env_file:
+      - .env.staging
+    expose:
+      - "3001"
+    environment:
+      - NODE_ENV=production
+      - NEXT_PUBLIC_DEPLOYMENT_MODE=saas
+      - PORT=3001
+    networks:
+      - pronto-network
+
+networks:
+  pronto-network:
+    external: true
+    name: pronto_network
