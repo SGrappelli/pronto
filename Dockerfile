@@ -18,6 +18,14 @@ FROM base AS builder
 WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
+
+# Allow overriding public env vars at build time (e.g. for staging)
+ARG NEXT_PUBLIC_APP_URL
+ARG NEXT_PUBLIC_SITE_URL
+ARG NEXT_PUBLIC_SUPABASE_URL
+ARG NEXT_PUBLIC_SUPABASE_ANON_KEY
+ARG NEXT_PUBLIC_DEPLOYMENT_MODE
+
 RUN NODE_OPTIONS=--max-old-space-size=1536 npm run build
 
 # ── Production runner ─────────────────────────────
