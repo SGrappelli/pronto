@@ -76,18 +76,19 @@ Branch strategy:
   main    → trypronto.app          (production)
 
 Rules:
-- All new features: commit to develop, push to saas develop
+- All new features: commit to develop, push saas develop
 - After testing on staging: merge develop → main, push saas main
 - NEVER push untested code directly to main
 
-Push commands:
-  Staging:    git push saas develop
-  Production: git push saas main  (after staging verified)
-
-Deploy staging on server:
+Deploy staging (run on server):
   bash scripts/staging-deploy.sh
 
-Deploy production on server (unchanged):
-  git pull
+Deploy production (run on server):
   docker-compose -f docker-compose.saas.yml down
   docker-compose -f docker-compose.saas.yml up -d --build
+
+Infrastructure:
+- System nginx routes by hostname: staging.trypronto.app → 3001,
+  trypronto.app → 3000
+- Staging uses same Supabase database as production
+- Staging .env.staging lives only on server, not in git
