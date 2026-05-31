@@ -125,7 +125,7 @@ export function Sidebar({ businessName }: SidebarProps) {
       )}
 
       {/* Desktop sidebar */}
-      <aside className="hidden md:flex w-60 shrink-0 flex-col h-screen sticky top-0 border-r border-white/10" style={{ backgroundColor: '#0f2419' }}>
+      <aside className="hidden md:flex w-60 shrink-0 flex-col h-screen sticky top-0 border-r border-white/10" style={{ backgroundColor: '#0d1b2e' }}>
         <div className="px-5 py-5 border-b border-white/10">
           <div className="font-bold text-lg" style={{ color: '#fff' }}>Pronto<span style={{ color: '#16a34a' }}>.</span></div>
           <div className="text-xs text-white/40 truncate mt-0.5">{businessName}</div>
@@ -138,7 +138,7 @@ export function Sidebar({ businessName }: SidebarProps) {
         'md:hidden fixed inset-y-0 left-0 z-50 w-72 flex flex-col border-r border-white/10',
         'transition-transform duration-200 ease-in-out',
         open ? 'translate-x-0' : '-translate-x-full'
-      )} style={{ backgroundColor: '#0f2419' }}>
+      )} style={{ backgroundColor: '#0d1b2e' }}>
         <div className="px-5 py-5 border-b border-white/10 flex items-center justify-between">
           <div>
             <div className="font-bold text-lg" style={{ color: '#fff' }}>Pronto<span style={{ color: '#16a34a' }}>.</span></div>
