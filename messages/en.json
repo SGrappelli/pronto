@@ -240,7 +240,7 @@
   },
   "booking": {
     "title": "Booking",
-    "newAppointment": "New appointment",
+    "newAppointment": "New booking",
     "emptyState": {
       "heading": "No appointments this week",
       "sub": "Click a time slot on the calendar or use the button to add one"
