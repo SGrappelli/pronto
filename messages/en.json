@@ -260,7 +260,7 @@
     },
     "walkIn": "Walk-in",
     "form": {
-      "heading": "New appointment",
+      "heading": "New booking",
       "serviceLabel": "Service *",
       "servicePlaceholder": "Select service…",
       "datetimeLabel": "Date & time *",
