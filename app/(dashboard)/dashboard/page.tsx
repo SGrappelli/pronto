@@ -8,6 +8,15 @@ import { redirect } from 'next/navigation'
 import { getTranslations } from 'next-intl/server'
 import { OnboardingChecklist } from '@/components/onboarding-checklist'
 
+const STATUS_STRIPE: Record<string, string> = {
+  pending:   '#94a3b8',
+  confirmed: '#16a34a',
+  completed: '#3b82f6',
+  paid:      '#0d9488',
+  cancelled: '#ef4444',
+  no_show:   '#f97316',
+}
+
 export default async function DashboardPage() {
   const supabase = createClient()
   const t = await getTranslations('dashboard')
@@ -21,23 +30,24 @@ export default async function DashboardPage() {
 
   if (!business) return null
 
-  // Новые пользователи — направляем на онбординг
   if (!business.onboarding_completed) redirect('/onboarding')
 
   const todayStr = new Date().toISOString().slice(0, 10)
+  const sevenDaysAgo = new Date(Date.now() - 6 * 86400000).toISOString().slice(0, 10)
 
   const [
     { count: clientCount },
-    { count: apptTodayCount },
+    { data: apptToday },
     { data: recentTransactions },
     { data: upcomingAppointments },
     { data: todayRevenue },
     { data: inventoryItems },
+    { data: sparklineRaw },
   ] = await Promise.all([
     supabase.from('clients').select('id', { count: 'exact', head: true }).eq('business_id', business.id),
-    supabase.from('appointments').select('id', { count: 'exact', head: true })
+    supabase.from('appointments').select('id, status')
       .eq('business_id', business.id)
-      .gte('starts_at', new Date().toISOString().slice(0, 10))
+      .gte('starts_at', todayStr)
       .lt('starts_at', new Date(Date.now() + 86400000).toISOString().slice(0, 10)),
     supabase.from('transactions').select('id, amount, payment_method, created_at, clients(name)')
       .eq('business_id', business.id).eq('status', 'completed')
@@ -54,6 +64,9 @@ export default async function DashboardPage() {
     supabase.from('inventory_items')
       .select('quantity, low_stock_threshold')
       .eq('business_id', business.id),
+    supabase.from('transactions').select('amount, created_at')
+      .eq('business_id', business.id).eq('status', 'completed')
+      .gte('created_at', sevenDaysAgo),
   ])
 
   const revenueToday = todayRevenue?.reduce((sum, tx) => sum + tx.amount, 0) ?? 0
@@ -61,12 +74,29 @@ export default async function DashboardPage() {
     (item) => Number(item.quantity) <= Number(item.low_stock_threshold)
   ).length
 
-  const stats = [
-    { label: t('stats.revenueToday'), value: formatCurrency(revenueToday, business.currency), icon: TrendingUp, color: 'text-green-600', bg: 'bg-green-50', href: '/pos/history' },
-    { label: t('stats.appointmentsToday'), value: String(apptTodayCount ?? 0), icon: CalendarDays, color: 'text-blue-600', bg: 'bg-blue-50', href: '/booking' },
-    { label: t('stats.totalClients'), value: String(clientCount ?? 0), icon: Users, color: 'text-purple-600', bg: 'bg-purple-50', href: '/crm' },
-    { label: t('stats.lowStock'), value: lowStock > 0 ? String(lowStock) : t('stats.lowStockOk'), icon: Package, color: lowStock > 0 ? 'text-orange-600' : 'text-green-600', bg: lowStock > 0 ? 'bg-orange-50' : 'bg-green-50', href: '/inventory' },
-  ]
+  // Sparkline: sum revenue per day for last 7 days
+  const sparklineDays = Array.from({ length: 7 }, (_, i) => {
+    const d = new Date(Date.now() - (6 - i) * 86400000)
+    return d.toISOString().slice(0, 10)
+  })
+  const sparklineByDay: Record<string, number> = {}
+  for (const day of sparklineDays) sparklineByDay[day] = 0
+  for (const tx of sparklineRaw ?? []) {
+    const day = tx.created_at.slice(0, 10)
+    if (day in sparklineByDay) sparklineByDay[day] += tx.amount
+  }
+  const sparklineValues = sparklineDays.map((d) => sparklineByDay[d])
+  const sparklineMax = Math.max(...sparklineValues, 1)
+
+  // Bookings today breakdown by status
+  const apptTodayCount = apptToday?.length ?? 0
+  const statusBreakdown: Record<string, number> = {}
+  for (const a of apptToday ?? []) {
+    statusBreakdown[a.status] = (statusBreakdown[a.status] ?? 0) + 1
+  }
+  const breakdownParts = (['confirmed', 'pending', 'completed'] as const)
+    .filter((s) => (statusBreakdown[s] ?? 0) > 0)
+    .map((s) => `${statusBreakdown[s]} ${s}`)
 
   const statusColors: Record<string, string> = {
     pending: 'bg-yellow-100 text-yellow-700',
@@ -83,22 +113,93 @@ export default async function DashboardPage() {
       <main className="p-6 space-y-6">
         <OnboardingChecklist businessId={business.id} />
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-          {stats.map((s) => (
-            <Link key={s.label} href={s.href}>
-              <Card className="hover:shadow-md transition-shadow cursor-pointer">
-                <CardContent className="p-5">
-                  <div className="flex items-center justify-between mb-3">
-                    <div className={`p-2 rounded-lg ${s.bg}`}>
-                      <s.icon className={`w-4 h-4 ${s.color}`} />
-                    </div>
-                    <ArrowUpRight className="w-4 h-4 text-gray-400" />
+          {/* Revenue card — custom render for sparkline */}
+          <Link href="/pos/history">
+            <Card className="hover:shadow-md transition-shadow cursor-pointer">
+              <CardContent className="p-5">
+                <div className="flex items-center justify-between mb-3">
+                  <div className="p-2 rounded-lg bg-green-50">
+                    <TrendingUp className="w-4 h-4 text-green-600" />
                   </div>
-                  <div className="text-2xl font-bold text-gray-900">{s.value}</div>
-                  <div className="text-sm text-gray-500 mt-0.5">{s.label}</div>
-                </CardContent>
-              </Card>
-            </Link>
-          ))}
+                  <ArrowUpRight className="w-4 h-4 text-gray-400" />
+                </div>
+                <div className="text-2xl font-bold text-gray-900">{formatCurrency(revenueToday, business.currency)}</div>
+                <div className="text-sm text-gray-500 mt-0.5">{t('stats.revenueToday')}</div>
+                {/* Sparkline */}
+                <div className="flex items-end gap-[2px] mt-2 h-6">
+                  {sparklineValues.map((val, i) => {
+                    const isToday = i === 6
+                    const barH = Math.max(4, Math.round((val / sparklineMax) * 24))
+                    return (
+                      <div
+                        key={i}
+                        style={{
+                          width: 6,
+                          height: barH,
+                          backgroundColor: isToday ? '#16a34a' : '#86efac',
+                          borderRadius: 2,
+                          flexShrink: 0,
+                        }}
+                      />
+                    )
+                  })}
+                </div>
+              </CardContent>
+            </Card>
+          </Link>
+
+          {/* Bookings today card — custom render for breakdown */}
+          <Link href="/booking">
+            <Card className="hover:shadow-md transition-shadow cursor-pointer">
+              <CardContent className="p-5">
+                <div className="flex items-center justify-between mb-3">
+                  <div className="p-2 rounded-lg bg-blue-50">
+                    <CalendarDays className="w-4 h-4 text-blue-600" />
+                  </div>
+                  <ArrowUpRight className="w-4 h-4 text-gray-400" />
+                </div>
+                <div className="text-2xl font-bold text-gray-900">{apptTodayCount}</div>
+                <div className="text-sm text-gray-500 mt-0.5">{t('stats.appointmentsToday')}</div>
+                {breakdownParts.length > 0 && (
+                  <div className="mt-1 text-gray-400 truncate" style={{ fontSize: 11 }}>
+                    {breakdownParts.join(' · ')}
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+          </Link>
+
+          {/* Clients card */}
+          <Link href="/crm">
+            <Card className="hover:shadow-md transition-shadow cursor-pointer">
+              <CardContent className="p-5">
+                <div className="flex items-center justify-between mb-3">
+                  <div className="p-2 rounded-lg bg-purple-50">
+                    <Users className="w-4 h-4 text-purple-600" />
+                  </div>
+                  <ArrowUpRight className="w-4 h-4 text-gray-400" />
+                </div>
+                <div className="text-2xl font-bold text-gray-900">{String(clientCount ?? 0)}</div>
+                <div className="text-sm text-gray-500 mt-0.5">{t('stats.totalClients')}</div>
+              </CardContent>
+            </Card>
+          </Link>
+
+          {/* Low stock card */}
+          <Link href="/inventory">
+            <Card className="hover:shadow-md transition-shadow cursor-pointer">
+              <CardContent className="p-5">
+                <div className="flex items-center justify-between mb-3">
+                  <div className={`p-2 rounded-lg ${lowStock > 0 ? 'bg-orange-50' : 'bg-green-50'}`}>
+                    <Package className={`w-4 h-4 ${lowStock > 0 ? 'text-orange-600' : 'text-green-600'}`} />
+                  </div>
+                  <ArrowUpRight className="w-4 h-4 text-gray-400" />
+                </div>
+                <div className="text-2xl font-bold text-gray-900">{lowStock > 0 ? String(lowStock) : t('stats.lowStockOk')}</div>
+                <div className="text-sm text-gray-500 mt-0.5">{t('stats.lowStock')}</div>
+              </CardContent>
+            </Card>
+          </Link>
         </div>
 
         <div className="grid lg:grid-cols-2 gap-6">
@@ -118,7 +219,12 @@ export default async function DashboardPage() {
               ) : (
                 <div className="space-y-3">
                   {upcomingAppointments?.map((a) => (
-                    <div key={a.id} className="flex items-center justify-between py-2 border-b border-gray-100 last:border-0">
+                    <div key={a.id} className="flex items-center justify-between py-2 border-b border-gray-100 last:border-0 pl-3 relative">
+                      {/* Status stripe */}
+                      <span
+                        className="absolute left-0 top-1 bottom-1"
+                        style={{ width: 3, borderRadius: 2, backgroundColor: STATUS_STRIPE[a.status] ?? STATUS_STRIPE.pending }}
+                      />
                       <div>
                         <div className="text-sm font-medium text-gray-900">
                           {(a.clients as { name: string } | null)?.name ?? t('upcomingAppointments.walkIn')}

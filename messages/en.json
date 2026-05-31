@@ -141,13 +141,13 @@
     "title": "Dashboard",
     "stats": {
       "revenueToday": "Revenue today",
-      "appointmentsToday": "Appointments today",
+      "appointmentsToday": "Bookings today",
       "totalClients": "Total clients",
       "lowStock": "Low stock items",
       "lowStockOk": "All good ✓"
     },
     "upcomingAppointments": {
-      "heading": "Upcoming appointments",
+      "heading": "Upcoming bookings",
       "viewAll": "View all",
       "empty": "No upcoming appointments.",
       "addOne": "Add one",
