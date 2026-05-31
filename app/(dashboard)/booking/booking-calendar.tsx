@@ -53,6 +53,36 @@ function wallclockToUtc(year: number, month: number, day: number, hour: number, 
   return new Date(Date.UTC(year, month - 1, day, hour, minute) - offsetMs)
 }
 
+const EMPLOYEE_PALETTE = [
+  { bg: '#bbf7d0', text: '#14532d' },
+  { bg: '#bae6fd', text: '#0c4a6e' },
+  { bg: '#ddd6fe', text: '#3b0764' },
+  { bg: '#fecdd3', text: '#881337' },
+  { bg: '#fde68a', text: '#713f12' },
+  { bg: '#99f6e4', text: '#134e4a' },
+]
+
+function getEmployeeColor(employeeId: string) {
+  let hash = 0
+  for (let i = 0; i < employeeId.length; i++) {
+    hash = (hash * 31 + employeeId.charCodeAt(i)) >>> 0
+  }
+  return EMPLOYEE_PALETTE[hash % EMPLOYEE_PALETTE.length]
+}
+
+const STATUS_STRIPE: Record<string, string> = {
+  pending:   '#94a3b8',
+  confirmed: '#16a34a',
+  completed: '#3b82f6',
+  paid:      '#0d9488',
+  cancelled: '#ef4444',
+  no_show:   '#f97316',
+}
+
+function getStatusStripe(status: string): string {
+  return STATUS_STRIPE[status.toLowerCase()] ?? STATUS_STRIPE.pending
+}
+
 const SOURCE_BADGE: Record<string, { label: string; pill: string }> = {
   online:   { label: 'Online',   pill: 'bg-blue-100 text-blue-700' },
   manual:   { label: 'Manual',   pill: 'bg-gray-100 text-gray-500' },
@@ -438,25 +468,30 @@ export function BookingCalendar({ businessId, slug, timezone, appointments: init
                           }
                         }}
                       >
-                        {cellAppts.map((a) => (
-                          <DraggableAppt key={a.id} id={a.id}>
-                            <div
-                              onClick={(e) => { e.stopPropagation(); setSelectedAppt(a) }}
-                              className={`rounded border px-1 py-0.5 mb-0.5 cursor-grab active:cursor-grabbing text-xs ${statusColors[a.status] ?? 'bg-gray-100'}`}
-                            >
-                              <div className="font-semibold truncate">{a.clients?.name ?? (a.source === 'online' ? 'Online' : t('walkIn'))}</div>
-                              <div className="truncate">{a.services?.name} · {formatInBusinessTimezone(a.starts_at, timezone, 'time')}</div>
-                              {a.employees?.name && (
-                                <div className="truncate text-[10px] opacity-70">{a.employees.name}</div>
-                              )}
-                              {a.source && SOURCE_BADGE[a.source] && (
-                                <span className={`inline-block mt-0.5 text-[9px] leading-tight px-1 rounded font-medium ${SOURCE_BADGE[a.source].pill}`}>
-                                  {SOURCE_BADGE[a.source].label}
-                                </span>
-                              )}
-                            </div>
-                          </DraggableAppt>
-                        ))}
+                        {cellAppts.map((a) => {
+                          const empColor = getEmployeeColor(a.employees?.id ?? '')
+                          const stripe = getStatusStripe(a.status)
+                          return (
+                            <DraggableAppt key={a.id} id={a.id}>
+                              <div
+                                onClick={(e) => { e.stopPropagation(); setSelectedAppt(a) }}
+                                className="rounded px-1 py-0.5 mb-0.5 cursor-grab active:cursor-grabbing text-xs"
+                                style={{ backgroundColor: empColor.bg, color: empColor.text, borderLeft: `3px solid ${stripe}`, borderTop: '1px solid rgba(0,0,0,0.08)', borderRight: '1px solid rgba(0,0,0,0.08)', borderBottom: '1px solid rgba(0,0,0,0.08)' }}
+                              >
+                                <div className="font-semibold truncate">{a.clients?.name ?? (a.source === 'online' ? 'Online' : t('walkIn'))}</div>
+                                <div className="truncate">{a.services?.name} · {formatInBusinessTimezone(a.starts_at, timezone, 'time')}</div>
+                                {a.employees?.name && (
+                                  <div className="truncate text-[10px] opacity-70">{a.employees.name}</div>
+                                )}
+                                {a.source && SOURCE_BADGE[a.source] && (
+                                  <span className={`inline-block mt-0.5 text-[9px] leading-tight px-1 rounded font-medium ${SOURCE_BADGE[a.source].pill}`}>
+                                    {SOURCE_BADGE[a.source].label}
+                                  </span>
+                                )}
+                              </div>
+                            </DraggableAppt>
+                          )
+                        })}
                       </DroppableCell>
                     )
                   })}
@@ -468,15 +503,20 @@ export function BookingCalendar({ businessId, slug, timezone, appointments: init
 
         {/* Drag overlay — shown while dragging */}
         <DragOverlay>
-          {draggedAppt && (
-            <div className={`rounded border px-2 py-1 text-xs shadow-lg w-28 ${statusColors[draggedAppt.status] ?? 'bg-gray-100'}`}>
-              <div className="font-semibold truncate">{draggedAppt.clients?.name ?? (draggedAppt.source === 'online' ? 'Online' : t('walkIn'))}</div>
-              <div className="truncate">{draggedAppt.services?.name}</div>
-              {draggedAppt.employees?.name && (
-                <div className="truncate opacity-70">{draggedAppt.employees.name}</div>
-              )}
-            </div>
-          )}
+          {draggedAppt && (() => {
+            const empColor = getEmployeeColor(draggedAppt.employees?.id ?? '')
+            const stripe = getStatusStripe(draggedAppt.status)
+            return (
+              <div className="rounded px-2 py-1 text-xs shadow-lg w-28"
+                style={{ backgroundColor: empColor.bg, color: empColor.text, borderLeft: `3px solid ${stripe}`, borderTop: '1px solid rgba(0,0,0,0.08)', borderRight: '1px solid rgba(0,0,0,0.08)', borderBottom: '1px solid rgba(0,0,0,0.08)' }}>
+                <div className="font-semibold truncate">{draggedAppt.clients?.name ?? (draggedAppt.source === 'online' ? 'Online' : t('walkIn'))}</div>
+                <div className="truncate">{draggedAppt.services?.name}</div>
+                {draggedAppt.employees?.name && (
+                  <div className="truncate opacity-70">{draggedAppt.employees.name}</div>
+                )}
+              </div>
+            )
+          })()}
         </DragOverlay>
       </DndContext>
 
