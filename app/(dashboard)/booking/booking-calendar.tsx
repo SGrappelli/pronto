@@ -62,7 +62,10 @@ const EMPLOYEE_PALETTE = [
   { bg: '#99f6e4', text: '#134e4a' },
 ]
 
-function getEmployeeColor(employeeId: string) {
+const NO_EMPLOYEE_COLOR = { bg: '#f1f5f9', text: '#475569' }
+
+function getEmployeeColor(employeeId: string | null | undefined) {
+  if (!employeeId) return NO_EMPLOYEE_COLOR
   let hash = 0
   for (let i = 0; i < employeeId.length; i++) {
     hash = (hash * 31 + employeeId.charCodeAt(i)) >>> 0
@@ -469,14 +472,14 @@ export function BookingCalendar({ businessId, slug, timezone, appointments: init
                         }}
                       >
                         {cellAppts.map((a) => {
-                          const empColor = getEmployeeColor(a.employees?.id ?? '')
+                          const empColor = getEmployeeColor(a.employees?.id)
                           const stripe = getStatusStripe(a.status)
                           return (
                             <DraggableAppt key={a.id} id={a.id}>
                               <div
                                 onClick={(e) => { e.stopPropagation(); setSelectedAppt(a) }}
                                 className="rounded px-1 py-0.5 mb-0.5 cursor-grab active:cursor-grabbing text-xs"
-                                style={{ backgroundColor: empColor.bg, color: empColor.text, borderLeft: `3px solid ${stripe}`, borderTop: '1px solid rgba(0,0,0,0.08)', borderRight: '1px solid rgba(0,0,0,0.08)', borderBottom: '1px solid rgba(0,0,0,0.08)' }}
+                                style={{ backgroundColor: empColor.bg, color: empColor.text, borderLeft: `5px solid ${stripe}`, borderTop: '1px solid rgba(0,0,0,0.08)', borderRight: '1px solid rgba(0,0,0,0.08)', borderBottom: '1px solid rgba(0,0,0,0.08)' }}
                               >
                                 <div className="font-semibold truncate">{a.clients?.name ?? (a.source === 'online' ? 'Online' : t('walkIn'))}</div>
                                 <div className="truncate">{a.services?.name} · {formatInBusinessTimezone(a.starts_at, timezone, 'time')}</div>
@@ -504,11 +507,11 @@ export function BookingCalendar({ businessId, slug, timezone, appointments: init
         {/* Drag overlay — shown while dragging */}
         <DragOverlay>
           {draggedAppt && (() => {
-            const empColor = getEmployeeColor(draggedAppt.employees?.id ?? '')
+            const empColor = getEmployeeColor(draggedAppt.employees?.id)
             const stripe = getStatusStripe(draggedAppt.status)
             return (
               <div className="rounded px-2 py-1 text-xs shadow-lg w-28"
-                style={{ backgroundColor: empColor.bg, color: empColor.text, borderLeft: `3px solid ${stripe}`, borderTop: '1px solid rgba(0,0,0,0.08)', borderRight: '1px solid rgba(0,0,0,0.08)', borderBottom: '1px solid rgba(0,0,0,0.08)' }}>
+                style={{ backgroundColor: empColor.bg, color: empColor.text, borderLeft: `5px solid ${stripe}`, borderTop: '1px solid rgba(0,0,0,0.08)', borderRight: '1px solid rgba(0,0,0,0.08)', borderBottom: '1px solid rgba(0,0,0,0.08)' }}>
                 <div className="font-semibold truncate">{draggedAppt.clients?.name ?? (draggedAppt.source === 'online' ? 'Online' : t('walkIn'))}</div>
                 <div className="truncate">{draggedAppt.services?.name}</div>
                 {draggedAppt.employees?.name && (
