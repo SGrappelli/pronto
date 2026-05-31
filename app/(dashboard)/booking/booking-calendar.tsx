@@ -1,11 +1,11 @@
 'use client'
 
-import { useState, useMemo, useEffect } from 'react'
+import { useState, useMemo, useEffect, useRef } from 'react'
 import { createClient } from '@/lib/supabase/client'
 import { formatInBusinessTimezone, uses12HourClock } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
 import { DatePicker } from '@/components/ui/date-picker'
-import { ChevronLeft, ChevronRight, ExternalLink, CreditCard, AlertCircle } from 'lucide-react'
+import { ChevronLeft, ChevronRight, ExternalLink, CreditCard, AlertCircle, Palette } from 'lucide-react'
 import Link from 'next/link'
 import { useTranslations } from 'next-intl'
 import { useRouter } from 'next/navigation'
@@ -244,6 +244,9 @@ export function BookingCalendar({ businessId, slug, timezone, appointments: init
   const [selectedAppt, setSelectedAppt] = useState<Appointment | null>(null)
   const [confirmDelete, setConfirmDelete] = useState(false)
   const [draggedAppt, setDraggedAppt] = useState<Appointment | null>(null)
+  const [assignError, setAssignError] = useState<string | null>(null)
+  const [showLegend, setShowLegend] = useState(false)
+  const legendRef = useRef<HTMLDivElement>(null)
 
   // day_of_week: 0=Sun, 1=Mon … 6=Sat (JS getDay() convention)
   function isDayClosed(date: Date) {
@@ -406,6 +409,44 @@ export function BookingCalendar({ businessId, slug, timezone, appointments: init
     router.refresh()
   }
 
+  async function assignEmployee(apptId: string, employeeId: string) {
+    setAssignError(null)
+    const res = await fetch(`/api/appointments/${apptId}`, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ employee_id: employeeId || null }),
+    })
+    if (!res.ok) {
+      setAssignError('Failed to update employee. Please try again.')
+      return
+    }
+    const updated = await res.json()
+    const newEmployee = updated.employees ?? null
+    setAppointments((prev) =>
+      prev.map((a) => a.id === apptId ? { ...a, employees: newEmployee } : a)
+    )
+    setSelectedAppt((a) => a?.id === apptId ? { ...a, employees: newEmployee } : a)
+    router.refresh()
+  }
+
+  useEffect(() => {
+    if (!showLegend) return
+    function handleClick(e: MouseEvent) {
+      if (legendRef.current && !legendRef.current.contains(e.target as Node)) {
+        setShowLegend(false)
+      }
+    }
+    function handleKey(e: KeyboardEvent) {
+      if (e.key === 'Escape') setShowLegend(false)
+    }
+    document.addEventListener('mousedown', handleClick)
+    document.addEventListener('keydown', handleKey)
+    return () => {
+      document.removeEventListener('mousedown', handleClick)
+      document.removeEventListener('keydown', handleKey)
+    }
+  }, [showLegend])
+
   return (
     <div className="flex-1 flex flex-col min-h-0 p-3 sm:p-6 gap-4">
       {/* Toolbar */}
@@ -427,6 +468,51 @@ export function BookingCalendar({ businessId, slug, timezone, appointments: init
             className="flex items-center gap-1 text-xs text-blue-600 hover:underline">
             <ExternalLink className="w-3 h-3" /> {t('calendar.publicPage')}
           </a>
+          {/* Legend button */}
+          <div className="relative" ref={legendRef}>
+            <button
+              onClick={() => setShowLegend((v) => !v)}
+              className="p-1.5 rounded-lg hover:bg-gray-100 text-gray-500"
+              title="Color legend"
+            >
+              <Palette className="w-4 h-4" />
+            </button>
+            {showLegend && (
+              <div className="absolute right-0 top-8 z-30 w-56 bg-white rounded-xl border border-gray-200 shadow-lg p-3">
+                <div className="text-xs font-semibold text-gray-500 uppercase mb-2">Team colors</div>
+                {employees.length === 0 ? (
+                  <p className="text-xs text-gray-400">No team members yet</p>
+                ) : (
+                  <div className="space-y-1.5 mb-3">
+                    {employees.map((emp) => {
+                      const c = getEmployeeColor(emp.id)
+                      return (
+                        <div key={emp.id} className="flex items-center gap-2">
+                          <span className="w-3 h-3 rounded-full shrink-0" style={{ backgroundColor: c.bg, border: '1px solid rgba(0,0,0,0.1)' }} />
+                          <span className="text-xs text-gray-700 truncate">{emp.name}</span>
+                        </div>
+                      )
+                    })}
+                    <div className="flex items-center gap-2">
+                      <span className="w-3 h-3 rounded-full shrink-0" style={{ backgroundColor: NO_EMPLOYEE_COLOR.bg, border: '1px solid rgba(0,0,0,0.1)' }} />
+                      <span className="text-xs text-gray-500 truncate">Unassigned</span>
+                    </div>
+                  </div>
+                )}
+                <div className="border-t border-gray-100 pt-2 mt-1">
+                  <div className="text-xs font-semibold text-gray-500 uppercase mb-2">Appointment status</div>
+                  <div className="space-y-1.5">
+                    {Object.entries(STATUS_STRIPE).map(([status, color]) => (
+                      <div key={status} className="flex items-center gap-2">
+                        <span className="w-1 h-4 rounded-full shrink-0" style={{ backgroundColor: color }} />
+                        <span className="text-xs text-gray-700 capitalize">{status.replace('_', ' ')}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
           <Button size="sm" onClick={() => openForm()}>{t('newAppointment')}</Button>
         </div>
       </div>
@@ -669,16 +755,31 @@ export function BookingCalendar({ businessId, slug, timezone, appointments: init
             <p className="text-sm text-gray-500 mb-4">
               {selectedAppt.services?.name} · {formatInBusinessTimezone(selectedAppt.starts_at, timezone, 'time')} – {formatInBusinessTimezone(selectedAppt.ends_at, timezone, 'time')}
             </p>
-            <div className="flex items-center gap-2 mb-2 flex-wrap">
-              {selectedAppt.employees && (
-                <p className="text-sm text-gray-600">{t('detail.employeeLabel')} {selectedAppt.employees.name}</p>
-              )}
+            <div className="flex items-center gap-2 mb-3 flex-wrap">
               {selectedAppt.source && SOURCE_BADGE[selectedAppt.source] && (
                 <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${SOURCE_BADGE[selectedAppt.source].pill}`}>
                   {SOURCE_BADGE[selectedAppt.source].label}
                 </span>
               )}
             </div>
+            {employees.length > 0 && (
+              <div className="mb-4">
+                <label className="text-xs text-gray-400 uppercase font-medium">{t('detail.employeeLabel')}</label>
+                <select
+                  value={selectedAppt.employees?.id ?? ''}
+                  onChange={(e) => assignEmployee(selectedAppt.id, e.target.value)}
+                  className="mt-1 w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                >
+                  <option value="">Unassigned</option>
+                  {employees.map((emp) => (
+                    <option key={emp.id} value={emp.id}>{emp.name}</option>
+                  ))}
+                </select>
+                {assignError && (
+                  <p className="mt-1 text-xs text-red-600">{assignError}</p>
+                )}
+              </div>
+            )}
             {selectedAppt.notes && <p className="text-sm text-gray-600 mb-4 italic">{'"'}{selectedAppt.notes}{'"'}</p>}
             <div className="mb-4">
               <div className="text-xs text-gray-400 mb-2 uppercase font-medium">{t('detail.statusLabel')}</div>
@@ -736,7 +837,7 @@ export function BookingCalendar({ businessId, slug, timezone, appointments: init
                 Delete appointment
               </Button>
             )}
-            <Button variant="outline" className="w-full" onClick={() => { setSelectedAppt(null); setConfirmDelete(false) }}>{t('detail.close')}</Button>
+            <Button variant="outline" className="w-full" onClick={() => { setSelectedAppt(null); setConfirmDelete(false); setAssignError(null) }}>{t('detail.close')}</Button>
           </div>
         </div>
       )}
