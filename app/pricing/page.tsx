@@ -202,6 +202,21 @@ export default function PricingPage() {
 
             <PricingCards />
 
+            {/* Demo CTA */}
+            <p className="text-center text-sm py-4">
+              <span className="text-muted-foreground">Not sure yet?&nbsp;&nbsp;</span>
+              <TrackedAnchor
+                href="/book/demo"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-green-600 hover:underline font-medium"
+                eventName="demo_click"
+                eventParams={{ location: 'pricing', language: 'en' }}
+              >
+                Try live demo →
+              </TrackedAnchor>
+            </p>
+
             {/* Feature comparison table */}
             <div className="overflow-x-auto rounded-2xl border border-gray-200 shadow-sm">
               <table className="w-full text-sm">

@@ -495,6 +495,18 @@ export default function RootPage() {
               <TrackedLink href="/register" className={styles.btnPrimary} eventName="sign_up_click" eventParams={{ location: 'hero', language: 'en' }}>
                 Start free — no credit card
               </TrackedLink>
+              <p style={{ textAlign: 'center', marginTop: '8px' }}>
+                <TrackedAnchor
+                  href="/book/demo"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-sm text-muted-foreground hover:underline"
+                  eventName="demo_click"
+                  eventParams={{ location: 'two_ways', language: 'en' }}
+                >
+                  or try live demo →
+                </TrackedAnchor>
+              </p>
             </div>
           </div>
 
