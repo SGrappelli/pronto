@@ -102,9 +102,9 @@ interface Props {
   businessId: string; slug: string; timezone: string
   appointments: Appointment[]; employees: Employee[]; services: Service[]; clients: Client[]
   businessHours: BusinessHour[]
-  plan: string
-  monthlyBookingCount: number
-  bookingLimit: number
+  plan?: string
+  monthlyBookingCount?: number
+  bookingLimit?: number
 }
 
 // ─── Draggable appointment card ────────────────────────────────────────────────
@@ -194,8 +194,8 @@ export function BookingCalendar({ businessId, slug, timezone, appointments: init
   }, [businessHours, appointments, timezone])
   const [showForm, setShowForm] = useState(false)
   const [formError, setFormError] = useState<string | null>(null)
-  const [bookingCount, setBookingCount] = useState(initialBookingCount)
-  const bookingLimitReached = plan === 'free' && bookingCount >= bookingLimit
+  const [bookingCount, setBookingCount] = useState(initialBookingCount ?? 0)
+  const bookingLimitReached = plan === 'free' && bookingCount >= (bookingLimit ?? Infinity)
   const locale = typeof navigator !== 'undefined' ? navigator.language : 'en-US'
   const is12h = uses12HourClock(locale)
 
