@@ -206,7 +206,7 @@ export default function PricingPage() {
             <p className="text-center text-sm py-4">
               <span className="text-muted-foreground">Not sure yet?&nbsp;&nbsp;</span>
               <TrackedAnchor
-                href="/book/demo"
+                href="https://demo.trypronto.app"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-green-600 hover:underline font-medium"

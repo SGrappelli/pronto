@@ -497,7 +497,7 @@ export default function RootPage() {
               </TrackedLink>
               <p style={{ textAlign: 'center', marginTop: '8px' }}>
                 <TrackedAnchor
-                  href="/book/demo"
+                  href="https://demo.trypronto.app"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-sm text-muted-foreground hover:underline"
