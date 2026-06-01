@@ -500,7 +500,7 @@ export default function RootPage() {
                   href="https://demo.trypronto.app"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-sm text-muted-foreground hover:underline"
+                  className="text-sm text-green-600 hover:underline"
                   eventName="demo_click"
                   eventParams={{ location: 'two_ways', language: 'en' }}
                 >
