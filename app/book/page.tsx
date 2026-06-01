@@ -30,14 +30,15 @@ export default async function PublicBookingSaasPage() {
 
   const { data: bizRaw } = await supabase
     .from('businesses')
-    .select('id, name, type, phone, logo_url, currency, slug, timezone, telegram_bot_token, viber_bot_token')
+    .select('id, name, type, phone, logo_url, currency, slug, timezone, telegram_bot_token, viber_bot_token, meta_whatsapp_phone_number_id, owner_whatsapp')
     .eq('slug', slug)
     .maybeSingle()
 
   if (!bizRaw) notFound()
 
   // Destructure tokens server-side only — never passed to the client component
-  const { telegram_bot_token, viber_bot_token, ...business } = bizRaw
+  const { telegram_bot_token, viber_bot_token, meta_whatsapp_phone_number_id, owner_whatsapp, ...business } = bizRaw
+  const whatsappNumber = meta_whatsapp_phone_number_id ? (owner_whatsapp ?? null) : null
 
   const [
     { data: services },
@@ -100,6 +101,7 @@ export default async function PublicBookingSaasPage() {
           workingHours={businessHours ?? []}
           telegramBotUsername={telegramBotUsername}
           viberBotUri={viberBotUri}
+          whatsappNumber={whatsappNumber}
         />
       </div>
     </div>

@@ -21,6 +21,7 @@ interface Props {
   workingHours: DayHours[]
   telegramBotUsername: string | null
   viberBotUri: string | null
+  whatsappNumber: string | null
 }
 
 // 'employee' step is inserted between 'service' and 'datetime' when there are
@@ -50,7 +51,7 @@ function generateSlots(openTime: string, closeTime: string, durationMin: number)
   return slots
 }
 
-export function PublicBookingForm({ business, services, employees, workingHours, telegramBotUsername, viberBotUri }: Props) {
+export function PublicBookingForm({ business, services, employees, workingHours, telegramBotUsername, viberBotUri, whatsappNumber }: Props) {
   const supabase = createClient()
   const t = useTranslations('publicBooking')
 
@@ -68,6 +69,7 @@ export function PublicBookingForm({ business, services, employees, workingHours,
   const [slotTakenError, setSlotTakenError] = useState(false)
   const [bookingError, setBookingError] = useState<string | null>(null)
   const [clientId, setClientId] = useState<string | null>(null)
+  const [appointmentId, setAppointmentId] = useState<string | null>(null)
   const [clientHasTelegram, setClientHasTelegram] = useState(false)
 
   // Slot state
@@ -227,6 +229,7 @@ export function PublicBookingForm({ business, services, employees, workingHours,
 
       const data = await res.json()
       setClientId(data.clientId ?? null)
+      setAppointmentId(data.appointmentId ?? null)
       setClientHasTelegram(data.hasTelegram ?? false)
       setStep('done')
       setSaving(false)
@@ -263,6 +266,7 @@ export function PublicBookingForm({ business, services, employees, workingHours,
     setContact({ name: '', phone: '', email: '' })
     setAvailableSlots([])
     setClientId(null)
+    setAppointmentId(null)
     setClientHasTelegram(false)
     setBookingError(null)
   }
@@ -356,6 +360,57 @@ export function PublicBookingForm({ business, services, employees, workingHours,
             {t('success.bookAnother')}
           </Button>
         </div>
+
+        {/* Messenger notification block */}
+        {(() => {
+          const isDemo = business.slug === 'demo'
+          const tgLink = isDemo
+            ? 'https://trypronto.app/register'
+            : (telegramBotUsername && clientId ? `https://t.me/${telegramBotUsername}?start=client_${clientId}` : null)
+          const waLink = isDemo
+            ? 'https://trypronto.app/register'
+            : (whatsappNumber ? `https://wa.me/${whatsappNumber.replace(/\D/g, '')}` : null)
+          const viLink = isDemo
+            ? 'https://trypronto.app/register'
+            : (viberBotUri ? `viber://pa?chatURI=${viberBotUri}` : null)
+
+          const buttons = [
+            tgLink && { label: 'Telegram', color: '#229ED9', href: tgLink, platform: 'telegram', icon: <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.894 8.221-1.97 9.28c-.145.658-.537.818-1.084.508l-3-2.21-1.447 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.12L8.32 13.617l-2.96-.924c-.643-.204-.657-.643.136-.953l11.57-4.461c.537-.194 1.006.131.828.942z"/></svg> },
+            waLink  && { label: 'WhatsApp',  color: '#25D366', href: waLink,  platform: 'whatsapp',  icon: <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg> },
+            viLink  && { label: 'Viber',     color: '#7360F2', href: viLink,  platform: 'viber',     icon: <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M11.983.02C8.764.02 3.14 1.016.824 7.236c-.9 2.38-.9 4.944-.9 6.764v.02c0 2.62.44 5.04 1.72 6.72C2.9 22.22 4.74 23 7.4 23h.12c.6 0 1.2-.08 1.68-.28.08-.04.12-.12.12-.2v-2.16c0-.12-.08-.2-.2-.2-.04 0-.12 0-.16.04-.64.28-1.28.36-1.96.36-1.88 0-3.04-.6-3.72-1.84-.6-1.12-.76-2.6-.76-4.36v-.02c0-1.6.04-3.88.72-5.84 1.84-5.08 6.56-5.76 8.76-5.76h.04c2.2 0 6.92.68 8.76 5.76.68 1.96.72 4.24.72 5.84v.02c0 1.76-.16 3.24-.76 4.36-.68 1.24-1.84 1.84-3.72 1.84-.68 0-1.32-.08-1.96-.36-.04-.04-.12-.04-.16-.04-.12 0-.2.08-.2.2v2.16c0 .08.04.16.12.2.48.2 1.08.28 1.68.28h.12c2.66 0 4.5-.78 5.76-2.26 1.28-1.68 1.72-4.1 1.72-6.72v-.02c0-1.82 0-4.38-.9-6.76C20.86 1.016 15.224.02 12.004.02h-.02z"/></svg> },
+          ].filter(Boolean) as { label: string; color: string; href: string; platform: string; icon: React.ReactNode }[]
+
+          if (buttons.length === 0) return null
+
+          return (
+            <div className="mt-6 pt-6 border-t border-gray-100">
+              <p className="text-sm font-medium text-gray-700 mb-3 text-center">
+                {isDemo ? 'Your clients receive instant notifications via:' : 'Get reminders in your messenger:'}
+              </p>
+              <div className="flex flex-col sm:flex-row gap-2 justify-center">
+                {buttons.map(({ label, color, href, platform, icon }) => (
+                  <a
+                    key={platform}
+                    href={href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onClick={() => { if (isDemo) (window as any).gtag?.('event', 'demo_messenger_click', { platform }) }}
+                    className="inline-flex items-center justify-center gap-2 rounded-lg border px-4 py-2.5 text-sm font-medium transition-colors sm:w-auto w-full"
+                    style={{ borderColor: color, color }}
+                  >
+                    {icon}
+                    {label}
+                  </a>
+                ))}
+              </div>
+              <p className="text-xs text-gray-400 text-center mt-3">
+                {isDemo
+                  ? 'Set up notifications in 5 minutes · No extra cost'
+                  : 'Get appointment reminders directly in your messenger'}
+              </p>
+            </div>
+          )
+        })()}
       </div>
     )
   }
