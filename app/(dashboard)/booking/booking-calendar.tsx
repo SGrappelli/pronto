@@ -77,7 +77,7 @@ const STATUS_STRIPE: Record<string, string> = {
   pending:   '#94a3b8',
   confirmed: '#16a34a',
   completed: '#3b82f6',
-  paid:      '#0d9488',
+  paid:      '#eab308',
   cancelled: '#ef4444',
   no_show:   '#f97316',
 }
