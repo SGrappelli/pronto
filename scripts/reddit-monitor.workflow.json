@@ -1,0 +1,255 @@
+{
+  "name": "Reddit Monitor — Pronto",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "hours",
+              "hoursInterval": 1
+            }
+          ]
+        }
+      },
+      "id": "a1b2c3d4-0001-4000-8000-000000000001",
+      "name": "Every Hour",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [0, 300]
+    },
+    {
+      "parameters": {
+        "url": "https://www.reddit.com/r/smallbusiness/.rss",
+        "options": {}
+      },
+      "id": "a1b2c3d4-0001-4000-8000-000000000002",
+      "name": "RSS r/smallbusiness",
+      "type": "n8n-nodes-base.rssFeedRead",
+      "typeVersion": 1,
+      "position": [240, 100]
+    },
+    {
+      "parameters": {
+        "url": "https://www.reddit.com/r/selfhosted/.rss",
+        "options": {}
+      },
+      "id": "a1b2c3d4-0001-4000-8000-000000000003",
+      "name": "RSS r/selfhosted",
+      "type": "n8n-nodes-base.rssFeedRead",
+      "typeVersion": 1,
+      "position": [240, 220]
+    },
+    {
+      "parameters": {
+        "url": "https://www.reddit.com/r/CRM/.rss",
+        "options": {}
+      },
+      "id": "a1b2c3d4-0001-4000-8000-000000000004",
+      "name": "RSS r/CRM",
+      "type": "n8n-nodes-base.rssFeedRead",
+      "typeVersion": 1,
+      "position": [240, 340]
+    },
+    {
+      "parameters": {
+        "url": "https://www.reddit.com/r/Entrepreneur/.rss",
+        "options": {}
+      },
+      "id": "a1b2c3d4-0001-4000-8000-000000000005",
+      "name": "RSS r/Entrepreneur",
+      "type": "n8n-nodes-base.rssFeedRead",
+      "typeVersion": 1,
+      "position": [240, 460]
+    },
+    {
+      "parameters": {
+        "url": "https://www.reddit.com/r/saas/.rss",
+        "options": {}
+      },
+      "id": "a1b2c3d4-0001-4000-8000-000000000006",
+      "name": "RSS r/saas",
+      "type": "n8n-nodes-base.rssFeedRead",
+      "typeVersion": 1,
+      "position": [240, 580]
+    },
+    {
+      "parameters": {
+        "mode": "append",
+        "inputs": 5,
+        "options": {}
+      },
+      "id": "a1b2c3d4-0001-4000-8000-000000000007",
+      "name": "Merge All Posts",
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3,
+      "position": [500, 340]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.anthropic.com/v1/messages",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "anthropic-version",
+              "value": "2023-06-01"
+            },
+            {
+              "name": "x-api-key",
+              "value": "={{ $env.ANTHROPIC_API_KEY }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": []
+        },
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"model\": \"claude-haiku-4-5-20251001\",\n  \"max_tokens\": 500,\n  \"messages\": [\n    {\n      \"role\": \"user\",\n      \"content\": \"You are a filter for a SaaS marketing tool. Analyze this Reddit post and determine if it is relevant for Pronto — a booking/appointment scheduling and CRM software for salons, barbershops, and small service businesses.\\n\\nA post is RELEVANT if it mentions any of:\\n- Looking for booking or appointment scheduling software\\n- Salon, barbershop, spa, nail studio, massage management\\n- CRM for small service businesses\\n- Alternatives to Fresha, Vagaro, Square Appointments, Booksy, Acuity, Calendly\\n- Self-hosted alternatives to booking tools\\n- Managing clients or staff appointments\\n- Small business software recommendations\\n\\nA post is NOT relevant if it's about:\\n- Pure e-commerce, manufacturing, restaurants\\n- Enterprise SaaS unrelated to service businesses\\n- Generic programming questions\\n- Politics, news, off-topic\\n\\nPost title: {{ $json.title }}\\nPost content (first 500 chars): {{ $json.contentSnippet ? $json.contentSnippet.substring(0, 500) : 'N/A' }}\\nSubreddit: {{ $json.link ? $json.link.split('/r/')[1]?.split('/')[0] : 'unknown' }}\\n\\nRespond ONLY with a JSON object (no markdown):\\n{\\n  \\\"relevant\\\": true or false,\\n  \\\"reason\\\": \\\"one sentence why relevant or not\\\",\\n  \\\"comment_draft\\\": \\\"if relevant: 2-4 sentence helpful comment in English (mention Pronto naturally, not salesy). If not relevant: empty string.\\\"\\n}\"\n    }\n  ]\n}",
+        "options": {
+          "timeout": 30000
+        }
+      },
+      "id": "a1b2c3d4-0001-4000-8000-000000000008",
+      "name": "Claude — Filter & Draft",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [740, 340]
+    },
+    {
+      "parameters": {
+        "jsCode": "const item = $input.item;\nconst post = $('Merge All Posts').item;\n\n// Parse Claude's response\nlet claudeText = '';\ntry {\n  claudeText = item.json.content[0].text;\n} catch(e) {\n  return [{ json: { relevant: false, reason: 'parse error', post_title: '', post_link: '' } }];\n}\n\n// Remove markdown code blocks if present\nconst cleaned = claudeText.replace(/```json\\n?/g, '').replace(/```\\n?/g, '').trim();\n\nlet parsed;\ntry {\n  parsed = JSON.parse(cleaned);\n} catch(e) {\n  return [{ json: { relevant: false, reason: 'json parse error: ' + cleaned.substring(0, 100), post_title: '', post_link: '' } }];\n}\n\nreturn [{\n  json: {\n    relevant: parsed.relevant === true,\n    reason: parsed.reason || '',\n    comment_draft: parsed.comment_draft || '',\n    post_title: post.json.title || 'No title',\n    post_link: post.json.link || post.json.guid || '',\n    subreddit: post.json.link ? (post.json.link.split('/r/')[1]?.split('/')[0] || 'unknown') : 'unknown'\n  }\n}];"
+      },
+      "id": "a1b2c3d4-0001-4000-8000-000000000009",
+      "name": "Parse Claude Response",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [980, 340]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "cond-001",
+              "leftValue": "={{ $json.relevant }}",
+              "rightValue": true,
+              "operator": {
+                "type": "boolean",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "a1b2c3d4-0001-4000-8000-000000000010",
+      "name": "Is Relevant?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [1220, 340]
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $env.TELEGRAM_CHAT_ID }}",
+        "text": "=🎯 *Relevant Reddit post found!*\n\n*Subreddit:* r/{{ $json.subreddit }}\n*Title:* {{ $json.post_title }}\n*Link:* {{ $json.post_link }}\n\n*Why relevant:* {{ $json.reason }}\n\n💬 *Suggested comment:*\n_{{ $json.comment_draft }}_",
+        "additionalFields": {
+          "parse_mode": "Markdown",
+          "disable_web_page_preview": true
+        }
+      },
+      "id": "a1b2c3d4-0001-4000-8000-000000000011",
+      "name": "Send to Telegram",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [1460, 220],
+      "credentials": {
+        "telegramApi": {
+          "id": "telegram-cred-001",
+          "name": "Pronto Telegram Bot"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Every Hour": {
+      "main": [
+        [
+          { "node": "RSS r/smallbusiness", "type": "main", "index": 0 },
+          { "node": "RSS r/selfhosted", "type": "main", "index": 0 },
+          { "node": "RSS r/CRM", "type": "main", "index": 0 },
+          { "node": "RSS r/Entrepreneur", "type": "main", "index": 0 },
+          { "node": "RSS r/saas", "type": "main", "index": 0 }
+        ]
+      ]
+    },
+    "RSS r/smallbusiness": {
+      "main": [
+        [{ "node": "Merge All Posts", "type": "main", "index": 0 }]
+      ]
+    },
+    "RSS r/selfhosted": {
+      "main": [
+        [{ "node": "Merge All Posts", "type": "main", "index": 1 }]
+      ]
+    },
+    "RSS r/CRM": {
+      "main": [
+        [{ "node": "Merge All Posts", "type": "main", "index": 2 }]
+      ]
+    },
+    "RSS r/Entrepreneur": {
+      "main": [
+        [{ "node": "Merge All Posts", "type": "main", "index": 3 }]
+      ]
+    },
+    "RSS r/saas": {
+      "main": [
+        [{ "node": "Merge All Posts", "type": "main", "index": 4 }]
+      ]
+    },
+    "Merge All Posts": {
+      "main": [
+        [{ "node": "Claude — Filter & Draft", "type": "main", "index": 0 }]
+      ]
+    },
+    "Claude — Filter & Draft": {
+      "main": [
+        [{ "node": "Parse Claude Response", "type": "main", "index": 0 }]
+      ]
+    },
+    "Parse Claude Response": {
+      "main": [
+        [{ "node": "Is Relevant?", "type": "main", "index": 0 }]
+      ]
+    },
+    "Is Relevant?": {
+      "main": [
+        [{ "node": "Send to Telegram", "type": "main", "index": 0 }],
+        []
+      ]
+    }
+  },
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1",
+    "saveManualExecutions": true,
+    "callerPolicy": "workflowsFromSameOwner",
+    "errorWorkflow": ""
+  },
+  "staticData": null,
+  "tags": ["reddit", "monitoring", "pronto"],
+  "triggerCount": 0,
+  "updatedAt": "2026-06-01T00:00:00.000Z",
+  "versionId": "v1"
+}

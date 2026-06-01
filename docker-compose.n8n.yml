@@ -1,0 +1,40 @@
+services:
+  n8n:
+    image: docker.n8n.io/n8nio/n8n:latest
+    container_name: pronto-n8n
+    restart: unless-stopped
+    ports:
+      - '127.0.0.1:5678:5678'   # Internal only — not exposed publicly
+    volumes:
+      - n8n_data:/home/node/.n8n
+    env_file:
+      - .env.n8n
+    environment:
+      - N8N_HOST=localhost
+      - N8N_PORT=5678
+      - N8N_PROTOCOL=http
+      - NODE_ENV=production
+      - EXECUTIONS_PROCESS=main
+      - N8N_RUNNERS_ENABLED=true
+      - N8N_ENFORCE_SETTINGS_FILE_PERMISSIONS=false
+      # Disable telemetry and user management prompts
+      - N8N_DIAGNOSTICS_ENABLED=false
+      - N8N_VERSION_NOTIFICATIONS_ENABLED=false
+      - N8N_TEMPLATES_ENABLED=false
+      - N8N_ONBOARDING_FLOW_DISABLED=true
+      # Allow HTTP requests to external APIs
+      - NODE_FUNCTION_ALLOW_EXTERNAL=*
+    healthcheck:
+      test: ['CMD', 'wget', '-qO-', 'http://127.0.0.1:5678/healthz']
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+
+volumes:
+  n8n_data:
+    name: pronto_n8n_data
+
+networks:
+  default:
+    name: n8n_network
