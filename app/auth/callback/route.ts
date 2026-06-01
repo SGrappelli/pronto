@@ -62,10 +62,13 @@ export async function GET(request: Request) {
           slug = `${baseSlug}-${attempt}`
         }
 
+        const country = request.headers.get('cf-ipcountry') ?? null
+
         await admin.from('businesses').insert({
           owner_id: data.user.id,
           name: businessName,
           slug,
+          country,
         })
 
         return NextResponse.redirect(tenantUrl(slug, '/onboarding', origin))

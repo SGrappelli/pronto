@@ -4,6 +4,7 @@ import { createClient } from '@/lib/supabase/server'
 import { createClient as createAdminClient } from '@supabase/supabase-js'
 import { slugify } from '@/lib/utils'
 import { redirect } from 'next/navigation'
+import { headers } from 'next/headers'
 
 export async function register(formData: FormData) {
   const supabase = createClient()
@@ -53,10 +54,13 @@ export async function register(formData: FormData) {
     slug = `${baseSlug}-${attempt}`
   }
 
+  const country = headers().get('cf-ipcountry') ?? null
+
   await admin.from('businesses').insert({
     owner_id: authData.user.id,
     name: businessName,
     slug,
+    country,
   })
 
   // В selfhosted-режиме: принудительно логиним сразу после регистрации,

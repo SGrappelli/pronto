@@ -51,6 +51,12 @@ function TierBadge({ tier }: { tier: string }) {
   )
 }
 
+function countryFlag(code: string): string {
+  return code.toUpperCase().replace(/./g, c =>
+    String.fromCodePoint(0x1F1E6 - 65 + c.charCodeAt(0))
+  )
+}
+
 function HealthDot({ bookings30d, lastBookingAt }: {
   bookings30d: number
   lastBookingAt: string | null
@@ -112,7 +118,7 @@ export default async function AdminPage() {
   ] = await Promise.all([
     svc
       .from('businesses')
-      .select('id, name, slug, type, subscription_tier, owner_id, created_at')
+      .select('id, name, slug, type, subscription_tier, owner_id, created_at, country')
       .order('created_at', { ascending: false }),
     svc.auth.admin.listUsers({ page: 1, perPage: 1000 }),
     svc.from('appointments').select('business_id, created_at'),
@@ -206,7 +212,7 @@ export default async function AdminPage() {
         <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '13px' }}>
           <thead>
             <tr style={{ background: '#f9fafb', borderBottom: '1px solid #e5e7eb' }}>
-              {['Business name', 'Owner email', 'Type', 'Tier', 'Created', 'Clients', 'Bookings 30d', 'Last booking', 'Owner last login'].map(h => (
+              {['Business name', 'Owner email', 'Country', 'Type', 'Tier', 'Created', 'Clients', 'Bookings 30d', 'Last booking', 'Owner last login'].map(h => (
                 <th
                   key={h}
                   style={{
@@ -253,6 +259,11 @@ export default async function AdminPage() {
                   <td style={{ padding: '12px 16px', color: '#374151' }}>
                     {emailById[b.owner_id] ?? '—'}
                   </td>
+                  <td style={{ padding: '12px 16px', color: '#374151', whiteSpace: 'nowrap' }}>
+                    {b.country
+                      ? <>{countryFlag(b.country)} {b.country}</>
+                      : <span style={{ color: '#9ca3af' }}>—</span>}
+                  </td>
                   <td style={{ padding: '12px 16px', color: '#6b7280', textTransform: 'capitalize' }}>
                     {b.type ?? '—'}
                   </td>
@@ -279,7 +290,7 @@ export default async function AdminPage() {
             })}
             {rows.length === 0 && (
               <tr>
-                <td colSpan={9} style={{ padding: '32px 16px', textAlign: 'center', color: '#9ca3af' }}>
+                <td colSpan={10} style={{ padding: '32px 16px', textAlign: 'center', color: '#9ca3af' }}>
                   No businesses yet
                 </td>
               </tr>
