@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient as createAdminClient } from '@supabase/supabase-js'
 import { sendBookingConfirmation, formatEmailDate, formatEmailTime } from '@/lib/email'
+import { buildGCalUrlFromISO } from '@/lib/gcal'
 import { sendTelegramMessage, tplNewBooking, tplReminderClient as tgTplConfirmClient } from '@/lib/telegram'
 import { sendViberMessage, tplNewBooking as viberTplNewBooking } from '@/lib/viber'
 import { sendWhatsAppTemplate, tplBookingConfirmation as waTplBookingConfirmation } from '@/lib/whatsapp'
@@ -71,7 +72,7 @@ export async function POST(req: NextRequest) {
 
     const { data: appt, error: apptErr } = await supabase
       .from('appointments')
-      .select('id, starts_at, business_id, source, services(name), employees(name), clients(name, email, whatsapp_number, telegram_id, viber_user_id)')
+      .select('id, starts_at, business_id, source, services(name, duration_min), employees(name), clients(name, email, whatsapp_number, telegram_id, viber_user_id)')
       .eq('id', appointmentId)
       .single()
 
@@ -85,7 +86,7 @@ export async function POST(req: NextRequest) {
       telegram_id: string | null
       viber_user_id: string | null
     } | null
-    const service = appt.services as unknown as { name: string } | null
+    const service = appt.services as unknown as { name: string; duration_min: number } | null
     const employee = appt.employees as unknown as { name: string } | null
 
     const { data: biz } = await supabase
@@ -208,6 +209,16 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ sent: true, email: 'skipped: already sent' })
     }
 
+    const calendarUrl = buildGCalUrlFromISO({
+      businessName: biz?.name ?? '',
+      serviceName: service?.name ?? '',
+      employeeName: employee?.name ?? null,
+      startsAt: appt.starts_at,
+      durationMin: service?.duration_min ?? 60,
+      timezone: tz,
+      address: biz?.address ?? null,
+    })
+
     await sendBookingConfirmation({
       to: recipientEmail,
       clientName: client?.name ?? 'Guest',
@@ -217,6 +228,7 @@ export async function POST(req: NextRequest) {
       time,
       employeeName: employee?.name ?? undefined,
       address: biz?.address ?? undefined,
+      calendarUrl,
     })
 
     // Record only after a confirmed successful send

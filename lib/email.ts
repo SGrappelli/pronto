@@ -85,6 +85,7 @@ export async function sendBookingConfirmation(opts: {
   time: string
   employeeName?: string
   address?: string
+  calendarUrl?: string
 }) {
   const body = `
     ${h1('Booking confirmed!')}
@@ -97,6 +98,7 @@ export async function sendBookingConfirmation(opts: {
       ...(opts.address ? [['Address', opts.address] as [string, string]] : []),
     ])}
     ${p('See you soon!')}
+    ${opts.calendarUrl ? p(`<a href="${opts.calendarUrl}" style="color:#2563eb;">Add to Google Calendar</a>`) : ''}
   `
   return sendMail({
     from: getFromAddress(opts.businessName),

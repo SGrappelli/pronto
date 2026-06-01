@@ -3,14 +3,15 @@
 import { useState, useEffect } from 'react'
 import { createClient } from '@/lib/supabase/client'
 import { formatCurrency, uses12HourClock } from '@/lib/utils'
-import { CheckCircle2, ChevronRight, Loader2, UserCircle2 } from 'lucide-react'
+import { CalendarPlus, CheckCircle2, ChevronRight, Loader2, UserCircle2 } from 'lucide-react'
+import { buildGCalUrl } from '@/lib/gcal'
 import { Button } from '@/components/ui/button'
 import { DatePicker } from '@/components/ui/date-picker'
 import { useTranslations } from 'next-intl'
 
 interface Service { id: string; name: string; description: string | null; price: number; duration_min: number; category: string | null; capacity: number }
 interface Employee { id: string; name: string }
-interface Business { id: string; name: string; currency: string; slug: string; timezone: string | null }
+interface Business { id: string; name: string; currency: string; slug: string; timezone: string | null; address?: string | null }
 interface DayHours { day_of_week: number; is_open: boolean; open_time: string; close_time: string }
 
 interface Props {
@@ -332,9 +333,29 @@ export function PublicBookingForm({ business, services, employees, workingHours,
           </div>
         )}
 
-        <Button variant="outline" onClick={resetAll}>
-          {t('success.bookAnother')}
-        </Button>
+        <div className="flex flex-col sm:flex-row gap-2 justify-center">
+          <a
+            href={buildGCalUrl({
+              businessName: business.name,
+              serviceName: selectedService?.name ?? '',
+              employeeName: selectedEmployeeObj?.name,
+              date,
+              time: time ?? '',
+              durationMin: selectedService?.duration_min ?? 60,
+              timezone: business.timezone,
+              address: business.address,
+            })}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center justify-center gap-2 rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors"
+          >
+            <CalendarPlus className="w-4 h-4" />
+            Add to Google Calendar
+          </a>
+          <Button variant="outline" onClick={resetAll}>
+            {t('success.bookAnother')}
+          </Button>
+        </div>
       </div>
     )
   }
