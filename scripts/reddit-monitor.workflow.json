@@ -126,7 +126,7 @@
     },
     {
       "parameters": {
-        "chatId": "={{ $env.TELEGRAM_CHAT_ID }}",
+        "chatId": "361062024",
         "text": "=🔍 *Reddit post matched keywords*\n\n*Subreddit:* r/{{ $json.subreddit }}\n*Title:* {{ $json.post_title }}\n*Link:* {{ $json.post_link }}\n\n🏷 *Matched:* `{{ $json.matched_keywords }}`",
         "additionalFields": {
           "parse_mode": "Markdown",
