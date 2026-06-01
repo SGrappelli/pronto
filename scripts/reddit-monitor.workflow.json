@@ -16,7 +16,7 @@
       "name": "Every Hour",
       "type": "n8n-nodes-base.scheduleTrigger",
       "typeVersion": 1.2,
-      "position": [0, 300]
+      "position": [0, 340]
     },
     {
       "parameters": {
@@ -87,48 +87,13 @@
     },
     {
       "parameters": {
-        "method": "POST",
-        "url": "https://api.anthropic.com/v1/messages",
-        "authentication": "genericCredentialType",
-        "genericAuthType": "httpHeaderAuth",
-        "sendHeaders": true,
-        "headerParameters": {
-          "parameters": [
-            {
-              "name": "anthropic-version",
-              "value": "2023-06-01"
-            },
-            {
-              "name": "x-api-key",
-              "value": "={{ $env.ANTHROPIC_API_KEY }}"
-            }
-          ]
-        },
-        "sendBody": true,
-        "bodyParameters": {
-          "parameters": []
-        },
-        "specifyBody": "json",
-        "jsonBody": "={\n  \"model\": \"claude-haiku-4-5-20251001\",\n  \"max_tokens\": 500,\n  \"messages\": [\n    {\n      \"role\": \"user\",\n      \"content\": \"You are a filter for a SaaS marketing tool. Analyze this Reddit post and determine if it is relevant for Pronto — a booking/appointment scheduling and CRM software for salons, barbershops, and small service businesses.\\n\\nA post is RELEVANT if it mentions any of:\\n- Looking for booking or appointment scheduling software\\n- Salon, barbershop, spa, nail studio, massage management\\n- CRM for small service businesses\\n- Alternatives to Fresha, Vagaro, Square Appointments, Booksy, Acuity, Calendly\\n- Self-hosted alternatives to booking tools\\n- Managing clients or staff appointments\\n- Small business software recommendations\\n\\nA post is NOT relevant if it's about:\\n- Pure e-commerce, manufacturing, restaurants\\n- Enterprise SaaS unrelated to service businesses\\n- Generic programming questions\\n- Politics, news, off-topic\\n\\nPost title: {{ $json.title }}\\nPost content (first 500 chars): {{ $json.contentSnippet ? $json.contentSnippet.substring(0, 500) : 'N/A' }}\\nSubreddit: {{ $json.link ? $json.link.split('/r/')[1]?.split('/')[0] : 'unknown' }}\\n\\nRespond ONLY with a JSON object (no markdown):\\n{\\n  \\\"relevant\\\": true or false,\\n  \\\"reason\\\": \\\"one sentence why relevant or not\\\",\\n  \\\"comment_draft\\\": \\\"if relevant: 2-4 sentence helpful comment in English (mention Pronto naturally, not salesy). If not relevant: empty string.\\\"\\n}\"\n    }\n  ]\n}",
-        "options": {
-          "timeout": 30000
-        }
+        "jsCode": "// Keywords to match (case-insensitive)\nconst KEYWORDS = [\n  'booking',\n  'appointment',\n  'salon',\n  'barbershop',\n  'auto repair',\n  'beauty salon',\n  'CRM',\n  'self-hosted',\n  'selfhosted',\n  'scheduling',\n  'Fresha',\n  'Vagaro',\n  'Booksy',\n  'Square',\n  'Mindbody',\n  'point of sale',\n  'POS',\n  'client management',\n  'small business software'\n];\n\nconst item = $input.item.json;\n\n// Build searchable text from title + content snippet\nconst title = item.title || '';\nconst body = item.contentSnippet || item.content || item.summary || '';\nconst searchText = (title + ' ' + body).toLowerCase();\n\n// Find which keywords matched\nconst matched = KEYWORDS.filter(kw => searchText.includes(kw.toLowerCase()));\n\nif (matched.length === 0) {\n  // No match — return empty so the IF node drops it\n  return [{ json: { relevant: false } }];\n}\n\n// Derive subreddit from link\nconst link = item.link || item.guid || '';\nconst subredditMatch = link.match(/reddit\\.com\\/r\\/([^\\/]+)/);\nconst subreddit = subredditMatch ? subredditMatch[1] : 'unknown';\n\nreturn [{\n  json: {\n    relevant: true,\n    post_title: title,\n    post_link: link,\n    subreddit: subreddit,\n    matched_keywords: matched.join(', ')\n  }\n}];"
       },
       "id": "a1b2c3d4-0001-4000-8000-000000000008",
-      "name": "Claude — Filter & Draft",
-      "type": "n8n-nodes-base.httpRequest",
-      "typeVersion": 4.2,
-      "position": [740, 340]
-    },
-    {
-      "parameters": {
-        "jsCode": "const item = $input.item;\nconst post = $('Merge All Posts').item;\n\n// Parse Claude's response\nlet claudeText = '';\ntry {\n  claudeText = item.json.content[0].text;\n} catch(e) {\n  return [{ json: { relevant: false, reason: 'parse error', post_title: '', post_link: '' } }];\n}\n\n// Remove markdown code blocks if present\nconst cleaned = claudeText.replace(/```json\\n?/g, '').replace(/```\\n?/g, '').trim();\n\nlet parsed;\ntry {\n  parsed = JSON.parse(cleaned);\n} catch(e) {\n  return [{ json: { relevant: false, reason: 'json parse error: ' + cleaned.substring(0, 100), post_title: '', post_link: '' } }];\n}\n\nreturn [{\n  json: {\n    relevant: parsed.relevant === true,\n    reason: parsed.reason || '',\n    comment_draft: parsed.comment_draft || '',\n    post_title: post.json.title || 'No title',\n    post_link: post.json.link || post.json.guid || '',\n    subreddit: post.json.link ? (post.json.link.split('/r/')[1]?.split('/')[0] || 'unknown') : 'unknown'\n  }\n}];"
-      },
-      "id": "a1b2c3d4-0001-4000-8000-000000000009",
-      "name": "Parse Claude Response",
+      "name": "Keyword Filter",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
-      "position": [980, 340]
+      "position": [740, 340]
     },
     {
       "parameters": {
@@ -153,26 +118,26 @@
         },
         "options": {}
       },
-      "id": "a1b2c3d4-0001-4000-8000-000000000010",
+      "id": "a1b2c3d4-0001-4000-8000-000000000009",
       "name": "Is Relevant?",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2,
-      "position": [1220, 340]
+      "position": [980, 340]
     },
     {
       "parameters": {
         "chatId": "={{ $env.TELEGRAM_CHAT_ID }}",
-        "text": "=🎯 *Relevant Reddit post found!*\n\n*Subreddit:* r/{{ $json.subreddit }}\n*Title:* {{ $json.post_title }}\n*Link:* {{ $json.post_link }}\n\n*Why relevant:* {{ $json.reason }}\n\n💬 *Suggested comment:*\n_{{ $json.comment_draft }}_",
+        "text": "=🔍 *Reddit post matched keywords*\n\n*Subreddit:* r/{{ $json.subreddit }}\n*Title:* {{ $json.post_title }}\n*Link:* {{ $json.post_link }}\n\n🏷 *Matched:* `{{ $json.matched_keywords }}`",
         "additionalFields": {
           "parse_mode": "Markdown",
           "disable_web_page_preview": true
         }
       },
-      "id": "a1b2c3d4-0001-4000-8000-000000000011",
+      "id": "a1b2c3d4-0001-4000-8000-000000000010",
       "name": "Send to Telegram",
       "type": "n8n-nodes-base.telegram",
       "typeVersion": 1.2,
-      "position": [1460, 220],
+      "position": [1220, 220],
       "credentials": {
         "telegramApi": {
           "id": "telegram-cred-001",
@@ -220,15 +185,10 @@
     },
     "Merge All Posts": {
       "main": [
-        [{ "node": "Claude — Filter & Draft", "type": "main", "index": 0 }]
+        [{ "node": "Keyword Filter", "type": "main", "index": 0 }]
       ]
     },
-    "Claude — Filter & Draft": {
-      "main": [
-        [{ "node": "Parse Claude Response", "type": "main", "index": 0 }]
-      ]
-    },
-    "Parse Claude Response": {
+    "Keyword Filter": {
       "main": [
         [{ "node": "Is Relevant?", "type": "main", "index": 0 }]
       ]

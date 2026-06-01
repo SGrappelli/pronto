@@ -22,8 +22,8 @@ services:
       - N8N_VERSION_NOTIFICATIONS_ENABLED=false
       - N8N_TEMPLATES_ENABLED=false
       - N8N_ONBOARDING_FLOW_DISABLED=true
-      # Allow HTTP requests to external APIs
-      - NODE_FUNCTION_ALLOW_EXTERNAL=*
+      # Allow built-in Node modules in Code nodes
+      - NODE_FUNCTION_ALLOW_BUILTIN=*
     healthcheck:
       test: ['CMD', 'wget', '-qO-', 'http://127.0.0.1:5678/healthz']
       interval: 30s
