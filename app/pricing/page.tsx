@@ -106,7 +106,6 @@ const planColumns = [
 type FeatureValue = boolean | string
 
 const comingSoonLabels = new Set([
-  'Analytics dashboard',
   'Loyalty program',
   'Custom domain',
   'Multiple locations',

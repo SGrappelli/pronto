@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { LayoutDashboard, ShoppingCart, Users, Package, CalendarDays, Settings, LogOut, Menu, X } from 'lucide-react'
+import { LayoutDashboard, ShoppingCart, Users, Package, CalendarDays, BarChart2, Settings, LogOut, Menu, X, Lock } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { createClient } from '@/lib/supabase/client'
 import { useRouter } from 'next/navigation'
@@ -11,14 +11,17 @@ import { useState } from 'react'
 
 interface SidebarProps {
   businessName: string
+  subscriptionTier?: string
 }
 
-export function Sidebar({ businessName }: SidebarProps) {
+export function Sidebar({ businessName, subscriptionTier }: SidebarProps) {
   const t = useTranslations('sidebar')
   const pathname = usePathname()
   const router = useRouter()
   const supabase = createClient()
   const [open, setOpen] = useState(false)
+
+  const isProPlus = subscriptionTier === 'pro' || subscriptionTier === 'agency'
 
   const nav = [
     { href: '/dashboard', label: t('dashboard'), icon: LayoutDashboard },
@@ -26,6 +29,7 @@ export function Sidebar({ businessName }: SidebarProps) {
     { href: '/crm', label: t('clients'), icon: Users },
     { href: '/inventory', label: t('inventory'), icon: Package },
     { href: '/booking', label: t('booking'), icon: CalendarDays },
+    { href: '/analytics', label: 'Analytics', icon: BarChart2, proOnly: true },
   ]
 
   async function handleLogout() {
@@ -37,31 +41,39 @@ export function Sidebar({ businessName }: SidebarProps) {
   const navLinks = (
     <>
       <nav className="flex-1 p-3 space-y-0.5 overflow-y-auto">
-        {nav.map(({ href, label, icon: Icon }) => (
-          <Link key={href} href={href} onClick={() => setOpen(false)} className={cn(
-            'flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors',
-            pathname === href || pathname.startsWith(href + '/')
-              ? 'text-[#4ade80]'
-              : 'text-white/[0.55] hover:text-white/80'
-          )}
-          style={
-            pathname === href || pathname.startsWith(href + '/')
-              ? { backgroundColor: 'rgba(22,163,74,0.15)' }
-              : undefined
-          }
-          onMouseEnter={(e) => {
-            if (!(pathname === href || pathname.startsWith(href + '/')))
-              (e.currentTarget as HTMLElement).style.backgroundColor = 'rgba(255,255,255,0.08)'
-          }}
-          onMouseLeave={(e) => {
-            if (!(pathname === href || pathname.startsWith(href + '/')))
-              (e.currentTarget as HTMLElement).style.backgroundColor = ''
-          }}
-          >
-            <Icon className="w-4 h-4 shrink-0" />
-            {label}
-          </Link>
-        ))}
+        {nav.map(({ href, label, icon: Icon, proOnly }) => {
+          const locked = proOnly && !isProPlus
+          return (
+            <Link key={href} href={href} onClick={() => setOpen(false)} className={cn(
+              'flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors',
+              pathname === href || pathname.startsWith(href + '/')
+                ? 'text-[#4ade80]'
+                : 'text-white/[0.55] hover:text-white/80'
+            )}
+            style={
+              pathname === href || pathname.startsWith(href + '/')
+                ? { backgroundColor: 'rgba(22,163,74,0.15)' }
+                : undefined
+            }
+            onMouseEnter={(e) => {
+              if (!(pathname === href || pathname.startsWith(href + '/')))
+                (e.currentTarget as HTMLElement).style.backgroundColor = 'rgba(255,255,255,0.08)'
+            }}
+            onMouseLeave={(e) => {
+              if (!(pathname === href || pathname.startsWith(href + '/')))
+                (e.currentTarget as HTMLElement).style.backgroundColor = ''
+            }}
+            >
+              <Icon className="w-4 h-4 shrink-0" />
+              <span className="flex-1">{label}</span>
+              {locked && (
+                <span className="flex items-center gap-1 text-[10px] font-semibold bg-amber-500/20 text-amber-400 px-1.5 py-0.5 rounded">
+                  <Lock className="w-2.5 h-2.5" />Pro
+                </span>
+              )}
+            </Link>
+          )
+        })}
       </nav>
       <div className="p-3 border-t border-white/10 space-y-0.5">
         <Link href="/settings" onClick={() => setOpen(false)} className={cn(
