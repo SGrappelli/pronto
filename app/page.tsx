@@ -202,129 +202,175 @@ export default function RootPage() {
             </div>
             <div className={styles.heroVideoCol}>
               <div className={styles.heroDualFrames}>
+
                 {/* LEFT: Calendar / Dashboard frame */}
-                <div className={`${styles.heroFrame} ${styles.heroFrameLeft}`}>
-                  <div className={styles.frameBar}>
-                    <span className={`${styles.frameDot} ${styles.frameDotRed}`} />
-                    <span className={`${styles.frameDot} ${styles.frameDotYellow}`} />
-                    <span className={`${styles.frameDot} ${styles.frameDotGreen}`} />
-                    <span className={styles.frameUrl}>salon.trypronto.app/dashboard/booking</span>
-                  </div>
-                  <div className={styles.calContent}>
-                    <div className={styles.calHead}>
-                      <div className={styles.calNav}>
-                        <button className={styles.calNavBtn}>‹</button>
-                        <span className={styles.calDateLabel}>Jun 2–8, 2026</span>
-                        <button className={styles.calNavBtn}>›</button>
-                      </div>
-                      <button className={styles.calNewBtn}>+ New booking</button>
+                <div className={styles.heroFrameWrapperLeft}>
+                  <div className={styles.heroFrameLabel}>Booking calendar — drag &amp; drop</div>
+                  <div className={styles.heroFrame}>
+                    <div className={styles.frameBar}>
+                      <span className={`${styles.frameDot} ${styles.frameDotRed}`} />
+                      <span className={`${styles.frameDot} ${styles.frameDotYellow}`} />
+                      <span className={`${styles.frameDot} ${styles.frameDotGreen}`} />
+                      <span className={styles.frameUrl}>salon.trypronto.app/dashboard/booking</span>
                     </div>
-                    <div className={styles.calGrid}>
-                      {/* Mon */}
-                      <div>
-                        <div className={styles.calDayHdr}>Mon 2</div>
-                        <div className={styles.calAppt} style={{ borderLeftColor: '#22c55e', background: '#f0fdf4' }}>
-                          <div className={styles.apptTime}>10:00</div>
-                          <div className={styles.apptName}>Emma Wilson</div>
-                          <div className={styles.apptService}>Classic Haircut</div>
-                          <span className={`${styles.apptBadge} ${styles.apptBadgeConfirmed}`}>Confirmed</span>
+                    <div className={styles.calContent}>
+                      <div className={styles.calHead}>
+                        <div className={styles.calNav}>
+                          <button className={styles.calNavBtn}>‹</button>
+                          <span className={styles.calDateLabel}>Jun 2–8, 2026</span>
+                          <button className={styles.calNavBtn}>›</button>
                         </div>
+                        <button className={styles.calNewBtn}>+ New booking</button>
                       </div>
-                      {/* Tue */}
-                      <div>
-                        <div className={styles.calDayHdr}>Tue 3</div>
-                        <div className={styles.calAppt} style={{ borderLeftColor: '#3b82f6', background: '#eff6ff' }}>
-                          <div className={styles.apptTime}>11:30</div>
-                          <div className={styles.apptName}>James Brown</div>
-                          <div className={styles.apptService}>Beard Trim</div>
-                          <span className={`${styles.apptBadge} ${styles.apptBadgeConfirmed}`}>Confirmed</span>
-                        </div>
-                      </div>
-                      {/* Wed */}
-                      <div>
-                        <div className={styles.calDayHdr}>Wed 4</div>
-                        <div className={styles.calAppt} style={{ borderLeftColor: '#eab308', background: '#fefce8' }}>
-                          <div className={styles.apptTime}>14:00</div>
-                          <div className={styles.apptName}>Sofia Lee</div>
-                          <div className={styles.apptService}>Hair Color</div>
-                          <span className={`${styles.apptBadge} ${styles.apptBadgePending}`}>Pending</span>
-                        </div>
-                      </div>
-                      {/* Thu */}
-                      <div>
-                        <div className={styles.calDayHdr}>Thu 5</div>
-                        <div className={styles.calAppt} style={{ borderLeftColor: '#ec4899', background: '#fdf2f8' }}>
-                          <div className={styles.apptTime}>09:30</div>
-                          <div className={styles.apptName}>Ana Costa</div>
-                          <div className={styles.apptService}>Blow Dry</div>
-                          <span className={`${styles.apptBadge} ${styles.apptBadgeConfirmed}`}>Confirmed</span>
-                        </div>
-                      </div>
-                      {/* Fri */}
-                      <div>
-                        <div className={styles.calDayHdr}>Fri 6</div>
-                        <div className={styles.calAppt} style={{ borderLeftColor: '#14b8a6', background: '#f0fdfa' }}>
-                          <div className={styles.apptTime}>13:00</div>
-                          <div className={styles.apptName}>Mike Chen</div>
-                          <div className={styles.apptService}>Cut & Style</div>
-                          <span className={`${styles.apptBadge} ${styles.apptBadgeConfirmed}`}>Confirmed</span>
-                        </div>
-                      </div>
-                      {/* Sat */}
-                      <div>
-                        <div className={styles.calDayHdr}>Sat 7</div>
-                      </div>
+                      <table className={styles.calTable}>
+                        <thead>
+                          <tr>
+                            <th className={styles.calThTime}></th>
+                            <th className={styles.calTh}>Mon 2</th>
+                            <th className={styles.calTh}>Tue 3</th>
+                            <th className={styles.calTh}>Wed 4</th>
+                            <th className={styles.calTh}>Thu 5</th>
+                            <th className={styles.calTh}>Fri 6</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {/* 9:00 */}
+                          <tr>
+                            <td className={styles.calTdTime}>9:00</td>
+                            <td className={styles.calTd}></td>
+                            <td className={styles.calTd}></td>
+                            <td className={styles.calTd}>
+                              <div className={styles.calAppt} style={{ borderLeftColor: '#eab308', background: '#fefce8' }}>
+                                <div className={styles.apptTime}>9:00</div>
+                                <div className={styles.apptName}>Sofia Lee</div>
+                                <div className={styles.apptService}>Hair Color</div>
+                                <span className={`${styles.apptBadge} ${styles.apptBadgePending}`}>Pending</span>
+                              </div>
+                            </td>
+                            <td className={styles.calTd}></td>
+                            <td className={styles.calTd}></td>
+                          </tr>
+                          {/* 10:00 */}
+                          <tr>
+                            <td className={styles.calTdTime}>10:00</td>
+                            <td className={styles.calTd}>
+                              <div className={styles.calAppt} style={{ borderLeftColor: '#22c55e', background: '#f0fdf4' }}>
+                                <div className={styles.apptTime}>10:00</div>
+                                <div className={styles.apptName}>Emma Wilson</div>
+                                <div className={styles.apptService}>Classic Haircut</div>
+                                <span className={`${styles.apptBadge} ${styles.apptBadgeConfirmed}`}>Confirmed</span>
+                              </div>
+                            </td>
+                            <td className={styles.calTd}></td>
+                            <td className={styles.calTd}></td>
+                            <td className={styles.calTd}></td>
+                            <td className={styles.calTd}></td>
+                          </tr>
+                          {/* 11:00 */}
+                          <tr>
+                            <td className={styles.calTdTime}>11:00</td>
+                            <td className={styles.calTd}></td>
+                            <td className={styles.calTd}>
+                              <div className={styles.calAppt} style={{ borderLeftColor: '#3b82f6', background: '#eff6ff' }}>
+                                <div className={styles.apptTime}>11:00</div>
+                                <div className={styles.apptName}>James Brown</div>
+                                <div className={styles.apptService}>Beard Trim</div>
+                                <span className={`${styles.apptBadge} ${styles.apptBadgeConfirmed}`}>Confirmed</span>
+                              </div>
+                            </td>
+                            <td className={styles.calTd}></td>
+                            <td className={styles.calTd}></td>
+                            <td className={styles.calTd}>
+                              <div className={styles.calAppt} style={{ borderLeftColor: '#14b8a6', background: '#f0fdfa' }}>
+                                <div className={styles.apptTime}>11:00</div>
+                                <div className={styles.apptName}>Mike Chen</div>
+                                <div className={styles.apptService}>Cut &amp; Style</div>
+                                <span className={`${styles.apptBadge} ${styles.apptBadgeConfirmed}`}>Confirmed</span>
+                              </div>
+                            </td>
+                          </tr>
+                          {/* 12:00 — all empty */}
+                          <tr>
+                            <td className={styles.calTdTime}>12:00</td>
+                            <td className={styles.calTd}></td>
+                            <td className={styles.calTd}></td>
+                            <td className={styles.calTd}></td>
+                            <td className={styles.calTd}></td>
+                            <td className={styles.calTd}></td>
+                          </tr>
+                          {/* 13:00 */}
+                          <tr>
+                            <td className={styles.calTdTime}>13:00</td>
+                            <td className={styles.calTd}></td>
+                            <td className={styles.calTd}></td>
+                            <td className={styles.calTd}></td>
+                            <td className={styles.calTd}>
+                              <div className={styles.calAppt} style={{ borderLeftColor: '#ec4899', background: '#fdf2f8' }}>
+                                <div className={styles.apptTime}>13:00</div>
+                                <div className={styles.apptName}>Ana Costa</div>
+                                <div className={styles.apptService}>Blow Dry</div>
+                                <span className={`${styles.apptBadge} ${styles.apptBadgeConfirmed}`}>Confirmed</span>
+                              </div>
+                            </td>
+                            <td className={styles.calTd}></td>
+                          </tr>
+                        </tbody>
+                      </table>
                     </div>
                   </div>
                 </div>
 
                 {/* RIGHT: Public booking page frame */}
-                <div className={`${styles.heroFrame} ${styles.heroFrameRight}`}>
-                  <div className={styles.frameBar}>
-                    <span className={`${styles.frameDot} ${styles.frameDotRed}`} />
-                    <span className={`${styles.frameDot} ${styles.frameDotYellow}`} />
-                    <span className={`${styles.frameDot} ${styles.frameDotGreen}`} />
-                    <span className={styles.frameUrl}>salon.trypronto.app/book</span>
-                  </div>
-                  <div className={styles.bookContent}>
-                    <div className={styles.bookBizRow}>
-                      <div className={styles.bookAvatar}>S</div>
-                      <div className={styles.bookBizName}>The Style Studio</div>
+                <div className={styles.heroFrameWrapperRight}>
+                  <div className={styles.heroFrameLabel}>Client booking page</div>
+                  <div className={styles.heroFrame}>
+                    <div className={styles.frameBar}>
+                      <span className={`${styles.frameDot} ${styles.frameDotRed}`} />
+                      <span className={`${styles.frameDot} ${styles.frameDotYellow}`} />
+                      <span className={`${styles.frameDot} ${styles.frameDotGreen}`} />
+                      <span className={styles.frameUrl}>salon.trypronto.app/book</span>
                     </div>
-                    <div className={styles.bookHeading}>Select a service</div>
-                    <div className={styles.bookServiceList}>
-                      <div className={styles.bookServiceRow}>
-                        <div>
-                          <div className={styles.bookSvcName}>Classic Haircut</div>
-                          <div className={styles.bookSvcMeta}>30 min</div>
-                        </div>
-                        <div className={styles.bookSvcPrice}>$35</div>
+                    <div className={styles.bookContent}>
+                      <div className={styles.bookBizRow}>
+                        <div className={styles.bookAvatar}>S</div>
+                        <div className={styles.bookBizName}>The Style Studio</div>
                       </div>
-                      <div className={styles.bookServiceRow}>
-                        <div>
-                          <div className={styles.bookSvcName}>Beard Trim</div>
-                          <div className={styles.bookSvcMeta}>20 min</div>
+                      <div className={styles.bookHeading}>Select a service</div>
+                      <div className={styles.bookServiceList}>
+                        <div className={styles.bookServiceRow}>
+                          <div>
+                            <div className={styles.bookSvcName}>Classic Haircut</div>
+                            <div className={styles.bookSvcMeta}>30 min</div>
+                          </div>
+                          <div className={styles.bookSvcPrice}>$35</div>
                         </div>
-                        <div className={styles.bookSvcPrice}>$25</div>
-                      </div>
-                      <div className={styles.bookServiceRow}>
-                        <div>
-                          <div className={styles.bookSvcName}>Hair Color</div>
-                          <div className={styles.bookSvcMeta}>90 min</div>
+                        <div className={styles.bookServiceRow}>
+                          <div>
+                            <div className={styles.bookSvcName}>Beard Trim</div>
+                            <div className={styles.bookSvcMeta}>20 min</div>
+                          </div>
+                          <div className={styles.bookSvcPrice}>$25</div>
                         </div>
-                        <div className={styles.bookSvcPrice}>$85</div>
-                      </div>
-                      <div className={styles.bookServiceRow}>
-                        <div>
-                          <div className={styles.bookSvcName}>Blow Dry</div>
-                          <div className={styles.bookSvcMeta}>30 min</div>
+                        <div className={styles.bookServiceRow}>
+                          <div>
+                            <div className={styles.bookSvcName}>Hair Color</div>
+                            <div className={styles.bookSvcMeta}>90 min</div>
+                          </div>
+                          <div className={styles.bookSvcPrice}>$85</div>
                         </div>
-                        <div className={styles.bookSvcPrice}>$30</div>
+                        <div className={styles.bookServiceRow}>
+                          <div>
+                            <div className={styles.bookSvcName}>Blow Dry</div>
+                            <div className={styles.bookSvcMeta}>30 min</div>
+                          </div>
+                          <div className={styles.bookSvcPrice}>$30</div>
+                        </div>
                       </div>
+                      <div className={styles.bookNote}>No registration required — name &amp; phone only</div>
                     </div>
-                    <div className={styles.bookNote}>No registration required — name &amp; phone only</div>
                   </div>
                 </div>
+
               </div>
             </div>
           </div>
