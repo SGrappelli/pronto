@@ -171,45 +171,48 @@ export default function RootPage() {
       <main>
         {/* HERO */}
         <section className={styles.hero}>
-          <div className={styles.heroInner}>
-            <div className={styles.heroText}>
-              <h1>
-                Stop paying
-                <br />
-                <em>20% commission</em>
-                <br />
-                on your own clients
-              </h1>
-              <p className={styles.heroDesc}>
-                POS · CRM · Booking · Inventory · Omnichannel notifications — for any service business.
-                Self-hosted or cloud, your choice.
-              </p>
-              <div className={styles.heroCtas}>
-                <TrackedLink href="/register" className={styles.btnGreen} eventName="sign_up_click" eventParams={{ location: 'hero_cta', language: 'en' }}>
-                  Start free →
-                </TrackedLink>
-                <TrackedAnchor
-                  href="https://demo.trypronto.app"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className={styles.btnOutline}
-                  eventName="demo_click"
-                  eventParams={{ location: 'hero_cta', language: 'en' }}
-                >
-                  See live demo
-                </TrackedAnchor>
-              </div>
+          <div className={styles.heroCenter}>
+            <h1>
+              Stop paying
+              <br />
+              <em>20% commission</em>
+              <br />
+              on your own clients
+            </h1>
+            <p className={styles.heroDesc}>
+              POS · CRM · Booking · Inventory · Omnichannel notifications — for any service business.
+              Self-hosted or cloud, your choice.
+            </p>
+            <div className={styles.heroCtas}>
+              <TrackedLink href="/register" className={styles.btnGreen} eventName="sign_up_click" eventParams={{ location: 'hero_cta', language: 'en' }}>
+                Start free →
+              </TrackedLink>
+              <TrackedAnchor
+                href="https://demo.trypronto.app"
+                target="_blank"
+                rel="noopener noreferrer"
+                className={styles.btnOutline}
+                eventName="demo_click"
+                eventParams={{ location: 'hero_cta', language: 'en' }}
+              >
+                See live demo
+              </TrackedAnchor>
             </div>
-            <div className={styles.heroVideoCol}>
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src="/images/hero-mockup.png"
-                alt="Pronto booking calendar and client booking page"
-                width={1130}
-                height={560}
-                style={{ maxWidth: '100%', height: 'auto', display: 'block' }}
-              />
-            </div>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/images/hero-mockup.png"
+              alt="Pronto booking calendar and client booking page"
+              width={1130}
+              height={560}
+              style={{
+                width: '100%',
+                height: 'auto',
+                display: 'block',
+                marginTop: '40px',
+                borderRadius: '12px',
+                boxShadow: '0 8px 40px rgba(0,0,0,0.10)',
+              }}
+            />
           </div>
         </section>
 

@@ -800,7 +800,14 @@
 .footerSocial a { color: #9ca3af; display: flex; line-height: 1; }
 .footerSocial a:hover { color: #111; }
 
-/* VIDEO DEMO MOCKUP */
+/* HERO CENTERED LAYOUT */
+.heroCenter {
+  max-width: 900px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+/* Keep heroInner/heroText/heroVideoCol in case used elsewhere */
 .heroInner {
   display: flex;
   align-items: center;
@@ -867,6 +874,7 @@
   gap: 12px;
   margin-top: 28px;
   flex-wrap: wrap;
+  justify-content: center;
 }
 
 .btnGreen {
