@@ -46,16 +46,29 @@ function formatDateRange(start: Date, end: Date): string {
   return `${start.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })} – ${end.toLocaleDateString('en-US', opts)}`
 }
 
-function groupByWeek(rows: { label: string; revenue: number }[]): { label: string; revenue: number }[] {
-  const weeks: Record<string, number> = {}
-  rows.forEach(({ label, revenue }) => {
-    const d = new Date(label)
-    const weekStart = new Date(d)
-    weekStart.setDate(d.getDate() - d.getDay())
-    const key = weekStart.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
-    weeks[key] = (weeks[key] ?? 0) + revenue
+function groupByWeek(rows: { date: string; label: string; revenue: number }[]): { label: string; revenue: number }[] {
+  // Group by ISO week (Mon–Sun). Use the last day of the week as the label
+  // so "Jun 2" appears in the week that actually contains Jun 2, not May 27.
+  const weekMap: Record<string, { label: string; revenue: number }> = {}
+  rows.forEach(({ date, label, revenue }) => {
+    // Parse ISO date safely (avoid timezone shift by splitting manually)
+    const [y, m, d] = date.split('-').map(Number)
+    const dt = new Date(y, m - 1, d)
+    // Monday-based week: shift so Monday = 0
+    const dow = (dt.getDay() + 6) % 7          // Mon=0 … Sun=6
+    const weekStart = new Date(dt)
+    weekStart.setDate(dt.getDate() - dow)
+    const key = weekStart.toISOString().slice(0, 10)  // stable grouping key
+
+    if (!weekMap[key]) {
+      // Use the label of the LAST day that falls in this week (updated as we iterate)
+      weekMap[key] = { label, revenue: 0 }
+    }
+    weekMap[key].revenue += revenue
+    // Keep updating label so the last day seen (chronological) wins
+    weekMap[key].label = label
   })
-  return Object.entries(weeks).map(([label, revenue]) => ({ label, revenue }))
+  return Object.values(weekMap)
 }
 
 export async function GET(req: NextRequest) {
@@ -160,17 +173,19 @@ export async function GET(req: NextRequest) {
   })
 
   // Fill all days in range
-  const allDays: { label: string; revenue: number }[] = []
+  const allDays: { date: string; label: string; revenue: number }[] = []
   const cur = new Date(start)
   cur.setHours(0, 0, 0, 0)
   while (cur <= end) {
     const key = cur.toISOString().slice(0, 10)
     const label = cur.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
-    allDays.push({ label, revenue: dailyMap[key] ?? 0 })
+    allDays.push({ date: key, label, revenue: dailyMap[key] ?? 0 })
     cur.setDate(cur.getDate() + 1)
   }
 
-  const chart = period === '3m' ? groupByWeek(allDays) : allDays
+  const chart = period === '3m'
+    ? groupByWeek(allDays)
+    : allDays.map(({ label, revenue }) => ({ label, revenue }))
 
   // Top services
   const serviceMap: Record<string, { bookings: number; revenue: number }> = {}
