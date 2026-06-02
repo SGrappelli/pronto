@@ -436,7 +436,7 @@ export function PublicBookingForm({ business, services, employees, workingHours,
                       <div className="text-xs text-gray-400 mt-1">{t('selectService.minutes', { duration: s.duration_min })}</div>
                     </div>
                     <div className="text-right shrink-0 ml-4">
-                      <div className="font-semibold text-blue-600">{formatCurrency(s.price, business.currency)}</div>
+                      <div className="font-semibold" style={{ color: '#16a34a' }}>{formatCurrency(s.price, business.currency)}</div>
                       <ChevronRight className="w-4 h-4 text-gray-300 ml-auto mt-1 group-hover:text-blue-400" />
                     </div>
                   </div>
