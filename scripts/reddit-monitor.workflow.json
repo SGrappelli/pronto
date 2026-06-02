@@ -87,13 +87,23 @@
     },
     {
       "parameters": {
-        "jsCode": "// Keywords to match (case-insensitive)\nconst KEYWORDS = [\n  'booking',\n  'appointment',\n  'salon',\n  'barbershop',\n  'auto repair',\n  'beauty salon',\n  'CRM',\n  'self-hosted',\n  'selfhosted',\n  'scheduling',\n  'Fresha',\n  'Vagaro',\n  'Booksy',\n  'Square',\n  'Mindbody',\n  'point of sale',\n  'POS',\n  'client management',\n  'small business software'\n];\n\nconst item = $input.item.json;\n\n// Build searchable text from title + content snippet\nconst title = item.title || '';\nconst body = item.contentSnippet || item.content || item.summary || '';\nconst searchText = (title + ' ' + body).toLowerCase();\n\n// Find which keywords matched\nconst matched = KEYWORDS.filter(kw => searchText.includes(kw.toLowerCase()));\n\nif (matched.length === 0) {\n  // No match — return empty so the IF node drops it\n  return [{ json: { relevant: false } }];\n}\n\n// Derive subreddit from link\nconst link = item.link || item.guid || '';\nconst subredditMatch = link.match(/reddit\\.com\\/r\\/([^\\/]+)/);\nconst subreddit = subredditMatch ? subredditMatch[1] : 'unknown';\n\nreturn [{\n  json: {\n    relevant: true,\n    post_title: title,\n    post_link: link,\n    subreddit: subreddit,\n    matched_keywords: matched.join(', ')\n  }\n}];"
+        "jsCode": "// Skip weekly/promotional thread titles (case-insensitive)\nconst SPAM_PHRASES = [\n  'promote your business',\n  'weekly thread',\n  'daily thread',\n  'megathread',\n  'weekly discussion'\n];\n\nconst item = $input.item.json;\nconst title = (item.title || '').toLowerCase();\n\nconst isSpam = SPAM_PHRASES.some(phrase => title.includes(phrase));\n\nif (isSpam) {\n  // Return nothing — item is silently dropped\n  return [];\n}\n\n// Pass through unchanged\nreturn [{ json: item }];"
+      },
+      "id": "a1b2c3d4-0001-4000-8000-000000000011",
+      "name": "Skip Thread Posts",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [620, 340]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Keywords to match (case-insensitive, full-phrase only — no false positives)\nconst KEYWORDS = [\n  'booking software',\n  'appointment booking',\n  'salon software',\n  'barbershop software',\n  'self-hosted CRM',\n  'scheduling software',\n  'Fresha',\n  'Vagaro',\n  'Booksy',\n  'Mindbody',\n  'point of sale system',\n  'client management',\n  'barber shop app',\n  'salon app',\n  'appointment reminder',\n  'online booking system'\n];\n\nconst item = $input.item.json;\n\n// Build searchable text from title + content snippet\nconst title = item.title || '';\nconst body = item.contentSnippet || item.content || item.summary || '';\nconst searchText = (title + ' ' + body).toLowerCase();\n\n// Find which keywords matched\nconst matched = KEYWORDS.filter(kw => searchText.includes(kw.toLowerCase()));\n\nif (matched.length === 0) {\n  return [{ json: { relevant: false } }];\n}\n\n// Derive subreddit from link\nconst link = item.link || item.guid || '';\nconst subredditMatch = link.match(/reddit\\.com\\/r\\/([^\\/]+)/);\nconst subreddit = subredditMatch ? subredditMatch[1] : 'unknown';\n\nreturn [{\n  json: {\n    relevant: true,\n    post_title: title,\n    post_link: link,\n    subreddit: subreddit,\n    matched_keywords: matched.join(', ')\n  }\n}];"
       },
       "id": "a1b2c3d4-0001-4000-8000-000000000008",
       "name": "Keyword Filter",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
-      "position": [740, 340]
+      "position": [860, 340]
     },
     {
       "parameters": {
@@ -122,7 +132,7 @@
       "name": "Is Relevant?",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2,
-      "position": [980, 340]
+      "position": [1100, 340]
     },
     {
       "parameters": {
@@ -137,7 +147,7 @@
       "name": "Send to Telegram",
       "type": "n8n-nodes-base.telegram",
       "typeVersion": 1.2,
-      "position": [1220, 220],
+      "position": [1340, 220],
       "credentials": {
         "telegramApi": {
           "id": "telegram-cred-001",
@@ -185,6 +195,11 @@
     },
     "Merge All Posts": {
       "main": [
+        [{ "node": "Skip Thread Posts", "type": "main", "index": 0 }]
+      ]
+    },
+    "Skip Thread Posts": {
+      "main": [
         [{ "node": "Keyword Filter", "type": "main", "index": 0 }]
       ]
     },
@@ -210,6 +225,6 @@
   "staticData": null,
   "tags": ["reddit", "monitoring", "pronto"],
   "triggerCount": 0,
-  "updatedAt": "2026-06-01T00:00:00.000Z",
-  "versionId": "v1"
+  "updatedAt": "2026-06-02T00:00:00.000Z",
+  "versionId": "v2"
 }
