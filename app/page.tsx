@@ -184,24 +184,147 @@ export default function RootPage() {
                 POS · CRM · Booking · Inventory · Omnichannel notifications — for any service business.
                 Self-hosted or cloud, your choice.
               </p>
+              <div className={styles.heroCtas}>
+                <TrackedLink href="/register" className={styles.btnGreen} eventName="sign_up_click" eventParams={{ location: 'hero_cta', language: 'en' }}>
+                  Start free →
+                </TrackedLink>
+                <TrackedAnchor
+                  href="https://demo.trypronto.app"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={styles.btnOutline}
+                  eventName="demo_click"
+                  eventParams={{ location: 'hero_cta', language: 'en' }}
+                >
+                  See live demo
+                </TrackedAnchor>
+              </div>
             </div>
             <div className={styles.heroVideoCol}>
-              <div className={styles.browserMockup}>
-                <div className={styles.browserBar}>
-                  <span className={`${styles.browserDot} ${styles.browserDotRed}`} />
-                  <span className={`${styles.browserDot} ${styles.browserDotYellow}`} />
-                  <span className={`${styles.browserDot} ${styles.browserDotGreen}`} />
+              <div className={styles.heroDualFrames}>
+                {/* LEFT: Calendar / Dashboard frame */}
+                <div className={`${styles.heroFrame} ${styles.heroFrameLeft}`}>
+                  <div className={styles.frameBar}>
+                    <span className={`${styles.frameDot} ${styles.frameDotRed}`} />
+                    <span className={`${styles.frameDot} ${styles.frameDotYellow}`} />
+                    <span className={`${styles.frameDot} ${styles.frameDotGreen}`} />
+                    <span className={styles.frameUrl}>salon.trypronto.app/dashboard/booking</span>
+                  </div>
+                  <div className={styles.calContent}>
+                    <div className={styles.calHead}>
+                      <div className={styles.calNav}>
+                        <button className={styles.calNavBtn}>‹</button>
+                        <span className={styles.calDateLabel}>Jun 2–8, 2026</span>
+                        <button className={styles.calNavBtn}>›</button>
+                      </div>
+                      <button className={styles.calNewBtn}>+ New booking</button>
+                    </div>
+                    <div className={styles.calGrid}>
+                      {/* Mon */}
+                      <div>
+                        <div className={styles.calDayHdr}>Mon 2</div>
+                        <div className={styles.calAppt} style={{ borderLeftColor: '#22c55e', background: '#f0fdf4' }}>
+                          <div className={styles.apptTime}>10:00</div>
+                          <div className={styles.apptName}>Emma Wilson</div>
+                          <div className={styles.apptService}>Classic Haircut</div>
+                          <span className={`${styles.apptBadge} ${styles.apptBadgeConfirmed}`}>Confirmed</span>
+                        </div>
+                      </div>
+                      {/* Tue */}
+                      <div>
+                        <div className={styles.calDayHdr}>Tue 3</div>
+                        <div className={styles.calAppt} style={{ borderLeftColor: '#3b82f6', background: '#eff6ff' }}>
+                          <div className={styles.apptTime}>11:30</div>
+                          <div className={styles.apptName}>James Brown</div>
+                          <div className={styles.apptService}>Beard Trim</div>
+                          <span className={`${styles.apptBadge} ${styles.apptBadgeConfirmed}`}>Confirmed</span>
+                        </div>
+                      </div>
+                      {/* Wed */}
+                      <div>
+                        <div className={styles.calDayHdr}>Wed 4</div>
+                        <div className={styles.calAppt} style={{ borderLeftColor: '#eab308', background: '#fefce8' }}>
+                          <div className={styles.apptTime}>14:00</div>
+                          <div className={styles.apptName}>Sofia Lee</div>
+                          <div className={styles.apptService}>Hair Color</div>
+                          <span className={`${styles.apptBadge} ${styles.apptBadgePending}`}>Pending</span>
+                        </div>
+                      </div>
+                      {/* Thu */}
+                      <div>
+                        <div className={styles.calDayHdr}>Thu 5</div>
+                        <div className={styles.calAppt} style={{ borderLeftColor: '#ec4899', background: '#fdf2f8' }}>
+                          <div className={styles.apptTime}>09:30</div>
+                          <div className={styles.apptName}>Ana Costa</div>
+                          <div className={styles.apptService}>Blow Dry</div>
+                          <span className={`${styles.apptBadge} ${styles.apptBadgeConfirmed}`}>Confirmed</span>
+                        </div>
+                      </div>
+                      {/* Fri */}
+                      <div>
+                        <div className={styles.calDayHdr}>Fri 6</div>
+                        <div className={styles.calAppt} style={{ borderLeftColor: '#14b8a6', background: '#f0fdfa' }}>
+                          <div className={styles.apptTime}>13:00</div>
+                          <div className={styles.apptName}>Mike Chen</div>
+                          <div className={styles.apptService}>Cut & Style</div>
+                          <span className={`${styles.apptBadge} ${styles.apptBadgeConfirmed}`}>Confirmed</span>
+                        </div>
+                      </div>
+                      {/* Sat */}
+                      <div>
+                        <div className={styles.calDayHdr}>Sat 7</div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
-                <video
-                  src="/demo-booking.mp4"
-                  poster="/demo-booking-poster.png"
-                  autoPlay
-                  loop
-                  muted
-                  playsInline
-                  preload="metadata"
-                  className={styles.browserVideo}
-                />
+
+                {/* RIGHT: Public booking page frame */}
+                <div className={`${styles.heroFrame} ${styles.heroFrameRight}`}>
+                  <div className={styles.frameBar}>
+                    <span className={`${styles.frameDot} ${styles.frameDotRed}`} />
+                    <span className={`${styles.frameDot} ${styles.frameDotYellow}`} />
+                    <span className={`${styles.frameDot} ${styles.frameDotGreen}`} />
+                    <span className={styles.frameUrl}>salon.trypronto.app/book</span>
+                  </div>
+                  <div className={styles.bookContent}>
+                    <div className={styles.bookBizRow}>
+                      <div className={styles.bookAvatar}>S</div>
+                      <div className={styles.bookBizName}>The Style Studio</div>
+                    </div>
+                    <div className={styles.bookHeading}>Select a service</div>
+                    <div className={styles.bookServiceList}>
+                      <div className={styles.bookServiceRow}>
+                        <div>
+                          <div className={styles.bookSvcName}>Classic Haircut</div>
+                          <div className={styles.bookSvcMeta}>30 min</div>
+                        </div>
+                        <div className={styles.bookSvcPrice}>$35</div>
+                      </div>
+                      <div className={styles.bookServiceRow}>
+                        <div>
+                          <div className={styles.bookSvcName}>Beard Trim</div>
+                          <div className={styles.bookSvcMeta}>20 min</div>
+                        </div>
+                        <div className={styles.bookSvcPrice}>$25</div>
+                      </div>
+                      <div className={styles.bookServiceRow}>
+                        <div>
+                          <div className={styles.bookSvcName}>Hair Color</div>
+                          <div className={styles.bookSvcMeta}>90 min</div>
+                        </div>
+                        <div className={styles.bookSvcPrice}>$85</div>
+                      </div>
+                      <div className={styles.bookServiceRow}>
+                        <div>
+                          <div className={styles.bookSvcName}>Blow Dry</div>
+                          <div className={styles.bookSvcMeta}>30 min</div>
+                        </div>
+                        <div className={styles.bookSvcPrice}>$30</div>
+                      </div>
+                    </div>
+                    <div className={styles.bookNote}>No registration required — name &amp; phone only</div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -495,18 +618,6 @@ export default function RootPage() {
               <TrackedLink href="/register" className={styles.btnPrimary} eventName="sign_up_click" eventParams={{ location: 'hero', language: 'en' }}>
                 Start free — no credit card
               </TrackedLink>
-              <p style={{ textAlign: 'center', marginTop: '8px' }}>
-                <TrackedAnchor
-                  href="https://demo.trypronto.app"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-sm text-green-600 hover:underline"
-                  eventName="demo_click"
-                  eventParams={{ location: 'two_ways', language: 'en' }}
-                >
-                  or try live demo →
-                </TrackedAnchor>
-              </p>
             </div>
           </div>
 

@@ -861,6 +861,278 @@
   margin: 48px auto 0;
 }
 
+/* HERO CTA BUTTONS */
+.heroCtas {
+  display: flex;
+  gap: 12px;
+  margin-top: 28px;
+  flex-wrap: wrap;
+}
+
+.btnGreen {
+  background: #16a34a;
+  color: #fff;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 15px;
+  font-weight: 500;
+  padding: 13px 28px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
+}
+
+.btnGreen:hover {
+  background: #15803d;
+}
+
+/* HERO DUAL FRAMES */
+.heroDualFrames {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  width: 100%;
+}
+
+.heroFrame {
+  background: #fff;
+  border: 0.5px solid #e2e8f0;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  overflow: hidden;
+  min-width: 0;
+}
+
+.heroFrameLeft  { flex: 0 0 60%; }
+.heroFrameRight { flex: 1 1 0; }
+
+.frameBar {
+  background: #f3f4f6;
+  border-bottom: 1px solid #e5e7eb;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  padding: 0 8px;
+  gap: 5px;
+}
+
+.frameDot        { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; }
+.frameDotRed     { background: #ff5f57; }
+.frameDotYellow  { background: #febc2e; }
+.frameDotGreen   { background: #28c840; }
+
+.frameUrl {
+  flex: 1;
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 4px;
+  font-size: 9px;
+  color: #6b7280;
+  padding: 0 7px;
+  height: 18px;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  white-space: nowrap;
+  font-family: monospace;
+}
+
+/* CALENDAR MOCK */
+.calContent { padding: 10px; }
+
+.calHead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+  gap: 6px;
+}
+
+.calNav {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.calNavBtn {
+  background: none;
+  border: 1px solid #e5e7eb;
+  border-radius: 5px;
+  width: 22px;
+  height: 22px;
+  cursor: pointer;
+  font-size: 13px;
+  color: #374151;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+}
+
+.calDateLabel {
+  font-size: 11px;
+  font-weight: 700;
+  color: #111;
+  white-space: nowrap;
+}
+
+.calNewBtn {
+  background: #16a34a;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 4px 9px;
+  font-size: 10px;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.calGrid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 4px;
+}
+
+.calDayHdr {
+  font-size: 9px;
+  font-weight: 700;
+  color: #9ca3af;
+  text-align: center;
+  padding-bottom: 5px;
+  border-bottom: 1px solid #f3f4f6;
+  margin-bottom: 4px;
+  white-space: nowrap;
+}
+
+.calAppt {
+  border-radius: 5px;
+  padding: 4px 5px;
+  border-left: 3px solid #22c55e;
+  background: #f0fdf4;
+  margin-bottom: 3px;
+}
+
+.apptTime {
+  font-size: 8px;
+  color: #6b7280;
+  font-weight: 500;
+}
+
+.apptName {
+  font-size: 9px;
+  font-weight: 700;
+  color: #111;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.apptService {
+  font-size: 8px;
+  color: #6b7280;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.apptBadge {
+  display: inline-block;
+  font-size: 7px;
+  font-weight: 700;
+  padding: 1px 4px;
+  border-radius: 3px;
+  margin-top: 2px;
+  text-transform: uppercase;
+}
+
+.apptBadgeConfirmed { background: #dcfce7; color: #166534; }
+.apptBadgePending   { background: #fef9c3; color: #854d0e; }
+
+/* BOOKING PAGE MOCK */
+.bookContent { padding: 12px; }
+
+.bookBizRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.bookAvatar {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: #16a34a;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-size: 13px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.bookBizName {
+  font-size: 12px;
+  font-weight: 700;
+  color: #111;
+}
+
+.bookHeading {
+  font-size: 11px;
+  font-weight: 700;
+  color: #374151;
+  margin-bottom: 8px;
+}
+
+.bookServiceList {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.bookServiceRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 7px 9px;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: border-color 0.15s;
+}
+
+.bookServiceRow:hover {
+  border-color: #16a34a;
+}
+
+.bookSvcName {
+  font-size: 10px;
+  font-weight: 600;
+  color: #111;
+}
+
+.bookSvcMeta {
+  font-size: 9px;
+  color: #9ca3af;
+}
+
+.bookSvcPrice {
+  font-size: 11px;
+  font-weight: 700;
+  color: #16a34a;
+}
+
+.bookNote {
+  margin-top: 10px;
+  font-size: 8px;
+  color: #9ca3af;
+  text-align: center;
+  line-height: 1.5;
+}
+
 /* RESPONSIVE */
 @media (max-width: 1024px) {
   .nav    { padding: 0 24px; }
@@ -894,6 +1166,9 @@
   .hero   { padding: 52px 16px 44px; }
   .hero h1 { font-size: 34px; letter-spacing: -1px; }
   .heroDesc { font-size: 16px; }
+  .heroDualFrames { flex-direction: column; }
+  .heroFrameLeft, .heroFrameRight { flex: 1 1 auto; width: 100%; }
+  .heroCtas { justify-content: center; }
   .sec    { padding: 44px 16px; }
   .secHead h2 { font-size: 28px; }
   .secHead p  { font-size: 15px; }
