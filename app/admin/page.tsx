@@ -1,6 +1,7 @@
 import { notFound } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
 import { createServiceClient } from '@/lib/supabase/service'
+import { TierSelector } from './TierSelector'
 
 // ── Helpers ──────────────────────────────────────────────────────────────────
 
@@ -23,32 +24,6 @@ function relativeTime(iso: string | null): string {
   const days = Math.floor(hours / 24)
   if (days === 1) return '1 day ago'
   return `${days} days ago`
-}
-
-const TIER_BADGE: Record<string, { label: string; style: string }> = {
-  free:    { label: 'Free',    style: 'background:#e5e7eb;color:#374151' },
-  starter: { label: 'Starter', style: 'background:#dbeafe;color:#1d4ed8' },
-  pro:     { label: 'Pro',     style: 'background:#ede9fe;color:#6d28d9' },
-  agency:  { label: 'Agency',  style: 'background:#fef3c7;color:#92400e' },
-}
-
-function TierBadge({ tier }: { tier: string }) {
-  const b = TIER_BADGE[tier] ?? { label: tier, style: 'background:#e5e7eb;color:#374151' }
-  return (
-    <span
-      style={{
-        ...Object.fromEntries(b.style.split(';').map(s => s.split(':') as [string, string])),
-        display: 'inline-block',
-        padding: '2px 10px',
-        borderRadius: '9999px',
-        fontSize: '12px',
-        fontWeight: 600,
-        whiteSpace: 'nowrap',
-      }}
-    >
-      {b.label}
-    </span>
-  )
 }
 
 function countryFlag(code: string): string {
@@ -126,6 +101,15 @@ export default async function AdminPage() {
   ])
 
   const rows = businesses ?? []
+
+  // Fetch admin_note separately (column added in migration 027, not in TS types yet)
+  const { data: notesData } = await (svc
+    .from('businesses')
+    .select('id, admin_note') as any) as { data: { id: string; admin_note: string | null }[] | null }
+  const adminNoteById: Record<string, string | null> = {}
+  for (const r of notesData ?? []) {
+    adminNoteById[r.id] = r.admin_note ?? null
+  }
 
   // Build lookups from auth.users
   const emailById: Record<string, string> = {}
@@ -268,7 +252,11 @@ export default async function AdminPage() {
                     {b.type ?? '—'}
                   </td>
                   <td style={{ padding: '12px 16px' }}>
-                    <TierBadge tier={b.subscription_tier ?? 'free'} />
+                    <TierSelector
+                      businessId={b.id}
+                      initialTier={(b.subscription_tier ?? 'free') as any}
+                      initialNote={adminNoteById[b.id] ?? null}
+                    />
                   </td>
                   <td style={{ padding: '12px 16px', color: '#6b7280', whiteSpace: 'nowrap' }}>
                     {formatDate(b.created_at)}
