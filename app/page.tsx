@@ -5,7 +5,6 @@ import styles from './landing.module.css'
 import { TrackedLink } from '@/components/tracked-link'
 import { LangSwitcher } from '@/components/LangSwitcher'
 import { TrackedAnchor } from '@/components/tracked-anchor'
-import { HeroMockup } from '@/components/HeroMockup'
 
 const bricolage = Bricolage_Grotesque({
   subsets: ['latin'],
@@ -202,7 +201,14 @@ export default function RootPage() {
               </div>
             </div>
             <div className={styles.heroVideoCol}>
-              <HeroMockup />
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src="/images/hero-mockup.png"
+                alt="Pronto booking calendar and client booking page"
+                width={1130}
+                height={560}
+                style={{ maxWidth: '100%', height: 'auto', display: 'block' }}
+              />
             </div>
           </div>
         </section>
