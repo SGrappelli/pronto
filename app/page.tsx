@@ -181,12 +181,12 @@ export default function RootPage() {
               on your own clients
             </h1>
             <p className={styles.heroDesc}>
-              POS · CRM · Booking · Inventory · Omnichannel notifications — for any service business.
-              Self-hosted or cloud, your choice.
+              Your booking page, live in 5 minutes. Clients book directly with you —
+              no registration, no commission, no platform in the way.
             </p>
             <div className={styles.heroCtas}>
               <TrackedLink href="/register" className={styles.btnGreen} eventName="sign_up_click" eventParams={{ location: 'hero_cta', language: 'en' }}>
-                Start free →
+                Get your booking page →
               </TrackedLink>
               <TrackedAnchor
                 href="https://demo.trypronto.app"
@@ -214,6 +214,56 @@ export default function RootPage() {
                 boxShadow: '0 8px 40px rgba(0,0,0,0.10)',
               }}
             />
+          </div>
+        </section>
+
+        {/* BUILT FOR SERVICE BUSINESSES */}
+        <section className={`${styles.sec} ${styles.secWarm}`}>
+          <div className={styles.secHead}>
+            <h2>Built for service businesses</h2>
+            <p>Replacing Excel, manual reminders, and expensive platforms that own your clients.</p>
+          </div>
+          <div className={styles.cardsWrap}>
+          <div className={styles.painGrid}>
+            <div className={styles.painCard}>
+              <div className={styles.painFromLabel}>From</div>
+              <div className={styles.painFromText}>Excel spreadsheets</div>
+              <div className={styles.painArrow}>↓</div>
+              <div className={styles.painTo}>CRM + POS in one interface</div>
+            </div>
+            <div className={styles.painCard}>
+              <div className={styles.painFromLabel}>From</div>
+              <div className={styles.painFromText}>Manual reminders</div>
+              <div className={styles.painArrow}>↓</div>
+              <div className={styles.painTo}>
+                Auto-notifications via Telegram, WhatsApp, Viber, Email
+              </div>
+            </div>
+            <div className={styles.painCard}>
+              <div className={styles.painFromLabel}>From</div>
+              <div className={styles.painFromText}>Platform takes 20%</div>
+              <div className={styles.painArrow}>↓</div>
+              <div className={styles.painTo}>Clients book directly — 0% commission</div>
+            </div>
+            <div className={styles.painCard}>
+              <div className={styles.painFromLabel}>From</div>
+              <div className={styles.painFromText}>ERPNext too complex</div>
+              <div className={styles.painArrow}>↓</div>
+              <div className={styles.painTo}>UI anyone can learn in 10 minutes</div>
+            </div>
+            <div className={styles.painCard}>
+              <div className={styles.painFromLabel}>From</div>
+              <div className={styles.painFromText}>No analytics</div>
+              <div className={styles.painArrow}>↓</div>
+              <div className={styles.painTo}>Revenue dashboard, LTV, top services</div>
+            </div>
+            <div className={styles.painCard}>
+              <div className={styles.painFromLabel}>From</div>
+              <div className={styles.painFromText}>Client data locked in platform</div>
+              <div className={styles.painArrow}>↓</div>
+              <div className={styles.painTo}>Self-hosted: data stays on your server</div>
+            </div>
+          </div>
           </div>
         </section>
 
@@ -282,56 +332,6 @@ export default function RootPage() {
                 className={styles.browserVideo}
               />
             </div>
-          </div>
-        </section>
-
-        {/* BUILT FOR SERVICE BUSINESSES */}
-        <section className={`${styles.sec} ${styles.secWarm}`}>
-          <div className={styles.secHead}>
-            <h2>Built for service businesses</h2>
-            <p>Replacing Excel, manual reminders, and expensive platforms that own your clients.</p>
-          </div>
-          <div className={styles.cardsWrap}>
-          <div className={styles.painGrid}>
-            <div className={styles.painCard}>
-              <div className={styles.painFromLabel}>From</div>
-              <div className={styles.painFromText}>Excel spreadsheets</div>
-              <div className={styles.painArrow}>↓</div>
-              <div className={styles.painTo}>CRM + POS in one interface</div>
-            </div>
-            <div className={styles.painCard}>
-              <div className={styles.painFromLabel}>From</div>
-              <div className={styles.painFromText}>Manual reminders</div>
-              <div className={styles.painArrow}>↓</div>
-              <div className={styles.painTo}>
-                Auto-notifications via Telegram, WhatsApp, Viber, Email
-              </div>
-            </div>
-            <div className={styles.painCard}>
-              <div className={styles.painFromLabel}>From</div>
-              <div className={styles.painFromText}>Platform takes 20%</div>
-              <div className={styles.painArrow}>↓</div>
-              <div className={styles.painTo}>Clients book directly — 0% commission</div>
-            </div>
-            <div className={styles.painCard}>
-              <div className={styles.painFromLabel}>From</div>
-              <div className={styles.painFromText}>ERPNext too complex</div>
-              <div className={styles.painArrow}>↓</div>
-              <div className={styles.painTo}>UI anyone can learn in 10 minutes</div>
-            </div>
-            <div className={styles.painCard}>
-              <div className={styles.painFromLabel}>From</div>
-              <div className={styles.painFromText}>No analytics</div>
-              <div className={styles.painArrow}>↓</div>
-              <div className={styles.painTo}>Revenue dashboard, LTV, top services</div>
-            </div>
-            <div className={styles.painCard}>
-              <div className={styles.painFromLabel}>From</div>
-              <div className={styles.painFromText}>Client data locked in platform</div>
-              <div className={styles.painArrow}>↓</div>
-              <div className={styles.painTo}>Self-hosted: data stays on your server</div>
-            </div>
-          </div>
           </div>
         </section>
 
