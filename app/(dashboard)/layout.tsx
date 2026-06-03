@@ -3,6 +3,7 @@ import { redirect } from 'next/navigation'
 import { headers } from 'next/headers'
 import { Sidebar } from '@/components/layout/sidebar'
 import { SoftLimitBanner } from '@/components/ui/soft-limit-banner'
+import { ContactWidget } from '@/components/contact-widget'
 
 export default async function DashboardLayout({
   children,
@@ -78,6 +79,7 @@ export default async function DashboardLayout({
         />
         {children}
       </div>
+      <ContactWidget source="dashboard" />
     </div>
   )
 }

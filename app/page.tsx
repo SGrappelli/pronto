@@ -5,6 +5,7 @@ import styles from './landing.module.css'
 import { TrackedLink } from '@/components/tracked-link'
 import { LangSwitcher } from '@/components/LangSwitcher'
 import { TrackedAnchor } from '@/components/tracked-anchor'
+import { ContactWidget } from '@/components/contact-widget'
 
 const bricolage = Bricolage_Grotesque({
   subsets: ['latin'],
@@ -688,6 +689,7 @@ export default function RootPage() {
           </div>
         </div>
       </footer>
+      <ContactWidget source="landing" />
     </div>
   )
 }
