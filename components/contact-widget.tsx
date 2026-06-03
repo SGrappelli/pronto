@@ -131,7 +131,7 @@ export function ContactWidget({ source }: Props) {
               Contact us
             </h2>
             <p style={{ fontSize: '14px', color: '#6b7280', marginBottom: '20px' }}>
-              We usually reply within a few hours
+              Real support, no bots — usually faster than you'd expect
             </p>
 
             {sent ? (
