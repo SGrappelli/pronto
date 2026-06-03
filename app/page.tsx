@@ -200,7 +200,7 @@ export default function RootPage() {
             </div>
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
-              src="/images/hero-mockup.png"
+              src="/images/hero-mockup-v2.png"
               alt="Pronto booking calendar and client booking page"
               width={1130}
               height={560}
