@@ -24,14 +24,15 @@ export default async function PublicBookingPage({ params }: { params: { slug: st
 
   const { data: bizRaw } = await supabase
     .from('businesses')
-    .select('id, name, type, phone, logo_url, currency, slug, timezone, address, subscription_tier, telegram_bot_token, viber_bot_token, meta_whatsapp_phone_number_id, owner_whatsapp')
+    .select('id, name, type, phone, logo_url, currency, slug, timezone, address, subscription_tier, telegram_bot_token, viber_bot_token, meta_whatsapp_phone_number_id, owner_whatsapp, brand_color')
     .eq('slug', params.slug)
     .maybeSingle()
 
   if (!bizRaw) notFound()
 
   // Destructure tokens server-side only — never passed to the client component
-  const { telegram_bot_token, viber_bot_token, subscription_tier, meta_whatsapp_phone_number_id, owner_whatsapp, ...business } = bizRaw
+  const { telegram_bot_token, viber_bot_token, subscription_tier, meta_whatsapp_phone_number_id, owner_whatsapp, brand_color, ...business } = bizRaw
+  const brandColor = brand_color || '#2D2926'
   const whatsappNumber = meta_whatsapp_phone_number_id ? (owner_whatsapp ?? null) : null
   const isFreeTier = !subscription_tier || subscription_tier === 'free'
 
@@ -71,48 +72,55 @@ export default async function PublicBookingPage({ params }: { params: { slug: st
   const viberBotUri = viberInfo.ok ? (viberInfo as { ok: true; uri?: string }).uri ?? null : null
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div
+      style={{
+        '--brand': brandColor,
+        '--brand-light': `${brandColor}18`,
+        '--brand-bg': '#FBF8F5',
+      } as React.CSSProperties}
+    >
       {/* Header */}
-      <div className="bg-white border-b border-gray-200 px-4 py-5">
-        <div className="max-w-lg mx-auto flex items-center gap-3">
-          {business.logo_url ? (
-            <img src={business.logo_url} alt={business.name} className="w-10 h-10 rounded-full object-cover" />
-          ) : (
-            <div className="w-10 h-10 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center font-bold text-lg">
-              {business.name[0]}
+      <header style={{ background: 'white', borderBottom: '0.5px solid #E8E0D8', padding: '14px 20px', display: 'flex', alignItems: 'center', gap: '12px' }}>
+        {business.logo_url ? (
+          <img src={business.logo_url} alt={business.name} style={{ width: 38, height: 38, borderRadius: 10, objectFit: 'cover' }} />
+        ) : (
+          <div style={{ width: 38, height: 38, borderRadius: 10, background: 'var(--brand)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white', fontWeight: 500, fontSize: 16 }}>
+            {business.name[0]}
+          </div>
+        )}
+        <div>
+          <div style={{ fontSize: 15, fontWeight: 500, color: '#2D2926' }}>{business.name}</div>
+          <div style={{ fontSize: 12, color: '#9A8E85' }}>Book an appointment</div>
+        </div>
+      </header>
+
+      {/* Content */}
+      <div style={{ background: '#FBF8F5', minHeight: 'calc(100vh - 67px)', padding: '20px 16px' }}>
+        <div className="max-w-md mx-auto">
+          <PublicBookingForm
+            business={business}
+            services={services ?? []}
+            employees={employees ?? []}
+            workingHours={businessHours ?? []}
+            telegramBotUsername={telegramBotUsername}
+            viberBotUri={viberBotUri}
+            whatsappNumber={whatsappNumber}
+          />
+
+          {isFreeTier && (
+            <div className="pb-6 pt-4 text-center">
+              <a
+                href="https://trypronto.app"
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{ fontSize: 11, color: '#9A8E85' }}
+              >
+                Powered by Pronto
+              </a>
             </div>
           )}
-          <div>
-            <h1 className="font-semibold text-gray-900">{business.name}</h1>
-            {business.phone && <p className="text-sm text-gray-500">{business.phone}</p>}
-          </div>
         </div>
       </div>
-
-      <div className="max-w-lg mx-auto px-4 py-8">
-        <PublicBookingForm
-          business={business}
-          services={services ?? []}
-          employees={employees ?? []}
-          workingHours={businessHours ?? []}
-          telegramBotUsername={telegramBotUsername}
-          viberBotUri={viberBotUri}
-          whatsappNumber={whatsappNumber}
-        />
-      </div>
-
-      {isFreeTier && (
-        <div className="pb-6 text-center">
-          <a
-            href="https://trypronto.app"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-xs text-gray-400 hover:text-gray-500 transition-colors"
-          >
-            Powered by Pronto
-          </a>
-        </div>
-      )}
     </div>
   )
 }

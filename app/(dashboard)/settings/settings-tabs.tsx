@@ -32,6 +32,7 @@ interface Business {
   wa_template_reactivation: string | null
   wa_template_birthday: string | null
   wa_template_language: string | null
+  brand_color: string | null
 }
 interface Service { id: string; name: string; description: string | null; price: number; duration_min: number; category: string | null; is_active: boolean; capacity: number }
 interface Employee { id: string; name: string; role: string; email: string | null; phone: string | null; is_active: boolean }
@@ -184,6 +185,7 @@ export function SettingsTabs({ business: initial, services: initServices, employ
       wa_template_reactivation: biz.wa_template_reactivation,
       wa_template_birthday: biz.wa_template_birthday,
       wa_template_language: biz.wa_template_language ?? 'en',
+      brand_color: biz.brand_color || '#2D2926',
     }).eq('id', biz.id)
     setSaving(false); setSaved(true); setTimeout(() => setSaved(false), 2000)
     router.refresh()
@@ -478,6 +480,25 @@ export function SettingsTabs({ business: initial, services: initServices, employ
             {slugError
               ? <p className="text-xs text-red-500 mt-1">{slugError}</p>
               : <p className="text-xs text-gray-400 mt-1">{t('general.slugHint')}</p>}
+          </div>
+          <div className="pt-2">
+            <label className="text-xs font-medium text-gray-500">Brand color</label>
+            <div className="flex items-center gap-2 mt-1">
+              <input
+                type="color"
+                value={biz.brand_color || '#2D2926'}
+                onChange={(e) => setBiz((b) => ({ ...b, brand_color: e.target.value }))}
+                className="w-10 h-9 p-0.5 border border-gray-200 rounded-lg cursor-pointer"
+              />
+              <input
+                type="text"
+                value={biz.brand_color || '#2D2926'}
+                onChange={(e) => setBiz((b) => ({ ...b, brand_color: e.target.value }))}
+                maxLength={7}
+                className="w-32 border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 font-mono"
+              />
+            </div>
+            <p className="text-xs text-gray-400 mt-1">Used on your public booking page — your clients will see this color.</p>
           </div>
           <div className="pt-2">
             <div className="text-xs font-medium text-gray-500 mb-1">{t('general.bookingUrlLabel')}</div>

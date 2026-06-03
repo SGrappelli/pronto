@@ -51,6 +51,7 @@ export type Database = {
           wa_template_birthday: string | null
           wa_template_language: string
           country: string | null
+          brand_color: string | null
           created_at: string
           updated_at: string
         }
@@ -95,6 +96,7 @@ export type Database = {
           wa_template_birthday?: string | null
           wa_template_language?: string
           country?: string | null
+          brand_color?: string | null
           created_at?: string
           updated_at?: string
         }
@@ -139,6 +141,7 @@ export type Database = {
           wa_template_birthday?: string | null
           wa_template_language?: string
           country?: string | null
+          brand_color?: string | null
           created_at?: string
           updated_at?: string
         }

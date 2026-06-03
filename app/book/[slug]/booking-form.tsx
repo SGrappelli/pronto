@@ -3,9 +3,8 @@
 import { useState, useEffect } from 'react'
 import { createClient } from '@/lib/supabase/client'
 import { formatCurrency, uses12HourClock } from '@/lib/utils'
-import { CalendarPlus, CheckCircle2, ChevronRight, Loader2, UserCircle2 } from 'lucide-react'
+import { CalendarPlus, Loader2 } from 'lucide-react'
 import { buildGCalUrl } from '@/lib/gcal'
-import { Button } from '@/components/ui/button'
 import { DatePicker } from '@/components/ui/date-picker'
 import { useTranslations } from 'next-intl'
 
@@ -24,11 +23,8 @@ interface Props {
   whatsappNumber: string | null
 }
 
-// 'employee' step is inserted between 'service' and 'datetime' when there are
-// multiple active employees. With 0 or 1 employee the step is skipped entirely.
 type Step = 'service' | 'employee' | 'datetime' | 'contact' | 'done'
 
-// Default schedule used as fallback when migration 009 isn't applied yet
 const DEFAULT_HOURS: DayHours[] = [0, 1, 2, 3, 4, 5, 6].map((dow) => ({
   day_of_week: dow,
   is_open: dow >= 1 && dow <= 5,
@@ -36,7 +32,6 @@ const DEFAULT_HOURS: DayHours[] = [0, 1, 2, 3, 4, 5, 6].map((dow) => ({
   close_time: '20:00',
 }))
 
-/** Generate time slots from open_time to close_time with step = durationMin */
 function generateSlots(openTime: string, closeTime: string, durationMin: number): string[] {
   const [oh, om] = openTime.split(':').map(Number)
   const [ch, cm] = closeTime.split(':').map(Number)
@@ -51,16 +46,64 @@ function generateSlots(openTime: string, closeTime: string, durationMin: number)
   return slots
 }
 
+// ─── Shared style atoms ───────────────────────────────────────────────────────
+
+const baseCard: React.CSSProperties = {
+  background: 'white',
+  border: '0.5px solid #E8E0D8',
+  borderRadius: 12,
+  padding: '14px 16px',
+  marginBottom: 8,
+  display: 'flex',
+  justifyContent: 'space-between',
+  alignItems: 'center',
+  cursor: 'pointer',
+  width: '100%',
+  textAlign: 'left',
+}
+
+function StepBadge({ label }: { label: string }) {
+  return (
+    <span style={{ display: 'inline-block', background: 'var(--brand-light)', color: 'var(--brand)', fontSize: 11, fontWeight: 500, padding: '3px 10px', borderRadius: 20, marginBottom: 10 }}>
+      {label}
+    </span>
+  )
+}
+
+function SectionTitle({ text }: { text: string }) {
+  return <h2 style={{ fontSize: 17, fontWeight: 500, color: '#2D2926', marginBottom: 14, marginTop: 0 }}>{text}</h2>
+}
+
+function BackLink({ label, onClick }: { label: string; onClick: () => void }) {
+  return (
+    <button onClick={onClick} style={{ fontSize: 13, color: '#9A8E85', display: 'flex', alignItems: 'center', gap: 4, marginBottom: 16, background: 'none', border: 'none', cursor: 'pointer', padding: 0 }}>
+      ← {label}
+    </button>
+  )
+}
+
+function CtaButton({ label, onClick, disabled }: { label: string; onClick: () => void; disabled?: boolean }) {
+  return (
+    <button
+      onClick={onClick}
+      disabled={disabled}
+      style={{ background: disabled ? '#C4BAB3' : 'var(--brand)', color: 'white', border: 'none', borderRadius: 10, padding: '13px 20px', fontSize: 14, fontWeight: 500, width: '100%', marginTop: 16, cursor: disabled ? 'not-allowed' : 'pointer' }}
+    >
+      {label}
+    </button>
+  )
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+
 export function PublicBookingForm({ business, services, employees, workingHours, telegramBotUsername, viberBotUri, whatsappNumber }: Props) {
   const supabase = createClient()
   const t = useTranslations('publicBooking')
 
-  // Whether to show the employee selection step
   const hasEmployeeStep = employees.length > 1
 
   const [step, setStep] = useState<Step>('service')
   const [selectedService, setSelectedService] = useState<Service | null>(null)
-  // '' means "no preference"; a uuid means a specific employee was picked
   const [selectedEmployee, setSelectedEmployee] = useState('')
   const [date, setDate] = useState('')
   const [time, setTime] = useState('')
@@ -72,7 +115,6 @@ export function PublicBookingForm({ business, services, employees, workingHours,
   const [appointmentId, setAppointmentId] = useState<string | null>(null)
   const [clientHasTelegram, setClientHasTelegram] = useState(false)
 
-  // Slot state
   const [availableSlots, setAvailableSlots] = useState<string[]>([])
   const [slotSpotsLeft, setSlotSpotsLeft] = useState<Record<string, number>>({})
   const [loadingSlots, setLoadingSlots] = useState(false)
@@ -86,7 +128,6 @@ export function PublicBookingForm({ business, services, employees, workingHours,
   const closedWeekdays = effectiveHours.filter((h) => !h.is_open).map((h) => h.day_of_week)
   const today = new Date().toISOString().slice(0, 10)
 
-  // Reload slots whenever date, service, or selected employee changes
   useEffect(() => {
     if (!date || !selectedService) {
       setAvailableSlots([])
@@ -139,8 +180,6 @@ export function PublicBookingForm({ business, services, employees, workingHours,
         const slotEndMin = slotStartMin + svc.duration_min
 
         const bookedCount = (booked ?? []).filter(({ starts_at, ends_at }: { starts_at: string; ends_at: string }) => {
-          // Convert UTC timestamps to business-local minutes so the overlap check
-          // is in the same coordinate system as the slot grid (which is in business hours).
           const toBusinessMin = (iso: string) => {
             const tz = business.timezone ?? 'UTC'
             const parts = new Intl.DateTimeFormat('en-US', {
@@ -164,7 +203,6 @@ export function PublicBookingForm({ business, services, employees, workingHours,
         return false
       })
     } catch {
-      // Non-critical — show all slots if RPC fails
       slots.forEach((slot) => { spotsMap[slot] = capacity })
     }
 
@@ -208,9 +246,6 @@ export function PublicBookingForm({ business, services, employees, workingHours,
       })
 
       if (res.status === 409) {
-        // Another user grabbed this slot between the availability check and the insert.
-        // Go back to the time picker, refresh slots so the taken slot disappears,
-        // and show an inline explanation.
         setSaving(false)
         setSlotTakenError(true)
         setTime('')
@@ -249,13 +284,8 @@ export function PublicBookingForm({ business, services, employees, workingHours,
     setStep('datetime')
   }
 
-  function handleBackFromEmployee() {
-    setStep('service')
-  }
-
-  function handleBackFromDatetime() {
-    setStep(hasEmployeeStep ? 'employee' : 'service')
-  }
+  function handleBackFromEmployee() { setStep('service') }
+  function handleBackFromDatetime() { setStep(hasEmployeeStep ? 'employee' : 'service') }
 
   function resetAll() {
     setStep('service')
@@ -271,7 +301,6 @@ export function PublicBookingForm({ business, services, employees, workingHours,
     setBookingError(null)
   }
 
-  // ─── Derived display helpers ──────────────────────────────────────────────
   const locale = typeof navigator !== 'undefined' ? navigator.language : 'en-US'
   const is12h = uses12HourClock(locale)
 
@@ -295,41 +324,48 @@ export function PublicBookingForm({ business, services, employees, workingHours,
       ? `viber://pa?chatURI=${viberBotUri}&context=client_${clientId}`
       : null
 
+    const isDemo = business.slug === 'demo'
+    const tgLink = isDemo ? 'https://trypronto.app/register' : telegramLink
+    const waLink = isDemo ? 'https://trypronto.app/register' : (whatsappNumber ? `https://wa.me/${whatsappNumber.replace(/\D/g, '')}` : null)
+    const viLink = isDemo ? 'https://trypronto.app/register' : (viberBotUri ? `viber://pa?chatURI=${viberBotUri}` : null)
+
+    const messengerButtons = [
+      tgLink && { label: 'Telegram', color: '#229ED9', href: tgLink, platform: 'telegram' },
+      waLink  && { label: 'WhatsApp', color: '#25D366', href: waLink,  platform: 'whatsapp' },
+      viLink  && { label: 'Viber',    color: '#7360F2', href: viLink,  platform: 'viber' },
+    ].filter(Boolean) as { label: string; color: string; href: string; platform: string }[]
+
     return (
-      <div className="bg-white rounded-2xl border border-gray-200 p-8 text-center">
-        <CheckCircle2 className="w-14 h-14 text-green-500 mx-auto mb-4" />
-        <h2 className="text-xl font-semibold text-gray-900 mb-2">{t('success.heading')}</h2>
-        <p className="text-sm text-gray-500 mb-1">
+      <div style={{ background: 'white', border: '0.5px solid #E8E0D8', borderRadius: 16, padding: '32px 24px', textAlign: 'center' }}>
+        <svg width="56" height="56" viewBox="0 0 56 56" fill="none" style={{ margin: '0 auto 16px', display: 'block' }}>
+          <circle cx="28" cy="28" r="27" stroke="var(--brand)" strokeWidth="2" fill="var(--brand-light)" />
+          <path d="M17 28L24 35L39 20" stroke="var(--brand)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+        </svg>
+
+        <h2 style={{ fontSize: 20, fontWeight: 500, color: '#2D2926', margin: '0 0 8px' }}>{t('success.heading')}</h2>
+        <p style={{ fontSize: 14, color: '#9A8E85', margin: '0 0 4px' }}>
           {selectedService?.name} · {date} at {time ? formatSlot(time) : ''}
           {selectedEmployeeObj && ` · ${selectedEmployeeObj.name}`}
         </p>
-        <p className="text-sm text-gray-500 mb-6">{t('success.body')}</p>
+        <p style={{ fontSize: 14, color: '#9A8E85', margin: '0 0 24px' }}>{t('success.body')}</p>
 
-        {/* Messenger opt-in — hidden if client already has Telegram connected */}
-        {!clientHasTelegram && (telegramLink || viberLink) && (
-          <div className="border border-gray-100 rounded-xl p-4 mb-6 bg-gray-50 text-left">
-            <p className="text-sm font-medium text-gray-700 mb-1">{t('success.optInHeading')}</p>
-            <p className="text-xs text-gray-500 mb-3">{t('success.optInSub')}</p>
-            <div className="flex flex-col gap-2">
+        {/* Messenger opt-in for real (non-demo) clients without Telegram */}
+        {!isDemo && !clientHasTelegram && (telegramLink || viberLink) && (
+          <div style={{ border: '0.5px solid #E8E0D8', borderRadius: 12, padding: 16, marginBottom: 20, textAlign: 'left' }}>
+            <p style={{ fontSize: 14, fontWeight: 500, color: '#2D2926', margin: '0 0 4px' }}>{t('success.optInHeading')}</p>
+            <p style={{ fontSize: 12, color: '#9A8E85', margin: '0 0 12px' }}>{t('success.optInSub')}</p>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
               {telegramLink && (
-                <a
-                  href={telegramLink}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center justify-center gap-2 bg-[#229ED9] text-white text-sm font-medium px-4 py-2.5 rounded-lg hover:bg-[#1a8fc7] transition-colors"
-                >
-                  <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.894 8.221-1.97 9.28c-.145.658-.537.818-1.084.508l-3-2.21-1.447 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.12L8.32 13.617l-2.96-.924c-.643-.204-.657-.643.136-.953l11.57-4.461c.537-.194 1.006.131.828.942z"/></svg>
+                <a href={telegramLink} target="_blank" rel="noopener noreferrer"
+                  style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8, background: 'var(--brand)', color: 'white', fontSize: 14, fontWeight: 500, padding: '11px 16px', borderRadius: 10, textDecoration: 'none' }}>
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.894 8.221-1.97 9.28c-.145.658-.537.818-1.084.508l-3-2.21-1.447 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.12L8.32 13.617l-2.96-.924c-.643-.204-.657-.643.136-.953l11.57-4.461c.537-.194 1.006.131.828.942z" /></svg>
                   {t('success.telegramButton')}
                 </a>
               )}
               {viberLink && (
-                <a
-                  href={viberLink}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center justify-center gap-2 bg-[#7360F2] text-white text-sm font-medium px-4 py-2.5 rounded-lg hover:bg-[#6350e0] transition-colors"
-                >
-                  <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M11.983.02C8.764.02 3.14 1.016.824 7.236c-.9 2.38-.9 4.944-.9 6.764v.02c0 2.62.44 5.04 1.72 6.72C2.9 22.22 4.74 23 7.4 23h.12c.6 0 1.2-.08 1.68-.28.08-.04.12-.12.12-.2v-2.16c0-.12-.08-.2-.2-.2-.04 0-.12 0-.16.04-.64.28-1.28.36-1.96.36-1.88 0-3.04-.6-3.72-1.84-.6-1.12-.76-2.6-.76-4.36v-.02c0-1.6.04-3.88.72-5.84 1.84-5.08 6.56-5.76 8.76-5.76h.04c2.2 0 6.92.68 8.76 5.76.68 1.96.72 4.24.72 5.84v.02c0 1.76-.16 3.24-.76 4.36-.68 1.24-1.84 1.84-3.72 1.84-.68 0-1.32-.08-1.96-.36-.04-.04-.12-.04-.16-.04-.12 0-.2.08-.2.2v2.16c0 .08.04.16.12.2.48.2 1.08.28 1.68.28h.12c2.66 0 4.5-.78 5.76-2.26 1.28-1.68 1.72-4.1 1.72-6.72v-.02c0-1.82 0-4.38-.9-6.76C20.86 1.016 15.224.02 12.004.02h-.02z"/></svg>
+                <a href={viberLink} target="_blank" rel="noopener noreferrer"
+                  style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8, background: 'var(--brand)', color: 'white', fontSize: 14, fontWeight: 500, padding: '11px 16px', borderRadius: 10, textDecoration: 'none' }}>
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M11.983.02C8.764.02 3.14 1.016.824 7.236c-.9 2.38-.9 4.944-.9 6.764v.02c0 2.62.44 5.04 1.72 6.72C2.9 22.22 4.74 23 7.4 23h.12c.6 0 1.2-.08 1.68-.28.08-.04.12-.12.12-.2v-2.16c0-.12-.08-.2-.2-.2-.04 0-.12 0-.16.04-.64.28-1.28.36-1.96.36-1.88 0-3.04-.6-3.72-1.84-.6-1.12-.76-2.6-.76-4.36v-.02c0-1.6.04-3.88.72-5.84 1.84-5.08 6.56-5.76 8.76-5.76h.04c2.2 0 6.92.68 8.76 5.76.68 1.96.72 4.24.72 5.84v.02c0 1.76-.16 3.24-.76 4.36-.68 1.24-1.84 1.84-3.72 1.84-.68 0-1.32-.08-1.96-.36-.04-.04-.12-.04-.16-.04-.12 0-.2.08-.2.2v2.16c0 .08.04.16.12.2.48.2 1.08.28 1.68.28h.12c2.66 0 4.5-.78 5.76-2.26 1.28-1.68 1.72-4.1 1.72-6.72v-.02c0-1.82 0-4.38-.9-6.76C20.86 1.016 15.224.02 12.004.02h-.02z" /></svg>
                   {t('success.viberButton')}
                 </a>
               )}
@@ -337,7 +373,8 @@ export function PublicBookingForm({ business, services, employees, workingHours,
           </div>
         )}
 
-        <div className="flex flex-col sm:flex-row gap-2 justify-center">
+        {/* Action buttons */}
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
           <a
             href={buildGCalUrl({
               businessName: business.name,
@@ -351,268 +388,239 @@ export function PublicBookingForm({ business, services, employees, workingHours,
             })}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center justify-center gap-2 rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors"
+            style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8, background: 'white', border: '0.5px solid #E8E0D8', borderRadius: 10, padding: '11px 20px', fontSize: 14, color: '#2D2926', textDecoration: 'none', fontWeight: 500 }}
           >
-            <CalendarPlus className="w-4 h-4" />
+            <CalendarPlus style={{ width: 16, height: 16 }} />
             Add to Google Calendar
           </a>
-          <Button variant="outline" onClick={resetAll}>
+          <button onClick={resetAll}
+            style={{ background: 'white', border: '0.5px solid #E8E0D8', borderRadius: 10, padding: '11px 20px', fontSize: 14, color: '#2D2926', cursor: 'pointer', fontWeight: 500 }}>
             {t('success.bookAnother')}
-          </Button>
+          </button>
         </div>
 
-        {/* Messenger notification block */}
-        {(() => {
-          const isDemo = business.slug === 'demo'
-          const tgLink = isDemo
-            ? 'https://trypronto.app/register'
-            : (telegramBotUsername && clientId ? `https://t.me/${telegramBotUsername}?start=client_${clientId}` : null)
-          const waLink = isDemo
-            ? 'https://trypronto.app/register'
-            : (whatsappNumber ? `https://wa.me/${whatsappNumber.replace(/\D/g, '')}` : null)
-          const viLink = isDemo
-            ? 'https://trypronto.app/register'
-            : (viberBotUri ? `viber://pa?chatURI=${viberBotUri}` : null)
-
-          const buttons = [
-            tgLink && { label: 'Telegram', color: '#229ED9', href: tgLink, platform: 'telegram', icon: <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.894 8.221-1.97 9.28c-.145.658-.537.818-1.084.508l-3-2.21-1.447 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.12L8.32 13.617l-2.96-.924c-.643-.204-.657-.643.136-.953l11.57-4.461c.537-.194 1.006.131.828.942z"/></svg> },
-            waLink  && { label: 'WhatsApp',  color: '#25D366', href: waLink,  platform: 'whatsapp',  icon: <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg> },
-            viLink  && { label: 'Viber',     color: '#7360F2', href: viLink,  platform: 'viber',     icon: <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M11.983.02C8.764.02 3.14 1.016.824 7.236c-.9 2.38-.9 4.944-.9 6.764v.02c0 2.62.44 5.04 1.72 6.72C2.9 22.22 4.74 23 7.4 23h.12c.6 0 1.2-.08 1.68-.28.08-.04.12-.12.12-.2v-2.16c0-.12-.08-.2-.2-.2-.04 0-.12 0-.16.04-.64.28-1.28.36-1.96.36-1.88 0-3.04-.6-3.72-1.84-.6-1.12-.76-2.6-.76-4.36v-.02c0-1.6.04-3.88.72-5.84 1.84-5.08 6.56-5.76 8.76-5.76h.04c2.2 0 6.92.68 8.76 5.76.68 1.96.72 4.24.72 5.84v.02c0 1.76-.16 3.24-.76 4.36-.68 1.24-1.84 1.84-3.72 1.84-.68 0-1.32-.08-1.96-.36-.04-.04-.12-.04-.16-.04-.12 0-.2.08-.2.2v2.16c0 .08.04.16.12.2.48.2 1.08.28 1.68.28h.12c2.66 0 4.5-.78 5.76-2.26 1.28-1.68 1.72-4.1 1.72-6.72v-.02c0-1.82 0-4.38-.9-6.76C20.86 1.016 15.224.02 12.004.02h-.02z"/></svg> },
-          ].filter(Boolean) as { label: string; color: string; href: string; platform: string; icon: React.ReactNode }[]
-
-          if (buttons.length === 0) return null
-
-          return (
-            <div className="mt-6 pt-6 border-t border-gray-100">
-              <p className="text-sm font-medium text-gray-700 mb-3 text-center">
-                {isDemo ? 'Your clients receive instant notifications via:' : 'Get reminders in your messenger:'}
-              </p>
-              <div className="flex flex-col sm:flex-row gap-2 justify-center">
-                {buttons.map(({ label, color, href, platform, icon }) => (
-                  <a
-                    key={platform}
-                    href={href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    onClick={() => { if (isDemo) (window as any).gtag?.('event', 'demo_messenger_click', { platform }) }}
-                    className="inline-flex items-center justify-center gap-2 rounded-lg border px-4 py-2.5 text-sm font-medium transition-colors sm:w-auto w-full"
-                    style={{ borderColor: color, color }}
-                  >
-                    {icon}
-                    {label}
-                  </a>
-                ))}
-              </div>
-              <p className="text-xs text-gray-400 text-center mt-3">
-                {isDemo
-                  ? 'Set up notifications in 5 minutes · No extra cost'
-                  : 'Get appointment reminders directly in your messenger'}
-              </p>
+        {/* Demo-only messenger block */}
+        {isDemo && messengerButtons.length > 0 && (
+          <div style={{ marginTop: 24, paddingTop: 24, borderTop: '0.5px solid #E8E0D8' }}>
+            <p style={{ fontSize: 14, fontWeight: 500, color: '#2D2926', marginBottom: 12 }}>
+              Your clients receive instant notifications via:
+            </p>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+              {messengerButtons.map(({ label, color, href, platform }) => (
+                <a
+                  key={platform}
+                  href={href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={() => (window as any).gtag?.('event', 'demo_messenger_click', { platform })}
+                  style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8, border: `1px solid ${color}`, borderRadius: 10, padding: '11px 20px', fontSize: 14, color, textDecoration: 'none', fontWeight: 500, background: 'white' }}
+                >
+                  {label}
+                </a>
+              ))}
             </div>
-          )
-        })()}
+            <p style={{ fontSize: 11, color: '#9A8E85', marginTop: 12 }}>
+              Set up notifications in 5 minutes · No extra cost
+            </p>
+          </div>
+        )}
       </div>
     )
   }
 
   return (
-    <div className="space-y-4">
+    <div>
 
       {/* ── Step 1: Service ───────────────────────────────────────────────── */}
       {step === 'service' && (
-        <div className="bg-white rounded-2xl border border-gray-200 p-6">
-          <h2 className="font-semibold text-gray-900 mb-4">{t('selectService.heading')}</h2>
+        <div>
+          <StepBadge label="Select service" />
+          <SectionTitle text={t('selectService.heading')} />
           {services.length === 0 ? (
-            <p className="text-sm text-gray-500">{t('selectService.empty')}</p>
+            <p style={{ fontSize: 14, color: '#9A8E85' }}>{t('selectService.empty')}</p>
           ) : (
-            <div className="space-y-2">
-              {services.map((s) => (
-                <button key={s.id} onClick={() => handleSelectService(s)}
-                  className="w-full text-left p-4 rounded-xl border border-gray-200 hover:border-blue-400 hover:bg-blue-50 transition-all group">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <div className="font-medium text-gray-900 group-hover:text-blue-700">{s.name}</div>
-                      {s.description && <div className="text-xs text-gray-500 mt-0.5">{s.description}</div>}
-                      <div className="text-xs text-gray-400 mt-1">{t('selectService.minutes', { duration: s.duration_min })}</div>
-                    </div>
-                    <div className="text-right shrink-0 ml-4">
-                      <div className="font-semibold" style={{ color: '#16a34a' }}>{formatCurrency(s.price, business.currency)}</div>
-                      <ChevronRight className="w-4 h-4 text-gray-300 ml-auto mt-1 group-hover:text-blue-400" />
-                    </div>
-                  </div>
-                </button>
-              ))}
-            </div>
+            services.map((s) => (
+              <button key={s.id} onClick={() => handleSelectService(s)} style={baseCard}>
+                <div>
+                  <div style={{ fontSize: 14, fontWeight: 500, color: '#2D2926' }}>{s.name}</div>
+                  {s.description && <div style={{ fontSize: 12, color: '#9A8E85', marginTop: 2 }}>{s.description}</div>}
+                  <div style={{ fontSize: 12, color: '#9A8E85', marginTop: 2 }}>{t('selectService.minutes', { duration: s.duration_min })}</div>
+                </div>
+                <div style={{ fontSize: 14, fontWeight: 500, color: 'var(--brand)', flexShrink: 0, marginLeft: 12 }}>
+                  {formatCurrency(s.price, business.currency)}
+                </div>
+              </button>
+            ))
           )}
         </div>
       )}
 
-      {/* ── Step 2: Employee (only when 2+ active employees) ─────────────── */}
+      {/* ── Step 2: Employee ──────────────────────────────────────────────── */}
       {step === 'employee' && selectedService && (
-        <div className="bg-white rounded-2xl border border-gray-200 p-6">
-          <button onClick={handleBackFromEmployee}
-            className="text-xs text-gray-400 hover:text-gray-600 mb-4 flex items-center gap-1">
-            {t('selectEmployee.back')}
-          </button>
-          <h2 className="font-semibold text-gray-900 mb-1">{t('selectEmployee.heading')}</h2>
-          <p className="text-sm text-gray-500 mb-4">{selectedService.name}</p>
+        <div>
+          <BackLink label={t('selectEmployee.back')} onClick={handleBackFromEmployee} />
+          <StepBadge label="Choose specialist" />
+          <SectionTitle text={t('selectEmployee.heading')} />
+          <p style={{ fontSize: 13, color: '#9A8E85', marginTop: -8, marginBottom: 14 }}>{selectedService.name}</p>
 
-          <div className="space-y-2">
-            {/* No preference option */}
-            <button
-              onClick={() => handleSelectEmployee('')}
-              className="w-full text-left p-4 rounded-xl border border-dashed border-gray-300 hover:border-blue-400 hover:bg-blue-50 transition-all group flex items-center justify-between">
-              <div className="flex items-center gap-3">
-                <div className="w-9 h-9 rounded-full bg-gray-100 flex items-center justify-center shrink-0">
-                  <UserCircle2 className="w-5 h-5 text-gray-400 group-hover:text-blue-500" />
-                </div>
-                <span className="text-sm font-medium text-gray-500 group-hover:text-blue-700">
-                  {t('selectEmployee.anyone')}
-                </span>
+          <button onClick={() => handleSelectEmployee('')} style={{ ...baseCard, borderStyle: 'dashed' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+              <div style={{ width: 36, height: 36, borderRadius: '50%', background: '#F0EBE6', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                <span style={{ fontSize: 18, color: '#9A8E85' }}>?</span>
               </div>
-              <ChevronRight className="w-4 h-4 text-gray-300 group-hover:text-blue-400 shrink-0" />
-            </button>
+              <span style={{ fontSize: 14, fontWeight: 500, color: '#9A8E85' }}>{t('selectEmployee.anyone')}</span>
+            </div>
+          </button>
 
-            {/* Individual employees */}
-            {employees.map((e) => (
-              <button key={e.id}
-                onClick={() => handleSelectEmployee(e.id)}
-                className="w-full text-left p-4 rounded-xl border border-gray-200 hover:border-blue-400 hover:bg-blue-50 transition-all group flex items-center justify-between">
-                <div className="flex items-center gap-3">
-                  <div className="w-9 h-9 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center font-semibold text-sm shrink-0">
-                    {e.name[0].toUpperCase()}
-                  </div>
-                  <span className="font-medium text-gray-900 group-hover:text-blue-700">{e.name}</span>
+          {employees.map((e) => (
+            <button key={e.id} onClick={() => handleSelectEmployee(e.id)} style={baseCard}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+                <div style={{ width: 36, height: 36, borderRadius: '50%', background: 'var(--brand-light)', color: 'var(--brand)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 600, fontSize: 14, flexShrink: 0 }}>
+                  {e.name[0].toUpperCase()}
                 </div>
-                <ChevronRight className="w-4 h-4 text-gray-300 group-hover:text-blue-400 shrink-0" />
-              </button>
-            ))}
-          </div>
+                <span style={{ fontSize: 14, fontWeight: 500, color: '#2D2926' }}>{e.name}</span>
+              </div>
+            </button>
+          ))}
         </div>
       )}
 
       {/* ── Step 3: Date & Time ───────────────────────────────────────────── */}
       {step === 'datetime' && selectedService && (
-        <div className="bg-white rounded-2xl border border-gray-200 p-6">
-          <button onClick={handleBackFromDatetime}
-            className="text-xs text-gray-400 hover:text-gray-600 mb-4 flex items-center gap-1">
-            {t('datetime.back')}
-          </button>
+        <div>
+          <BackLink label={t('datetime.back')} onClick={handleBackFromDatetime} />
+          <StepBadge label="Date & time" />
+          <SectionTitle text={t('datetime.heading')} />
+
           {slotTakenError && (
-            <div className="mb-4 p-3 bg-amber-50 border border-amber-200 rounded-lg text-sm text-amber-800">
+            <div style={{ marginBottom: 16, padding: 12, background: '#FFF8ED', border: '0.5px solid #F5C842', borderRadius: 10, fontSize: 13, color: '#7A5C00' }}>
               ⚠ This time was just booked by someone else. Please choose a different time.
             </div>
           )}
-          <h2 className="font-semibold text-gray-900 mb-1">{t('datetime.heading')}</h2>
-          <p className="text-sm text-gray-500 mb-4">
+
+          <p style={{ fontSize: 13, color: '#9A8E85', marginTop: -8, marginBottom: 16 }}>
             {selectedService.name} · {selectedService.duration_min} min
-            {selectedEmployeeObj && (
-              <span className="ml-1 text-blue-600">· {selectedEmployeeObj.name}</span>
-            )}
+            {selectedEmployeeObj && ` · ${selectedEmployeeObj.name}`}
           </p>
 
-          <div className="space-y-4">
-            <div>
-              <label className="text-xs font-medium text-gray-500">{t('datetime.dateLabel')}</label>
-              <DatePicker
-                value={date}
-                onChange={(v) => { setDate(v); setSlotTakenError(false) }}
-                className="mt-1"
-                minDate={today}
-                disabledWeekdays={closedWeekdays}
-              />
-            </div>
-
-            {date && (
-              <div>
-                <label className="text-xs font-medium text-gray-500">{t('datetime.timeLabel')}</label>
-                {loadingSlots ? (
-                  <div className="flex items-center gap-2 mt-2 text-sm text-gray-400">
-                    <Loader2 className="w-4 h-4 animate-spin" />
-                    Loading available times…
-                  </div>
-                ) : dayClosed ? (
-                  <div className="mt-2 p-3 bg-gray-50 rounded-lg text-sm text-gray-500">
-                    This day is outside working hours. Please choose another date.
-                  </div>
-                ) : (
-                  <>
-                    {availableSlots.length === 0 ? (
-                      <div className="mt-2 p-3 bg-gray-50 rounded-lg text-sm text-gray-500">
-                        No available times for this day. Please choose another date.
-                      </div>
-                    ) : (
-                    <div className="grid grid-cols-4 gap-2 mt-2">
-                      {availableSlots.map((ts) => {
-                        const isGroup = (selectedService?.capacity ?? 1) > 1
-                        const spotsLeft = slotSpotsLeft[ts] ?? selectedService?.capacity ?? 1
-                        const isPartial = isGroup && spotsLeft < (selectedService?.capacity ?? 1)
-                        return (
-                        <button key={ts} onClick={() => { setTime(ts); setSlotTakenError(false) }}
-                          className={`py-2 rounded-lg text-sm border transition-colors ${
-                            time === ts
-                              ? 'bg-blue-600 text-white border-blue-600'
-                              : 'border-gray-200 text-gray-700 hover:border-blue-300 hover:bg-blue-50'
-                          }`}>
-                          <div>{formatSlot(ts)}</div>
-                          {isPartial && (
-                            <div className={`text-xs mt-0.5 ${time === ts ? 'text-blue-100' : 'text-amber-600'}`}>
-                              {spotsLeft} spots left
-                            </div>
-                          )}
-                        </button>
-                        )
-                      })}
-                    </div>
-                    )}
-                  </>
-                )}
-              </div>
-            )}
+          <div style={{ marginBottom: 16 }}>
+            <label style={{ fontSize: 13, fontWeight: 500, color: '#2D2926', marginBottom: 6, display: 'block' }}>{t('datetime.dateLabel')}</label>
+            <DatePicker
+              value={date}
+              onChange={(v) => { setDate(v); setSlotTakenError(false) }}
+              className="mt-1"
+              minDate={today}
+              disabledWeekdays={closedWeekdays}
+            />
           </div>
 
-          <Button className="w-full mt-6" onClick={() => setStep('contact')} disabled={!date || !time}>
-            {t('datetime.continue')}
-          </Button>
+          {date && (
+            <div>
+              <label style={{ fontSize: 13, fontWeight: 500, color: '#2D2926', marginBottom: 6, display: 'block' }}>{t('datetime.timeLabel')}</label>
+              {loadingSlots ? (
+                <div style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 14, color: '#9A8E85' }}>
+                  <Loader2 style={{ width: 16, height: 16 }} className="animate-spin" />
+                  Loading available times…
+                </div>
+              ) : dayClosed ? (
+                <div style={{ padding: 12, background: '#F5F0EB', borderRadius: 10, fontSize: 14, color: '#9A8E85' }}>
+                  This day is outside working hours. Please choose another date.
+                </div>
+              ) : availableSlots.length === 0 ? (
+                <div style={{ padding: 12, background: '#F5F0EB', borderRadius: 10, fontSize: 14, color: '#9A8E85' }}>
+                  No available times for this day. Please choose another date.
+                </div>
+              ) : (
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 8 }}>
+                  {availableSlots.map((ts) => {
+                    const isGroup = (selectedService?.capacity ?? 1) > 1
+                    const spotsLeft = slotSpotsLeft[ts] ?? selectedService?.capacity ?? 1
+                    const isPartial = isGroup && spotsLeft < (selectedService?.capacity ?? 1)
+                    const isSelected = time === ts
+                    return (
+                      <button key={ts} onClick={() => { setTime(ts); setSlotTakenError(false) }}
+                        style={{
+                          background: isSelected ? 'var(--brand)' : 'white',
+                          border: `0.5px solid ${isSelected ? 'var(--brand)' : '#E8E0D8'}`,
+                          borderRadius: 10,
+                          padding: '10px 4px',
+                          textAlign: 'center',
+                          fontSize: 13,
+                          fontWeight: 500,
+                          color: isSelected ? 'white' : '#2D2926',
+                          cursor: 'pointer',
+                        }}>
+                        <div>{formatSlot(ts)}</div>
+                        {isPartial && (
+                          <div style={{ fontSize: 10, color: isSelected ? 'rgba(255,255,255,0.8)' : 'var(--brand)', marginTop: 2 }}>
+                            {spotsLeft} spots left
+                          </div>
+                        )}
+                      </button>
+                    )
+                  })}
+                </div>
+              )}
+            </div>
+          )}
+
+          <CtaButton label="Continue →" onClick={() => setStep('contact')} disabled={!date || !time} />
         </div>
       )}
 
       {/* ── Step 4: Contact ───────────────────────────────────────────────── */}
       {step === 'contact' && (
-        <div className="bg-white rounded-2xl border border-gray-200 p-6">
-          <button onClick={() => setStep('datetime')} className="text-xs text-gray-400 hover:text-gray-600 mb-4">
-            {t('contact.back')}
-          </button>
-          <h2 className="font-semibold text-gray-900 mb-4">{t('contact.heading')}</h2>
-          <div className="space-y-3">
-            <div>
-              <label className="text-xs font-medium text-gray-500">{t('contact.nameLabel')}</label>
-              <input type="text" value={contact.name} onChange={(e) => setContact((c) => ({ ...c, name: e.target.value }))}
-                placeholder={t('contact.namePlaceholder')}
-                className="w-full mt-1 border border-gray-200 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
-            </div>
-            <div>
-              <label className="text-xs font-medium text-gray-500">{t('contact.phoneLabel')}</label>
-              <input type="tel" value={contact.phone} onChange={(e) => setContact((c) => ({ ...c, phone: e.target.value }))}
-                placeholder={t('contact.phonePlaceholder')}
-                className="w-full mt-1 border border-gray-200 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
-            </div>
-            <div>
-              <label className="text-xs font-medium text-gray-500">{t('contact.emailLabel')}</label>
-              <input type="email" value={contact.email} onChange={(e) => setContact((c) => ({ ...c, email: e.target.value }))}
-                placeholder={t('contact.emailPlaceholder')}
-                className="w-full mt-1 border border-gray-200 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
-            </div>
+        <div>
+          <BackLink label={t('contact.back')} onClick={() => setStep('datetime')} />
+          <StepBadge label="Your details" />
+          <SectionTitle text={t('contact.heading')} />
+
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
+            {([
+              { key: 'name' as const, label: t('contact.nameLabel'), placeholder: t('contact.namePlaceholder'), type: 'text' },
+              { key: 'phone' as const, label: t('contact.phoneLabel'), placeholder: t('contact.phonePlaceholder'), type: 'tel' },
+              { key: 'email' as const, label: t('contact.emailLabel'), placeholder: t('contact.emailPlaceholder'), type: 'email' },
+            ] as const).map(({ key, label, placeholder, type }) => (
+              <div key={key}>
+                <label style={{ fontSize: 13, fontWeight: 500, color: '#2D2926', marginBottom: 6, display: 'block' }}>{label}</label>
+                <input
+                  type={type}
+                  value={contact[key]}
+                  onChange={(e) => setContact((c) => ({ ...c, [key]: e.target.value }))}
+                  placeholder={placeholder}
+                  style={{ border: '0.5px solid #E8E0D8', borderRadius: 10, padding: '11px 14px', fontSize: 14, color: '#2D2926', width: '100%', background: 'white', outline: 'none', boxSizing: 'border-box' }}
+                  onFocus={(e) => { e.currentTarget.style.borderColor = 'var(--brand)' }}
+                  onBlur={(e) => { e.currentTarget.style.borderColor = '#E8E0D8' }}
+                />
+              </div>
+            ))}
           </div>
+
           {bookingError && (
-            <div className="mt-4 p-3 bg-red-50 border border-red-200 rounded-lg text-sm text-red-700">
+            <div style={{ marginTop: 16, padding: 12, background: '#FFF0F0', border: '0.5px solid #F5AAAA', borderRadius: 10, fontSize: 13, color: '#B00020' }}>
               {bookingError}
             </div>
           )}
-          <Button className="w-full mt-4" onClick={submit} disabled={!contact.name || saving}>
+
+          <button
+            onClick={submit}
+            disabled={!contact.name || saving}
+            style={{
+              background: (!contact.name || saving) ? '#C4BAB3' : 'var(--brand)',
+              color: 'white',
+              border: 'none',
+              borderRadius: 10,
+              padding: '13px 20px',
+              fontSize: 14,
+              fontWeight: 500,
+              width: '100%',
+              marginTop: 16,
+              cursor: (!contact.name || saving) ? 'not-allowed' : 'pointer',
+            }}
+          >
             {saving ? t('contact.booking') : t('contact.confirm', { price: formatCurrency(selectedService?.price ?? 0, business.currency) })}
-          </Button>
-          <p className="text-xs text-gray-400 text-center mt-3">{t('contact.noRegistration')}</p>
+          </button>
+          <p style={{ fontSize: 11, color: '#9A8E85', textAlign: 'center', marginTop: 12 }}>{t('contact.noRegistration')}</p>
         </div>
       )}
 
