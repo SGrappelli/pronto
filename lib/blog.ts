@@ -15,15 +15,18 @@ export type BlogPost = {
 
 import enPost1 from '@/content/blog/en/self-hosted-pos-no-commission'
 import enPost2 from '@/content/blog/en/reduce-no-shows-automated-reminders'
+import enPost3 from '@/content/blog/en/self-hosted-vs-saas-booking-software'
 import esPost1 from '@/content/blog/es/pos-sin-comisiones-para-salones'
 import esPost2 from '@/content/blog/es/reducir-ausencias-recordatorios-automaticos'
+import esPost3 from '@/content/blog/es/software-reservas-self-hosted-vs-saas'
 import ptPost1 from '@/content/blog/pt/pos-sem-comissao-para-saloes'
 import ptPost2 from '@/content/blog/pt/reduzir-faltas-lembretes-automaticos'
+import ptPost3 from '@/content/blog/pt/software-agendamento-self-hosted-vs-saas'
 
 const ALL_POSTS: Record<string, BlogPost[]> = {
-  en: [enPost1 as BlogPost, enPost2 as BlogPost],
-  es: [esPost1 as BlogPost, esPost2 as BlogPost],
-  pt: [ptPost1 as BlogPost, ptPost2 as BlogPost],
+  en: [enPost1 as BlogPost, enPost2 as BlogPost, enPost3 as BlogPost],
+  es: [esPost1 as BlogPost, esPost2 as BlogPost, esPost3 as BlogPost],
+  pt: [ptPost1 as BlogPost, ptPost2 as BlogPost, ptPost3 as BlogPost],
 }
 
 export function getPosts(locale: string): BlogPost[] {
