@@ -267,6 +267,29 @@ export default function RootPage() {
           </div>
         </section>
 
+        {/* VIDEO DEMO */}
+        <section className={`${styles.sec} ${styles.secWhite}`}>
+          <div className={styles.demoWrap}>
+            <div className={styles.browserMockup}>
+              <div className={styles.browserBar}>
+                <span className={`${styles.browserDot} ${styles.browserDotRed}`} />
+                <span className={`${styles.browserDot} ${styles.browserDotYellow}`} />
+                <span className={`${styles.browserDot} ${styles.browserDotGreen}`} />
+              </div>
+              <video
+                src="/demo-calendar.mp4"
+                poster="/demo-calendar-poster.png"
+                autoPlay
+                loop
+                muted
+                playsInline
+                preload="metadata"
+                className={styles.browserVideo}
+              />
+            </div>
+          </div>
+        </section>
+
         {/* EVERYTHING IN ONE PLACE */}
         <section className={`${styles.sec} ${styles.secWhite}`}>
           <div className={styles.secHead}>
@@ -312,25 +335,6 @@ export default function RootPage() {
                 <h4>PWA</h4>
                 <p>Install on any device directly from the browser. Works offline.</p>
               </div>
-            </div>
-          </div>
-          <div className={styles.demoWrap}>
-            <div className={styles.browserMockup}>
-              <div className={styles.browserBar}>
-                <span className={`${styles.browserDot} ${styles.browserDotRed}`} />
-                <span className={`${styles.browserDot} ${styles.browserDotYellow}`} />
-                <span className={`${styles.browserDot} ${styles.browserDotGreen}`} />
-              </div>
-              <video
-                src="/demo-calendar.mp4"
-                poster="/demo-calendar-poster.png"
-                autoPlay
-                loop
-                muted
-                playsInline
-                preload="metadata"
-                className={styles.browserVideo}
-              />
             </div>
           </div>
         </section>
