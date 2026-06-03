@@ -16,7 +16,7 @@
       "name": "Every Hour",
       "type": "n8n-nodes-base.scheduleTrigger",
       "typeVersion": 1.2,
-      "position": [0, 340]
+      "position": [0, 660]
     },
     {
       "parameters": {
@@ -75,15 +75,103 @@
     },
     {
       "parameters": {
+        "url": "https://www.reddit.com/r/Bookkeeping/.rss",
+        "options": {}
+      },
+      "id": "a1b2c3d4-0001-4000-8000-000000000012",
+      "name": "RSS r/Bookkeeping",
+      "type": "n8n-nodes-base.rssFeedRead",
+      "typeVersion": 1,
+      "position": [240, 700]
+    },
+    {
+      "parameters": {
+        "url": "https://www.reddit.com/r/beauty/.rss",
+        "options": {}
+      },
+      "id": "a1b2c3d4-0001-4000-8000-000000000013",
+      "name": "RSS r/beauty",
+      "type": "n8n-nodes-base.rssFeedRead",
+      "typeVersion": 1,
+      "position": [240, 820]
+    },
+    {
+      "parameters": {
+        "url": "https://www.reddit.com/r/barber/.rss",
+        "options": {}
+      },
+      "id": "a1b2c3d4-0001-4000-8000-000000000014",
+      "name": "RSS r/barber",
+      "type": "n8n-nodes-base.rssFeedRead",
+      "typeVersion": 1,
+      "position": [240, 940]
+    },
+    {
+      "parameters": {
+        "url": "https://www.reddit.com/r/autorepair/.rss",
+        "options": {}
+      },
+      "id": "a1b2c3d4-0001-4000-8000-000000000015",
+      "name": "RSS r/autorepair",
+      "type": "n8n-nodes-base.rssFeedRead",
+      "typeVersion": 1,
+      "position": [240, 1060]
+    },
+    {
+      "parameters": {
+        "url": "https://www.reddit.com/r/Fitness/.rss",
+        "options": {}
+      },
+      "id": "a1b2c3d4-0001-4000-8000-000000000016",
+      "name": "RSS r/Fitness",
+      "type": "n8n-nodes-base.rssFeedRead",
+      "typeVersion": 1,
+      "position": [240, 1180]
+    },
+    {
+      "parameters": {
+        "url": "https://www.reddit.com/r/opensourcesoftware/.rss",
+        "options": {}
+      },
+      "id": "a1b2c3d4-0001-4000-8000-000000000017",
+      "name": "RSS r/opensourcesoftware",
+      "type": "n8n-nodes-base.rssFeedRead",
+      "typeVersion": 1,
+      "position": [240, 1300]
+    },
+    {
+      "parameters": {
+        "url": "https://www.reddit.com/r/docker/.rss",
+        "options": {}
+      },
+      "id": "a1b2c3d4-0001-4000-8000-000000000018",
+      "name": "RSS r/docker",
+      "type": "n8n-nodes-base.rssFeedRead",
+      "typeVersion": 1,
+      "position": [240, 1420]
+    },
+    {
+      "parameters": {
+        "url": "https://www.reddit.com/r/selfhostedservices/.rss",
+        "options": {}
+      },
+      "id": "a1b2c3d4-0001-4000-8000-000000000019",
+      "name": "RSS r/selfhostedservices",
+      "type": "n8n-nodes-base.rssFeedRead",
+      "typeVersion": 1,
+      "position": [240, 1540]
+    },
+    {
+      "parameters": {
         "mode": "append",
-        "inputs": 5,
+        "inputs": 13,
         "options": {}
       },
       "id": "a1b2c3d4-0001-4000-8000-000000000007",
       "name": "Merge All Posts",
       "type": "n8n-nodes-base.merge",
       "typeVersion": 3,
-      "position": [500, 340]
+      "position": [500, 660]
     },
     {
       "parameters": {
@@ -93,7 +181,7 @@
       "name": "Skip Thread Posts",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
-      "position": [620, 340]
+      "position": [620, 660]
     },
     {
       "parameters": {
@@ -103,7 +191,7 @@
       "name": "Keyword Filter",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
-      "position": [860, 340]
+      "position": [860, 660]
     },
     {
       "parameters": {
@@ -132,7 +220,7 @@
       "name": "Is Relevant?",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2,
-      "position": [1100, 340]
+      "position": [1100, 660]
     },
     {
       "parameters": {
@@ -147,7 +235,7 @@
       "name": "Send to Telegram",
       "type": "n8n-nodes-base.telegram",
       "typeVersion": 1.2,
-      "position": [1340, 220],
+      "position": [1340, 540],
       "credentials": {
         "telegramApi": {
           "id": "telegram-cred-001",
@@ -160,11 +248,19 @@
     "Every Hour": {
       "main": [
         [
-          { "node": "RSS r/smallbusiness", "type": "main", "index": 0 },
-          { "node": "RSS r/selfhosted", "type": "main", "index": 0 },
-          { "node": "RSS r/CRM", "type": "main", "index": 0 },
-          { "node": "RSS r/Entrepreneur", "type": "main", "index": 0 },
-          { "node": "RSS r/saas", "type": "main", "index": 0 }
+          { "node": "RSS r/smallbusiness",       "type": "main", "index": 0 },
+          { "node": "RSS r/selfhosted",           "type": "main", "index": 0 },
+          { "node": "RSS r/CRM",                  "type": "main", "index": 0 },
+          { "node": "RSS r/Entrepreneur",         "type": "main", "index": 0 },
+          { "node": "RSS r/saas",                 "type": "main", "index": 0 },
+          { "node": "RSS r/Bookkeeping",          "type": "main", "index": 0 },
+          { "node": "RSS r/beauty",               "type": "main", "index": 0 },
+          { "node": "RSS r/barber",               "type": "main", "index": 0 },
+          { "node": "RSS r/autorepair",           "type": "main", "index": 0 },
+          { "node": "RSS r/Fitness",              "type": "main", "index": 0 },
+          { "node": "RSS r/opensourcesoftware",   "type": "main", "index": 0 },
+          { "node": "RSS r/docker",               "type": "main", "index": 0 },
+          { "node": "RSS r/selfhostedservices",   "type": "main", "index": 0 }
         ]
       ]
     },
@@ -191,6 +287,46 @@
     "RSS r/saas": {
       "main": [
         [{ "node": "Merge All Posts", "type": "main", "index": 4 }]
+      ]
+    },
+    "RSS r/Bookkeeping": {
+      "main": [
+        [{ "node": "Merge All Posts", "type": "main", "index": 5 }]
+      ]
+    },
+    "RSS r/beauty": {
+      "main": [
+        [{ "node": "Merge All Posts", "type": "main", "index": 6 }]
+      ]
+    },
+    "RSS r/barber": {
+      "main": [
+        [{ "node": "Merge All Posts", "type": "main", "index": 7 }]
+      ]
+    },
+    "RSS r/autorepair": {
+      "main": [
+        [{ "node": "Merge All Posts", "type": "main", "index": 8 }]
+      ]
+    },
+    "RSS r/Fitness": {
+      "main": [
+        [{ "node": "Merge All Posts", "type": "main", "index": 9 }]
+      ]
+    },
+    "RSS r/opensourcesoftware": {
+      "main": [
+        [{ "node": "Merge All Posts", "type": "main", "index": 10 }]
+      ]
+    },
+    "RSS r/docker": {
+      "main": [
+        [{ "node": "Merge All Posts", "type": "main", "index": 11 }]
+      ]
+    },
+    "RSS r/selfhostedservices": {
+      "main": [
+        [{ "node": "Merge All Posts", "type": "main", "index": 12 }]
       ]
     },
     "Merge All Posts": {
@@ -225,6 +361,6 @@
   "staticData": null,
   "tags": ["reddit", "monitoring", "pronto"],
   "triggerCount": 0,
-  "updatedAt": "2026-06-02T00:00:00.000Z",
-  "versionId": "v2"
+  "updatedAt": "2026-06-03T00:00:00.000Z",
+  "versionId": "v3"
 }
