@@ -19,7 +19,7 @@ DNS changes, etc). Never assume I know what to do next.
 - Resend for email (noreply@trypronto.app)
 - Deployment: docker compose -f docker-compose.saas.yml up -d
 
-## Pricing tiers (updated 2026-05-13)
+## Pricing tiers (updated 2026-06-04)
 
 | | Free | Starter $19 | Pro $39 | Agency $79 |
 |---|---|---|---|---|
@@ -27,11 +27,11 @@ DNS changes, etc). Never assume I know what to do next.
 | Clients in CRM | 100 | Unlimited | Unlimited | Unlimited |
 | Bookings / month | 50 | Unlimited | Unlimited | Unlimited |
 
-**Available from Free:** POS, CRM, Inventory, Online booking page, all notifications (Email + Telegram + WhatsApp + Viber)
+**Available from Free:** POS, CRM, Inventory, Online booking page, all notifications (Email + Telegram + WhatsApp + Viber), CSV client import
 
 **From Starter+:** limits removed, no new features vs Free
 
-**From Pro+:** Analytics dashboard, Loyalty program, Custom domain
+**From Pro+:** Analytics dashboard ✅ (LIVE), Loyalty program, Custom domain
 
 **Agency only:** Multiple locations, White-label, API access
 
@@ -39,7 +39,17 @@ DNS changes, etc). Never assume I know what to do next.
 
 Constants in `lib/lemonsqueezy.ts` → `PLAN_LIMITS`. Enforcement in `lib/plan-limits.ts`.
 
+## Key features implemented (2026-06-04)
+
+- **brand_color per tenant** — `businesses.brand_color`, migration 028; Settings color picker; public booking page uses CSS vars `--brand` / `--brand-light`
+- **Public booking page** — Warm & Premium design; TWO routes: `app/book/[slug]/page.tsx` (slug) + `app/book/page.tsx` (subdomain) — BOTH must have CSS vars set
+- **CSV client import** — `app/api/clients/import/route.ts`; modal with RFC 4180 parser; migration 029 adds `UNIQUE(business_id, phone)`
+
 ## Database migrations
+
+**Latest SaaS migration: `029_client_phone_unique.sql`. Next: 030.**
+**Latest public repo migration: `025_client_phone_unique.sql`. Next: 026.**
+(Public repo skipped 021, 022 — intentional gap, don't fill it.)
 
 Every new migration that creates a table MUST include immediately after CREATE TABLE:
 
