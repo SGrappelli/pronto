@@ -83,7 +83,8 @@ export default async function PublicBookingPage({ params }: { params: { slug: st
       } as React.CSSProperties}
     >
       {/* Header */}
-      <header style={{ background: 'white', borderBottom: '0.5px solid #E8E0D8', padding: '14px 20px', display: 'flex', alignItems: 'center', gap: '12px' }}>
+      <header style={{ background: 'white', borderBottom: '0.5px solid #E8E0D8', padding: '14px 16px' }}>
+        <div style={{ maxWidth: 448, margin: '0 auto', display: 'flex', alignItems: 'center', gap: 12 }}>
         {business.logo_url ? (
           <img src={business.logo_url} alt={business.name} style={{ width: 38, height: 38, borderRadius: 10, objectFit: 'cover' }} />
         ) : (
@@ -94,6 +95,7 @@ export default async function PublicBookingPage({ params }: { params: { slug: st
         <div>
           <div style={{ fontSize: 15, fontWeight: 500, color: '#2D2926' }}>{business.name}</div>
           <div style={{ fontSize: 12, color: '#9A8E85' }}>Book an appointment</div>
+        </div>
         </div>
       </header>
 

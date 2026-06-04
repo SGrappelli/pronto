@@ -77,7 +77,7 @@ function SectionTitle({ text }: { text: string }) {
 function BackLink({ label, onClick }: { label: string; onClick: () => void }) {
   return (
     <button onClick={onClick} style={{ fontSize: 13, color: '#9A8E85', display: 'flex', alignItems: 'center', gap: 4, marginBottom: 16, background: 'none', border: 'none', cursor: 'pointer', padding: 0 }}>
-      ← {label}
+      {label}
     </button>
   )
 }
