@@ -19,6 +19,7 @@ interface Business {
   smtp_host: string | null; smtp_port: number | null; smtp_user: string | null
   smtp_pass: string | null; smtp_from: string | null
   resend_api_key: string | null
+  brand_color: string | null
 }
 interface Service { id: string; name: string; description: string | null; price: number; duration_min: number; category: string | null; is_active: boolean; capacity: number }
 interface Employee { id: string; name: string; role: string; email: string | null; phone: string | null; is_active: boolean }
@@ -154,6 +155,7 @@ export function SettingsTabs({ business: initial, services: initServices, employ
       smtp_host: biz.smtp_host, smtp_port: biz.smtp_port, smtp_user: biz.smtp_user,
       smtp_pass: biz.smtp_pass, smtp_from: biz.smtp_from,
       resend_api_key: biz.resend_api_key,
+      brand_color: biz.brand_color || '#2D2926',
     }).eq('id', biz.id)
     setSaving(false); setSaved(true); setTimeout(() => setSaved(false), 2000)
     router.refresh()
@@ -422,6 +424,36 @@ export function SettingsTabs({ business: initial, services: initServices, employ
             <div className="text-xs font-medium text-gray-500 mb-1">{t('general.bookingUrlLabel')}</div>
             <div className="bg-gray-50 border border-gray-200 rounded-lg px-3 py-2 text-sm text-blue-600 select-all">
               {bookingUrl}
+            </div>
+          </div>
+          <div className="pt-2">
+            <label className="text-xs font-medium text-gray-500 block mb-1">Brand color</label>
+            <p className="text-xs text-gray-400 mb-2">Used on your public booking page.</p>
+            <div className="flex items-center gap-2">
+              <input
+                type="color"
+                value={biz.brand_color || '#2D2926'}
+                onChange={(e) => setBiz((b) => ({ ...b, brand_color: e.target.value }))}
+                className="w-10 h-10 rounded-lg border border-gray-200 cursor-pointer p-0.5 bg-white"
+                style={{ minWidth: 40 }}
+              />
+              <input
+                type="text"
+                value={biz.brand_color || '#2D2926'}
+                onChange={(e) => {
+                  const val = e.target.value
+                  if (/^#[0-9A-Fa-f]{0,6}$/.test(val)) {
+                    setBiz((b) => ({ ...b, brand_color: val }))
+                  }
+                }}
+                maxLength={7}
+                placeholder="#2D2926"
+                className="w-28 border border-gray-200 rounded-lg px-3 py-2 text-sm font-mono focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+              <div
+                className="w-8 h-8 rounded-lg border border-gray-200 shrink-0"
+                style={{ background: /^#[0-9A-Fa-f]{6}$/.test(biz.brand_color || '') ? biz.brand_color! : '#2D2926' }}
+              />
             </div>
           </div>
           <div className="flex items-center gap-3 pt-2">

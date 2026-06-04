@@ -42,6 +42,7 @@ export type Database = {
           resend_api_key: string | null
           meta_whatsapp_phone_number_id: string | null
           meta_whatsapp_access_token: string | null
+          brand_color: string | null
           created_at: string
           updated_at: string
         }
@@ -77,6 +78,7 @@ export type Database = {
           resend_api_key?: string | null
           meta_whatsapp_phone_number_id?: string | null
           meta_whatsapp_access_token?: string | null
+          brand_color?: string | null
           created_at?: string
           updated_at?: string
         }
@@ -112,6 +114,7 @@ export type Database = {
           resend_api_key?: string | null
           meta_whatsapp_phone_number_id?: string | null
           meta_whatsapp_access_token?: string | null
+          brand_color?: string | null
           created_at?: string
           updated_at?: string
         }

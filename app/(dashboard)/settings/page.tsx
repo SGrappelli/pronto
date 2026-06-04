@@ -8,7 +8,7 @@ export default async function SettingsPage() {
 
   const { data: business } = await supabase
     .from('businesses')
-    .select('id, name, slug, type, phone, email, address, timezone, currency, plan, plan_expires_at, telegram_bot_token, telegram_chat_id, viber_bot_token, viber_chat_id, owner_whatsapp, ls_customer_id, email_provider, smtp_host, smtp_port, smtp_user, smtp_pass, smtp_from, resend_api_key')
+    .select('id, name, slug, type, phone, email, address, timezone, currency, plan, plan_expires_at, telegram_bot_token, telegram_chat_id, viber_bot_token, viber_chat_id, owner_whatsapp, ls_customer_id, email_provider, smtp_host, smtp_port, smtp_user, smtp_pass, smtp_from, resend_api_key, brand_color')
     .eq('owner_id', user!.id)
     .maybeSingle()
 
