@@ -463,7 +463,7 @@ export function BookingCalendar({ businessId, slug, timezone, appointments: init
             {t('calendar.today')}
           </button>
         </div>
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 self-end sm:self-auto">
           <a href={bookingUrl} target="_blank" rel="noopener noreferrer"
             className="flex items-center gap-1 text-xs text-blue-600 hover:underline">
             <ExternalLink className="w-3 h-3" /> {t('calendar.publicPage')}
