@@ -263,7 +263,7 @@ export function ImportCsvModal({ open, onClose, onImported }: Props) {
           {step === 'platform' && (
             <div>
               <p className="text-sm text-gray-600 mb-4">
-                Select where you're importing from to get export instructions:
+                Select where you&apos;re importing from to get export instructions:
               </p>
               <div className="grid grid-cols-3 gap-2 mb-4">
                 {PLATFORMS.map((p) => (
