@@ -3,7 +3,9 @@ import { Header } from '@/components/layout/header'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { UpgradeBanner } from '@/components/ui/upgrade-banner'
+import { CrmImportButton } from '@/components/clients/crm-import-button'
 import { formatCurrency, formatInBusinessTimezone } from '@/lib/utils'
+import { PLAN_LIMITS } from '@/lib/lemonsqueezy'
 import { Plus, Search, Phone, Mail } from 'lucide-react'
 import Link from 'next/link'
 import { getTranslations } from 'next-intl/server'
@@ -18,9 +20,23 @@ export default async function CRMPage({
   const { data: { user } } = await supabase.auth.getUser()
 
   const { data: business } = await supabase
-    .from('businesses').select('id, currency, timezone').eq('owner_id', user!.id).maybeSingle()
+    .from('businesses').select('id, currency, timezone, subscription_tier').eq('owner_id', user!.id).maybeSingle()
 
   if (!business) return null
+
+  // Check client limit for Free plan to conditionally disable Import button
+  const plan = business.subscription_tier ?? 'free'
+  const clientLimit = PLAN_LIMITS[plan]?.clients ?? 100
+  const clientLimitIsFinite = isFinite(clientLimit)
+  let clientCountForLimit = 0
+  if (clientLimitIsFinite) {
+    const { count } = await supabase
+      .from('clients')
+      .select('id', { count: 'exact', head: true })
+      .eq('business_id', business.id)
+    clientCountForLimit = count ?? 0
+  }
+  const importAtLimit = clientLimitIsFinite && clientCountForLimit >= clientLimit
 
   // ── Clients query — includes trigger-maintained aggregate fields ──────────
   // total_visits, total_spent, last_visit_at are kept in sync by the
@@ -46,9 +62,12 @@ export default async function CRMPage({
       <Header
         title={t('title')}
         actions={
-          <Link href="/crm/new">
-            <Button size="sm"><Plus className="w-4 h-4 mr-1" /> {t('addClient')}</Button>
-          </Link>
+          <div className="flex gap-2">
+            <CrmImportButton atLimit={importAtLimit} />
+            <Link href="/crm/new">
+              <Button size="sm"><Plus className="w-4 h-4 mr-1" /> {t('addClient')}</Button>
+            </Link>
+          </div>
         }
       />
       <main className="p-6">
