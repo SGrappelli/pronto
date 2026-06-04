@@ -20,14 +20,17 @@ export async function generateMetadata({ params }: { params: { slug: string } })
 }
 
 export default async function PublicBookingPage({ params }: { params: { slug: string } }) {
+  console.log('[book] page called, slug:', params.slug)
   const supabase = createServiceClient()
 
-  const { data: bizRaw } = await supabase
+  const { data: bizRaw, error: bizError } = await supabase
     .from('businesses')
     .select('id, name, type, phone, logo_url, currency, slug, timezone, address, subscription_tier, telegram_bot_token, viber_bot_token, meta_whatsapp_phone_number_id, owner_whatsapp, brand_color')
     .eq('slug', params.slug)
     .maybeSingle()
 
+  console.log('[book] bizRaw:', bizRaw ? 'found' : 'null', '| bizError:', bizError?.message ?? 'none')
+  if (bizError) console.error('[book] DB error:', bizError.message)
   if (!bizRaw) notFound()
 
   // Destructure tokens server-side only — never passed to the client component
