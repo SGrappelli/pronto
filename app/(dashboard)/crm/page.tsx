@@ -2,6 +2,7 @@ import { createClient } from '@/lib/supabase/server'
 import { Header } from '@/components/layout/header'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
+import { CrmImportButton } from '@/components/clients/crm-import-button'
 import { formatCurrency, formatInBusinessTimezone } from '@/lib/utils'
 import { Plus, Search, Phone, Mail } from 'lucide-react'
 import Link from 'next/link'
@@ -69,9 +70,12 @@ export default async function CRMPage({
       <Header
         title={t('title')}
         actions={
-          <Link href="/crm/new">
-            <Button size="sm"><Plus className="w-4 h-4 mr-1" /> {t('addClient')}</Button>
-          </Link>
+          <div className="flex gap-2">
+            <CrmImportButton />
+            <Link href="/crm/new">
+              <Button size="sm"><Plus className="w-4 h-4 mr-1" /> {t('addClient')}</Button>
+            </Link>
+          </div>
         }
       />
       <main className="p-6">
