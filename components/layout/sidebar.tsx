@@ -8,6 +8,7 @@ import { createClient } from '@/lib/supabase/client'
 import { useRouter } from 'next/navigation'
 import { useTranslations } from 'next-intl'
 import { useState } from 'react'
+import { LangSwitcher } from './lang-switcher'
 
 interface SidebarProps {
   businessName: string
@@ -64,6 +65,7 @@ export function Sidebar({ businessName }: SidebarProps) {
         ))}
       </nav>
       <div className="p-3 border-t border-white/10 space-y-0.5">
+        <LangSwitcher />
         <Link href="/settings" onClick={() => setOpen(false)} className={cn(
           'flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors',
           pathname.startsWith('/settings')

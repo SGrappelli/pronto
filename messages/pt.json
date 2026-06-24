@@ -1,0 +1,709 @@
+{
+  "meta": {
+    "title": "Pronto — Gestão empresarial para negócios de serviços",
+    "description": "PDV, CRM, Estoque e Notificações omnicanal. Seus dados, seu servidor. Sem comissões. Instalação em um comando."
+  },
+  "brand": {
+    "name": "Pronto",
+    "tagline": "Gestão empresarial · Sem comissões"
+  },
+  "nav": {
+    "pricing": "Preços",
+    "github": "GitHub",
+    "signIn": "Entrar",
+    "startFree": "Começar grátis"
+  },
+  "landing": {
+    "badge": "Código aberto · Licença MIT · Docker em um comando",
+    "headline": "Gestão empresarial para negócios de serviços",
+    "subheadline": "PDV · CRM · Estoque · Agendamentos · Notificações omnicanal.",
+    "pitch": "Seus dados, seu servidor. Sem comissões.",
+    "ctaPrimary": "Começar grátis",
+    "ctaGithub": "Ver no GitHub",
+    "featuresHeading": "Tudo que você precisa, nada a mais",
+    "features": {
+      "pos": "PDV / Caixa — 3 cliques para concluir uma venda",
+      "crm": "CRM — histórico completo do cliente em 1 segundo",
+      "inventory": "Estoque com alertas de estoque baixo",
+      "booking": "Calendário + agendamento online sem cadastro",
+      "notifications": "Notificações por Telegram e Viber (grátis)",
+      "hosting": "SaaS multilocatário ou auto-hospedado com Docker"
+    },
+    "pricingHeading": "Preços simples e transparentes",
+    "pricingSubheading": "Ou hospede gratuitamente —",
+    "pricingSubheadingLink": "clone no GitHub",
+    "mostPopular": "Mais popular",
+    "footer": "Pronto © 2026 · Licença MIT",
+    "plans": {
+      "free": {
+        "name": "Grátis",
+        "price": "$0",
+        "limit": "1 funcionário · 100 clientes",
+        "cta": "Começar"
+      },
+      "starter": {
+        "name": "Starter",
+        "price": "$19/mês",
+        "limit": "3 funcionários · 1 000 clientes",
+        "cta": "Começar"
+      },
+      "pro": {
+        "name": "Pro",
+        "price": "$39/mês",
+        "limit": "15 funcionários · ilimitado",
+        "cta": "Começar"
+      },
+      "agency": {
+        "name": "Agency",
+        "price": "$79/mês",
+        "limit": "Multiloja · marca branca",
+        "cta": "Fale conosco"
+      }
+    }
+  },
+  "auth": {
+    "login": {
+      "heading": "Entre na sua conta",
+      "googleButton": "Continuar com o Google",
+      "divider": "ou",
+      "emailLabel": "E-mail",
+      "emailPlaceholder": "voce@exemplo.com",
+      "passwordLabel": "Senha",
+      "passwordPlaceholder": "••••••••",
+      "submitButton": "Entrar",
+      "noAccount": "Não tem conta?",
+      "createAccount": "Crie uma grátis",
+      "errorInvalid": "E-mail ou senha incorretos",
+      "errorGoogle": "Falha ao entrar com o Google"
+    },
+    "register": {
+      "heading": "Crie sua conta",
+      "subheading": "Plano gratuito para sempre · Sem cartão de crédito",
+      "businessNameLabel": "Nome do negócio",
+      "businessNamePlaceholder": "Salão da Maya",
+      "emailLabel": "E-mail",
+      "emailPlaceholder": "voce@exemplo.com",
+      "passwordLabel": "Senha",
+      "passwordPlaceholder": "Mín. 8 caracteres",
+      "submitButton": "Criar conta grátis",
+      "alreadyHaveAccount": "Já tem uma conta?",
+      "signIn": "Entrar",
+      "errorNoName": "O nome do negócio é obrigatório",
+      "errorCreateBusiness": "Não foi possível criar o negócio. Tente novamente."
+    },
+    "checkEmail": {
+      "heading": "Verifique seu e-mail",
+      "body": "Enviamos um link de confirmação. Clique nele e você será levado direto para sua conta.",
+      "noEmail": "Não recebeu?",
+      "registerAgain": "Cadastre-se novamente"
+    }
+  },
+  "onboarding": {
+    "logo": "Pronto",
+    "intro": "Configure seu negócio em 3 passos",
+    "steps": {
+      "businessType": "Tipo de negócio",
+      "firstService": "Primeiro serviço",
+      "notifications": "Notificações"
+    },
+    "businessTypes": {
+      "salon": "💇 Beleza / Salão",
+      "barbershop": "✂️ Barbearia",
+      "auto_repair": "🔧 Oficina mecânica",
+      "cafe": "☕ Café / Restaurante",
+      "dental": "🦷 Clínica odontológica",
+      "fitness": "💪 Fitness / Academia",
+      "massage": "💆 Massagem / Spa",
+      "other": "🏢 Outro"
+    },
+    "step0": {
+      "heading": "Conte-nos sobre seu negócio",
+      "subheading": "Vamos personalizar a configuração para você",
+      "bizNameLabel": "Nome do negócio *",
+      "bizNamePlaceholder": "Salão da Maya",
+      "businessTypeLabel": "Tipo de negócio",
+      "continue": "Continuar",
+      "slugLabel": "Sua URL no Pronto",
+      "slugHint": "Letras minúsculas, números e hífens · 3–30 caracteres",
+      "slugChecking": "Verificando…",
+      "slugAvailable": "Disponível ✓",
+      "slugTaken": "Já em uso — tente outro",
+      "slugInvalid": "Use apenas a–z, 0–9 e hífens (3–30 caracteres)",
+      "slugPreview": "Sua página de agendamentos:"
+    },
+    "step1": {
+      "heading": "Adicione seu primeiro serviço",
+      "subheading": "Você pode adicionar mais depois em Configurações",
+      "serviceNameLabel": "Nome do serviço *",
+      "serviceNamePlaceholder": "Ex.: Corte de cabelo, Troca de óleo…",
+      "priceLabel": "Preço *",
+      "durationLabel": "Duração (min)",
+      "back": "Voltar",
+      "skip": "Pular",
+      "continue": "Continuar"
+    },
+    "step2": {
+      "heading": "Configure as notificações",
+      "subheading": "O e-mail funciona desde o início. Opcionalmente conecte Telegram, Viber ou WhatsApp depois em Configurações → Notificações.",
+      "emailChannel": "E-mail (Resend / SMTP)",
+      "emailChannelSub": "Confirmações e lembretes de agendamentos",
+      "emailChannelStatus": "Ativado automaticamente",
+      "messengerChannel": "Telegram · Viber · WhatsApp",
+      "messengerChannelSub": "Adicione os tokens depois em Configurações → Notificações",
+      "messengerChannelStatus": "Opcional",
+      "back": "Voltar",
+      "settingUp": "Configurando…",
+      "submit": "Ir para o painel →",
+      "error": "Algo deu errado. Por favor tente novamente."
+    }
+  },
+  "dashboard": {
+    "title": "Painel",
+    "stats": {
+      "revenueToday": "Receita hoje",
+      "appointmentsToday": "Agendamentos hoje",
+      "totalClients": "Total de clientes",
+      "lowStock": "Itens com estoque baixo",
+      "lowStockOk": "Tudo certo ✓"
+    },
+    "upcomingAppointments": {
+      "heading": "Próximos agendamentos",
+      "viewAll": "Ver todos",
+      "empty": "Nenhum agendamento próximo.",
+      "addOne": "Adicionar um",
+      "walkIn": "Sem agendamento"
+    },
+    "recentSales": {
+      "heading": "Vendas recentes",
+      "viewAll": "Histórico de vendas →",
+      "empty": "Nenhuma venda ainda.",
+      "makeFirst": "Registrar primeira venda",
+      "walkIn": "Sem agendamento"
+    },
+    "appointmentStatus": {
+      "pending": "pendente",
+      "confirmed": "confirmado",
+      "completed": "concluído",
+      "paid": "pago",
+      "cancelled": "cancelado",
+      "no_show": "não compareceu"
+    }
+  },
+  "pos": {
+    "title": "PDV / Caixa",
+    "cart": "Carrinho",
+    "clientLabel": "Cliente",
+    "walkIn": "Sem agendamento",
+    "employeeLabel": "Funcionário",
+    "anyEmployee": "Qualquer um",
+    "emptyCart": "Toque em um serviço para adicionar",
+    "discountLabel": "Desconto",
+    "paymentMethods": {
+      "cash": "dinheiro",
+      "card": "cartão",
+      "transfer": "transferência"
+    },
+    "totalLabel": "Total",
+    "processing": "Processando…",
+    "chargeButton": "Cobrar",
+    "servicesTab": "Serviços",
+    "noServices": "Nenhum serviço ainda.",
+    "addServices": "Adicionar serviços",
+    "bookingBanner": "Cobrando pelo agendamento:",
+    "success": {
+      "heading": "Venda concluída!",
+      "receipt": "Recibo",
+      "newSale": "Nova venda"
+    }
+  },
+  "crm": {
+    "title": "Clientes",
+    "addClient": "Adicionar cliente",
+    "searchPlaceholder": "Buscar por nome, telefone, e-mail…",
+    "empty": {
+      "icon": "👥",
+      "heading": "Nenhum cliente ainda",
+      "action": "Adicione seu primeiro cliente"
+    },
+    "table": {
+      "name": "Nome",
+      "contact": "Contato",
+      "tags": "Tags",
+      "lastService": "Último serviço",
+      "visits": "Visitas",
+      "spent": "Gasto",
+      "lastVisit": "Última visita"
+    }
+  },
+  "inventory": {
+    "title": "Estoque",
+    "addItem": "Adicionar item",
+    "lowStockAlert": "{count} item abaixo do mínimo",
+    "lowStockAlertPlural": "{count} itens abaixo do mínimo",
+    "empty": {
+      "icon": "📦",
+      "heading": "Nenhum item ainda",
+      "action": "Adicione seu primeiro item"
+    },
+    "table": {
+      "name": "Nome",
+      "category": "Categoria",
+      "stock": "Estoque",
+      "cost": "Custo",
+      "sellPrice": "Preço de venda",
+      "status": "Status"
+    },
+    "status": {
+      "lowStock": "Estoque baixo",
+      "ok": "OK"
+    }
+  },
+  "booking": {
+    "title": "Agendamentos",
+    "newAppointment": "Novo agendamento",
+    "emptyState": {
+      "heading": "Nenhum agendamento esta semana",
+      "sub": "Clique em um horário no calendário ou use o botão para adicionar um"
+    },
+    "calendar": {
+      "today": "Hoje",
+      "publicPage": "Página pública de agendamentos",
+      "days": ["Seg", "Ter", "Qua", "Qui", "Sex", "Sáb", "Dom"]
+    },
+    "status": {
+      "pending": "pendente",
+      "confirmed": "confirmado",
+      "completed": "concluído",
+      "paid": "pago",
+      "cancelled": "cancelado",
+      "no_show": "não compareceu"
+    },
+    "walkIn": "Sem agendamento",
+    "form": {
+      "heading": "Novo agendamento",
+      "serviceLabel": "Serviço *",
+      "servicePlaceholder": "Selecione um serviço…",
+      "datetimeLabel": "Data e hora *",
+      "clientLabel": "Cliente",
+      "employeeLabel": "Funcionário",
+      "anyEmployee": "Qualquer um",
+      "notesLabel": "Observações",
+      "notesPlaceholder": "Observação opcional…",
+      "cancel": "Cancelar",
+      "saving": "Salvando…",
+      "save": "Salvar",
+      "closedDayError": "Este dia está marcado como fechado no Horário de funcionamento. Atualize sua agenda em Configurações primeiro."
+    },
+    "detail": {
+      "statusLabel": "Status",
+      "employeeLabel": "Funcionário:",
+      "chargeButton": "Cobrar",
+      "close": "Fechar"
+    }
+  },
+  "settings": {
+    "tabs": {
+      "general": "Geral",
+      "services": "Serviços",
+      "employees": "Funcionários",
+      "notifications": "Notificações",
+      "billing": "Faturamento",
+      "account": "Conta"
+    },
+    "billing": {
+      "heading": "Plano atual",
+      "planSuffix": "plano",
+      "freePlan": "Grátis",
+      "activePlan": "Ativo",
+      "renewsOn": "Renova em",
+      "employees": "Funcionários",
+      "clients": "Clientes",
+      "manageSubscription": "Gerenciar assinatura",
+      "mostPopular": "Mais popular",
+      "upgrade": "Fazer upgrade →",
+      "currentPlan": "Plano atual",
+      "successMessage": "Assinatura ativada. Obrigado por fazer o upgrade.",
+      "errorMessage": "Algo deu errado. Por favor tente novamente ou entre em contato com o suporte."
+    },
+    "account": {
+      "heading": "Minha conta",
+      "currentEmailLabel": "E-mail atual",
+      "newEmailLabel": "Novo e-mail",
+      "newEmailPlaceholder": "Digite o novo endereço de e-mail",
+      "changeEmailButton": "Alterar e-mail",
+      "emailHint": "Um link de confirmação será enviado para o novo endereço. A alteração entra em vigor após você clicar nele.",
+      "passwordHeading": "Alterar senha",
+      "newPasswordLabel": "Nova senha",
+      "confirmPasswordLabel": "Confirmar nova senha",
+      "confirmPasswordPlaceholder": "Repita a nova senha",
+      "changePasswordButton": "Atualizar senha",
+      "saving": "Salvando…"
+    },
+    "workingHours": {
+      "heading": "Horário de funcionamento",
+      "dayNames": ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb"],
+      "from": "De",
+      "to": "Até",
+      "closed": "Fechado",
+      "saveButton": "Salvar horário",
+      "saving": "Salvando…",
+      "saved": "Salvo ✓"
+    },
+    "general": {
+      "heading": "Informações do negócio",
+      "fields": {
+        "name": "Nome do negócio",
+        "phone": "Telefone",
+        "email": "E-mail",
+        "address": "Endereço",
+        "timezone": "Fuso horário",
+        "currency": "Moeda (ISO)",
+        "slug": "Slug da URL"
+      },
+      "typeLabel": "Tipo de negócio",
+      "typeDefault": "— selecionar —",
+      "types": {
+        "salon": "💇 Beleza / Salão",
+        "barbershop": "✂️ Barbearia",
+        "auto_repair": "🔧 Oficina mecânica",
+        "cafe": "☕ Café / Restaurante",
+        "dental": "🦷 Clínica odontológica",
+        "fitness": "💪 Fitness / Academia",
+        "massage": "💆 Massagem / Spa",
+        "other": "🏢 Outro"
+      },
+      "bookingUrlLabel": "URL pública de agendamentos",
+      "slugHint": "Apenas letras minúsculas, números e hífens. Alterar isso quebrará os links de agendamento existentes.",
+      "slugError": "Apenas letras minúsculas, números e hífens são permitidos",
+      "saving": "Salvando…",
+      "saved": "Salvo",
+      "saveButton": "Salvar alterações",
+      "planLabel": "Plano:"
+    },
+    "services": {
+      "empty": "Nenhum serviço ainda",
+      "table": {
+        "name": "Nome",
+        "category": "Categoria",
+        "price": "Preço",
+        "duration": "Duração"
+      },
+      "addHeading": "Adicionar serviço",
+      "editHeading": "Editar serviço",
+      "fields": {
+        "name": "Nome",
+        "category": "Categoria",
+        "price": "Preço",
+        "duration": "Duração (min)"
+      },
+      "addButton": "Adicionar serviço",
+      "updateButton": "Atualizar",
+      "cancelButton": "Cancelar",
+      "deleteConfirm": "Excluir?",
+      "deleteYes": "Excluir",
+      "deleteNo": "Cancelar"
+    },
+    "employees": {
+      "empty": "Nenhum funcionário ainda",
+      "table": {
+        "name": "Nome",
+        "role": "Função",
+        "contact": "E-mail",
+        "phone": "Telefone"
+      },
+      "addHeading": "Adicionar funcionário",
+      "editHeading": "Editar funcionário",
+      "fields": {
+        "name": "Nome completo",
+        "role": "Função",
+        "email": "E-mail",
+        "phone": "Telefone"
+      },
+      "addButton": "Adicionar funcionário",
+      "updateButton": "Atualizar",
+      "cancelButton": "Cancelar",
+      "deleteConfirm": "Remover?",
+      "deleteYes": "Remover",
+      "deleteNo": "Cancelar"
+    },
+    "notifications": {
+      "heading": "Canais de notificação",
+      "email": {
+        "label": "E-mail",
+        "connected": "Conectado",
+        "notSet": "Não configurado",
+        "smtpOption": "Servidor SMTP (recomendado para auto-hospedado)",
+        "resendOption": "API do Resend",
+        "smtpHost": "Host SMTP",
+        "smtpPort": "Porta SMTP",
+        "smtpUser": "Usuário",
+        "smtpPass": "Senha",
+        "smtpFrom": "Endereço de envio",
+        "smtpHostPlaceholder": "smtp.gmail.com",
+        "smtpFromPlaceholder": "ola@meunegocio.com.br",
+        "resendApiKey": "Chave de API",
+        "resendApiKeyPlaceholder": "re_...",
+        "resendSignup": "Obtenha uma chave de API gratuita em resend.com"
+      },
+      "telegram": {
+        "label": "Bot do Telegram",
+        "connected": "Conectado",
+        "notSet": "Não configurado",
+        "description": "Crie um bot pelo @BotFather e cole o token abaixo.",
+        "placeholder": "123456789:AAABBB...",
+        "connectButton": "Conectar"
+      },
+      "viber": {
+        "label": "Bot do Viber",
+        "connected": "Conectado",
+        "notSet": "Não configurado",
+        "description": "Crie um bot em partners.viber.com e cole o token de autenticação.",
+        "placeholder": "Token de autenticação do Viber",
+        "connectButton": "Conectar"
+      },
+      "whatsapp": {
+        "label": "WhatsApp (Meta Cloud API)",
+        "connected": "Conectado",
+        "notSet": "Não configurado",
+        "description": "Envia mensagens para clientes com número de WhatsApp salvo no CRM. Configurado via variáveis de ambiente do servidor."
+      },
+      "ownerWhatsapp": {
+        "label": "Seu número do WhatsApp (para alertas)",
+        "description": "Digite seu número pessoal do WhatsApp para receber alertas de estoque baixo e outras notificações. Formato: +5511999999999",
+        "placeholder": "+5511999999999"
+      },
+      "save": "Salvar",
+      "saving": "Salvando…",
+      "saved": "Salvo ✓",
+      "triggersHeading": "Gatilhos automáticos",
+      "triggers": {
+        "confirmation": "Confirmação de agendamento — imediata",
+        "reminder24h": "Lembrete — 24 horas antes",
+        "reminder1h": "Lembrete — 1 hora antes",
+        "thankYou": "Agradecimento — após a visita",
+        "reactivation": "Reativação — 30 dias sem visita",
+        "birthday": "Mensagem de aniversário",
+        "lowStock": "Alerta de estoque baixo (e-mail)"
+      }
+    }
+  },
+  "sidebar": {
+    "dashboard": "Painel",
+    "pos": "PDV",
+    "clients": "Clientes",
+    "inventory": "Estoque",
+    "booking": "Agendamentos",
+    "settings": "Configurações",
+    "signOut": "Sair"
+  },
+  "publicBooking": {
+    "selectService": {
+      "heading": "Selecione um serviço",
+      "empty": "Nenhum serviço disponível para agendamento online.",
+      "minutes": "{duration} min"
+    },
+    "selectEmployee": {
+      "heading": "Escolha um especialista",
+      "sub": "Pode escolher qualquer um — todos são ótimos",
+      "anyone": "Sem preferência",
+      "back": "← Voltar"
+    },
+    "datetime": {
+      "heading": "Escolha data e hora",
+      "back": "← Voltar",
+      "dateLabel": "Data",
+      "timeLabel": "Hora",
+      "continue": "Continuar"
+    },
+    "contact": {
+      "heading": "Seus dados de contato",
+      "back": "← Voltar",
+      "nameLabel": "Nome *",
+      "namePlaceholder": "Seu nome",
+      "phoneLabel": "Telefone",
+      "phonePlaceholder": "+55 11 99999-9999",
+      "emailLabel": "E-mail",
+      "emailPlaceholder": "voce@exemplo.com",
+      "booking": "Confirmando…",
+      "confirm": "Confirmar agendamento — {price}",
+      "noRegistration": "Sem cadastro necessário"
+    },
+    "success": {
+      "heading": "Agendamento confirmado!",
+      "body": "Seu agendamento está confirmado. Até logo!",
+      "bookAnother": "Agendar novamente",
+      "optInHeading": "Receba lembretes no seu mensageiro",
+      "optInSub": "Toque abaixo para receber lembretes de agendamentos pelo Telegram ou Viber — sem cadastro.",
+      "telegramButton": "Lembretes pelo Telegram",
+      "viberButton": "Lembretes pelo Viber"
+    }
+  },
+  "clientDetail": {
+    "backToClients": "← Clientes",
+    "editButton": "Editar",
+    "saveButton": "Salvar",
+    "cancelButton": "Cancelar",
+    "deleteButton": "Excluir cliente",
+    "deleteConfirm": "Excluir este cliente? Esta ação não pode ser desfeita.",
+    "fields": {
+      "name": "Nome",
+      "phone": "Telefone",
+      "email": "E-mail",
+      "birthday": "Aniversário",
+      "notes": "Observações",
+      "notesPlaceholder": "Adicionar uma observação…",
+      "tags": "Tags",
+      "tagsPlaceholder": "tag1, tag2…",
+      "whatsappNumber": "WhatsApp",
+      "messengers": "Mensageiros",
+      "connected": "Conectado ✓",
+      "notConnected": "Não conectado"
+    },
+    "stats": {
+      "totalVisits": "Total de visitas",
+      "totalSpent": "Total gasto",
+      "lastVisit": "Última visita",
+      "never": "Nunca",
+      "clientSince": "Cliente desde"
+    },
+    "appointments": {
+      "heading": "Histórico de visitas",
+      "empty": "Nenhuma visita ainda"
+    },
+    "status": {
+      "pending": "pendente",
+      "confirmed": "confirmado",
+      "completed": "concluído",
+      "paid": "pago",
+      "cancelled": "cancelado",
+      "no_show": "não compareceu"
+    }
+  },
+  "transactions": {
+    "title": "Histórico de vendas",
+    "filters": {
+      "allMethods": "Todos os métodos",
+      "cash": "Dinheiro",
+      "card": "Cartão",
+      "transfer": "Transferência",
+      "online": "Online",
+      "from": "De",
+      "to": "Até"
+    },
+    "table": {
+      "receipt": "Recibo",
+      "client": "Cliente",
+      "employee": "Funcionário",
+      "items": "Serviços / Itens",
+      "method": "Método",
+      "amount": "Valor",
+      "date": "Data"
+    },
+    "walkIn": "Sem agendamento",
+    "unassigned": "—",
+    "empty": "Nenhuma venda ainda",
+    "total": "Total do período:",
+    "itemCount": "{count} item",
+    "itemCountPlural": "{count} itens",
+    "moreItems": "+ {count} a mais"
+  },
+  "inventoryDetail": {
+    "backToInventory": "← Estoque",
+    "editButton": "Editar",
+    "saveButton": "Salvar",
+    "cancelButton": "Cancelar",
+    "deleteButton": "Excluir item",
+    "deleteConfirm": "Excluir este item do estoque?",
+    "fields": {
+      "name": "Nome",
+      "sku": "SKU",
+      "category": "Categoria",
+      "unit": "Unidade",
+      "costPrice": "Preço de custo",
+      "sellPrice": "Preço de venda",
+      "lowStockThreshold": "Alerta de estoque baixo em"
+    },
+    "stock": {
+      "current": "Estoque atual",
+      "addMovement": "Adicionar movimentação",
+      "type": "Tipo",
+      "typeIn": "Entrada (+)",
+      "typeOut": "Saída (−)",
+      "typeAdjustment": "Ajuste",
+      "quantity": "Quantidade",
+      "note": "Observação",
+      "notePlaceholder": "Ex.: Entrega do fornecedor, Usado no serviço…",
+      "save": "Salvar",
+      "saving": "Salvando…"
+    },
+    "movements": {
+      "heading": "Histórico de movimentações",
+      "empty": "Nenhuma movimentação ainda",
+      "table": {
+        "date": "Data",
+        "type": "Tipo",
+        "quantity": "Qtd",
+        "note": "Observação"
+      },
+      "typeIn": "entrada",
+      "typeOut": "saída",
+      "typeAdjustment": "ajuste"
+    }
+  },
+  "billing": {
+    "heading": "Seu plano",
+    "planSuffix": "plano",
+    "freePlan": "Grátis",
+    "activePlan": "Ativo",
+    "renewsOn": "Renova em",
+    "employees": "Funcionários",
+    "clients": "Clientes",
+    "manageSubscription": "Gerenciar assinatura",
+    "mostPopular": "Mais popular",
+    "upgrade": "Fazer upgrade →",
+    "currentPlan": "Plano atual",
+    "successMessage": "🎉 Assinatura ativada! Obrigado por fazer o upgrade.",
+    "errorMessage": "Algo deu errado. Por favor tente novamente ou entre em contato com o suporte."
+  },
+  "newClient": {
+    "title": "Novo cliente",
+    "backToClients": "← Clientes",
+    "fields": {
+      "name": "Nome completo *",
+      "namePlaceholder": "Ana Silva",
+      "phone": "Telefone",
+      "phonePlaceholder": "+55 11 99999-9999",
+      "email": "E-mail",
+      "emailPlaceholder": "ana@exemplo.com",
+      "whatsapp": "WhatsApp",
+      "whatsappPlaceholder": "+5511999999999",
+      "birthday": "Aniversário",
+      "notes": "Observações",
+      "notesPlaceholder": "Qualquer observação…",
+      "tags": "Tags",
+      "tagsPlaceholder": "vip, regular…"
+    },
+    "submitButton": "Adicionar cliente",
+    "cancelButton": "Cancelar"
+  },
+  "newInventoryItem": {
+    "title": "Novo item",
+    "backToInventory": "← Estoque",
+    "fields": {
+      "name": "Nome *",
+      "namePlaceholder": "Shampoo 500ml",
+      "sku": "SKU",
+      "skuPlaceholder": "SKU-001",
+      "category": "Categoria",
+      "categoryPlaceholder": "Cuidados com o cabelo",
+      "unit": "Unidade",
+      "unitPlaceholder": "un",
+      "quantity": "Quantidade inicial",
+      "costPrice": "Preço de custo",
+      "sellPrice": "Preço de venda",
+      "lowStockThreshold": "Alerta de estoque baixo em"
+    },
+    "submitButton": "Adicionar item",
+    "cancelButton": "Cancelar"
+  }
+}

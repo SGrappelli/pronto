@@ -75,6 +75,20 @@ export async function middleware(request: NextRequest) {
     return NextResponse.redirect(dashboardUrl)
   }
 
+  // Auto-detect locale from Accept-Language on first visit (no cookie yet)
+  if (!request.cookies.get('dashboard_locale')?.value) {
+    const acceptLang = request.headers.get('accept-language') ?? ''
+    const lang = acceptLang.toLowerCase()
+    const detected = lang.startsWith('pt') ? 'pt' : lang.startsWith('es') ? 'es' : null
+    if (detected) {
+      supabaseResponse.cookies.set('dashboard_locale', detected, {
+        path: '/',
+        maxAge: 60 * 60 * 24 * 365,
+        sameSite: 'lax',
+      })
+    }
+  }
+
   return supabaseResponse
 }
 
