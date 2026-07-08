@@ -5,8 +5,11 @@ import { useRouter, useSearchParams } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
-import { Plus, Pencil, Trash2, Check, Loader2, CheckCircle2, AlertCircle, Zap, Users, Eye, EyeOff } from 'lucide-react'
+import { Plus, Pencil, Trash2, Check, Loader2, CheckCircle2, AlertCircle, Users, Eye, EyeOff, RefreshCw } from 'lucide-react'
 import { useTranslations } from 'next-intl'
+import { MODULES, ModuleKey } from '@/lib/modules'
+
+const clean = (s: string, max = 500) => s?.trim().slice(0, max) ?? ''
 
 interface Business {
   id: string; name: string; slug: string; type: string | null; phone: string | null
@@ -19,13 +22,29 @@ interface Business {
   smtp_host: string | null; smtp_port: number | null; smtp_user: string | null
   smtp_pass: string | null; smtp_from: string | null
   resend_api_key: string | null
+  meta_whatsapp_phone_number_id: string | null
+  meta_whatsapp_access_token: string | null
+  wa_template_confirmation: string | null
+  wa_template_reminder: string | null
+  wa_template_thankyou: string | null
+  wa_template_reactivation: string | null
+  wa_template_birthday: string | null
+  wa_template_language: string | null
   brand_color: string | null
+  notification_language: string | null
+  custom_domain: string | null
+  custom_domain_status: string | null
+  logo_url: string | null
+  loyalty_enabled: boolean | null
+  loyalty_points_per_dollar: number | null
+  loyalty_min_redeem_points: number | null
+  loyalty_redeem_value: number | null
+  enabled_modules: string[] | null
 }
 interface Service { id: string; name: string; description: string | null; price: number; duration_min: number; category: string | null; is_active: boolean; capacity: number }
 interface Employee { id: string; name: string; role: string; email: string | null; phone: string | null; is_active: boolean }
 interface DayHours { day_of_week: number; is_open: boolean; open_time: string; close_time: string }
 
-// Default schedule: Mon–Fri open 09:00–19:00, Sat–Sun closed
 const DEFAULT_HOURS: DayHours[] = [0, 1, 2, 3, 4, 5, 6].map((dow) => ({
   day_of_week: dow,
   is_open: dow >= 1 && dow <= 5,
@@ -33,22 +52,21 @@ const DEFAULT_HOURS: DayHours[] = [0, 1, 2, 3, 4, 5, 6].map((dow) => ({
   close_time: '19:00',
 }))
 
-// 30-min time options for the selects: 00:00, 00:30, 01:00 … 23:30
 const TIME_OPTIONS = Array.from({ length: 48 }, (_, i) => {
   const h = Math.floor(i / 2)
   const m = i % 2 === 0 ? '00' : '30'
   return `${String(h).padStart(2, '0')}:${m}`
 })
 
-interface Props { business: Business & { telegram_chat_id?: string | null; viber_chat_id?: string | null }; services: Service[]; employees: Employee[]; workingHours: DayHours[]; userEmail: string; whatsappConnected: boolean }
-type Tab = 'general' | 'services' | 'employees' | 'notifications' | 'billing' | 'account'
+interface Props { business: Business & { telegram_chat_id?: string | null; viber_chat_id?: string | null }; services: Service[]; employees: Employee[]; workingHours: DayHours[]; userEmail: string }
+type Tab = 'general' | 'services' | 'employees' | 'notifications' | 'billing' | 'account' | 'domain' | 'loyalty' | 'modules'
 
-export function SettingsTabs({ business: initial, services: initServices, employees: initEmployees, workingHours: initHours, userEmail, whatsappConnected }: Props) {
+export function SettingsTabs({ business: initial, services: initServices, employees: initEmployees, workingHours: initHours, userEmail }: Props) {
   const supabase = createClient()
   const router = useRouter()
   const t = useTranslations('settings')
   const searchParams = useSearchParams()
-  const initialTab = (['general', 'services', 'employees', 'notifications', 'billing'].includes(searchParams.get('tab') ?? '')
+  const initialTab = (['general', 'services', 'employees', 'notifications', 'billing', 'domain', 'loyalty', 'modules'].includes(searchParams.get('tab') ?? '')
     ? searchParams.get('tab')
     : 'general') as Tab
   const [tab, setTab] = useState<Tab>(initialTab)
@@ -56,6 +74,8 @@ export function SettingsTabs({ business: initial, services: initServices, employ
   const [webhookMsg, setWebhookMsg] = useState('')
   const [viberWebhookStatus, setViberWebhookStatus] = useState<'idle' | 'loading' | 'ok' | 'error'>('idle')
   const [viberWebhookMsg, setViberWebhookMsg] = useState('')
+  const [waStatus, setWaStatus] = useState<'idle' | 'loading' | 'ok' | 'error'>('idle')
+  const [waMsg, setWaMsg] = useState('')
   const [biz, setBiz] = useState(initial)
   const [saving, setSaving] = useState(false)
   const [saved, setSaved] = useState(false)
@@ -69,7 +89,129 @@ export function SettingsTabs({ business: initial, services: initServices, employ
   const [empForm, setEmpForm] = useState<Partial<Employee>>({})
   const [editingEmp, setEditingEmp] = useState<string | null>(null)
 
-  // Working hours state — merge DB rows with defaults (in case some days are missing)
+  // Domain tab state
+  const [domainInput, setDomainInput] = useState('')
+  const [domainSaving, setDomainSaving] = useState(false)
+  const [domainStatus, setDomainStatus] = useState<string>(initial.custom_domain_status ?? 'inactive')
+  const [domainValue, setDomainValue] = useState<string>(initial.custom_domain ?? '')
+  const [domainError, setDomainError] = useState('')
+  const [domainChecking, setDomainChecking] = useState(false)
+  const [domainConfirmRemove, setDomainConfirmRemove] = useState(false)
+
+  // Modules tab state
+  const DEFAULT_MODULES = ['bookings', 'crm', 'pos', 'inventory', 'notifications']
+  const [enabledModules, setEnabledModules] = useState<string[]>(
+    initial.enabled_modules ?? DEFAULT_MODULES
+  )
+  const [modulesSaving, setModulesSaving] = useState(false)
+  const [confirmModule, setConfirmModule] = useState<ModuleKey | null>(null)
+  const [modulesSaved, setModulesSaved] = useState(false)
+
+  // Loyalty tab state
+  const [loyaltyEnabled, setLoyaltyEnabled] = useState(initial.loyalty_enabled ?? false)
+  const [loyaltyPPD, setLoyaltyPPD] = useState(initial.loyalty_points_per_dollar ?? 1)
+  const [loyaltyMinRedeem, setLoyaltyMinRedeem] = useState(initial.loyalty_min_redeem_points ?? 100)
+  const [loyaltyRedeemVal, setLoyaltyRedeemVal] = useState(Number(initial.loyalty_redeem_value ?? 5))
+  const [loyaltySaving, setLoyaltySaving] = useState(false)
+  const [loyaltySaved, setLoyaltySaved] = useState(false)
+
+  // Logo state
+  const [logoUrl, setLogoUrl] = useState<string | null>(initial.logo_url ?? null)
+  const [logoUploading, setLogoUploading] = useState(false)
+  const [logoError, setLogoError] = useState('')
+
+  async function uploadLogo(file: File) {
+    setLogoError('')
+    setLogoUploading(true)
+    try {
+      const form = new FormData()
+      form.append('logo', file)
+      const res = await fetch('/api/business/logo', { method: 'POST', body: form })
+      let data: { logo_url?: string; error?: string } = {}
+      try { data = await res.json() } catch { /* non-JSON response */ }
+      if (!res.ok) {
+        setLogoError(data.error ?? `Upload failed (HTTP ${res.status})`)
+        return
+      }
+      setLogoUrl(data.logo_url ?? null)
+    } catch (e) {
+      setLogoError(t('general.logoErrorNetwork', { message: e instanceof Error ? e.message : 'please try again' }))
+    } finally {
+      setLogoUploading(false)
+    }
+  }
+
+  async function removeLogo() {
+    setLogoError('')
+    setLogoUploading(true)
+    try {
+      await fetch('/api/business/logo', { method: 'DELETE' })
+      setLogoUrl(null)
+    } catch {
+      setLogoError(t('general.logoErrorRemove'))
+    } finally {
+      setLogoUploading(false)
+    }
+  }
+
+  useEffect(() => {
+    if (domainStatus !== 'pending') return
+    const interval = setInterval(async () => {
+      try {
+        const res = await fetch('/api/domain/status')
+        const data = await res.json() as { domain: string; status: string }
+        setDomainStatus(data.status)
+        setDomainValue(data.domain ?? '')
+      } catch { /* ignore */ }
+    }, 30_000)
+    return () => clearInterval(interval)
+  }, [domainStatus])
+
+  async function connectDomain() {
+    setDomainError('')
+    setDomainSaving(true)
+    try {
+      const res = await fetch('/api/domain', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ domain: domainInput }),
+      })
+      const data = await res.json() as { status?: string; domain?: string; error?: string }
+      if (!res.ok) { setDomainError(data.error ?? t('domain.connectError')); return }
+      setDomainValue(data.domain ?? domainInput)
+      setDomainStatus('pending')
+      setDomainInput('')
+    } catch {
+      setDomainError(t('domain.networkError'))
+    } finally {
+      setDomainSaving(false)
+    }
+  }
+
+  async function checkDomainStatus() {
+    setDomainChecking(true)
+    try {
+      const res = await fetch('/api/domain/status')
+      const data = await res.json() as { domain: string; status: string }
+      setDomainStatus(data.status)
+      setDomainValue(data.domain ?? '')
+    } catch { /* ignore */ } finally {
+      setDomainChecking(false)
+    }
+  }
+
+  async function removeDomain() {
+    setDomainSaving(true)
+    try {
+      await fetch('/api/domain', { method: 'DELETE' })
+      setDomainValue('')
+      setDomainStatus('inactive')
+      setDomainConfirmRemove(false)
+    } catch { /* ignore */ } finally {
+      setDomainSaving(false)
+    }
+  }
+
   const [hours, setHours] = useState<DayHours[]>(() => {
     return DEFAULT_HOURS.map((def) => {
       const fromDb = initHours.find((h) => h.day_of_week === def.day_of_week)
@@ -80,14 +222,8 @@ export function SettingsTabs({ business: initial, services: initServices, employ
   const [origin, setOrigin] = useState('')
   useEffect(() => { setOrigin(window.location.origin) }, [])
 
-  const bookingUrl = useMemo(() => {
-    if (process.env.NEXT_PUBLIC_DEPLOYMENT_MODE === 'saas') {
-      const baseDomain = (process.env.NEXT_PUBLIC_APP_URL ?? 'https://trypronto.app')
-        .replace(/^https?:\/\//, '').replace(/\/$/, '')
-      return `https://${biz.slug}.${baseDomain}/book`
-    }
-    return `${origin}/book/${biz.slug}`
-  }, [biz.slug, origin])
+  const bookingUrl = useMemo(() => `${origin}/book/${biz.slug}`, [biz.slug, origin])
+
   const [savedHours, setSavedHours] = useState(false)
 
   async function saveWorkingHours() {
@@ -109,34 +245,32 @@ export function SettingsTabs({ business: initial, services: initServices, employ
     setHours((prev) => prev.map((h) => h.day_of_week === dow ? { ...h, ...patch } : h))
   }
 
-  // Account / password change state
   const [pwForm, setPwForm] = useState({ newPassword: '', confirm: '' })
   const [showPw, setShowPw] = useState(false)
   const [pwStatus, setPwStatus] = useState<'idle' | 'loading' | 'ok' | 'error'>('idle')
   const [pwMsg, setPwMsg] = useState('')
 
   async function changePassword() {
-    if (pwForm.newPassword.length < 8) { setPwStatus('error'); setPwMsg('Password must be at least 8 characters'); return }
-    if (pwForm.newPassword !== pwForm.confirm) { setPwStatus('error'); setPwMsg('Passwords do not match'); return }
+    if (pwForm.newPassword.length < 8) { setPwStatus('error'); setPwMsg(t('account.pwMinLength')); return }
+    if (pwForm.newPassword !== pwForm.confirm) { setPwStatus('error'); setPwMsg(t('account.pwNoMatch')); return }
     setPwStatus('loading'); setPwMsg('')
     const { error } = await supabase.auth.updateUser({ password: pwForm.newPassword })
     if (error) { setPwStatus('error'); setPwMsg(error.message) }
-    else { setPwStatus('ok'); setPwMsg('Password updated successfully'); setPwForm({ newPassword: '', confirm: '' }) }
+    else { setPwStatus('ok'); setPwMsg(t('account.pwSuccess')); setPwForm({ newPassword: '', confirm: '' }) }
   }
 
-  // Account / email change state
   const [newEmail, setNewEmail] = useState('')
   const [emailStatus, setEmailStatus] = useState<'idle' | 'loading' | 'ok' | 'error'>('idle')
   const [emailMsg, setEmailMsg] = useState('')
 
   async function changeEmail() {
-    if (!newEmail.includes('@')) { setEmailStatus('error'); setEmailMsg('Enter a valid email address'); return }
+    if (!newEmail.includes('@')) { setEmailStatus('error'); setEmailMsg(t('account.emailInvalid')); return }
     setEmailStatus('loading'); setEmailMsg('')
     const { error } = await supabase.auth.updateUser({ email: newEmail })
     if (error) { setEmailStatus('error'); setEmailMsg(error.message) }
     else {
       setEmailStatus('ok')
-      setEmailMsg(`Confirmation sent to ${newEmail}. Click the link in the email to complete the change.`)
+      setEmailMsg(t('account.emailConfirmSent', { email: newEmail }))
       setNewEmail('')
     }
   }
@@ -145,9 +279,11 @@ export function SettingsTabs({ business: initial, services: initServices, employ
     if (slugError) return
     setSaving(true)
     const cleanSlug = biz.slug.toLowerCase().replace(/[^a-z0-9-]/g, '-').replace(/-+/g, '-').replace(/^-|-$/g, '') || initial.slug
+    const bizName = clean(biz.name || '', 100)
+    const bizAddress = biz.address ? clean(biz.address, 200) || null : null
     setBiz((b) => ({ ...b, slug: cleanSlug }))
     await supabase.from('businesses').update({
-      name: biz.name, slug: cleanSlug, type: biz.type, phone: biz.phone, email: biz.email, address: biz.address,
+      name: bizName, slug: cleanSlug, type: biz.type, phone: biz.phone, email: biz.email, address: bizAddress,
       timezone: biz.timezone, currency: biz.currency,
       telegram_bot_token: biz.telegram_bot_token, viber_bot_token: biz.viber_bot_token,
       owner_whatsapp: biz.owner_whatsapp,
@@ -155,7 +291,16 @@ export function SettingsTabs({ business: initial, services: initServices, employ
       smtp_host: biz.smtp_host, smtp_port: biz.smtp_port, smtp_user: biz.smtp_user,
       smtp_pass: biz.smtp_pass, smtp_from: biz.smtp_from,
       resend_api_key: biz.resend_api_key,
+      meta_whatsapp_phone_number_id: biz.meta_whatsapp_phone_number_id,
+      meta_whatsapp_access_token: biz.meta_whatsapp_access_token,
+      wa_template_confirmation: biz.wa_template_confirmation,
+      wa_template_reminder: biz.wa_template_reminder,
+      wa_template_thankyou: biz.wa_template_thankyou,
+      wa_template_reactivation: biz.wa_template_reactivation,
+      wa_template_birthday: biz.wa_template_birthday,
+      wa_template_language: biz.wa_template_language ?? 'en',
       brand_color: biz.brand_color || '#2D2926',
+      notification_language: biz.notification_language ?? 'en',
     }).eq('id', biz.id)
     setSaving(false); setSaved(true); setTimeout(() => setSaved(false), 2000)
     router.refresh()
@@ -163,13 +308,18 @@ export function SettingsTabs({ business: initial, services: initServices, employ
 
   async function saveService() {
     if (!svcForm.name || svcForm.price == null) return
+    const svcName = clean(svcForm.name, 100)
+    if (!svcName) return
+    const svcDescription = svcForm.description ? clean(svcForm.description, 500) || null : null
+    const svcCategory = svcForm.category ? clean(svcForm.category, 100) || null : null
+    const sanitizedForm = { ...svcForm, name: svcName, description: svcDescription, category: svcCategory }
     if (editingSvc) {
-      await supabase.from('services').update(svcForm).eq('id', editingSvc)
-      setServices((prev) => prev.map((s) => s.id === editingSvc ? { ...s, ...svcForm } as Service : s))
+      await supabase.from('services').update(sanitizedForm).eq('id', editingSvc)
+      setServices((prev) => prev.map((s) => s.id === editingSvc ? { ...s, ...sanitizedForm } as Service : s))
     } else {
       const { data } = await supabase.from('services').insert({
-        business_id: biz.id, name: svcForm.name!, description: svcForm.description ?? null,
-        price: svcForm.price!, duration_min: svcForm.duration_min ?? 60, category: svcForm.category ?? null,
+        business_id: biz.id, name: svcName, description: svcDescription,
+        price: svcForm.price!, duration_min: svcForm.duration_min ?? 60, category: svcCategory,
         capacity: svcForm.capacity ?? 1,
       }).select().single()
       if (data) setServices((prev) => [...prev, data as Service])
@@ -187,18 +337,38 @@ export function SettingsTabs({ business: initial, services: initServices, employ
 
   async function saveEmployee() {
     if (!empForm.name) return
+    const empName = clean(empForm.name, 100)
+    if (!empName) return
+    const sanitizedEmp = { ...empForm, name: empName }
     if (editingEmp) {
-      await supabase.from('employees').update(empForm).eq('id', editingEmp)
-      setEmployees((prev) => prev.map((e) => e.id === editingEmp ? { ...e, ...empForm } as Employee : e))
+      await supabase.from('employees').update(sanitizedEmp).eq('id', editingEmp)
+      setEmployees((prev) => prev.map((e) => e.id === editingEmp ? { ...e, ...sanitizedEmp } as Employee : e))
     } else {
       const { data } = await supabase.from('employees').insert({
-        business_id: biz.id, name: empForm.name!, role: empForm.role ?? 'employee',
+        business_id: biz.id, name: empName, role: empForm.role ?? 'employee',
         email: empForm.email ?? null, phone: empForm.phone ?? null,
       }).select().single()
       if (data) setEmployees((prev) => [...prev, data as Employee])
     }
     setEmpForm({}); setEditingEmp(null)
     router.refresh()
+  }
+
+  async function connectWhatsApp() {
+    setWaStatus('loading')
+    setWaMsg('')
+    const { error } = await supabase.from('businesses').update({
+      meta_whatsapp_phone_number_id: biz.meta_whatsapp_phone_number_id,
+      meta_whatsapp_access_token: biz.meta_whatsapp_access_token,
+    }).eq('id', biz.id)
+    if (error) {
+      setWaStatus('error')
+      setWaMsg(error.message)
+    } else {
+      setWaStatus('ok')
+      setWaMsg('WhatsApp credentials saved successfully.')
+      router.refresh()
+    }
   }
 
   async function connectViber() {
@@ -219,9 +389,7 @@ export function SettingsTabs({ business: initial, services: initServices, employ
   async function connectTelegram() {
     setWebhookStatus('loading')
     setWebhookMsg('')
-    // Сначала сохраняем токен
     await supabase.from('businesses').update({ telegram_bot_token: biz.telegram_bot_token }).eq('id', biz.id)
-    // Регистрируем вебхук
     const res = await fetch('/api/telegram/set-webhook', { method: 'POST' })
     const json = await res.json()
     if (json.ok) {
@@ -240,12 +408,16 @@ export function SettingsTabs({ business: initial, services: initServices, employ
     router.refresh()
   }
 
+  const bookingsOn = enabledModules.includes('bookings')
   const tabs: { key: Tab; label: string }[] = [
     { key: 'general', label: t('tabs.general') },
-    { key: 'services', label: t('tabs.services') },
+    ...(bookingsOn ? [{ key: 'services' as Tab, label: t('tabs.services') }] : []),
     { key: 'employees', label: t('tabs.employees') },
     { key: 'notifications', label: t('tabs.notifications') },
     { key: 'billing', label: t('tabs.billing') },
+    { key: 'domain', label: t('tabs.domain') },
+    { key: 'loyalty', label: t('tabs.loyalty') },
+    { key: 'modules', label: t('tabs.modules') },
     { key: 'account', label: t('tabs.account') },
   ]
 
@@ -341,10 +513,10 @@ export function SettingsTabs({ business: initial, services: initServices, employ
 
   return (
     <div className="p-3 sm:p-6 max-w-3xl">
-      <div className="flex gap-1 bg-gray-100 p-1 rounded-lg mb-6 overflow-x-auto">
+      <div className="flex flex-nowrap overflow-x-auto sm:flex-wrap sm:overflow-x-visible gap-1 bg-gray-100 p-1 rounded-lg mb-6 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
         {tabs.map((tb) => (
           <button key={tb.key} onClick={() => setTab(tb.key)}
-            className={`shrink-0 whitespace-nowrap px-3 sm:px-4 py-1.5 rounded-md text-sm font-medium transition-colors ${tab === tb.key ? 'bg-white shadow-sm text-gray-900' : 'text-gray-500 hover:text-gray-700'}`}>
+            className={`shrink-0 px-2.5 py-1.5 rounded-md text-sm font-medium transition-colors whitespace-nowrap ${tab === tb.key ? 'bg-white shadow-sm text-gray-900' : 'text-gray-500 hover:text-gray-700'}`}>
             {tb.label}
           </button>
         ))}
@@ -421,39 +593,82 @@ export function SettingsTabs({ business: initial, services: initServices, employ
               : <p className="text-xs text-gray-400 mt-1">{t('general.slugHint')}</p>}
           </div>
           <div className="pt-2">
-            <div className="text-xs font-medium text-gray-500 mb-1">{t('general.bookingUrlLabel')}</div>
-            <div className="bg-gray-50 border border-gray-200 rounded-lg px-3 py-2 text-sm text-blue-600 select-all">
-              {bookingUrl}
-            </div>
-          </div>
-          <div className="pt-2">
-            <label className="text-xs font-medium text-gray-500 block mb-1">Brand color</label>
-            <p className="text-xs text-gray-400 mb-2">Used on your public booking page.</p>
-            <div className="flex items-center gap-2">
+            <label className="text-xs font-medium text-gray-500">{t('general.brandColorLabel')}</label>
+            <div className="flex items-center gap-2 mt-1">
               <input
                 type="color"
                 value={biz.brand_color || '#2D2926'}
                 onChange={(e) => setBiz((b) => ({ ...b, brand_color: e.target.value }))}
-                className="w-10 h-10 rounded-lg border border-gray-200 cursor-pointer p-0.5 bg-white"
-                style={{ minWidth: 40 }}
+                className="w-10 h-9 p-0.5 border border-gray-200 rounded-lg cursor-pointer"
               />
               <input
                 type="text"
                 value={biz.brand_color || '#2D2926'}
-                onChange={(e) => {
-                  const val = e.target.value
-                  if (/^#[0-9A-Fa-f]{0,6}$/.test(val)) {
-                    setBiz((b) => ({ ...b, brand_color: val }))
-                  }
-                }}
+                onChange={(e) => setBiz((b) => ({ ...b, brand_color: e.target.value }))}
                 maxLength={7}
-                placeholder="#2D2926"
-                className="w-28 border border-gray-200 rounded-lg px-3 py-2 text-sm font-mono focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-32 border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 font-mono"
               />
-              <div
-                className="w-8 h-8 rounded-lg border border-gray-200 shrink-0"
-                style={{ background: /^#[0-9A-Fa-f]{6}$/.test(biz.brand_color || '') ? biz.brand_color! : '#2D2926' }}
-              />
+            </div>
+            <p className="text-xs text-gray-400 mt-1">{t('general.brandColorHint')}</p>
+          </div>
+          {/* Business Logo */}
+          <div className="pt-2">
+            <label className="text-xs font-medium text-gray-500">{t('general.logoLabel')}</label>
+            <p className="text-xs text-gray-400 mt-0.5 mb-2">{t('general.logoHint')}</p>
+            {logoUrl ? (
+              <div className="flex items-center gap-3">
+                <div className="w-16 h-16 rounded-lg border border-gray-200 bg-white flex items-center justify-center overflow-hidden">
+                  <img src={logoUrl} alt="Business logo" style={{ width: 52, height: 52, objectFit: 'contain' }} />
+                </div>
+                <button
+                  onClick={removeLogo}
+                  disabled={logoUploading}
+                  className="text-sm text-red-500 hover:text-red-700 font-medium disabled:opacity-50"
+                >
+                  {logoUploading ? t('general.logoRemoving') : t('general.logoRemove')}
+                </button>
+              </div>
+            ) : (
+              <label className={`flex flex-col items-center justify-center w-full h-24 border-2 border-dashed rounded-lg cursor-pointer transition-colors ${logoUploading ? 'opacity-50 pointer-events-none' : 'border-gray-200 hover:border-blue-400 bg-gray-50 hover:bg-blue-50'}`}>
+                <span className="text-sm text-gray-500">{logoUploading ? t('general.logoUploading') : t('general.logoUpload')}</span>
+                <span className="text-xs text-gray-400 mt-1">{t('general.logoFormats')}</span>
+                <input
+                  type="file"
+                  accept="image/png,image/jpeg,image/webp,image/svg+xml"
+                  className="hidden"
+                  onChange={(e) => { const f = e.target.files?.[0]; if (f) uploadLogo(f) }}
+                />
+              </label>
+            )}
+            {logoError && (
+              <p className="text-xs text-red-500 mt-1">{logoError}</p>
+            )}
+          </div>
+
+          <div className="pt-2">
+            <label className="text-xs font-medium text-gray-500">{t('general.notificationLanguageLabel')}</label>
+            <div className="flex gap-2 mt-1">
+              {(['en', 'es', 'pt'] as const).map((lang) => (
+                <button
+                  key={lang}
+                  type="button"
+                  onClick={() => setBiz((b) => ({ ...b, notification_language: lang }))}
+                  className={`px-3 py-1.5 rounded-lg text-xs font-semibold border transition-colors ${
+                    (biz.notification_language ?? 'en') === lang
+                      ? 'bg-green-600 text-white border-green-600'
+                      : 'bg-white text-gray-600 border-gray-200 hover:border-green-400'
+                  }`}
+                >
+                  {lang === 'en' ? 'English' : lang === 'es' ? 'Español' : 'Português'}
+                </button>
+              ))}
+            </div>
+            <p className="text-xs text-gray-400 mt-1">{t('general.notificationLanguageHint')}</p>
+          </div>
+          <div className="pt-2">
+            <div className="text-xs font-medium text-gray-500 mb-1">{t('general.bookingUrlLabel')}</div>
+            <div className="bg-gray-50 border border-gray-200 rounded-lg px-3 py-2 text-sm text-blue-600 select-all">
+              {bookingUrl}
             </div>
           </div>
           <div className="flex items-center gap-3 pt-2">
@@ -468,13 +683,11 @@ export function SettingsTabs({ business: initial, services: initServices, employ
         <div className="bg-white rounded-xl border border-gray-200 p-6">
           <h2 className="font-semibold text-gray-900 mb-5">{t('workingHours.heading')}</h2>
           <div className="space-y-2">
-            {/* Display Mon→Sun (1,2,3,4,5,6,0) */}
             {[1, 2, 3, 4, 5, 6, 0].map((dow) => {
               const day = hours.find((h) => h.day_of_week === dow)!
               const dayName = (t.raw('workingHours.dayNames') as string[])[dow]
               return (
                 <div key={dow} className="flex items-center gap-3">
-                  {/* Toggle */}
                   <label className="flex items-center cursor-pointer relative">
                     <input
                       type="checkbox"
@@ -486,11 +699,9 @@ export function SettingsTabs({ business: initial, services: initServices, employ
                       <div className={`absolute top-0.5 w-4 h-4 rounded-full bg-white shadow transition-transform ${day.is_open ? 'translate-x-4' : 'translate-x-0.5'}`} />
                     </div>
                   </label>
-                  {/* Day name */}
                   <span className={`w-10 text-sm font-medium ${day.is_open ? 'text-gray-900' : 'text-gray-400'}`}>
                     {dayName}
                   </span>
-                  {/* Time range */}
                   {day.is_open ? (
                     <div className="flex items-center gap-2 flex-1">
                       <span className="text-xs text-gray-400">{t('workingHours.from')}</span>
@@ -540,7 +751,7 @@ export function SettingsTabs({ business: initial, services: initServices, employ
                     <th className="text-left px-4 py-3 font-medium hidden sm:table-cell">{t('services.table.category')}</th>
                     <th className="text-right px-4 py-3 font-medium">{t('services.table.price')}</th>
                     <th className="text-right px-4 py-3 font-medium">{t('services.table.duration')}</th>
-                    <th className="text-right px-4 py-3 font-medium hidden sm:table-cell">Capacity</th>
+                    <th className="text-right px-4 py-3 font-medium hidden sm:table-cell">{t('services.table.capacity')}</th>
                     <th className="px-4 py-3" />
                   </tr>
                 </thead>
@@ -595,11 +806,11 @@ export function SettingsTabs({ business: initial, services: initServices, employ
                 </div>
               ))}
               <div>
-                <label className="text-xs font-medium text-gray-500">Capacity</label>
+                <label className="text-xs font-medium text-gray-500">{t('services.fields.capacity')}</label>
                 <input type="number" min={1} value={(svcForm.capacity as number) ?? 1}
                   onChange={(e) => setSvcForm((f) => ({ ...f, capacity: Math.max(1, Number(e.target.value)) }))}
                   className="w-full mt-1 border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
-                <p className="text-xs text-gray-400 mt-1">Max clients per slot (1 = individual, &gt;1 = group class)</p>
+                <p className="text-xs text-gray-400 mt-1">{t('services.capacityHint')}</p>
               </div>
             </div>
             <div className="flex gap-2 mt-4">
@@ -699,7 +910,6 @@ export function SettingsTabs({ business: initial, services: initServices, employ
                   : <Badge variant="secondary">{t('notifications.email.notSet')}</Badge>}
               </div>
 
-              {/* Provider radio */}
               <div className="flex flex-col gap-2 mb-4">
                 {(['smtp', 'resend'] as const).map((p) => (
                   <label key={p} className="flex items-center gap-2 cursor-pointer">
@@ -714,7 +924,6 @@ export function SettingsTabs({ business: initial, services: initServices, employ
                 ))}
               </div>
 
-              {/* SMTP fields */}
               {biz.email_provider === 'smtp' && (
                 <div className="grid sm:grid-cols-2 gap-3">
                   <div>
@@ -741,6 +950,7 @@ export function SettingsTabs({ business: initial, services: initServices, employ
                     <input type="password" value={biz.smtp_pass ?? ''}
                       onChange={(e) => setBiz((b) => ({ ...b, smtp_pass: e.target.value || null }))}
                       className="w-full mt-1 border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                    <p className="text-xs text-gray-400 mt-1">{t('notifications.email.smtpPassHint')}</p>
                   </div>
                   <div className="sm:col-span-2">
                     <label className="text-xs font-medium text-gray-500">{t('notifications.email.smtpFrom')}</label>
@@ -752,7 +962,6 @@ export function SettingsTabs({ business: initial, services: initServices, employ
                 </div>
               )}
 
-              {/* Resend fields */}
               {biz.email_provider === 'resend' && (
                 <div>
                   <label className="text-xs font-medium text-gray-500">{t('notifications.email.resendApiKey')}</label>
@@ -778,11 +987,10 @@ export function SettingsTabs({ business: initial, services: initServices, employ
                   : <Badge variant="secondary">{t('notifications.telegram.notSet')}</Badge>}
               </div>
 
-              {/* Инструкция по шагам */}
               <ol className="text-xs text-gray-500 space-y-1 mb-3 list-decimal list-inside">
-                <li>Open <a href="https://t.me/BotFather" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">@BotFather</a> in Telegram → <code className="bg-gray-100 px-1 rounded">/newbot</code> → copy the token</li>
-                <li>Paste the token below and click <strong>Connect</strong></li>
-                <li>Open your new bot in Telegram from your business account and send <code className="bg-gray-100 px-1 rounded">/start</code> — this registers the chat to receive notifications</li>
+                <li dangerouslySetInnerHTML={{ __html: t.raw('notifications.telegram.step1') }} />
+                <li>{t('notifications.telegram.step2')}</li>
+                <li dangerouslySetInnerHTML={{ __html: t.raw('notifications.telegram.step3') }} />
               </ol>
 
               <div className="flex gap-2 min-w-0">
@@ -811,8 +1019,7 @@ export function SettingsTabs({ business: initial, services: initServices, employ
 
             <hr className="border-gray-100" />
 
-            {/* Viber — hidden in SaaS mode unless NEXT_PUBLIC_ENABLE_VIBER=true */}
-            {(process.env.NEXT_PUBLIC_DEPLOYMENT_MODE !== 'saas' || process.env.NEXT_PUBLIC_ENABLE_VIBER === 'true') && (
+            {/* Viber */}
             <div>
               <div className="flex items-center gap-2 mb-1">
                 <span className="text-sm font-medium text-gray-900">{t('notifications.viber.label')}</span>
@@ -821,19 +1028,10 @@ export function SettingsTabs({ business: initial, services: initServices, employ
                   : <Badge variant="secondary">{t('notifications.viber.notSet')}</Badge>}
               </div>
 
-              <div className="mb-3 flex items-start gap-2 text-xs text-amber-700 bg-amber-50 border border-amber-200 rounded-lg px-3 py-2">
-                <AlertCircle className="w-3.5 h-3.5 mt-0.5 shrink-0" />
-                <span>
-                  Since February 2024, new Viber bots require a commercial agreement with Viber (~€100/month).
-                  This integration works for bots created before February 2024, or if you have an active commercial agreement with Viber.
-                  For new setups, <strong>Telegram is recommended</strong> (free).
-                </span>
-              </div>
-
               <ol className="text-xs text-gray-500 space-y-1 mb-3 list-decimal list-inside">
-                <li>Go to <a href="https://partners.viber.com" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">partners.viber.com</a> → sign in → copy the auth token from your bot account</li>
-                <li>Paste the token below and click <strong>Connect</strong></li>
-                <li>Find your bot in Viber and start a conversation — you will receive a welcome message</li>
+                <li dangerouslySetInnerHTML={{ __html: t.raw('notifications.viber.step1') }} />
+                <li>{t('notifications.viber.step2')}</li>
+                <li dangerouslySetInnerHTML={{ __html: t.raw('notifications.viber.step3') }} />
               </ol>
 
               <div className="flex gap-2 min-w-0">
@@ -859,7 +1057,6 @@ export function SettingsTabs({ business: initial, services: initServices, employ
                 </div>
               )}
             </div>
-            )}
 
             <hr className="border-gray-100" />
 
@@ -867,30 +1064,55 @@ export function SettingsTabs({ business: initial, services: initServices, employ
             <div>
               <div className="flex items-center gap-2 mb-1">
                 <span className="text-sm font-medium text-gray-900">{t('notifications.whatsapp.label')}</span>
-                {whatsappConnected
+                {biz.meta_whatsapp_phone_number_id && biz.meta_whatsapp_access_token
                   ? <Badge variant="success"><CheckCircle2 className="w-3 h-3 mr-1" />{t('notifications.whatsapp.connected')}</Badge>
                   : <Badge variant="secondary">{t('notifications.whatsapp.notSet')}</Badge>}
               </div>
-              {whatsappConnected && (
-                <p className="text-xs text-amber-600 bg-amber-50 border border-amber-200 rounded-lg px-3 py-2 mb-3">
-                  Configured via server environment variables (<code className="font-mono">META_WHATSAPP_PHONE_NUMBER_ID</code> / <code className="font-mono">META_WHATSAPP_ACCESS_TOKEN</code>). This is a server-level setting shared across all businesses on this installation.
-                </p>
-              )}
               <p className="text-xs text-gray-500 mb-3">{t('notifications.whatsapp.description')}</p>
-              <ol className="text-xs text-gray-500 space-y-1 list-decimal list-inside">
-                <li>Go to <a href="https://developers.facebook.com" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">developers.facebook.com</a> → create a Meta App → add the <strong>WhatsApp</strong> product</li>
-                <li>In <strong>WhatsApp → API Setup</strong> copy the <em>Phone Number ID</em> and a <strong>permanent access token</strong> (create via System User in Meta Business Manager — recommended) or a temporary token (expires in 24h)</li>
-                <li>Add to your <code className="bg-gray-100 px-1 rounded">.env</code>:<br />
-                  <code className="bg-gray-100 px-1 rounded block mt-1 whitespace-nowrap">META_WHATSAPP_PHONE_NUMBER_ID=...</code>
-                  <code className="bg-gray-100 px-1 rounded block mt-0.5 whitespace-nowrap">META_WHATSAPP_ACCESS_TOKEN=...</code>
-                </li>
-                <li>Restart the server — the status badge above will turn green</li>
-                <li>Add a client&apos;s WhatsApp number in CRM → client page — they will receive notifications automatically</li>
+              <ol className="text-xs text-gray-500 space-y-1 mb-3 list-decimal list-inside">
+                <li dangerouslySetInnerHTML={{ __html: t.raw('notifications.whatsapp.step1') }} />
+                <li dangerouslySetInnerHTML={{ __html: t.raw('notifications.whatsapp.step2') }} />
+                <li dangerouslySetInnerHTML={{ __html: (t.raw('notifications.whatsapp.step3') as string).replace('{saveButton}', `<strong>${t('notifications.whatsapp.saveButton')}</strong>`) }} />
+                <li>{t('notifications.whatsapp.step4')}</li>
               </ol>
+              <div className="space-y-2 mb-2">
+                <input
+                  type="text"
+                  autoComplete="off"
+                  value={biz.meta_whatsapp_phone_number_id ?? ''}
+                  onChange={(e) => setBiz((b) => ({ ...b, meta_whatsapp_phone_number_id: e.target.value || null }))}
+                  placeholder={t('notifications.whatsapp.phoneNumberIdPlaceholder')}
+                  className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+                <input
+                  type="password"
+                  autoComplete="new-password"
+                  value={biz.meta_whatsapp_access_token ?? ''}
+                  onChange={(e) => setBiz((b) => ({ ...b, meta_whatsapp_access_token: e.target.value || null }))}
+                  placeholder={t('notifications.whatsapp.accessTokenPlaceholder')}
+                  className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+              </div>
+              <Button
+                onClick={connectWhatsApp}
+                disabled={waStatus === 'loading' || !biz.meta_whatsapp_phone_number_id || !biz.meta_whatsapp_access_token}
+                variant="outline"
+              >
+                {waStatus === 'loading' ? <Loader2 className="w-4 h-4 animate-spin" /> : t('notifications.whatsapp.saveButton')}
+              </Button>
+              {waStatus === 'ok' && (
+                <div className="mt-2 flex items-start gap-2 text-xs text-green-700 bg-green-50 border border-green-200 rounded-lg px-3 py-2">
+                  <CheckCircle2 className="w-3.5 h-3.5 mt-0.5 shrink-0" />{waMsg}
+                </div>
+              )}
+              {waStatus === 'error' && (
+                <div className="mt-2 flex items-start gap-2 text-xs text-red-700 bg-red-50 border border-red-200 rounded-lg px-3 py-2">
+                  <AlertCircle className="w-3.5 h-3.5 mt-0.5 shrink-0" />{waMsg}
+                </div>
+              )}
             </div>
 
-            {/* WhatsApp номер владельца для алертов */}
-            {whatsappConnected && (
+            {!!(biz.meta_whatsapp_phone_number_id && biz.meta_whatsapp_access_token) && (
               <div>
                 <label className="text-xs font-medium text-gray-500">{t('notifications.ownerWhatsapp.label')}</label>
                 <p className="text-xs text-gray-400 mb-2">{t('notifications.ownerWhatsapp.description')}</p>
@@ -903,6 +1125,44 @@ export function SettingsTabs({ business: initial, services: initServices, employ
                 />
               </div>
             )}
+
+            <hr className="border-gray-100" />
+
+            {/* WhatsApp Templates */}
+            <div>
+              <h3 className="text-sm font-medium text-gray-900 mb-1">{t('notifications.waTemplates.heading')}</h3>
+              <p className="text-xs text-gray-500 mb-3">{t('notifications.waTemplates.description')}</p>
+              <div className="space-y-3">
+                {([
+                  { field: 'wa_template_confirmation' as const, label: t('notifications.waTemplates.confirmation'), placeholder: t('notifications.waTemplates.confirmationPlaceholder') },
+                  { field: 'wa_template_reminder' as const, label: t('notifications.waTemplates.reminder'), placeholder: t('notifications.waTemplates.reminderPlaceholder') },
+                  { field: 'wa_template_thankyou' as const, label: t('notifications.waTemplates.thankyou'), placeholder: t('notifications.waTemplates.thankyouPlaceholder') },
+                  { field: 'wa_template_reactivation' as const, label: t('notifications.waTemplates.reengagement'), placeholder: t('notifications.waTemplates.reengagementPlaceholder') },
+                  { field: 'wa_template_birthday' as const, label: t('notifications.waTemplates.birthday'), placeholder: t('notifications.waTemplates.birthdayPlaceholder') },
+                ]).map(({ field, label, placeholder }) => (
+                  <div key={field}>
+                    <label className="text-xs font-medium text-gray-500">{label}</label>
+                    <input
+                      type="text"
+                      value={(biz[field] as string) ?? ''}
+                      onChange={(e) => setBiz((b) => ({ ...b, [field]: e.target.value || null }))}
+                      placeholder={placeholder}
+                      className="w-full mt-1 border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    />
+                  </div>
+                ))}
+                <div>
+                  <label className="text-xs font-medium text-gray-500">{t('notifications.waTemplates.language')}</label>
+                  <input
+                    type="text"
+                    value={biz.wa_template_language ?? ''}
+                    onChange={(e) => setBiz((b) => ({ ...b, wa_template_language: e.target.value || null }))}
+                    placeholder="en"
+                    className="w-full mt-1 border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  />
+                </div>
+              </div>
+            </div>
 
             <Button onClick={saveBusiness} disabled={saving}>
               {saving ? t('notifications.saving') : saved ? t('notifications.saved') : t('notifications.save')}
@@ -921,47 +1181,355 @@ export function SettingsTabs({ business: initial, services: initServices, employ
         </div>
       )}
 
-      {/* Billing */}
+      {/* Billing — self-hosted info */}
       {tab === 'billing' && (
         <div className="space-y-4">
           <div className="bg-white rounded-xl border border-gray-200 p-6">
-            <div className="flex items-center gap-3 mb-4">
-              <div className="p-2 bg-green-50 rounded-lg">
-                <Zap className="w-5 h-5 text-green-600" />
-              </div>
-              <div>
-                <div className="text-base font-semibold text-gray-900">Self-hosted Plan</div>
-                <div className="text-sm text-gray-500">You own this installation. No limits, no subscriptions, free forever.</div>
-              </div>
-              <Badge variant="success" className="ml-auto">Active</Badge>
-            </div>
-            <div className="space-y-2 mt-2">
-              {[
-                'Unlimited employees',
-                'Unlimited clients',
-                'All features included',
-              ].map((item) => (
-                <div key={item} className="flex items-center gap-2 text-sm text-gray-700">
-                  <Check className="w-4 h-4 text-green-500 shrink-0" />
-                  {item}
-                </div>
-              ))}
+            <h2 className="font-semibold text-gray-900 mb-2">{t('tabs.billing')}</h2>
+            <p className="text-sm text-gray-500 mb-4">
+              You are running the self-hosted version of Pronto. All features are available without subscription.
+            </p>
+            <div className="bg-green-50 border border-green-200 rounded-xl p-4">
+              <p className="text-sm font-medium text-green-800 mb-1">Self-hosted — All features unlocked</p>
+              <p className="text-sm text-green-700">
+                Analytics, Loyalty, Custom domain, and all other Pro features are available to you at no charge.
+                Manage your instance via Docker Compose.
+              </p>
             </div>
           </div>
+        </div>
+      )}
 
-          <div className="bg-gray-50 rounded-xl border border-gray-200 p-6">
-            <div className="font-semibold text-gray-900 mb-1">Prefer a managed version?</div>
-            <p className="text-sm text-gray-500 mb-4">
-              trypronto.app handles hosting and updates for you. Plans from $19/mo.
-            </p>
-            <a
-              href="https://trypronto.app"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5 border border-gray-300 text-gray-700 text-sm font-medium px-4 py-2 rounded-lg hover:bg-white hover:border-gray-400 transition-colors"
+      {/* Domain */}
+      {tab === 'domain' && (
+        <div className="space-y-4">
+          <div className="bg-white rounded-xl border border-gray-200 p-6 space-y-5">
+            <div>
+              <h2 className="font-semibold text-gray-900">{t('domain.heading')}</h2>
+              <p className="text-sm text-gray-500 mt-1">{t('domain.description')}</p>
+            </div>
+
+            {(!domainValue || domainStatus === 'inactive') && (
+              <div className="space-y-3">
+                <div>
+                  <label className="text-xs font-medium text-gray-500">{t('domain.domainLabel')}</label>
+                  <input
+                    type="text"
+                    value={domainInput}
+                    onChange={(e) => setDomainInput(e.target.value)}
+                    placeholder={t('domain.domainPlaceholder')}
+                    className="w-full mt-1 border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  />
+                </div>
+                {domainError && (
+                  <p className="text-xs text-red-600">{domainError}</p>
+                )}
+                <button
+                  onClick={connectDomain}
+                  disabled={domainSaving || !domainInput.trim()}
+                  className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 disabled:opacity-50 transition-colors"
+                >
+                  {domainSaving ? <Loader2 className="w-4 h-4 animate-spin" /> : null}
+                  {t('domain.connectButton')}
+                </button>
+                <div className="bg-gray-50 border border-gray-200 rounded-lg p-4 text-xs text-gray-600 space-y-1">
+                  <p className="font-medium text-gray-700">{t('domain.dnsAfterSave')}</p>
+                  <p><span className="font-mono bg-gray-100 px-1 rounded">Type:</span> CNAME</p>
+                  <p><span className="font-mono bg-gray-100 px-1 rounded">Name:</span> {t('domain.dnsNameHint')}</p>
+                  <p><span className="font-mono bg-gray-100 px-1 rounded">Value:</span> your-server-hostname</p>
+                  <p><span className="font-mono bg-gray-100 px-1 rounded">TTL:</span> Auto</p>
+                  <p className="text-gray-500 pt-1">{t('domain.dnsSslNote')}</p>
+                </div>
+              </div>
+            )}
+
+            {domainValue && domainStatus === 'pending' && (
+              <div className="space-y-3">
+                <div className="flex items-center gap-3">
+                  <span className="text-sm font-medium text-gray-900">{domainValue}</span>
+                  <span className="inline-flex items-center px-2 py-0.5 text-xs font-medium bg-yellow-100 text-yellow-800 rounded-full">{t('domain.statusPending')}</span>
+                </div>
+                <div className="flex gap-2">
+                  <button
+                    onClick={checkDomainStatus}
+                    disabled={domainChecking}
+                    className="flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium border border-gray-300 rounded-lg bg-white text-gray-700 hover:bg-gray-50 disabled:opacity-50 transition-colors"
+                  >
+                    {domainChecking ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <RefreshCw className="w-3.5 h-3.5" />}
+                    {t('domain.checkStatus')}
+                  </button>
+                  <button
+                    onClick={removeDomain}
+                    disabled={domainSaving}
+                    className="px-3 py-1.5 text-sm font-medium border border-red-200 rounded-lg bg-white text-red-600 hover:bg-red-50 disabled:opacity-50 transition-colors"
+                  >
+                    {t('domain.removeButton')}
+                  </button>
+                </div>
+              </div>
+            )}
+
+            {domainValue && domainStatus === 'active' && (
+              <div className="space-y-3">
+                <div className="flex items-center gap-3">
+                  <span className="text-sm font-medium text-gray-900">{domainValue}</span>
+                  <span className="inline-flex items-center gap-1 px-2 py-0.5 text-xs font-medium bg-green-100 text-green-800 rounded-full">
+                    <Check className="w-3 h-3" /> {t('domain.statusActive')}
+                  </span>
+                </div>
+                <a
+                  href={`https://${domainValue}/book`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1 text-sm text-blue-600 hover:underline"
+                >
+                  {t('domain.openBookingPage')}
+                </a>
+                {!domainConfirmRemove ? (
+                  <button
+                    onClick={() => setDomainConfirmRemove(true)}
+                    className="block px-3 py-1.5 text-sm font-medium border border-red-200 rounded-lg bg-white text-red-600 hover:bg-red-50 transition-colors"
+                  >
+                    {t('domain.removeDomain')}
+                  </button>
+                ) : (
+                  <div className="flex items-center gap-2">
+                    <span className="text-sm text-gray-600">{t('domain.confirmRemove', { domain: domainValue })}</span>
+                    <button
+                      onClick={removeDomain}
+                      disabled={domainSaving}
+                      className="px-3 py-1.5 text-sm font-medium bg-red-600 text-white rounded-lg hover:bg-red-700 disabled:opacity-50 transition-colors"
+                    >
+                      {domainSaving ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : t('domain.confirmRemoveButton')}
+                    </button>
+                    <button
+                      onClick={() => setDomainConfirmRemove(false)}
+                      className="px-3 py-1.5 text-sm text-gray-500 hover:text-gray-700"
+                    >
+                      {t('domain.cancelButton')}
+                    </button>
+                  </div>
+                )}
+              </div>
+            )}
+
+            {domainValue && (domainStatus === 'failed' || domainStatus === 'blocked') && (
+              <div className="space-y-3">
+                <div className="flex items-center gap-3">
+                  <span className="text-sm font-medium text-gray-900">{domainValue}</span>
+                  <span className="inline-flex items-center px-2 py-0.5 text-xs font-medium bg-red-100 text-red-800 rounded-full">{t('domain.statusFailed')}</span>
+                </div>
+                <p className="text-sm text-gray-500">{t('domain.dnsError')}</p>
+                <div className="flex gap-2">
+                  <button
+                    onClick={() => { setDomainInput(domainValue); setDomainValue(''); setDomainStatus('inactive') }}
+                    className="px-3 py-1.5 text-sm font-medium border border-gray-300 rounded-lg bg-white text-gray-700 hover:bg-gray-50 transition-colors"
+                  >
+                    {t('domain.retryButton')}
+                  </button>
+                  <button
+                    onClick={removeDomain}
+                    disabled={domainSaving}
+                    className="px-3 py-1.5 text-sm font-medium border border-red-200 rounded-lg bg-white text-red-600 hover:bg-red-50 disabled:opacity-50 transition-colors"
+                  >
+                    {t('domain.removeButton')}
+                  </button>
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+
+      {/* Loyalty */}
+      {tab === 'loyalty' && (
+        <div className="space-y-4">
+          <div className="bg-white rounded-xl border border-gray-200 p-6 space-y-5">
+            <div>
+              <h2 className="font-semibold text-gray-900">{t('loyalty.heading')}</h2>
+              <p className="text-sm text-gray-500 mt-1">{t('loyalty.descriptionActive')}</p>
+            </div>
+
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm font-medium text-gray-900">{t('loyalty.enableLabel')}</p>
+                <p className="text-xs text-gray-500 mt-0.5">{t('loyalty.enableHint')}</p>
+              </div>
+              <button
+                onClick={() => setLoyaltyEnabled((v) => !v)}
+                className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${loyaltyEnabled ? 'bg-blue-600' : 'bg-gray-200'}`}
+              >
+                <span className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${loyaltyEnabled ? 'translate-x-6' : 'translate-x-1'}`} />
+              </button>
+            </div>
+
+            {loyaltyEnabled && (
+              <div className="space-y-4 pt-2 border-t border-gray-100">
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                  <div>
+                    <label className="text-xs font-medium text-gray-500">{t('loyalty.pointsPerDollar')}</label>
+                    <input
+                      type="number"
+                      min={1}
+                      max={100}
+                      value={loyaltyPPD}
+                      onChange={(e) => setLoyaltyPPD(Math.max(1, Math.min(100, Number(e.target.value))))}
+                      className="w-full mt-1 border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    />
+                  </div>
+                  <div>
+                    <label className="text-xs font-medium text-gray-500">{t('loyalty.minRedeem')}</label>
+                    <input
+                      type="number"
+                      min={10}
+                      value={loyaltyMinRedeem}
+                      onChange={(e) => setLoyaltyMinRedeem(Math.max(10, Number(e.target.value)))}
+                      className="w-full mt-1 border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    />
+                  </div>
+                  <div>
+                    <label className="text-xs font-medium text-gray-500">{t('loyalty.redeemValue')}</label>
+                    <input
+                      type="number"
+                      min={1}
+                      step={0.5}
+                      value={loyaltyRedeemVal}
+                      onChange={(e) => setLoyaltyRedeemVal(Math.max(1, Number(e.target.value)))}
+                      className="w-full mt-1 border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    />
+                  </div>
+                </div>
+                <div className="bg-blue-50 border border-blue-100 rounded-lg px-4 py-3 text-sm text-blue-800">
+                  {t('loyalty.summary', { points: loyaltyPPD, min: loyaltyMinRedeem, value: loyaltyRedeemVal })}
+                </div>
+              </div>
+            )}
+
+            <button
+              onClick={async () => {
+                setLoyaltySaving(true)
+                setLoyaltySaved(false)
+                await fetch('/api/loyalty/settings', {
+                  method: 'PATCH',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify({
+                    loyalty_enabled: loyaltyEnabled,
+                    loyalty_points_per_dollar: loyaltyPPD,
+                    loyalty_min_redeem_points: loyaltyMinRedeem,
+                    loyalty_redeem_value: loyaltyRedeemVal,
+                  }),
+                })
+                setLoyaltySaving(false)
+                setLoyaltySaved(true)
+                setTimeout(() => setLoyaltySaved(false), 2500)
+              }}
+              disabled={loyaltySaving}
+              className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 disabled:opacity-50 transition-colors"
             >
-              Learn more →
-            </a>
+              {loyaltySaving ? <Loader2 className="w-4 h-4 animate-spin" /> : loyaltySaved ? <Check className="w-4 h-4" /> : null}
+              {loyaltySaved ? t('loyalty.saved') : t('loyalty.saveButton')}
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* Modules */}
+      {tab === 'modules' && (
+        <div className="space-y-4">
+          <div className="bg-white rounded-xl border border-gray-200 p-6 space-y-5">
+            <div>
+              <h2 className="font-semibold text-gray-900">{t('modules.heading')}</h2>
+              <p className="text-sm text-gray-500 mt-1">{t('modules.description')}</p>
+            </div>
+
+            <div>
+              <p className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-2">{t('modules.presetsLabel')}</p>
+              <div className="flex flex-wrap gap-2">
+                {[
+                  { labelKey: 'modules.presets.salon' as const, modules: ['bookings','crm','pos','inventory','notifications'] },
+                  { labelKey: 'modules.presets.shop'  as const, modules: ['inventory','pos','notifications'] },
+                  { labelKey: 'modules.presets.cafe'  as const, modules: ['pos','crm','inventory','notifications'] },
+                  { labelKey: 'modules.presets.all'   as const, modules: DEFAULT_MODULES },
+                ].map((preset) => (
+                  <button
+                    key={preset.labelKey}
+                    onClick={() => setEnabledModules(preset.modules)}
+                    className="text-sm px-3 py-1.5 rounded-lg border border-gray-200 hover:border-blue-400 hover:text-blue-700 transition-colors"
+                  >
+                    {t(preset.labelKey)}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <div className="space-y-4 pt-2 border-t border-gray-100">
+              {(Object.keys(MODULES) as ModuleKey[]).map((key) => {
+                const on = enabledModules.includes(key)
+                const modLabel = t(`modules.items.${key}.label` as Parameters<typeof t>[0])
+                return (
+                  <div key={key}>
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <p className="text-sm font-medium text-gray-900">{modLabel}</p>
+                        <p className="text-xs text-gray-500 mt-0.5">{t(`modules.items.${key}.description` as Parameters<typeof t>[0])}</p>
+                      </div>
+                      <button
+                        onClick={() => {
+                          if (on) {
+                            setConfirmModule(key)
+                          } else {
+                            setEnabledModules((prev) => [...prev, key])
+                          }
+                        }}
+                        className={`relative inline-flex h-6 w-11 shrink-0 items-center rounded-full transition-colors ${on ? 'bg-blue-600' : 'bg-gray-200'}`}
+                      >
+                        <span className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${on ? 'translate-x-6' : 'translate-x-1'}`} />
+                      </button>
+                    </div>
+                    {confirmModule === key && (
+                      <div className="mt-2 rounded-lg border border-amber-200 bg-amber-50 px-4 py-3 flex items-center justify-between gap-3">
+                        <p className="text-xs text-amber-800">{t('modules.confirmOff', { label: modLabel })}</p>
+                        <div className="flex gap-2 shrink-0">
+                          <button
+                            onClick={() => setConfirmModule(null)}
+                            className="text-xs px-3 py-1.5 rounded-md border border-gray-200 bg-white text-gray-600 hover:bg-gray-50 transition-colors"
+                          >
+                            {t('modules.cancelButton')}
+                          </button>
+                          <button
+                            onClick={() => { setEnabledModules((prev) => prev.filter((m) => m !== key)); setConfirmModule(null) }}
+                            className="text-xs px-3 py-1.5 rounded-md bg-red-600 text-white hover:bg-red-700 transition-colors"
+                          >
+                            {t('modules.turnOffButton')}
+                          </button>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                )
+              })}
+            </div>
+
+            <button
+              onClick={async () => {
+                setModulesSaving(true)
+                setModulesSaved(false)
+                await fetch('/api/business/modules', {
+                  method: 'PATCH',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify({ enabled_modules: enabledModules }),
+                })
+                setModulesSaving(false)
+                setModulesSaved(true)
+                router.refresh()
+                setTimeout(() => setModulesSaved(false), 2500)
+              }}
+              disabled={modulesSaving}
+              className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 disabled:opacity-50 transition-colors"
+            >
+              {modulesSaving ? <Loader2 className="w-4 h-4 animate-spin" /> : modulesSaved ? <Check className="w-4 h-4" /> : null}
+              {modulesSaved ? t('modules.saved') : t('modules.saveButton')}
+            </button>
           </div>
         </div>
       )}
@@ -969,7 +1537,6 @@ export function SettingsTabs({ business: initial, services: initServices, employ
       {/* Account */}
       {tab === 'account' && (
         <div className="space-y-4">
-          {/* Email */}
           <div className="bg-white rounded-xl border border-gray-200 p-6">
             <h2 className="font-semibold text-gray-900 mb-4">{t('account.heading')}</h2>
             <div className="space-y-3 max-w-sm">
@@ -1014,7 +1581,6 @@ export function SettingsTabs({ business: initial, services: initServices, employ
             </div>
           </div>
 
-          {/* Change password */}
           <div className="bg-white rounded-xl border border-gray-200 p-6">
             <h3 className="font-semibold text-gray-900 mb-4">{t('account.passwordHeading')}</h3>
             <div className="space-y-3 max-w-sm">

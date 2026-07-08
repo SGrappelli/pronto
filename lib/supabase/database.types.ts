@@ -42,7 +42,21 @@ export type Database = {
           resend_api_key: string | null
           meta_whatsapp_phone_number_id: string | null
           meta_whatsapp_access_token: string | null
+          wa_template_confirmation: string | null
+          wa_template_reminder: string | null
+          wa_template_thankyou: string | null
+          wa_template_reactivation: string | null
+          wa_template_birthday: string | null
+          wa_template_language: string | null
           brand_color: string | null
+          notification_language: string | null
+          custom_domain: string | null
+          custom_domain_status: string | null
+          loyalty_enabled: boolean | null
+          loyalty_points_per_dollar: number | null
+          loyalty_min_redeem_points: number | null
+          loyalty_redeem_value: number | null
+          enabled_modules: string[] | null
           created_at: string
           updated_at: string
         }
@@ -78,7 +92,21 @@ export type Database = {
           resend_api_key?: string | null
           meta_whatsapp_phone_number_id?: string | null
           meta_whatsapp_access_token?: string | null
+          wa_template_confirmation?: string | null
+          wa_template_reminder?: string | null
+          wa_template_thankyou?: string | null
+          wa_template_reactivation?: string | null
+          wa_template_birthday?: string | null
+          wa_template_language?: string | null
           brand_color?: string | null
+          notification_language?: string | null
+          custom_domain?: string | null
+          custom_domain_status?: string | null
+          loyalty_enabled?: boolean | null
+          loyalty_points_per_dollar?: number | null
+          loyalty_min_redeem_points?: number | null
+          loyalty_redeem_value?: number | null
+          enabled_modules?: string[] | null
           created_at?: string
           updated_at?: string
         }
@@ -114,7 +142,21 @@ export type Database = {
           resend_api_key?: string | null
           meta_whatsapp_phone_number_id?: string | null
           meta_whatsapp_access_token?: string | null
+          wa_template_confirmation?: string | null
+          wa_template_reminder?: string | null
+          wa_template_thankyou?: string | null
+          wa_template_reactivation?: string | null
+          wa_template_birthday?: string | null
+          wa_template_language?: string | null
           brand_color?: string | null
+          notification_language?: string | null
+          custom_domain?: string | null
+          custom_domain_status?: string | null
+          loyalty_enabled?: boolean | null
+          loyalty_points_per_dollar?: number | null
+          loyalty_min_redeem_points?: number | null
+          loyalty_redeem_value?: number | null
+          enabled_modules?: string[] | null
           created_at?: string
           updated_at?: string
         }
@@ -439,6 +481,9 @@ export type Database = {
           business_id: string
           name: string
           sku: string | null
+          barcode: string | null
+          description: string | null
+          photo_url: string | null
           category: string | null
           unit: string
           quantity: number
@@ -453,6 +498,9 @@ export type Database = {
           business_id: string
           name: string
           sku?: string | null
+          barcode?: string | null
+          description?: string | null
+          photo_url?: string | null
           category?: string | null
           unit?: string
           quantity?: number
@@ -467,6 +515,9 @@ export type Database = {
           business_id?: string
           name?: string
           sku?: string | null
+          barcode?: string | null
+          description?: string | null
+          photo_url?: string | null
           category?: string | null
           unit?: string
           quantity?: number

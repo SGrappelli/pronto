@@ -22,11 +22,12 @@ interface Item {
 interface Props {
   items: Item[]
   currency: string
+  initialFilter?: string
 }
 
-export function InventoryList({ items, currency }: Props) {
+export function InventoryList({ items, currency, initialFilter }: Props) {
   const t = useTranslations('inventory')
-  const [query, setQuery] = useState('')
+  const [query, setQuery] = useState(initialFilter ?? '')
 
   const filtered = query.trim()
     ? items.filter((i) => {

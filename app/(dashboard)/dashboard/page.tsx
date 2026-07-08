@@ -24,7 +24,7 @@ export default async function DashboardPage() {
 
   const { data: business } = await supabase
     .from('businesses')
-    .select('id, name, currency, timezone, onboarding_completed')
+    .select('id, name, currency, timezone, onboarding_completed, enabled_modules')
     .eq('owner_id', user!.id)
     .maybeSingle()
 
@@ -111,7 +111,7 @@ export default async function DashboardPage() {
     <>
       <Header title={t('title')} />
       <main className="p-6 space-y-6">
-        <OnboardingChecklist businessId={business.id} />
+        <OnboardingChecklist businessId={business.id} enabledModules={business.enabled_modules ?? ['bookings', 'pos', 'crm', 'inventory', 'notifications']} />
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
           {/* Revenue card — custom render for sparkline */}
           <Link href="/pos/history">

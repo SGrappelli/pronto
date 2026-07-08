@@ -4,9 +4,15 @@ import { Button } from '@/components/ui/button'
 import { Plus, AlertTriangle } from 'lucide-react'
 import Link from 'next/link'
 import { getTranslations } from 'next-intl/server'
-import { InventoryList } from './inventory-list'
+import { InventoryTabs } from './inventory-tabs'
+import { InventoryImportButton } from '@/components/inventory/inventory-import-button'
+import { InventoryExportButton } from '@/components/inventory/inventory-export-button'
 
-export default async function InventoryPage() {
+export default async function InventoryPage({
+  searchParams,
+}: {
+  searchParams: { filter?: string; tab?: string }
+}) {
   const supabase = createClient()
   const t = await getTranslations('inventory')
   const { data: { user } } = await supabase.auth.getUser()
@@ -17,7 +23,7 @@ export default async function InventoryPage() {
   if (!business) return null
 
   const { data: items } = await supabase.from('inventory_items')
-    .select('id, name, sku, category, unit, quantity, low_stock_threshold, cost_price, sell_price')
+    .select('id, name, sku, barcode, category, unit, quantity, low_stock_threshold, cost_price, sell_price')
     .eq('business_id', business.id).order('name')
 
   const lowStockCount = items?.filter((i) => i.quantity <= i.low_stock_threshold).length ?? 0
@@ -27,9 +33,13 @@ export default async function InventoryPage() {
       <Header
         title={t('title')}
         actions={
-          <Link href="/inventory/new">
-            <Button size="sm"><Plus className="w-4 h-4 mr-1" /> {t('addItem')}</Button>
-          </Link>
+          <div className="flex items-center gap-2">
+            <InventoryImportButton />
+            <InventoryExportButton />
+            <Link href="/inventory/new">
+              <Button size="sm"><Plus className="w-4 h-4 mr-1" /> {t('addItem')}</Button>
+            </Link>
+          </div>
         }
       />
       <main className="p-6">
@@ -42,7 +52,12 @@ export default async function InventoryPage() {
           </div>
         )}
 
-        <InventoryList items={items ?? []} currency={business.currency} />
+        <InventoryTabs
+          items={items ?? []}
+          currency={business.currency}
+          initialFilter={searchParams.filter}
+          initialTab={searchParams.tab}
+        />
       </main>
     </>
   )

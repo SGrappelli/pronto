@@ -3,31 +3,46 @@
 import { useEffect, useState } from 'react'
 import { createClient } from '@/lib/supabase/client'
 import Link from 'next/link'
+import { useTranslations } from 'next-intl'
 
 const DISMISSED_KEY = 'pronto_onboarding_dismissed'
 const COMPLETE_KEY = 'pronto_onboarding_complete'
 
 interface Props {
   businessId: string
+  enabledModules: string[]
 }
 
 interface Steps {
   profileCreated: boolean
+  modulesConfigured: boolean
   hasService: boolean
   hasClient: boolean
   hasBooking: boolean
   hasNotification: boolean
 }
 
-export function OnboardingChecklist({ businessId }: Props) {
+interface RetailSteps {
+  profileCreated: boolean
+  hasProduct: boolean
+}
+
+export function OnboardingChecklist({ businessId, enabledModules }: Props) {
+  const t = useTranslations('onboarding.checklist')
+  const isRetail = !enabledModules.includes('bookings')
   const [visible, setVisible] = useState(false)
   const [allDone, setAllDone] = useState(false)
   const [steps, setSteps] = useState<Steps>({
     profileCreated: true,
+    modulesConfigured: true,
     hasService: false,
     hasClient: false,
     hasBooking: false,
     hasNotification: false,
+  })
+  const [retailSteps, setRetailSteps] = useState<RetailSteps>({
+    profileCreated: true,
+    hasProduct: false,
   })
 
   useEffect(() => {
@@ -39,6 +54,33 @@ export function OnboardingChecklist({ businessId }: Props) {
     }
 
     const supabase = createClient()
+
+    if (isRetail) {
+      supabase
+        .from('inventory_items')
+        .select('id', { count: 'exact', head: true })
+        .eq('business_id', businessId)
+        .then(({ count }) => {
+          const newSteps: RetailSteps = {
+            profileCreated: true,
+            hasProduct: (count ?? 0) > 0,
+          }
+          setRetailSteps(newSteps)
+
+          const done = Object.values(newSteps).filter(Boolean).length
+          if (done === 2) {
+            setAllDone(true)
+            setVisible(true)
+            setTimeout(() => {
+              localStorage.setItem(COMPLETE_KEY, 'true')
+              setVisible(false)
+            }, 2000)
+          } else {
+            setVisible(true)
+          }
+        })
+      return
+    }
 
     Promise.all([
       supabase.from('services').select('id', { count: 'exact', head: true }).eq('business_id', businessId),
@@ -53,6 +95,7 @@ export function OnboardingChecklist({ businessId }: Props) {
       const b = bizResult.data
       const newSteps: Steps = {
         profileCreated: true,
+        modulesConfigured: true,
         hasService: (svc.count ?? 0) > 0,
         hasClient: (cli.count ?? 0) > 0,
         hasBooking: (appt.count ?? 0) > 0,
@@ -66,7 +109,7 @@ export function OnboardingChecklist({ businessId }: Props) {
       setSteps(newSteps)
 
       const count = Object.values(newSteps).filter(Boolean).length
-      if (count === 5) {
+      if (count === 6) {
         setAllDone(true)
         setVisible(true)
         setTimeout(() => {
@@ -77,7 +120,7 @@ export function OnboardingChecklist({ businessId }: Props) {
         setVisible(true)
       }
     })
-  }, [businessId])
+  }, [businessId, isRetail])
 
   function dismiss() {
     localStorage.setItem(DISMISSED_KEY, 'true')
@@ -86,51 +129,78 @@ export function OnboardingChecklist({ businessId }: Props) {
 
   if (!visible) return null
 
-  const completeCount = Object.values(steps).filter(Boolean).length
-
-  const items: Array<{
+  type ChecklistItem = {
     key: string
     label: string
     done: boolean
     description: string | null
     action: { label: string; href: string } | null
-  }> = [
-    {
-      key: 'profile',
-      label: 'Business profile created',
-      done: steps.profileCreated,
-      description: null,
-      action: null,
-    },
-    {
-      key: 'service',
-      label: 'Add your first service',
-      done: steps.hasService,
-      description: null,
-      action: { label: 'Add service', href: '/settings?tab=services' },
-    },
-    {
-      key: 'client',
-      label: 'Add your first client',
-      done: steps.hasClient,
-      description: null,
-      action: { label: 'Add client', href: '/crm/new' },
-    },
-    {
-      key: 'booking',
-      label: 'Create your first booking',
-      done: steps.hasBooking,
-      description: null,
-      action: { label: 'Open calendar', href: '/booking' },
-    },
-    {
-      key: 'notifications',
-      label: 'Connect notifications',
-      done: steps.hasNotification,
-      description: 'Send automatic reminders to clients',
-      action: { label: 'Connect', href: '/settings?tab=notifications' },
-    },
-  ]
+  }
+
+  const items: ChecklistItem[] = isRetail
+    ? [
+        {
+          key: 'profile',
+          label: t('step1'),
+          done: retailSteps.profileCreated,
+          description: null,
+          action: null,
+        },
+        {
+          key: 'product',
+          label: t('stepProduct'),
+          done: retailSteps.hasProduct,
+          description: null,
+          action: { label: t('addProduct'), href: '/inventory/new' },
+        },
+      ]
+    : [
+        {
+          key: 'profile',
+          label: t('step1'),
+          done: steps.profileCreated,
+          description: null,
+          action: null,
+        },
+        {
+          key: 'modules',
+          label: t('stepModules'),
+          done: steps.modulesConfigured,
+          description: null,
+          action: { label: t('configure'), href: '/settings?tab=modules' },
+        },
+        {
+          key: 'service',
+          label: t('step2'),
+          done: steps.hasService,
+          description: null,
+          action: { label: t('addService'), href: '/settings?tab=services' },
+        },
+        {
+          key: 'client',
+          label: t('step3'),
+          done: steps.hasClient,
+          description: null,
+          action: { label: t('addClient'), href: '/crm/new' },
+        },
+        {
+          key: 'booking',
+          label: t('step4'),
+          done: steps.hasBooking,
+          description: null,
+          action: { label: t('openCalendar'), href: '/booking' },
+        },
+        {
+          key: 'notifications',
+          label: t('step5'),
+          done: steps.hasNotification,
+          description: t('step5sub'),
+          action: { label: t('connect'), href: '/settings?tab=notifications' },
+        },
+      ]
+
+  const completeCount = items.filter((i) => i.done).length
+  const totalCount = items.length
 
   return (
     <div className="bg-white border border-gray-200 rounded-xl p-5 relative">
@@ -144,17 +214,17 @@ export function OnboardingChecklist({ businessId }: Props) {
 
       {allDone ? (
         <div className="py-2 text-center">
-          <p className="text-lg font-semibold text-gray-900">{"You're all set! 🎉"}</p>
+          <p className="text-lg font-semibold text-gray-900">{t('allDone')}</p>
         </div>
       ) : (
         <>
-          <h3 className="font-semibold text-gray-900 text-base pr-8">Get started with Pronto</h3>
-          <p className="text-sm text-gray-500 mt-0.5">{completeCount} of 5 complete</p>
+          <h3 className="font-semibold text-gray-900 text-base pr-8">{t('title')}</h3>
+          <p className="text-sm text-gray-500 mt-0.5">{t('progress', { done: completeCount, total: totalCount })}</p>
 
           <div className="mt-3 h-1.5 bg-gray-100 rounded-full overflow-hidden">
             <div
               className="h-full rounded-full transition-all duration-500"
-              style={{ width: `${(completeCount / 5) * 100}%`, background: '#16a34a' }}
+              style={{ width: `${(completeCount / totalCount) * 100}%`, background: '#16a34a' }}
             />
           </div>
 
