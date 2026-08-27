@@ -90,8 +90,12 @@ export async function proxy(request: NextRequest) {
   if (!request.cookies.get('dashboard_locale')?.value) {
     const acceptLang = request.headers.get('accept-language') ?? ''
     const lang = acceptLang.toLowerCase()
-    const detected = lang.startsWith('pt') ? 'pt' : lang.startsWith('es') ? 'es' : lang.startsWith('it') ? 'it' : null
+    const detected = lang.startsWith('pt') ? 'pt' : lang.startsWith('es') ? 'es' : lang.startsWith('it') ? 'it' : lang.startsWith('nl') ? 'nl' : null
     if (detected) {
+      requestHeaders.set('x-dashboard-locale', detected)
+      const currentCookies = supabaseResponse.cookies.getAll()
+      supabaseResponse = NextResponse.next({ request: { headers: requestHeaders } })
+      currentCookies.forEach((c) => supabaseResponse.cookies.set(c))
       supabaseResponse.cookies.set('dashboard_locale', detected, {
         path: '/',
         maxAge: 60 * 60 * 24 * 365,

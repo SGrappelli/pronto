@@ -35,71 +35,85 @@ export function Sidebar({ businessName }: SidebarProps) {
     router.refresh()
   }
 
-  const navLinks = (
-    <>
-      <nav className="flex-1 p-3 space-y-0.5 overflow-y-auto">
-        {nav.map(({ href, label, icon: Icon }) => (
-          <Link key={href} href={href} onClick={() => setOpen(false)} className={cn(
-            'flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors',
-            pathname === href || pathname.startsWith(href + '/')
-              ? 'text-[#4ade80]'
-              : 'text-white/[0.55] hover:text-white/80'
-          )}
-          style={
-            pathname === href || pathname.startsWith(href + '/')
-              ? { backgroundColor: 'rgba(22,163,74,0.15)' }
-              : undefined
-          }
-          onMouseEnter={(e) => {
-            if (!(pathname === href || pathname.startsWith(href + '/')))
-              (e.currentTarget as HTMLElement).style.backgroundColor = 'rgba(255,255,255,0.08)'
-          }}
-          onMouseLeave={(e) => {
-            if (!(pathname === href || pathname.startsWith(href + '/')))
-              (e.currentTarget as HTMLElement).style.backgroundColor = ''
-          }}
+  function renderNavLinks() {
+    return (
+      <>
+        <nav className="flex-1 p-3 space-y-0.5 overflow-y-auto">
+          {nav.map(({ href, label, icon: Icon }) => (
+            <Link
+              key={href}
+              href={href}
+              onClick={() => setOpen(false)}
+              className={cn(
+                'flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors',
+                pathname === href || pathname.startsWith(href + '/')
+                  ? 'text-[#4ade80]'
+                  : 'text-white/[0.55] hover:text-white/80'
+              )}
+              style={
+                pathname === href || pathname.startsWith(href + '/')
+                  ? { backgroundColor: 'rgba(22,163,74,0.15)' }
+                  : undefined
+              }
+              onMouseEnter={(e) => {
+                if (!(pathname === href || pathname.startsWith(href + '/')))
+                  (e.currentTarget as HTMLElement).style.backgroundColor = 'rgba(255,255,255,0.08)'
+              }}
+              onMouseLeave={(e) => {
+                if (!(pathname === href || pathname.startsWith(href + '/')))
+                  (e.currentTarget as HTMLElement).style.backgroundColor = ''
+              }}
+            >
+              <Icon className="w-4 h-4 shrink-0" />
+              {label}
+            </Link>
+          ))}
+        </nav>
+        <div className="p-3 border-t border-white/10 space-y-0.5">
+          <LangSwitcher />
+          <Link
+            href="/settings"
+            onClick={() => setOpen(false)}
+            className={cn(
+              'flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors',
+              pathname.startsWith('/settings')
+                ? 'text-[#4ade80]'
+                : 'text-white/[0.55] hover:text-white/80'
+            )}
+            style={
+              pathname.startsWith('/settings')
+                ? { backgroundColor: 'rgba(22,163,74,0.15)' }
+                : undefined
+            }
+            onMouseEnter={(e) => {
+              if (!pathname.startsWith('/settings'))
+                (e.currentTarget as HTMLElement).style.backgroundColor = 'rgba(255,255,255,0.08)'
+            }}
+            onMouseLeave={(e) => {
+              if (!pathname.startsWith('/settings'))
+                (e.currentTarget as HTMLElement).style.backgroundColor = ''
+            }}
           >
-            <Icon className="w-4 h-4 shrink-0" />
-            {label}
+            <Settings className="w-4 h-4 shrink-0" />
+            {t('settings')}
           </Link>
-        ))}
-      </nav>
-      <div className="p-3 border-t border-white/10 space-y-0.5">
-        <LangSwitcher />
-        <Link href="/settings" onClick={() => setOpen(false)} className={cn(
-          'flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors',
-          pathname.startsWith('/settings')
-            ? 'text-[#4ade80]'
-            : 'text-white/[0.55] hover:text-white/80'
-        )}
-        style={
-          pathname.startsWith('/settings')
-            ? { backgroundColor: 'rgba(22,163,74,0.15)' }
-            : undefined
-        }
-        onMouseEnter={(e) => {
-          if (!pathname.startsWith('/settings'))
-            (e.currentTarget as HTMLElement).style.backgroundColor = 'rgba(255,255,255,0.08)'
-        }}
-        onMouseLeave={(e) => {
-          if (!pathname.startsWith('/settings'))
-            (e.currentTarget as HTMLElement).style.backgroundColor = ''
-        }}
-        >
-          <Settings className="w-4 h-4 shrink-0" />
-          {t('settings')}
-        </Link>
-        <button onClick={handleLogout}
-          className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-white/[0.55] hover:text-white/80 transition-colors"
-          onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.backgroundColor = 'rgba(255,255,255,0.08)' }}
-          onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.backgroundColor = '' }}
-        >
-          <LogOut className="w-4 h-4 shrink-0" />
-          {t('signOut')}
-        </button>
-      </div>
-    </>
-  )
+          <button
+            onClick={handleLogout}
+            className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-white/[0.55] hover:text-white/80 transition-colors"
+            onMouseEnter={(e) => {
+              ;(e.currentTarget as HTMLElement).style.backgroundColor = 'rgba(255,255,255,0.08)'
+            }}
+            onMouseLeave={(e) => {
+              ;(e.currentTarget as HTMLElement).style.backgroundColor = ''
+            }}
+          >
+            <LogOut className="w-4 h-4 shrink-0" />
+            {t('signOut')}
+          </button>
+        </div>
+      </>
+    )
+  }
 
   return (
     <>
@@ -132,7 +146,7 @@ export function Sidebar({ businessName }: SidebarProps) {
           <div className="font-bold text-lg" style={{ color: '#fff' }}>Pronto<span style={{ color: '#16a34a' }}>.</span></div>
           <div className="text-xs text-white/40 truncate mt-0.5">{businessName}</div>
         </div>
-        {navLinks}
+        {renderNavLinks()}
       </aside>
 
       {/* Mobile drawer */}
@@ -156,7 +170,7 @@ export function Sidebar({ businessName }: SidebarProps) {
             <X className="w-5 h-5" />
           </button>
         </div>
-        {navLinks}
+        {renderNavLinks()}
       </aside>
     </>
   )

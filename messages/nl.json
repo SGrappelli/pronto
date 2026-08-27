@@ -1,0 +1,1218 @@
+{
+  "meta": {
+    "title": "Pronto — Bedrijfsbeheer voor MKB in de dienstensector",
+    "description": "Zelf-gehoste kassa (POS), CRM, voorraadbeheer & omnichannel notificaties. Jouw data, jouw server. Geen commissie. Installatie in één commando."
+  },
+  "brand": {
+    "name": "Pronto",
+    "tagline": "Bedrijfsbeheer · Geen commissie"
+  },
+  "nav": {
+    "pricing": "Prijzen",
+    "github": "GitHub",
+    "signIn": "Inloggen",
+    "startFree": "Gratis starten"
+  },
+  "landing": {
+    "badge": "Open source · MIT-licentie · Docker in één commando",
+    "headline": "Bedrijfsbeheer voor dienstverlenende bedrijven",
+    "subheadline": "Kassa · CRM · Voorraad · Boekingen · Omnichannel notificaties.",
+    "pitch": "Jouw data, jouw server. Geen commissie.",
+    "ctaPrimary": "Gratis aan de slag",
+    "ctaGithub": "Bekijk op GitHub",
+    "featuresHeading": "Alles wat je nodig hebt, niets overbodigs",
+    "features": {
+      "pos": "Kassa / Afrekenen — verkoop afronden in 3 klikken",
+      "crm": "CRM — volledige klantgeschiedenis in 1 seconde",
+      "inventory": "Voorraad met meldingen bij lage voorraad",
+      "booking": "Agenda + online boeken zonder verplichte registratie",
+      "notifications": "Telegram- & Viber-meldingen (gratis)",
+      "hosting": "Multi-tenant SaaS of zelf-gehost via Docker"
+    },
+    "pricingHeading": "Eenvoudige, transparante prijzen",
+    "pricingSubheading": "Of host gratis zelf —",
+    "pricingSubheadingLink": "kloon op GitHub",
+    "mostPopular": "Meest gekozen",
+    "footer": "Pronto © 2026 · MIT-licentie",
+    "plans": {
+      "free": {
+        "name": "Gratis",
+        "price": "€0",
+        "limit": "1 medewerker · 100 klanten",
+        "cta": "Aan de slag"
+      },
+      "starter": {
+        "name": "Starter",
+        "price": "€19/mnd",
+        "limit": "3 medewerkers · 1.000 klanten",
+        "cta": "Aan de slag"
+      },
+      "pro": {
+        "name": "Pro",
+        "price": "€39/mnd",
+        "limit": "15 medewerkers · onbeperkt",
+        "cta": "Aan de slag"
+      },
+      "agency": {
+        "name": "Agency",
+        "price": "€79/mnd",
+        "limit": "Meerdere locaties · white-label",
+        "cta": "Neem contact op"
+      }
+    }
+  },
+  "auth": {
+    "login": {
+      "heading": "Inloggen op je account",
+      "googleButton": "Doorgaan met Google",
+      "divider": "of",
+      "emailLabel": "E-mailadres",
+      "emailPlaceholder": "jouw@voorbeeld.nl",
+      "passwordLabel": "Wachtwoord",
+      "passwordPlaceholder": "••••••••",
+      "submitButton": "Inloggen",
+      "noAccount": "Nog geen account?",
+      "createAccount": "Maak gratis een account aan",
+      "forgotPassword": "Wachtwoord vergeten?",
+      "errorInvalid": "Ongeldig e-mailadres of wachtwoord",
+      "errorGoogle": "Inloggen met Google mislukt"
+    },
+    "register": {
+      "heading": "Maak een account aan",
+      "subheading": "Altijd gratis abonnement · Geen creditcard nodig",
+      "businessNameLabel": "Bedrijfsnaam",
+      "businessNamePlaceholder": "Kapsalon Maya",
+      "emailLabel": "E-mailadres",
+      "emailPlaceholder": "jouw@voorbeeld.nl",
+      "passwordLabel": "Wachtwoord",
+      "passwordPlaceholder": "Min. 8 tekens",
+      "submitButton": "Gratis account aanmaken",
+      "alreadyHaveAccount": "Heb je al een account?",
+      "signIn": "Inloggen",
+      "errorNoName": "Bedrijfsnaam is verplicht",
+      "errorCreateBusiness": "Kon bedrijf niet aanmaken. Probeer het opnieuw."
+    },
+    "checkEmail": {
+      "heading": "Controleer je e-mail",
+      "body": "We hebben je een bevestigingslink gestuurd. Klik erop om direct naar je account te gaan.",
+      "noEmail": "Niets ontvangen?",
+      "registerAgain": "Opnieuw registreren"
+    },
+    "forgotPassword": {
+      "heading": "Wachtwoord opnieuw instellen",
+      "subheading": "Voer je e-mailadres in en we sturen je een herstellink.",
+      "emailLabel": "E-mailadres",
+      "emailPlaceholder": "jouw@voorbeeld.nl",
+      "submitButton": "Herstellink versturen",
+      "sending": "Versturen...",
+      "forgotLink": "Wachtwoord vergeten?",
+      "sentHeading": "Controleer je e-mail",
+      "sentBody": "We hebben een herstellink gestuurd naar {email}. Klik erop om een nieuw wachtwoord in te stellen.",
+      "noEmail": "Geen e-mail ontvangen? Controleer je spammap of",
+      "tryAgain": "probeer opnieuw",
+      "backToLogin": "← Terug naar inloggen"
+    },
+    "resetPassword": {
+      "heading": "Nieuw wachtwoord instellen",
+      "newPasswordLabel": "Nieuw wachtwoord",
+      "newPasswordPlaceholder": "Min. 8 tekens",
+      "confirmLabel": "Wachtwoord bevestigen",
+      "confirmPlaceholder": "Herhaal nieuw wachtwoord",
+      "submitButton": "Wachtwoord bijwerken"
+    }
+  },
+  "onboarding": {
+    "logo": "Pronto",
+    "intro": "Laten we je bedrijf in 3 stappen instellen",
+    "steps": {
+      "businessType": "Bedrijfstype",
+      "firstService": "Eerste dienst",
+      "notifications": "Meldingen"
+    },
+    "businessTypes": {
+      "salon": "💇 Schoonheid / Salon",
+      "barbershop": "✂️ Kapper / Barbershop",
+      "auto_repair": "🔧 Garage / Autoreparatie",
+      "cafe": "☕ Café / Restaurant",
+      "dental": "🦷 Tandartspraktijk",
+      "fitness": "💪 Fitness / Sportschool",
+      "massage": "💆 Massage / Spa",
+      "shop": "🏪 Winkel / Kiosk",
+      "other": "🏢 Overig"
+    },
+    "step0": {
+      "heading": "Vertel ons over je bedrijf",
+      "subheading": "We stemmen de installatie op jouw behoeften af",
+      "bizNameLabel": "Bedrijfsnaam *",
+      "bizNamePlaceholder": "Kapsalon Maya",
+      "businessTypeLabel": "Type onderneming",
+      "continue": "Doorgaan",
+      "slugLabel": "Jouw Pronto URL",
+      "slugHint": "Kleine letters, cijfers en koppeltekens · 3–30 tekens",
+      "slugChecking": "Controleren…",
+      "slugAvailable": "Beschikbaar ✓",
+      "slugTaken": "Al in gebruik — kies een andere",
+      "slugInvalid": "Gebruik alleen a–z, 0–9 en koppeltekens (3–30 tekens)",
+      "slugPreview": "Jouw boekingspagina:"
+    },
+    "step1": {
+      "heading": "Voeg je eerste dienst toe",
+      "subheading": "Je kunt er later meer toevoegen via Instellingen",
+      "serviceNameLabel": "Naam van dienst *",
+      "serviceNamePlaceholder": "bijv. Knippen, Olie verversen…",
+      "priceLabel": "Prijs *",
+      "durationLabel": "Duur (min)",
+      "back": "Terug",
+      "skip": "Overslaan",
+      "continue": "Doorgaan"
+    },
+    "checklist": {
+      "title": "Aan de slag met Pronto",
+      "progress": "{done} van {total} voltooid",
+      "step1": "Bedrijfsprofiel aangemaakt",
+      "step2": "Voeg je eerste dienst toe",
+      "step3": "Voeg je eerste klant toe",
+      "step4": "Maak je eerste boeking aan",
+      "stepModules": "Kies je modules",
+      "step5": "Koppel meldingen",
+      "step5sub": "Stuur automatische herinneringen naar klanten",
+      "connect": "Koppelen",
+      "configure": "Configureren",
+      "addService": "Dienst toevoegen",
+      "addClient": "Klant toevoegen",
+      "openCalendar": "Agenda openen",
+      "stepProduct": "Voeg je eerste product toe",
+      "addProduct": "Product toevoegen",
+      "allDone": "Alles staat klaar! 🎉",
+      "upgradeTitle": "Alles is ingesteld — klaar om te upgraden?",
+      "upgradeSubtitle": "Je bent gestart met het {plan}-abonnement. Dit ontgrendel je:",
+      "upgradeCtaButton": "Doorgaan naar betaling →",
+      "upgradeLaterButton": "Misschien later, blijf op Gratis"
+    },
+    "step2": {
+      "heading": "Meldingen instellen",
+      "subheading": "E-mail werkt direct. Koppel optioneel later Telegram, Viber of WhatsApp via Instellingen → Meldingen.",
+      "emailChannel": "E-mail (Resend / SMTP)",
+      "emailChannelSub": "Boekingsbevestigingen & herinneringen",
+      "emailChannelStatus": "Automatisch actief",
+      "messengerChannel": "Telegram · Viber · WhatsApp",
+      "messengerChannelSub": "Tokens later toevoegen via Instellingen → Meldingen",
+      "messengerChannelStatus": "Optioneel",
+      "back": "Terug",
+      "settingUp": "Instellen…",
+      "submit": "Naar het dashboard →",
+      "error": "Er ging iets mis. Probeer het opnieuw."
+    }
+  },
+  "dashboard": {
+    "title": "Dashboard",
+    "stats": {
+      "revenueToday": "Omzet vandaag",
+      "appointmentsToday": "Boekingen vandaag",
+      "totalClients": "Totaal klanten",
+      "lowStock": "Lage voorraad artikelen",
+      "lowStockOk": "Alles op voorraad ✓",
+      "transactionsToday": "Verkopen vandaag",
+      "unitsSold": "stuks verkocht",
+      "totalProducts": "Totaal producten"
+    },
+    "lowStockList": {
+      "heading": "Lage voorraad",
+      "viewAll": "Alles bekijken →",
+      "allGood": "Alle artikelen zijn voldoende op voorraad ✓",
+      "threshold": "drempelwaarde",
+      "badge": "Lage voorraad"
+    },
+    "upcomingAppointments": {
+      "heading": "Aankomende boekingen",
+      "viewAll": "Alles bekijken",
+      "empty": "Geen aankomende afspraken.",
+      "addOne": "Afspraak toevoegen",
+      "walkIn": "Inloop"
+    },
+    "recentSales": {
+      "heading": "Recente verkopen",
+      "viewAll": "Transacties →",
+      "empty": "Nog geen verkopen.",
+      "makeFirst": "Eerste verkoop registreren",
+      "walkIn": "Inloop",
+      "pmCash": "Contant",
+      "pmCard": "Pin / Kaart",
+      "pmTransfer": "Overboeking",
+      "pmOnline": "Online"
+    },
+    "appointmentStatus": {
+      "pending": "in afwachting",
+      "confirmed": "bevestigd",
+      "completed": "afgerond",
+      "paid": "betaald",
+      "cancelled": "geannuleerd",
+      "no_show": "niet verschenen"
+    }
+  },
+  "pos": {
+    "title": "Kassa / Afrekenen",
+    "salesHistory": "Transacties",
+    "categoryOther": "Overig",
+    "cart": "Winkelwagen",
+    "clientLabel": "Klant",
+    "walkIn": "Inloop",
+    "employeeLabel": "Medewerker",
+    "anyEmployee": "Willekeurig",
+    "emptyCart": "Tik op een dienst om toe te voegen",
+    "emptyCartService": "Tik op een dienst om toe te voegen",
+    "emptyCartProduct": "Scan of tik op een product om toe te voegen",
+    "productsLabel": "Producten",
+    "outOfStock": "Niet op voorraad",
+    "itemsLeft": "nog {count} over",
+    "showingProducts": "Toont {shown} van {total} producten — typ om meer te zoeken",
+    "scanToAdd": "Scan of voer barcode in…",
+    "itemNotFound": "Artikel niet gevonden",
+    "discountLabel": "Korting",
+    "paymentMethods": {
+      "cash": "contant",
+      "card": "pin / kaart",
+      "transfer": "overboeking"
+    },
+    "totalLabel": "Totaal",
+    "processing": "Verwerken…",
+    "chargeButton": "Afrekenen",
+    "servicesTab": "Diensten",
+    "noServices": "Nog geen diensten.",
+    "addServices": "Diensten toevoegen",
+    "bookingBanner": "Afrekenen voor boeking:",
+    "success": {
+      "heading": "Verkoop voltooid!",
+      "receipt": "Kassabon",
+      "newSale": "Nieuwe verkoop"
+    },
+    "saveClientPrompt": "Deze klant opslaan in je klantenbestand?",
+    "saveClientNamePlaceholder": "Naam *",
+    "saveClientPhonePlaceholder": "Telefoon",
+    "saveClientEmailPlaceholder": "E-mail",
+    "saveClientNotesPlaceholder": "Notities",
+    "saveClientSkip": "Overslaan",
+    "saveClientSave": "Klant opslaan",
+    "offlineMode": "Offlinemodus",
+    "offlineSyncAuto": "Verkopen worden automatisch gesynchroniseerd zodra er weer verbinding is.",
+    "offlinePendingCount": "{count} in afwachting",
+    "offlineSyncing": "{count} offline verkopen synchroniseren…",
+    "offlinePendingSync": "{count} offline verkopen wachten op synchronisatie",
+    "offlineSyncNow": "Nu synchroniseren",
+    "offlineSavedReceipt": "Offline opgeslagen. Wordt gesynchroniseerd zodra internet hersteld is.",
+    "durationMin": "{min} min"
+  },
+  "crm": {
+    "title": "Klanten",
+    "addClient": "Klant toevoegen",
+    "searchPlaceholder": "Zoek op naam, telefoon, e-mail…",
+    "limitTitle": "Je hebt de limiet van 100 klanten op het Gratis abonnement bereikt.",
+    "limitDesc": "Upgrade naar Starter om onbeperkt klanten toe te voegen.",
+    "empty": {
+      "icon": "👥",
+      "heading": "Nog geen klanten",
+      "action": "Voeg je eerste klant toe"
+    },
+    "table": {
+      "name": "Naam",
+      "contact": "Contact",
+      "tags": "Labels",
+      "lastService": "Laatste dienst",
+      "visits": "Bezoeken",
+      "spent": "Besteed",
+      "lastVisit": "Laatste bezoek",
+      "points": "Punten"
+    }
+  },
+  "inventory": {
+    "title": "Voorraad",
+    "addItem": "Artikel toevoegen",
+    "importCsv": "Importeren",
+    "export": "Exporteren",
+    "moreActions": "Meer acties",
+    "import": {
+      "title": "Producten importeren",
+      "uploadHint": "Heb je al een leverancierslijst in Excel of CSV? Upload deze direct — Pronto herkent de kolommen automatisch.",
+      "dropzone": "Sleep bestand hierheen of klik om te bladeren",
+      "dropzoneFormats": ".xlsx  ·  .xls  ·  .csv",
+      "orSeparator": "of",
+      "templateHint": "Vanaf nul beginnen?",
+      "downloadTemplate": "Download Excel-sjabloon",
+      "templateSubhint": "Vul het in en upload het hier weer.",
+      "productsFound": "{count} {count, plural, one {product} other {producten}} gevonden",
+      "importing": "Importeren…",
+      "importN": "{count} {count, plural, one {product} other {producten}} importeren",
+      "result": "Import voltooid",
+      "imported": "{count} geïmporteerd",
+      "skipped": "{count} overgeslagen (dubbels of lege namen)",
+      "limitReached": "Abonnementslimiet bereikt. Upgrade om meer producten te importeren."
+    },
+    "searchPlaceholder": "Zoek op naam, SKU of barcode...",
+    "itemsTotal": "{count} artikelen in totaal",
+    "showingOf": "Toont {filtered} van {total} artikelen",
+    "showingLowStock": "Toont {count} artikelen met lage voorraad",
+    "lowStockCount": "{count} lage voorraad",
+    "noMatch": "Geen artikelen gevonden voor \"{query}\"",
+    "lowStockAlert": "{count} artikel onder de minimumvoorraad",
+    "lowStockAlertPlural": "{count} artikelen onder de minimumvoorraad",
+    "empty": {
+      "icon": "📦",
+      "heading": "Nog geen artikelen",
+      "action": "Voeg je eerste artikel toe"
+    },
+    "table": {
+      "name": "Naam",
+      "category": "Categorie",
+      "stock": "Voorraad",
+      "cost": "Inkoopprijs",
+      "sellPrice": "Verkoopprijs",
+      "status": "Status"
+    },
+    "status": {
+      "outOfStock": "Niet op voorraad",
+      "lowStock": "Lage voorraad",
+      "ok": "Op voorraad"
+    },
+    "units": {
+      "pcs": "st.",
+      "g": "g",
+      "kg": "kg",
+      "ml": "ml",
+      "l": "l",
+      "bottle": "fles",
+      "box": "doos",
+      "pack": "pak",
+      "other": "overig…",
+      "enterUnit": "Voer eenheidsnaam in"
+    },
+    "barcode": "Barcode",
+    "scanToAdd": "Scan barcode om toe te voegen of bij te werken",
+    "scanWithCamera": "Scannen met camera",
+    "cameraNotSupported": "Camerascan wordt niet ondersteund in deze browser",
+    "itemNotFound": "Artikel niet gevonden",
+    "itemFound": "Artikel gevonden",
+    "currentStock": "Huidige voorraad",
+    "addStockQty": "Aantal toe te voegen",
+    "addStock": "Voorraad toevoegen",
+    "createNewInstead": "Nieuw artikel aanmaken",
+    "addNewItem": "Toevoegen als nieuw artikel",
+    "photo": "Foto",
+    "uploadPhoto": "Foto uploaden",
+    "filterLowStockLabel": "Toont alleen artikelen met lage voorraad",
+    "filterClear": "Filter wissen",
+    "tabs": {
+      "items": "Artikelen",
+      "sales": "Omzet"
+    },
+    "sales": {
+      "revenue": "Omzet",
+      "unitsSold": "Verkochte eenheden",
+      "transactions": "Transacties",
+      "topItems": "Meest verkocht",
+      "recentSales": "Recente verkopen",
+      "noSales": "Geen verkopen in deze periode",
+      "colDate": "Datum",
+      "colReceipt": "Kassabon",
+      "colItems": "Artikelen",
+      "colTotal": "Totaal",
+      "periods": {
+        "today": "Vandaag",
+        "7d": "7 dagen",
+        "30d": "30 dagen"
+      },
+      "customRange": "Aangepast bereik",
+      "from": "Van",
+      "to": "Tot",
+      "apply": "Toepassen",
+      "exportExcel": "Exporteren naar Excel"
+    }
+  },
+  "booking": {
+    "title": "Boekingen",
+    "newAppointment": "Nieuwe boeking",
+    "emptyState": {
+      "heading": "Geen afspraken deze week",
+      "sub": "Klik op een tijdslot in de agenda of gebruik de knop om er een toe te voegen"
+    },
+    "calendar": {
+      "today": "Vandaag",
+      "publicPage": "Publieke boekingspagina",
+      "days": [
+        "Ma",
+        "Di",
+        "Wo",
+        "Do",
+        "Vr",
+        "Za",
+        "Zo"
+      ],
+      "colorLegend": "Kleurenlegenda",
+      "teamColors": "Teamkleuren",
+      "noTeamMembers": "Nog geen teamleden",
+      "appointmentStatus": "Afspraakstatus"
+    },
+    "status": {
+      "pending": "in afwachting",
+      "confirmed": "bevestigd",
+      "completed": "afgerond",
+      "paid": "betaald",
+      "cancelled": "geannuleerd",
+      "no_show": "niet verschenen"
+    },
+    "walkIn": "Inloop",
+    "form": {
+      "heading": "Nieuwe boeking",
+      "serviceLabel": "Dienst *",
+      "servicePlaceholder": "Selecteer dienst…",
+      "datetimeLabel": "Datum & tijd *",
+      "clientLabel": "Klant",
+      "employeeLabel": "Medewerker",
+      "anyEmployee": "Willekeurig",
+      "notesLabel": "Notities",
+      "notesPlaceholder": "Optionele notitie…",
+      "cancel": "Annuleren",
+      "saving": "Opslaan…",
+      "save": "Opslaan",
+      "closedDayError": "Deze dag staat als gesloten gemarkeerd in de Werktijden. Pas eerst je rooster aan in Instellingen."
+    },
+    "detail": {
+      "statusLabel": "Status",
+      "employeeLabel": "Medewerker:",
+      "chargeButton": "Afrekenen",
+      "close": "Sluiten",
+      "deleteButton": "Afspraak verwijderen",
+      "onlineLabel": "Online",
+      "deleteConfirm": "Deze afspraak verwijderen?",
+      "deleteConfirmYes": "Verwijderen",
+      "unassigned": "Niet toegewezen"
+    }
+  },
+  "settings": {
+    "title": "Instellingen",
+    "tabs": {
+      "general": "Algemeen",
+      "services": "Diensten",
+      "employees": "Medewerkers",
+      "notifications": "Meldingen",
+      "billing": "Facturatie",
+      "account": "Account",
+      "modules": "Modules"
+    },
+    "billing": {
+      "heading": "Huidig abonnement",
+      "planSuffix": "abonnement",
+      "freePlan": "Gratis",
+      "activePlan": "Actief",
+      "renewsOn": "Verlengt op",
+      "employees": "Medewerkers",
+      "clients": "Klanten",
+      "manageSubscription": "Abonnement beheren",
+      "mostPopular": "Meest gekozen",
+      "upgrade": "Upgraden →",
+      "currentPlan": "Huidig abonnement",
+      "successMessage": "Abonnement geactiveerd! Bedankt voor de upgrade.",
+      "errorMessage": "Er ging iets mis. Probeer het opnieuw of neem contact op met ondersteuning."
+    },
+    "account": {
+      "heading": "Mijn account",
+      "currentEmailLabel": "Huidig e-mailadres",
+      "newEmailLabel": "Nieuw e-mailadres",
+      "newEmailPlaceholder": "Voer nieuw e-mailadres in",
+      "changeEmailButton": "E-mailadres wijzigen",
+      "emailHint": "Er wordt een bevestigingslink gestuurd naar het nieuwe adres. De wijziging wordt actief nadat je erop klikt.",
+      "passwordHeading": "Wachtwoord wijzigen",
+      "newPasswordLabel": "Nieuw wachtwoord",
+      "confirmPasswordLabel": "Bevestig nieuw wachtwoord",
+      "confirmPasswordPlaceholder": "Herhaal nieuw wachtwoord",
+      "changePasswordButton": "Wachtwoord bijwerken",
+      "saving": "Opslaan…",
+      "pwMinLength": "Wachtwoord moet minimaal 8 tekens lang zijn",
+      "pwNoMatch": "Wachtwoorden komen niet overeen",
+      "pwSuccess": "Wachtwoord succesvol bijgewerkt",
+      "emailInvalid": "Voer een geldig e-mailadres in",
+      "emailConfirmSent": "Bevestiging verzonden naar {email}. Klik op de link in de e-mail om de wijziging af te ronden."
+    },
+    "workingHours": {
+      "heading": "Werktijden",
+      "dayNames": [
+        "Zo",
+        "Ma",
+        "Di",
+        "Wo",
+        "Do",
+        "Vr",
+        "Za"
+      ],
+      "from": "Van",
+      "to": "Tot",
+      "closed": "Gesloten",
+      "addBreak": "Pauze toevoegen",
+      "breakInvalidRange": "{day}: eindtijd van pauze moet na de starttijd liggen",
+      "breakOutsideHours": "{day}: pauze moet binnen werktijden vallen",
+      "saveButton": "Uren opslaan",
+      "saving": "Opslaan…",
+      "saved": "Opgeslagen ✓"
+    },
+    "general": {
+      "heading": "Bedrijfsinformatie",
+      "fields": {
+        "name": "Bedrijfsnaam",
+        "phone": "Telefoon",
+        "email": "E-mailadres",
+        "address": "Adres",
+        "timezone": "Tijdzone",
+        "currency": "Valuta (ISO)",
+        "slug": "URL-slug"
+      },
+      "typeLabel": "Bedrijfstype",
+      "typeDefault": "— selecteer —",
+      "types": {
+        "salon": "💇 Schoonheid / Salon",
+        "barbershop": "✂️ Kapper / Barbershop",
+        "auto_repair": "🔧 Garage / Autoreparatie",
+        "cafe": "☕ Café / Restaurant",
+        "dental": "🦷 Tandartspraktijk",
+        "fitness": "💪 Fitness / Sportschool",
+        "massage": "💆 Massage / Spa",
+        "other": "🏢 Overig"
+      },
+      "notificationLanguageLabel": "Taal van meldingen",
+      "notificationLanguageHint": "Taal die wordt gebruikt voor boekingsbevestigingen en herinneringen naar klanten.",
+      "bookingUrlLabel": "Publieke boekings-URL",
+      "slugHint": "Alleen kleine letters, cijfers en koppeltekens. Het wijzigen hiervan maakt bestaande boekingslinks ongeldig.",
+      "slugError": "Alleen kleine letters, cijfers en koppeltekens toegestaan",
+      "saving": "Opslaan…",
+      "saved": "Opgeslagen",
+      "saveButton": "Wijzigingen opslaan",
+      "planLabel": "Abonnement:",
+      "brandColorLabel": "Merkkleur",
+      "brandColorHint": "Wordt getoond op je publieke boekingspagina — je klanten zien deze kleur.",
+      "logoLabel": "Bedrijfslogo",
+      "logoHint": "Upload je logo om het lettericoon op je boekingspagina te vervangen.",
+      "logoUploadArea": "Uploadgebied",
+      "logoRemove": "Logo verwijderen",
+      "logoRemoving": "Verwijderen…",
+      "logoUpload": "Klik om te uploaden of sleep hierheen",
+      "logoUploading": "Uploaden…",
+      "logoFormats": "PNG, JPG, WebP, SVG · max. 2MB",
+      "logoProOnly": "Beschikbaar in Pro-abonnement →",
+      "logoErrorRemove": "Verwijderen van logo mislukt.",
+      "logoErrorNetwork": "Netwerkfout: {message}"
+    },
+    "services": {
+      "empty": "Nog geen diensten",
+      "table": {
+        "name": "Naam",
+        "category": "Categorie",
+        "price": "Prijs",
+        "duration": "Duur",
+        "capacity": "Capaciteit"
+      },
+      "addHeading": "Dienst toevoegen",
+      "editHeading": "Dienst bewerken",
+      "fields": {
+        "name": "Naam",
+        "category": "Categorie",
+        "price": "Prijs",
+        "duration": "Duur (min)",
+        "capacity": "Capaciteit"
+      },
+      "capacityHint": "Max. klanten per tijdslot (1 = individueel, >1 = groepsles)",
+      "addButton": "Dienst toevoegen",
+      "updateButton": "Bijwerken",
+      "cancelButton": "Annuleren",
+      "deleteConfirm": "Verwijderen?",
+      "deleteYes": "Verwijderen",
+      "deleteNo": "Annuleren"
+    },
+    "employees": {
+      "empty": "Nog geen medewerkers",
+      "table": {
+        "name": "Naam",
+        "role": "Functie",
+        "contact": "E-mail",
+        "phone": "Telefoon"
+      },
+      "addHeading": "Medewerker toevoegen",
+      "editHeading": "Medewerker bewerken",
+      "fields": {
+        "name": "Volledige naam",
+        "role": "Functie",
+        "email": "E-mail",
+        "phone": "Telefoon"
+      },
+      "addButton": "Medewerker toevoegen",
+      "updateButton": "Bijwerken",
+      "cancelButton": "Annuleren",
+      "deleteConfirm": "Verwijderen?",
+      "deleteYes": "Verwijderen",
+      "deleteNo": "Annuleren",
+      "limitBannerTitle": "Medewerkerslimiet bereikt.",
+      "limitBannerDesc": "Upgrade naar Starter om tot 5 teamleden toe te voegen."
+    },
+    "notifications": {
+      "heading": "Meldingkanalen",
+      "email": {
+        "label": "E-mail",
+        "connected": "Verbonden",
+        "notSet": "Niet geconfigureerd",
+        "smtpOption": "SMTP-server",
+        "resendOption": "Resend API",
+        "smtpHost": "SMTP-host",
+        "smtpPort": "SMTP-poort",
+        "smtpUser": "Gebruikersnaam",
+        "smtpPass": "Wachtwoord",
+        "smtpPassHint": "Voor Gmail: gebruik een app-wachtwoord — myaccount.google.com → Beveiliging → Authenticatie in 2 stappen → App-wachtwoorden",
+        "smtpFrom": "Afzenderadres",
+        "smtpHostPlaceholder": "smtp.gmail.com",
+        "smtpFromPlaceholder": "hallo@mijnbedrijf.nl",
+        "resendApiKey": "API-sleutel",
+        "resendApiKeyPlaceholder": "re_...",
+        "resendSignup": "Vraag een gratis API-sleutel aan op resend.com"
+      },
+      "telegram": {
+        "label": "Telegram Bot",
+        "connected": "Verbonden",
+        "notSet": "Niet geconfigureerd",
+        "description": "Maak een bot aan via @BotFather en plak het token hieronder.",
+        "placeholder": "123456789:AAABBB...",
+        "connectButton": "Verbinden",
+        "step1": "Open <a href=\"https://t.me/BotFather\" target=\"_blank\" rel=\"noopener noreferrer\" class=\"text-blue-600 hover:underline\">@BotFather</a> in Telegram → <code class=\"bg-gray-100 px-1 rounded\">/newbot</code> → kopieer het token",
+        "step2": "Plak het token hieronder en klik op Verbinden",
+        "step3": "Open je nieuwe bot in Telegram vanuit je zakelijke account en stuur <code class=\"bg-gray-100 px-1 rounded\">/start</code> — dit registreert de chat voor meldingen"
+      },
+      "viber": {
+        "label": "Viber Bot",
+        "connected": "Verbonden",
+        "notSet": "Niet geconfigureerd",
+        "description": "Maak een bot aan op partners.viber.com en plak het authenticatietoken.",
+        "placeholder": "Viber auth token",
+        "connectButton": "Verbinden",
+        "step1": "Ga naar <a href=\"https://developers.viber.com\" target=\"_blank\" rel=\"noopener noreferrer\" class=\"text-blue-600 hover:underline\">developers.viber.com</a> → maak een bot aan → kopieer het token",
+        "step2": "Plak het token hieronder en klik op Verbinden",
+        "step3": "Open je bot in Viber vanuit je zakelijke account en stuur <code class=\"bg-gray-100 px-1 rounded\">/start</code> — dit registreert de chat voor meldingen"
+      },
+      "whatsapp": {
+        "label": "WhatsApp (Meta Cloud API)",
+        "connected": "Verbonden",
+        "notSet": "Niet geconfigureerd",
+        "description": "Verzendt berichten rechtstreeks naar klanten met een geregistreerd WhatsApp-nummer in het CRM.",
+        "phoneNumberId": "Telefoonnummer-ID",
+        "phoneNumberIdPlaceholder": "1234567890",
+        "accessToken": "Access Token",
+        "accessTokenPlaceholder": "EAABs...",
+        "saveButton": "Gegevens opslaan",
+        "step1": "Ga naar <a href=\"https://developers.facebook.com\" target=\"_blank\" rel=\"noopener noreferrer\" class=\"text-blue-600 hover:underline\">developers.facebook.com</a> → maak een Meta App → voeg het <strong>WhatsApp</strong>-product toe",
+        "step2": "Kopieer in <strong>WhatsApp → API Setup</strong> het <em>Telefoonnummer-ID</em> en een <strong>permanent access token</strong> (aanmaken via Systeemgebruiker in Meta Business Manager wordt aanbevolen)",
+        "step3": "Plak beide hieronder en klik op {saveButton}",
+        "step4": "Voeg het WhatsApp-nummer van een klant toe in CRM → klantpagina — zij ontvangen automatisch meldingen"
+      },
+      "ownerWhatsapp": {
+        "label": "Jouw WhatsApp-nummer (voor meldingen)",
+        "description": "Voer je persoonlijke WhatsApp-nummer in om waarschuwingen bij lage voorraad en andere eigenaarsmeldingen te ontvangen. Formaat: +31612345678 of +32470123456",
+        "placeholder": "+31612345678"
+      },
+      "save": "Opslaan",
+      "saving": "Opslaan…",
+      "saved": "Opgeslagen ✓",
+      "triggersHeading": "Automatische triggers",
+      "triggers": {
+        "confirmation": "Boekingsbevestiging — direct",
+        "reminder24h": "Herinnering — 24 uur van tevoren",
+        "reminder1h": "Herinnering — 1 uur van tevoren",
+        "thankYou": "Bedankje — na afspraak",
+        "reactivation": "Heractivatie — 30 dagen geen bezoek",
+        "birthday": "Verjaardagswens",
+        "lowStock": "Melding lage voorraad (e-mail)"
+      },
+      "waTemplates": {
+        "heading": "WhatsApp-sjablonen",
+        "description": "Voer de goedgekeurde sjabloonnamen in vanuit Meta Business Manager. Laat leeg om WhatsApp voor die gebeurtenis over te slaan.",
+        "confirmation": "Naam bevestigingssjabloon",
+        "confirmationPlaceholder": "bijv. booking_confirmation",
+        "reminder": "Naam herinneringssjabloon",
+        "reminderPlaceholder": "bijv. appointment_reminder",
+        "thankyou": "Naam bedanksjabloon",
+        "thankyouPlaceholder": "bijv. visit_thankyou",
+        "reengagement": "Naam heractivatiesjabloon",
+        "reengagementPlaceholder": "bijv. client_reactivation",
+        "birthday": "Naam verjaardagssjabloon",
+        "birthdayPlaceholder": "bijv. happy_birthday",
+        "language": "Sjabloontaal"
+      }
+    },
+    "modules": {
+      "heading": "Functiemodules",
+      "description": "Kies welke functies actief zijn voor je bedrijf. Gegevens worden nooit verwijderd als een module wordt uitgeschakeld — ze verschijnen weer als je deze heractiveert.",
+      "presetsLabel": "Snelle voorinstellingen",
+      "presets": {
+        "salon": "💇 Kapper / Salon",
+        "shop": "🏪 Winkel / Kiosk",
+        "cafe": "☕ Café",
+        "all": "✳️ Alle modules"
+      },
+      "confirmOff": "Gegevens worden nooit gewist — ze verschijnen weer wanneer opnieuw ingeschakeld. {label} uitschakelen?",
+      "cancelButton": "Annuleren",
+      "turnOffButton": "Uitschakelen",
+      "saveButton": "Modules opslaan",
+      "saved": "Opgeslagen!",
+      "items": {
+        "bookings": {
+          "label": "Boekingen & Agenda",
+          "description": "Afspraken, planning, toewijzing van medewerkers"
+        },
+        "crm": {
+          "label": "CRM & Klanten",
+          "description": "Klantkaarten, bezoekgeschiedenis, labels en notities"
+        },
+        "pos": {
+          "label": "Kassa & Afrekenen",
+          "description": "Verkopen, betalingen, kassabonnen"
+        },
+        "inventory": {
+          "label": "Voorraad",
+          "description": "Voorraad, producten, meldingen bij lage voorraad"
+        },
+        "notifications": {
+          "label": "Meldingen",
+          "description": "Herinneringen via Telegram, WhatsApp, Viber, E-mail"
+        }
+      }
+    }
+  },
+  "sidebar": {
+    "dashboard": "Dashboard",
+    "pos": "Kassa",
+    "clients": "Klanten",
+    "inventory": "Voorraad",
+    "booking": "Agenda",
+    "analytics": "Statistieken",
+    "settings": "Instellingen",
+    "signOut": "Uitloggen",
+    "shareFeedback": "Feedback delen",
+    "openMenu": "Menu openen",
+    "closeMenu": "Menu sluiten"
+  },
+  "publicBooking": {
+    "bookAnAppointment": "Afspraak maken",
+    "stepSelectService": "Kies dienst",
+    "stepChooseSpecialist": "Kies specialist",
+    "stepDatetime": "Datum & tijd",
+    "stepYourDetails": "Jouw gegevens",
+    "addToGoogleCalendar": "Toevoegen aan Google Agenda",
+    "slotTaken": "⚠ Dit tijdslot is zojuist door iemand anders geboekt. Kies een ander tijdstip.",
+    "noStaffAvailable": "Dit bedrijf heeft momenteel geen medewerkers beschikbaar voor online boekingen. Neem rechtstreeks contact op.",
+    "demoNotificationsHeading": "Je klanten ontvangen direct meldingen via:",
+    "demoNotificationsFooter": "Stel meldingen in binnen 5 minuten · Zonder extra kosten",
+    "selectService": {
+      "heading": "Kies een dienst",
+      "empty": "Geen diensten beschikbaar voor online boeken.",
+      "minutes": "{duration} min"
+    },
+    "selectEmployee": {
+      "heading": "Kies een specialist",
+      "sub": "Je kunt iedereen kiezen — ze zijn allemaal geweldig",
+      "anyone": "Geen voorkeur",
+      "back": "← Terug"
+    },
+    "datetime": {
+      "heading": "Kies datum & tijd",
+      "back": "← Terug",
+      "dateLabel": "Datum",
+      "timeLabel": "Tijd",
+      "continue": "Doorgaan"
+    },
+    "contact": {
+      "heading": "Jouw contactgegevens",
+      "back": "← Terug",
+      "nameLabel": "Naam *",
+      "namePlaceholder": "Jouw naam",
+      "phoneLabel": "Telefoon",
+      "phonePlaceholder": "+31 6 12345678",
+      "emailLabel": "E-mailadres",
+      "emailPlaceholder": "jouw@voorbeeld.nl",
+      "booking": "Bevestigen…",
+      "confirm": "Boeking bevestigen — {price}",
+      "noRegistration": "Geen account of registratie vereist"
+    },
+    "success": {
+      "heading": "Boeking bevestigd!",
+      "body": "Je afspraak is bevestigd. Tot snel!",
+      "bookAnother": "Nog een afspraak maken",
+      "optInHeading": "Ontvang herinneringen in je berichtenapp",
+      "optInSub": "Tik hieronder om afspraakherinneringen in Telegram of Viber te ontvangen — geen registratie nodig.",
+      "telegramButton": "Ontvang herinneringen in Telegram",
+      "viberButton": "Ontvang herinneringen in Viber"
+    },
+    "loadingTimes": "Beschikbare tijden laden…",
+    "dayClosed": "Deze dag valt buiten openingstijden. Kies een andere datum.",
+    "noSlots": "Geen beschikbare tijden voor deze dag. Kies een andere datum.",
+    "spotsLeft": "nog {count} plekken vrij",
+    "continueButton": "Doorgaan →",
+    "at": "om",
+    "errorContactRequired": "Vul minimaal een telefoonnummer of e-mailadres in zodat we je boeking kunnen bevestigen.",
+    "errorPhone": "Voer een geldig telefoonnummer in (alleen cijfers, bijv. +31 6 12345678).",
+    "errorEmail": "Voer een geldig e-mailadres in (bijv. naam@voorbeeld.nl).",
+    "errorRateLimit": "Te veel boekingspogingen. Wacht een paar minuten en probeer het opnieuw.",
+    "errorGeneric": "Er ging iets mis. Probeer het opnieuw of neem rechtstreeks contact op met het bedrijf."
+  },
+  "contact": {
+    "heading": "Neem contact op",
+    "subheading": "Echte ondersteuning, geen bots — meestal sneller dan je verwacht",
+    "namePlaceholder": "Jouw naam",
+    "emailPlaceholder": "jouw@email.nl",
+    "messagePlaceholder": "Waarmee kunnen we helpen?",
+    "sendButton": "Bericht versturen",
+    "sending": "Versturen...",
+    "success": "✓ Bericht verzonden! We nemen spoedig contact met je op.",
+    "error": "Er ging iets mis. Probeer het opnieuw."
+  },
+  "csvImport": {
+    "importCsvButton": "CSV importeren",
+    "importClients": "Klanten importeren",
+    "upgradeToImport": "Upgrade om meer klanten te importeren",
+    "title": "Klanten importeren vanuit CSV",
+    "selectPlatform": "Selecteer van welk platform je importeert voor exportinstructies:",
+    "howToExport": "Hoe te exporteren: ",
+    "dropZone": "Sleep CSV-bestand hierheen of klik om te bladeren",
+    "dropZoneFormats": "Ondersteunt .csv-bestanden",
+    "rowsFound": "{count} {count, plural, one {rij} other {rijen}} gevonden",
+    "changeFile": "Ander bestand kiezen",
+    "noPhoneWarn": "Geen telefoonkolom gedetecteerd. Klanten worden geïmporteerd zonder telefoonnummer (geen ontdubbeling mogelijk).",
+    "previewName": "Naam",
+    "previewPhone": "Telefoon",
+    "previewEmail": "E-mail",
+    "moreRows": "…en nog {count} {count, plural, one {rij} other {rijen}}",
+    "back": "Terug",
+    "importing": "Importeren…",
+    "importButton": "{count} {count, plural, one {klant} other {klanten}} importeren",
+    "doneTitle": "Import voltooid",
+    "imported": "{count} {count, plural, one {klant} other {klanten}} geïmporteerd",
+    "skipped": "{count} overgeslagen (dubbels of lege namen)",
+    "done": "Klaar",
+    "platformHints": {
+      "fresha": "Klanten → Opties (rechtsboven) → Exporteren → CSV",
+      "vagaro": "Meer → Rapporten → Klanten → Actie → Exporteer Excel, sla daarna op als CSV",
+      "booksy": "Klanten → Meer opties → Exporteren → CSV",
+      "mindbody": "Rapporten → Klanten → Mailinglijsten → Exporteren → CSV",
+      "square": "Klanten → Klantenoverzicht → Exporteren",
+      "other": "Exporteer je klantenlijst als CSV met kolommen: naam, telefoon, e-mail"
+    }
+  },
+  "datePicker": {
+    "today": "Vandaag",
+    "months": [
+      "Januari",
+      "Februari",
+      "Maart",
+      "April",
+      "Mei",
+      "Juni",
+      "Juli",
+      "Augustus",
+      "September",
+      "Oktober",
+      "November",
+      "December"
+    ],
+    "days": [
+      "Ma",
+      "Di",
+      "Wo",
+      "Do",
+      "Vr",
+      "Za",
+      "Zo"
+    ]
+  },
+  "feedback": {
+    "heading": "Deel je feedback",
+    "subheading": "Help ons Pronto te verbeteren",
+    "placeholder": "Wat wil je met ons delen?",
+    "placeholderGood": "Wat bevalt je het meest?",
+    "placeholderBad": "Wat werkt er niet prettig?",
+    "cancel": "Annuleren",
+    "submit": "Versturen",
+    "sending": "Versturen…",
+    "thanks": "Bedankt voor je feedback!",
+    "thanksSub": "Het helpt ons Pronto beter te maken.",
+    "close": "Sluiten"
+  },
+  "clientDetail": {
+    "backToClients": "← Klanten",
+    "editButton": "Bewerken",
+    "saveButton": "Opslaan",
+    "cancelButton": "Annuleren",
+    "deleteButton": "Klant verwijderen",
+    "deleteConfirm": "Deze klant verwijderen? Dit kan niet ongedaan worden gemaakt.",
+    "fields": {
+      "name": "Naam",
+      "phone": "Telefoon",
+      "email": "E-mail",
+      "birthday": "Geboortedatum",
+      "notes": "Notities",
+      "notesPlaceholder": "Voeg een notitie toe…",
+      "tags": "Labels",
+      "tagsPlaceholder": "label1, label2…",
+      "whatsappNumber": "WhatsApp",
+      "messengers": "Berichtenapps",
+      "connected": "Verbonden ✓",
+      "notConnected": "Niet verbonden",
+      "telegram": "Telegram",
+      "viber": "Viber",
+      "telegramShareTitle": "Deel deze link met de klant om Telegram-meldingen te koppelen",
+      "telegramConnectFirst": "Koppel eerst de Telegram-bot in Instellingen",
+      "copiedLink": "✓ Gekopieerd",
+      "copyLink": "Link kopiëren"
+    },
+    "phoneInvalid": "Voer een geldig telefoonnummer in (alleen cijfers)",
+    "dateInvalid": "Voer een geldige datum in",
+    "stats": {
+      "totalVisits": "Totaal bezoeken",
+      "totalSpent": "Totaal besteed",
+      "lastVisit": "Laatste bezoek",
+      "never": "Nooit",
+      "clientSince": "Klant sinds"
+    },
+    "appointments": {
+      "heading": "Bezoekgeschiedenis",
+      "empty": "Nog geen bezoeken"
+    },
+    "status": {
+      "pending": "in afwachting",
+      "confirmed": "bevestigd",
+      "completed": "afgerond",
+      "paid": "betaald",
+      "cancelled": "geannuleerd",
+      "no_show": "niet verschenen"
+    }
+  },
+  "transactions": {
+    "title": "Transacties",
+    "filters": {
+      "allMethods": "Alle betaalmethoden",
+      "cash": "Contant",
+      "card": "Pin / Kaart",
+      "transfer": "Overboeking",
+      "online": "Online",
+      "from": "Van",
+      "to": "Tot",
+      "clientPlaceholder": "Klant of artikelnaam...",
+      "apply": "Toepassen",
+      "clear": "Wissen"
+    },
+    "paymentMethods": {
+      "card": "Pin / Kaart",
+      "cash": "Contant",
+      "transfer": "Overboeking",
+      "online": "Online"
+    },
+    "table": {
+      "receipt": "Kassabon",
+      "client": "Klant",
+      "employee": "Medewerker",
+      "items": "Diensten / Artikelen",
+      "method": "Betaalmethode",
+      "amount": "Bedrag",
+      "date": "Datum"
+    },
+    "walkIn": "Inloop",
+    "unassigned": "—",
+    "empty": "Nog geen verkopen",
+    "total": "Totaal voor periode:",
+    "itemCount": "{count} artikel",
+    "itemCountPlural": "{count} artikelen",
+    "moreItems": "+ nog {count}"
+  },
+  "inventoryDetail": {
+    "backToInventory": "← Voorraad",
+    "editButton": "Bewerken",
+    "saveButton": "Opslaan",
+    "cancelButton": "Annuleren",
+    "deleteButton": "Artikel verwijderen",
+    "deleteConfirm": "Dit voorraadartikel verwijderen?",
+    "fields": {
+      "name": "Naam",
+      "sku": "SKU",
+      "barcode": "Barcode",
+      "description": "Omschrijving",
+      "category": "Categorie",
+      "unit": "Eenheid",
+      "costPrice": "Inkoopprijs",
+      "sellPrice": "Verkoopprijs",
+      "lowStockThreshold": "Melding lage voorraad bij",
+      "uploadPhoto": "Foto uploaden"
+    },
+    "stock": {
+      "current": "Huidige voorraad",
+      "addMovement": "Mutatie toevoegen",
+      "type": "Type",
+      "typeIn": "Inkomend (+)",
+      "typeOut": "Uitgaand (−)",
+      "typeAdjustment": "Correctie",
+      "quantity": "Aantal",
+      "note": "Notitie",
+      "notePlaceholder": "bijv. Levering leverancier, Gebruikt bij behandeling…",
+      "save": "Opslaan",
+      "saving": "Opslaan…"
+    },
+    "movements": {
+      "heading": "Mutatiegeschiedenis",
+      "empty": "Nog geen mutaties",
+      "table": {
+        "date": "Datum",
+        "type": "Type",
+        "quantity": "Aantal",
+        "note": "Notitie"
+      },
+      "typeIn": "in",
+      "typeOut": "uit",
+      "typeAdjustment": "corr"
+    }
+  },
+  "billing": {
+    "heading": "Jouw abonnement",
+    "planSuffix": "abonnement",
+    "freePlan": "Gratis",
+    "activePlan": "Actief",
+    "renewsOn": "Verlengt op",
+    "employees": "Medewerkers",
+    "clients": "Klanten",
+    "manageSubscription": "Abonnement beheren",
+    "mostPopular": "Meest gekozen",
+    "upgrade": "Upgraden →",
+    "currentPlan": "Huidig abonnement",
+    "successMessage": "🎉 Abonnement geactiveerd! Bedankt voor de upgrade.",
+    "errorMessage": "Er ging iets mis. Probeer het opnieuw of neem contact op met ondersteuning.",
+    "currentPlanBadge": "Huidig abonnement",
+    "upgradeButton": "Upgraden",
+    "downgradeButton": "Downgraden",
+    "cancelNote": "Om je abonnement op te zeggen, beheer je dit direct via",
+    "plans": {
+      "free": {
+        "name": "Gratis",
+        "price": "€0",
+        "features": [
+          "1 medewerker",
+          "100 klanten",
+          "50 boekingen/maand",
+          "Kassa · CRM · Voorraad",
+          "Alle meldingen"
+        ]
+      },
+      "starter": {
+        "name": "Starter",
+        "price": "€19/mnd",
+        "features": [
+          "5 medewerkers",
+          "Onbeperkt klanten",
+          "Onbeperkt boekingen"
+        ]
+      },
+      "pro": {
+        "name": "Pro",
+        "price": "€39/mnd",
+        "features": [
+          "15 medewerkers",
+          "Onbeperkt klanten",
+          "Statistieken",
+          "Loyaliteitsprogramma",
+          "Eigen domeinnaam"
+        ]
+      },
+      "agency": {
+        "name": "Agency",
+        "price": "€79/mnd",
+        "features": [
+          "Onbeperkt medewerkers",
+          "Meerdere locaties",
+          "White-label",
+          "API-toegang"
+        ]
+      }
+    }
+  },
+  "newClient": {
+    "title": "Nieuwe klant",
+    "backToClients": "← Klanten",
+    "fields": {
+      "name": "Volledige naam *",
+      "namePlaceholder": "Sanne de Jong",
+      "phone": "Telefoon",
+      "phonePlaceholder": "+31 6 12345678",
+      "email": "E-mailadres",
+      "emailPlaceholder": "sanne@voorbeeld.nl",
+      "whatsapp": "WhatsApp",
+      "whatsappPlaceholder": "+31612345678",
+      "birthday": "Geboortedatum",
+      "notes": "Notities",
+      "notesPlaceholder": "Eventuele notities…",
+      "tags": "Labels",
+      "tagsPlaceholder": "vip, vast…"
+    },
+    "submitButton": "Klant toevoegen",
+    "cancelButton": "Annuleren"
+  },
+  "analytics": {
+    "title": "Statistieken",
+    "proFeatureTitle": "Statistieken — Pro-functie",
+    "proFeatureDesc": "Volg omzet, populairste diensten en klantengroei. Beschikbaar in Pro- en Agency-abonnementen.",
+    "upgradeButton": "Upgraden naar Pro →",
+    "seePlansButton": "Bekijk alle abonnementsfuncties →",
+    "periods": {
+      "7d": "7 dagen",
+      "30d": "30 dagen",
+      "month": "Deze maand",
+      "3m": "3 maanden"
+    },
+    "kpi": {
+      "totalRevenue": "Totale omzet",
+      "totalBookings": "Totaal boekingen",
+      "newClients": "Nieuwe klanten",
+      "avgPerBooking": "Gem. per boeking"
+    },
+    "chart": {
+      "heading": "Omzet",
+      "noData": "Geen gegevens voor deze periode",
+      "tooltip": "Omzet"
+    },
+    "topServices": {
+      "heading": "Populairste diensten",
+      "colService": "Dienst",
+      "colBookings": "Boekingen",
+      "colRevenue": "Omzet",
+      "noData": "Geen gegevens"
+    },
+    "topClients": {
+      "heading": "Beste klanten",
+      "colClient": "Klant",
+      "colVisits": "Bezoeken",
+      "colSpent": "Totaal besteed",
+      "noData": "Geen gegevens"
+    }
+  },
+  "newInventoryItem": {
+    "title": "Nieuw artikel",
+    "backToInventory": "← Voorraad",
+    "fields": {
+      "name": "Naam *",
+      "namePlaceholder": "Shampoo 500ml",
+      "sku": "SKU",
+      "skuPlaceholder": "SKU-001",
+      "barcode": "Barcode",
+      "barcodePlaceholder": "Scan of typ barcode",
+      "description": "Omschrijving",
+      "descriptionPlaceholder": "Optionele notities over dit artikel",
+      "category": "Categorie",
+      "categoryPlaceholder": "Haarverzorging",
+      "unit": "Eenheid",
+      "unitPlaceholder": "st.",
+      "quantity": "Beginvoorraad",
+      "costPrice": "Inkoopprijs",
+      "sellPrice": "Verkoopprijs",
+      "lowStockThreshold": "Melding lage voorraad bij"
+    },
+    "submitButton": "Artikel toevoegen",
+    "cancelButton": "Annuleren"
+  }
+}

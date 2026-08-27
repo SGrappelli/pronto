@@ -10,6 +10,7 @@ const LOCALES = [
   { code: 'es', label: 'ES' },
   { code: 'it', label: 'IT' },
   { code: 'pt', label: 'PT' },
+  { code: 'nl', label: 'NL' },
 ]
 
 export function LangSwitcher() {
@@ -33,6 +34,7 @@ export function LangSwitcher() {
       {LOCALES.map(({ code, label }) => (
         <button
           key={code}
+          type="button"
           onClick={() => switchLocale(code)}
           disabled={loading}
           className={cn(
