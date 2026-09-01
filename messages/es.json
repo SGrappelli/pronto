@@ -252,8 +252,8 @@
   },
   "pos": {
     "title": "POS / Caja",
-    "salesHistory": "Transacciones",
-    "categoryOther": "Otro",
+    "salesHistory": "Historial de ventas",
+    "categoryOther": "Otros",
     "cart": "Carrito",
     "clientLabel": "Cliente",
     "walkIn": "Sin cita",
@@ -436,6 +436,9 @@
     },
     "calendar": {
       "today": "Hoy",
+      "week": "Semana",
+      "month": "Mes",
+      "more": "+{count} más",
       "publicPage": "Página pública de reservas",
       "days": [
         "Lun",
@@ -995,6 +998,7 @@
       "card": "Tarjeta",
       "transfer": "Transferencia",
       "online": "Online",
+      "client": "Cliente",
       "from": "Desde",
       "to": "Hasta",
       "clientPlaceholder": "Cliente o producto...",

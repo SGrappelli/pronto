@@ -1,11 +1,10 @@
-import { createClient } from '@/lib/supabase/server'
 import { Header } from '@/components/layout/header'
 import { POSTerminal } from './pos-terminal'
 import { getTranslations } from 'next-intl/server'
 import Link from 'next/link'
 import { History } from 'lucide-react'
 import { formatInBusinessTimezone } from '@/lib/utils'
-import { getAuthUser } from '@/lib/auth-user'
+import { getBusinessDb } from '@/lib/auth-user'
 
 interface SearchParams {
   bookingId?: string
@@ -16,37 +15,30 @@ interface SearchParams {
 
 export default async function POSPage(props: { searchParams: Promise<SearchParams> }) {
   const searchParams = await props.searchParams;
-  const supabase = await createClient()
-  const user = await getAuthUser()
 
-  const { data: business } = await supabase
-    .from('businesses')
-    .select('id, currency, timezone')
-    .eq('owner_id', user!.id)
-    .maybeSingle()
+  const ctx = await getBusinessDb()
+  if (!ctx) return null
+  const { business, db } = ctx
 
-  if (!business) return null
-
-  const [{ data: services }, { data: employees }, { data: clients }] = await Promise.all([
-    supabase
-      .from('services')
-      .select('id, name, price, duration_min, category')
-      .eq('business_id', business.id)
-      .eq('is_active', true)
-      .order('name'),
-    supabase
-      .from('employees')
-      .select('id, name')
-      .eq('business_id', business.id)
-      .eq('is_active', true)
-      .order('name'),
-    supabase
-      .from('clients')
-      .select('id, name, phone')
-      .eq('business_id', business.id)
-      .order('name')
-      .limit(200),
+  const [servicesRaw, employees, clients] = await Promise.all([
+    db.services.findMany({
+      select: { id: true, name: true, price: true, duration_min: true, category: true },
+      where: { is_active: true },
+      orderBy: { name: 'asc' },
+    }),
+    db.employees.findMany({
+      select: { id: true, name: true },
+      where: { is_active: true },
+      orderBy: { name: 'asc' },
+    }),
+    db.clients.findMany({
+      select: { id: true, name: true, phone: true },
+      orderBy: { name: 'asc' },
+      take: 200,
+    }),
   ])
+
+  const services = servicesRaw.map((s) => ({ ...s, price: s.price.toNumber() }))
 
   // ── Booking context: prefill POS from an appointment ──────────────────────
   let bookingContext: {
@@ -58,22 +50,25 @@ export default async function POSPage(props: { searchParams: Promise<SearchParam
   } | undefined
 
   if (searchParams.bookingId) {
-    const { data: appt } = await supabase
-      .from('appointments')
-      .select('id, starts_at, clients(name), services(name), employees(id, name)')
-      .eq('id', searchParams.bookingId)
-      .eq('business_id', business.id) // security: only own business
-      .maybeSingle()
+    const appt = await db.appointments.findFirst({
+      where: { id: searchParams.bookingId },
+      select: {
+        id: true, starts_at: true,
+        clients: { select: { name: true } },
+        services: { select: { name: true } },
+        employees: { select: { id: true, name: true } },
+      },
+    })
 
     if (appt) {
-      const clientName = (appt.clients as { name: string } | null)?.name ?? 'Walk-in'
-      const serviceName = (appt.services as { name: string } | null)?.name ?? ''
+      const clientName = appt.clients?.name ?? 'Walk-in'
+      const serviceName = appt.services?.name ?? ''
       const tz = business.timezone ?? 'UTC'
       bookingContext = {
         bookingId: appt.id,
         clientId: searchParams.clientId ?? '',
         serviceId: searchParams.serviceId ?? '',
-        staffId: searchParams.staffId ?? (appt.employees as { id: string; name: string } | null)?.id ?? '',
+        staffId: searchParams.staffId ?? appt.employees?.id ?? '',
         label: `${clientName} — ${serviceName} — ${formatInBusinessTimezone(appt.starts_at, tz, 'time')}`,
       }
     }
@@ -87,16 +82,16 @@ export default async function POSPage(props: { searchParams: Promise<SearchParam
         title={t('title')}
         actions={
           <Link href="/pos/history" className="flex items-center gap-1.5 text-sm text-gray-500 hover:text-gray-700 border border-gray-200 rounded-lg px-3 py-1.5 hover:bg-gray-50 transition-colors">
-            <History className="w-4 h-4" /> Sales history
+            <History className="w-4 h-4" /> {t('salesHistory')}
           </Link>
         }
       />
       <POSTerminal
         businessId={business.id}
         currency={business.currency}
-        services={services ?? []}
-        employees={employees ?? []}
-        clients={clients ?? []}
+        services={services}
+        employees={employees}
+        clients={clients}
         bookingContext={bookingContext}
       />
     </>

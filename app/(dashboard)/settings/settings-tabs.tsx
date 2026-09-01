@@ -8,6 +8,7 @@ import { Badge } from '@/components/ui/badge'
 import { Plus, Pencil, Trash2, Check, Loader2, CheckCircle2, AlertCircle, Users, Eye, EyeOff } from 'lucide-react'
 import { useTranslations } from 'next-intl'
 import { MODULES, ModuleKey } from '@/lib/modules'
+import { formatCurrency } from '@/lib/utils'
 
 const clean = (s: string, max = 500) => s?.trim().slice(0, max) ?? ''
 
@@ -61,7 +62,7 @@ export function SettingsTabs({ business: initial, services: initServices, employ
   const router = useRouter()
   const t = useTranslations('settings')
   const searchParams = useSearchParams()
-  const initialTab = (['general', 'services', 'employees', 'notifications', 'billing', 'modules'].includes(searchParams.get('tab') ?? '')
+  const initialTab = (['general', 'services', 'notifications', 'modules', 'account'].includes(searchParams.get('tab') ?? '')
     ? searchParams.get('tab')
     : 'general') as Tab
   const [tab, setTab] = useState<Tab>(initialTab)
@@ -71,7 +72,11 @@ export function SettingsTabs({ business: initial, services: initServices, employ
   const [viberWebhookMsg, setViberWebhookMsg] = useState('')
   const [waStatus, setWaStatus] = useState<'idle' | 'loading' | 'ok' | 'error'>('idle')
   const [waMsg, setWaMsg] = useState('')
-  const [biz, setBiz] = useState(initial)
+  const [biz, setBiz] = useState(() => ({
+    ...initial,
+    currency: initial.currency === 'USD' || !initial.currency ? 'EUR' : initial.currency,
+    timezone: initial.timezone === 'UTC' || !initial.timezone ? 'Europe/Brussels' : initial.timezone,
+  }))
   const [saving, setSaving] = useState(false)
   const [saved, setSaved] = useState(false)
   const [slugError, setSlugError] = useState('')
@@ -227,8 +232,8 @@ export function SettingsTabs({ business: initial, services: initServices, employ
     const bizAddress = biz.address ? clean(biz.address, 200) || null : null
     setBiz((b) => ({ ...b, slug: cleanSlug }))
     await supabase.from('businesses').update({
-      name: bizName, slug: cleanSlug, type: biz.type, phone: biz.phone, email: biz.email, address: bizAddress,
-      timezone: biz.timezone, currency: biz.currency,
+      name: bizName, slug: cleanSlug, type: biz.type || 'barbershop', phone: biz.phone, email: biz.email, address: bizAddress,
+      timezone: biz.timezone || 'Europe/Brussels', currency: biz.currency || 'EUR',
       telegram_bot_token: biz.telegram_bot_token, viber_bot_token: biz.viber_bot_token,
       owner_whatsapp: biz.owner_whatsapp,
       email_provider: biz.email_provider,
@@ -242,9 +247,9 @@ export function SettingsTabs({ business: initial, services: initServices, employ
       wa_template_thankyou: biz.wa_template_thankyou,
       wa_template_reactivation: biz.wa_template_reactivation,
       wa_template_birthday: biz.wa_template_birthday,
-      wa_template_language: biz.wa_template_language ?? 'en',
+      wa_template_language: biz.wa_template_language ?? 'nl',
       brand_color: biz.brand_color || '#2D2926',
-      notification_language: biz.notification_language ?? 'en',
+      notification_language: biz.notification_language ?? 'nl',
     }).eq('id', biz.id)
     setSaving(false); setSaved(true); setTimeout(() => setSaved(false), 2000)
     router.refresh()
@@ -356,9 +361,7 @@ export function SettingsTabs({ business: initial, services: initServices, employ
   const tabs: { key: Tab; label: string }[] = [
     { key: 'general', label: t('tabs.general') },
     ...(bookingsOn ? [{ key: 'services' as Tab, label: t('tabs.services') }] : []),
-    { key: 'employees', label: t('tabs.employees') },
     { key: 'notifications', label: t('tabs.notifications') },
-    { key: 'billing', label: t('tabs.billing') },
     { key: 'modules', label: t('tabs.modules') },
     { key: 'account', label: t('tabs.account') },
   ]
@@ -478,45 +481,12 @@ export function SettingsTabs({ business: initial, services: initServices, employ
                   className="w-full mt-1 border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
               </div>
             ))}
-            <div>
-              <label className="text-xs font-medium text-gray-500">{t('general.fields.timezone')}</label>
-              <select value={biz.timezone ?? 'UTC'} onChange={(e) => setBiz((b) => ({ ...b, timezone: e.target.value }))}
-                className="w-full mt-1 border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
-                {TIMEZONES.map((tz) => (
-                  <option key={tz.value} value={tz.value}>{tz.label}</option>
-                ))}
-              </select>
-            </div>
-            <div>
-              <label className="text-xs font-medium text-gray-500">{t('general.fields.currency')}</label>
-              <select value={currencySelectValue}
-                onChange={(e) => {
-                  if (e.target.value !== 'other') setBiz((b) => ({ ...b, currency: e.target.value }))
-                  else setBiz((b) => ({ ...b, currency: '' }))
-                }}
-                className="w-full mt-1 border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
-                {CURRENCIES.map((c) => (
-                  <option key={c.value} value={c.value}>{c.label}</option>
-                ))}
-              </select>
-              {currencySelectValue === 'other' && (
-                <input
-                  type="text"
-                  value={biz.currency ?? ''}
-                  onChange={(e) => setBiz((b) => ({ ...b, currency: e.target.value.toUpperCase() }))}
-                  placeholder="e.g. SGD"
-                  maxLength={10}
-                  className="w-full mt-2 border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-                />
-              )}
-            </div>
           </div>
           <div className="pt-2">
             <label className="text-xs font-medium text-gray-500">{t('general.typeLabel')}</label>
-            <select value={biz.type ?? ''} onChange={(e) => setBiz((b) => ({ ...b, type: e.target.value }))}
+            <select value={biz.type ?? 'barbershop'} onChange={(e) => setBiz((b) => ({ ...b, type: e.target.value }))}
               className="w-full mt-1 border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
-              <option value="">{t('general.typeDefault')}</option>
-              {(['salon', 'barbershop', 'auto_repair', 'cafe', 'dental', 'fitness', 'massage', 'other'] as const).map((tp) => (
+              {(['barbershop', 'salon'] as const).map((tp) => (
                 <option key={tp} value={tp}>{t(`general.types.${tp}`)}</option>
               ))}
             </select>
@@ -590,18 +560,18 @@ export function SettingsTabs({ business: initial, services: initServices, employ
           <div className="pt-2">
             <label className="text-xs font-medium text-gray-500">{t('general.notificationLanguageLabel')}</label>
             <div className="flex gap-2 mt-1">
-              {(['en', 'es', 'pt'] as const).map((lang) => (
+              {(['nl', 'en'] as const).map((lang) => (
                 <button
                   key={lang}
                   type="button"
                   onClick={() => setBiz((b) => ({ ...b, notification_language: lang }))}
                   className={`px-3 py-1.5 rounded-lg text-xs font-semibold border transition-colors ${
-                    (biz.notification_language ?? 'en') === lang
+                    (biz.notification_language ?? 'nl') === lang
                       ? 'bg-green-600 text-white border-green-600'
                       : 'bg-white text-gray-600 border-gray-200 hover:border-green-400'
                   }`}
                 >
-                  {lang === 'en' ? 'English' : lang === 'es' ? 'Español' : 'Português'}
+                  {lang === 'nl' ? 'Nederlands' : 'English'}
                 </button>
               ))}
             </div>
@@ -617,7 +587,6 @@ export function SettingsTabs({ business: initial, services: initServices, employ
             <Button onClick={saveBusiness} disabled={saving || !!slugError}>
               {saving ? t('general.saving') : saved ? <><Check className="w-4 h-4 mr-1" />{t('general.saved')}</> : t('general.saveButton')}
             </Button>
-            <Badge variant="outline">{t('general.planLabel')} {biz.plan}</Badge>
           </div>
         </div>
 
@@ -743,7 +712,7 @@ export function SettingsTabs({ business: initial, services: initServices, employ
                     <tr key={s.id} className="border-b border-gray-100 hover:bg-gray-50 last:border-0">
                       <td className="px-4 py-3 font-medium text-gray-900">{s.name}</td>
                       <td className="px-4 py-3 text-gray-500 hidden sm:table-cell">{s.category ?? '—'}</td>
-                      <td className="px-4 py-3 text-right">{biz.currency} {s.price}</td>
+                      <td className="px-4 py-3 text-right">{formatCurrency(s.price, 'EUR')}</td>
                       <td className="px-4 py-3 text-right text-gray-500">{s.duration_min} min</td>
                       <td className="px-4 py-3 text-right text-gray-500 hidden sm:table-cell">
                         {(s.capacity ?? 1) > 1 ? (
@@ -1192,27 +1161,7 @@ export function SettingsTabs({ business: initial, services: initServices, employ
               <p className="text-sm text-gray-500 mt-1">{t('modules.description')}</p>
             </div>
 
-            <div>
-              <p className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-2">{t('modules.presetsLabel')}</p>
-              <div className="flex flex-wrap gap-2">
-                {[
-                  { labelKey: 'modules.presets.salon' as const, modules: ['bookings','crm','pos','inventory','notifications'] },
-                  { labelKey: 'modules.presets.shop'  as const, modules: ['inventory','pos','notifications'] },
-                  { labelKey: 'modules.presets.cafe'  as const, modules: ['pos','crm','inventory','notifications'] },
-                  { labelKey: 'modules.presets.all'   as const, modules: DEFAULT_MODULES },
-                ].map((preset) => (
-                  <button
-                    key={preset.labelKey}
-                    onClick={() => setEnabledModules(preset.modules)}
-                    className="text-sm px-3 py-1.5 rounded-lg border border-gray-200 hover:border-blue-400 hover:text-blue-700 transition-colors"
-                  >
-                    {t(preset.labelKey)}
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            <div className="space-y-4 pt-2 border-t border-gray-100">
+            <div className="space-y-4 pt-2">
               {(Object.keys(MODULES) as ModuleKey[]).map((key) => {
                 const on = enabledModules.includes(key)
                 const modLabel = t(`modules.items.${key}.label` as Parameters<typeof t>[0])

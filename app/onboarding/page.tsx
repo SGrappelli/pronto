@@ -1,19 +1,11 @@
-import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
 import { OnboardingWizard } from './OnboardingWizard'
+import { getBusinessDb } from '@/lib/auth-user'
 
 export default async function OnboardingPage() {
-  const supabase = await createClient()
-  const { data: { user } } = await supabase.auth.getUser()
-  if (!user) redirect('/login')
-
-  const { data: business } = await supabase
-    .from('businesses')
-    .select('id, slug, name, onboarding_completed')
-    .eq('owner_id', user.id)
-    .maybeSingle()
-
-  if (!business) redirect('/login')
+  const ctx = await getBusinessDb()
+  if (!ctx) redirect('/login')
+  const { business } = ctx
 
   // Guard: already onboarded → go straight to dashboard
   if (business.onboarding_completed) {

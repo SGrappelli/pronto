@@ -1,4 +1,3 @@
-import { createClient } from '@/lib/supabase/server'
 import { Header } from '@/components/layout/header'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { formatCurrency, formatInBusinessTimezone } from '@/lib/utils'
@@ -7,7 +6,7 @@ import Link from 'next/link'
 import { redirect } from 'next/navigation'
 import { getTranslations } from 'next-intl/server'
 import { OnboardingChecklist } from '@/components/onboarding-checklist'
-import { getAuthUser } from '@/lib/auth-user'
+import { getBusinessDb } from '@/lib/auth-user'
 
 const STATUS_STRIPE: Record<string, string> = {
   pending:   '#94a3b8',
@@ -19,60 +18,60 @@ const STATUS_STRIPE: Record<string, string> = {
 }
 
 export default async function DashboardPage() {
-  const supabase = await createClient()
   const t = await getTranslations('dashboard')
-  const user = await getAuthUser()
 
-  const { data: business } = await supabase
-    .from('businesses')
-    .select('id, name, currency, timezone, onboarding_completed, enabled_modules')
-    .eq('owner_id', user!.id)
-    .maybeSingle()
-
-  if (!business) return null
+  const ctx = await getBusinessDb()
+  if (!ctx) return null
+  const { business, db } = ctx
 
   if (!business.onboarding_completed) redirect('/onboarding')
 
   const todayStr = new Date().toISOString().slice(0, 10)
+  const tomorrowStr = new Date(Date.now() + 86400000).toISOString().slice(0, 10)
   const sevenDaysAgo = new Date(Date.now() - 6 * 86400000).toISOString().slice(0, 10)
 
   const [
-    { count: clientCount },
-    { data: apptToday },
-    { data: recentTransactions },
-    { data: upcomingAppointments },
-    { data: todayRevenue },
-    { data: inventoryItems },
-    { data: sparklineRaw },
+    clientCount,
+    apptToday,
+    recentTransactions,
+    upcomingAppointments,
+    todayRevenue,
+    inventoryItems,
+    sparklineRaw,
   ] = await Promise.all([
-    supabase.from('clients').select('id', { count: 'exact', head: true }).eq('business_id', business.id),
-    supabase.from('appointments').select('id, status')
-      .eq('business_id', business.id)
-      .gte('starts_at', todayStr)
-      .lt('starts_at', new Date(Date.now() + 86400000).toISOString().slice(0, 10)),
-    supabase.from('transactions').select('id, amount, payment_method, created_at, clients(name)')
-      .eq('business_id', business.id).eq('status', 'completed')
-      .order('created_at', { ascending: false }).limit(5),
-    supabase.from('appointments')
-      .select('id, starts_at, status, clients(name), services(name)')
-      .eq('business_id', business.id)
-      .gte('starts_at', new Date().toISOString())
-      .in('status', ['pending', 'confirmed'])
-      .order('starts_at', { ascending: true }).limit(5),
-    supabase.from('transactions').select('amount')
-      .eq('business_id', business.id).eq('status', 'completed')
-      .gte('created_at', todayStr),
-    supabase.from('inventory_items')
-      .select('quantity, low_stock_threshold')
-      .eq('business_id', business.id),
-    supabase.from('transactions').select('amount, created_at')
-      .eq('business_id', business.id).eq('status', 'completed')
-      .gte('created_at', sevenDaysAgo),
+    db.clients.count(),
+    db.appointments.findMany({
+      select: { id: true, status: true },
+      where: { starts_at: { gte: new Date(todayStr), lt: new Date(tomorrowStr) } },
+    }),
+    db.transactions.findMany({
+      select: { id: true, amount: true, payment_method: true, created_at: true, clients: { select: { name: true } } },
+      where: { status: 'completed' },
+      orderBy: { created_at: 'desc' },
+      take: 5,
+    }),
+    db.appointments.findMany({
+      select: { id: true, starts_at: true, status: true, clients: { select: { name: true } }, services: { select: { name: true } } },
+      where: { starts_at: { gte: new Date() }, status: { in: ['pending', 'confirmed'] } },
+      orderBy: { starts_at: 'asc' },
+      take: 5,
+    }),
+    db.transactions.findMany({
+      select: { amount: true },
+      where: { status: 'completed', created_at: { gte: new Date(todayStr) } },
+    }),
+    db.inventory_items.findMany({
+      select: { quantity: true, low_stock_threshold: true },
+    }),
+    db.transactions.findMany({
+      select: { amount: true, created_at: true },
+      where: { status: 'completed', created_at: { gte: new Date(sevenDaysAgo) } },
+    }),
   ])
 
-  const revenueToday = todayRevenue?.reduce((sum, tx) => sum + tx.amount, 0) ?? 0
-  const lowStock = (inventoryItems ?? []).filter(
-    (item) => Number(item.quantity) <= Number(item.low_stock_threshold)
+  const revenueToday = todayRevenue.reduce((sum, tx) => sum + tx.amount.toNumber(), 0)
+  const lowStock = inventoryItems.filter(
+    (item) => item.quantity.toNumber() <= item.low_stock_threshold.toNumber()
   ).length
 
   // Sparkline: sum revenue per day for last 7 days
@@ -82,17 +81,17 @@ export default async function DashboardPage() {
   })
   const sparklineByDay: Record<string, number> = {}
   for (const day of sparklineDays) sparklineByDay[day] = 0
-  for (const tx of sparklineRaw ?? []) {
-    const day = tx.created_at.slice(0, 10)
-    if (day in sparklineByDay) sparklineByDay[day] += tx.amount
+  for (const tx of sparklineRaw) {
+    const day = tx.created_at.toISOString().slice(0, 10)
+    if (day in sparklineByDay) sparklineByDay[day] += tx.amount.toNumber()
   }
   const sparklineValues = sparklineDays.map((d) => sparklineByDay[d])
   const sparklineMax = Math.max(...sparklineValues, 1)
 
   // Bookings today breakdown by status
-  const apptTodayCount = apptToday?.length ?? 0
+  const apptTodayCount = apptToday.length
   const statusBreakdown: Record<string, number> = {}
-  for (const a of apptToday ?? []) {
+  for (const a of apptToday) {
     statusBreakdown[a.status] = (statusBreakdown[a.status] ?? 0) + 1
   }
   const breakdownParts = (['confirmed', 'pending', 'completed'] as const)
@@ -212,14 +211,14 @@ export default async function DashboardPage() {
               </CardTitle>
             </CardHeader>
             <CardContent>
-              {upcomingAppointments?.length === 0 ? (
+              {upcomingAppointments.length === 0 ? (
                 <div className="text-sm text-gray-500 py-4 text-center">
                   {t('upcomingAppointments.empty')}{' '}
                   <Link href="/booking" className="text-blue-600 hover:underline">{t('upcomingAppointments.addOne')}</Link>
                 </div>
               ) : (
                 <div className="space-y-3">
-                  {upcomingAppointments?.map((a) => (
+                  {upcomingAppointments.map((a) => (
                     <div key={a.id} className="flex items-center justify-between py-2 border-b border-gray-100 last:border-0 pl-3 relative">
                       {/* Status stripe */}
                       <span
@@ -228,10 +227,10 @@ export default async function DashboardPage() {
                       />
                       <div>
                         <div className="text-sm font-medium text-gray-900">
-                          {(a.clients as { name: string } | null)?.name ?? t('upcomingAppointments.walkIn')}
+                          {a.clients?.name ?? t('upcomingAppointments.walkIn')}
                         </div>
                         <div className="text-xs text-gray-500">
-                          {(a.services as { name: string } | null)?.name} · {formatInBusinessTimezone(a.starts_at, business.timezone)}
+                          {a.services?.name} · {formatInBusinessTimezone(a.starts_at, business.timezone)}
                         </div>
                       </div>
                       <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${statusColors[a.status]}`}>
@@ -252,25 +251,25 @@ export default async function DashboardPage() {
               </CardTitle>
             </CardHeader>
             <CardContent>
-              {recentTransactions?.length === 0 ? (
+              {recentTransactions.length === 0 ? (
                 <div className="text-sm text-gray-500 py-4 text-center">
                   {t('recentSales.empty')}{' '}
                   <Link href="/pos" className="text-blue-600 hover:underline">{t('recentSales.makeFirst')}</Link>
                 </div>
               ) : (
                 <div className="space-y-3">
-                  {recentTransactions?.map((tx) => (
+                  {recentTransactions.map((tx) => (
                     <div key={tx.id} className="flex items-center justify-between py-2 border-b border-gray-100 last:border-0">
                       <div>
                         <div className="text-sm font-medium text-gray-900">
-                          {(tx.clients as { name: string } | null)?.name ?? t('recentSales.walkIn')}
+                          {tx.clients?.name ?? t('recentSales.walkIn')}
                         </div>
                         <div className="text-xs text-gray-500 capitalize">
                           {tx.payment_method} · {formatInBusinessTimezone(tx.created_at, business.timezone)}
                         </div>
                       </div>
                       <span className="text-sm font-semibold text-gray-900">
-                        {formatCurrency(tx.amount, business.currency)}
+                        {formatCurrency(tx.amount.toNumber(), business.currency)}
                       </span>
                     </div>
                   ))}

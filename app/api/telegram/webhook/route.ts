@@ -12,7 +12,7 @@
  */
 
 import { NextRequest, NextResponse } from 'next/server'
-import { createClient } from '@supabase/supabase-js'
+import { db, forBusiness } from '@/lib/db'
 import { sendTelegramMessage } from '@/lib/telegram'
 
 function toTitleCase(name: string): string {
@@ -32,15 +32,18 @@ export async function POST(req: NextRequest) {
     const text: string = message.text ?? ''
     const firstName: string = message.from?.first_name ?? 'there'
 
-    const supabase = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.SUPABASE_SERVICE_ROLE_KEY!)
-
-    const { data: biz } = await supabase
-      .from('businesses')
-      .select('id, name, telegram_bot_token, telegram_chat_id')
-      .eq('id', businessId)
-      .single()
+    // businessId arrives as the ?bid= query parameter Telegram calls back with.
+    // Every query below is scoped to it via tdb, so a wrong bid can only ever
+    // touch that business's own rows — and without its bot token nothing is
+    // sent at all.
+    const biz = await db.businesses.findUnique({
+      select: { id: true, name: true, telegram_bot_token: true, telegram_chat_id: true },
+      where: { id: businessId },
+    })
 
     if (!biz?.telegram_bot_token) return NextResponse.json({ ok: true })
+
+    const tdb = forBusiness(businessId)
 
     // ── /start ────────────────────────────────────────────────────────────────
     if (text.startsWith('/start')) {
@@ -51,34 +54,23 @@ export async function POST(req: NextRequest) {
         const clientId = param.replace('client_', '')
         // Basic UUID format check
         if (/^[0-9a-f-]{36}$/i.test(clientId)) {
-          const { data: client } = await supabase
-            .from('clients')
-            .select('id, name, phone, email')
-            .eq('id', clientId)
-            .eq('business_id', businessId)
-            .maybeSingle()
+          const client = await tdb.clients.findFirst({
+            select: { id: true, name: true, phone: true, email: true },
+            where: { id: clientId },
+          })
 
           if (client) {
             // Update this client and any duplicate records with the same phone/email
             // so one /start press covers all bookings made with the same contact info
-            if (client.phone) {
-              await supabase
-                .from('clients')
-                .update({ telegram_id: chatId })
-                .eq('business_id', businessId)
-                .eq('phone', client.phone)
-            } else if (client.email) {
-              await supabase
-                .from('clients')
-                .update({ telegram_id: chatId })
-                .eq('business_id', businessId)
-                .eq('email', client.email)
-            } else {
-              await supabase
-                .from('clients')
-                .update({ telegram_id: chatId })
-                .eq('id', clientId)
-            }
+            // The last branch filtered on id alone and relied on RLS for the
+            // tenant check; tdb supplies it now.
+            const match = client.phone
+              ? { phone: client.phone }
+              : client.email
+                ? { email: client.email }
+                : { id: clientId }
+
+            await tdb.clients.updateMany({ where: match, data: { telegram_id: chatId } })
 
             await sendTelegramMessage(
               biz.telegram_bot_token,
@@ -104,10 +96,10 @@ export async function POST(req: NextRequest) {
       }
 
       // Owner /start — connect business to this chat
-      await supabase
-        .from('businesses')
-        .update({ telegram_chat_id: chatId })
-        .eq('id', businessId)
+      await db.businesses.update({
+        where: { id: businessId },
+        data: { telegram_chat_id: chatId },
+      })
 
       await sendTelegramMessage(
         biz.telegram_bot_token,
@@ -142,19 +134,14 @@ export async function POST(req: NextRequest) {
         return NextResponse.json({ ok: true })
       }
 
-      const { data: clients } = await supabase
-        .from('clients')
-        .select('id, name')
-        .eq('business_id', businessId)
-        .eq('phone', phone)
+      const clients = await tdb.clients.findMany({
+        select: { id: true, name: true },
+        where: { phone },
+      })
 
-      if (clients && clients.length > 0) {
+      if (clients.length > 0) {
         // Update all records with this phone (covers duplicate client entries)
-        await supabase
-          .from('clients')
-          .update({ telegram_id: chatId })
-          .eq('business_id', businessId)
-          .eq('phone', phone)
+        await tdb.clients.updateMany({ where: { phone }, data: { telegram_id: chatId } })
 
         await sendTelegramMessage(
           biz.telegram_bot_token,
@@ -177,15 +164,18 @@ export async function POST(req: NextRequest) {
       const start = new Date(today.setHours(0, 0, 0, 0)).toISOString()
       const end = new Date(today.setHours(23, 59, 59, 999)).toISOString()
 
-      const { data: appts } = await supabase
-        .from('appointments')
-        .select('starts_at, status, clients(name), services(name)')
-        .eq('business_id', businessId)
-        .gte('starts_at', start)
-        .lte('starts_at', end)
-        .order('starts_at')
+      const appts = await tdb.appointments.findMany({
+        select: {
+          starts_at: true,
+          status: true,
+          clients: { select: { name: true } },
+          services: { select: { name: true } },
+        },
+        where: { starts_at: { gte: new Date(start), lte: new Date(end) } },
+        orderBy: { starts_at: 'asc' },
+      })
 
-      if (!appts || appts.length === 0) {
+      if (appts.length === 0) {
         await sendTelegramMessage(biz.telegram_bot_token, chatId, '📅 No appointments today.')
       } else {
         const statusEmoji: Record<string, string> = {

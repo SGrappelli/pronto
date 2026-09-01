@@ -7,7 +7,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { z } from 'zod'
 import DOMPurify from 'isomorphic-dompurify'
-import { createServiceClient } from '@/lib/supabase/service'
+import { db, forBusiness } from '@/lib/db'
 import { rateLimit, getIp } from '@/lib/rate-limit'
 import { computeEffectiveHours, checkSlotWithinHours, dayOfWeekFromDateString } from '@/lib/booking-availability'
 
@@ -79,22 +79,21 @@ export async function POST(req: NextRequest) {
     )
   }
 
-  const supabase = createServiceClient()
+  // businessId comes from the request body because this is the public booking
+  // endpoint — the visitor identifies the business by its booking page. Every
+  // query below is scoped to it, and the service lookup verifies the requested
+  // service really belongs to that business.
+  const tdb = forBusiness(businessId)
 
-  // Verify the business exists and the service belongs to it; also fetch timezone
-  const [{ data: service }, { data: biz }] = await Promise.all([
-    supabase
-      .from('services')
-      .select('id, duration_min, price')
-      .eq('id', serviceId)
-      .eq('business_id', businessId)
-      .eq('is_active', true)
-      .maybeSingle(),
-    supabase
-      .from('businesses')
-      .select('timezone')
-      .eq('id', businessId)
-      .maybeSingle(),
+  const [service, biz] = await Promise.all([
+    tdb.services.findFirst({
+      select: { id: true, duration_min: true, price: true },
+      where: { id: serviceId, is_active: true },
+    }),
+    db.businesses.findUnique({
+      select: { timezone: true },
+      where: { id: businessId },
+    }),
   ])
 
   if (!service) {
@@ -109,12 +108,14 @@ export async function POST(req: NextRequest) {
   // requesting a time the business is actually closed for, so repeat the
   // same check here using the same shared logic (lib/booking-availability.ts)
   // the client uses to build effectiveHours in the first place.
-  const { data: businessHours } = await supabase
-    .from('business_hours')
-    .select('day_of_week, is_open, open_time, close_time, break_start, break_end')
-    .eq('business_id', businessId)
+  const businessHours = await tdb.business_hours.findMany({
+    select: {
+      day_of_week: true, is_open: true, open_time: true, close_time: true,
+      break_start: true, break_end: true,
+    },
+  })
 
-  const effectiveHours = computeEffectiveHours(businessHours ?? [])
+  const effectiveHours = computeEffectiveHours(businessHours)
   const dow = dayOfWeekFromDateString(date)
   const dayHours = effectiveHours.find((h) => h.day_of_week === dow)
   const slotCheck = checkSlotWithinHours(dayHours, time, service.duration_min)
@@ -138,18 +139,14 @@ export async function POST(req: NextRequest) {
   if (phone || email) {
     // BUG-8: search by all provided fields combined — avoids duplicate clients when
     // both phone and email are submitted but each matches a different existing record.
-    const orParts: string[] = []
-    if (phone) orParts.push(`phone.eq.${phone}`)
-    if (email) orParts.push(`email.eq.${email}`)
+    const orParts = []
+    if (phone) orParts.push({ phone })
+    if (email) orParts.push({ email })
 
-    const { data: matches } = await supabase
-      .from('clients')
-      .select('id, name, email, telegram_id, viber_user_id')
-      .eq('business_id', businessId)
-      .or(orParts.join(','))
-      .limit(1)
-
-    const existing = matches?.[0] ?? null
+    const existing = await tdb.clients.findFirst({
+      select: { id: true, name: true, email: true, telegram_id: true, viber_user_id: true },
+      where: { OR: orParts },
+    })
 
     if (existing) {
       clientId = existing.id
@@ -160,25 +157,25 @@ export async function POST(req: NextRequest) {
       if (name && name !== existing.name) updates.name = name
       if (email && email !== existing.email) updates.email = email
       if (Object.keys(updates).length > 0) {
-        await supabase.from('clients').update(updates).eq('id', existing.id)
+        await tdb.clients.update({ where: { id: existing.id }, data: updates })
       }
     } else {
       // BUG-9: fail fast if client creation fails — never book without a valid clientId
-      const { data: newClient, error: insertErr } = await supabase
-        .from('clients')
-        .insert({
-          business_id: businessId,
-          name,
-          phone: phone || null,
-          email: email || null,
+      try {
+        const newClient = await tdb.clients.create({
+          data: {
+            business_id: businessId,
+            name,
+            phone: phone || null,
+            email: email || null,
+          },
+          select: { id: true },
         })
-        .select('id')
-        .single()
-      if (insertErr || !newClient) {
-        console.error('[api/book] client insert error:', insertErr?.message)
+        clientId = newClient.id
+      } catch (err) {
+        console.error('[api/book] client insert error:', (err as Error).message)
         return NextResponse.json({ error: 'client_creation_failed' }, { status: 500 })
       }
-      clientId = newClient.id
     }
   }
 
@@ -186,27 +183,33 @@ export async function POST(req: NextRequest) {
   const startsAt = parseDateTimeInTz(date, time, timezone)
   const endsAt   = new Date(startsAt.getTime() + service.duration_min * 60_000)
 
-  const { data: appt, error: apptErr } = await supabase
-    .from('appointments')
-    .insert({
-      business_id: businessId,
-      client_id:   clientId,
-      employee_id: employeeId ?? null,
-      service_id:  serviceId,
-      starts_at:   startsAt.toISOString(),
-      ends_at:     endsAt.toISOString(),
-      price:       service.price,
-      status:      'confirmed',
-      source:      'online',
+  // The slot conflict and staff-assignment checks live in database triggers
+  // (migrations 017, 032, 034), which RAISE EXCEPTION. Prisma surfaces that as
+  // a thrown error whose message still carries the trigger's error code, so
+  // the branches below match on the same strings as before.
+  let appt: { id: string }
+  try {
+    appt = await forBusiness(businessId).appointments.create({
+      data: {
+        business_id: businessId,
+        client_id:   clientId,
+        employee_id: employeeId ?? null,
+        service_id:  serviceId,
+        starts_at:   startsAt,
+        ends_at:     endsAt,
+        price:       service.price,
+        status:      'confirmed',
+        source:      'online',
+      },
+      select: { id: true },
     })
-    .select('id')
-    .single()
+  } catch (err) {
+    const message = (err as Error).message ?? ''
 
-  if (apptErr || !appt) {
     // Trigger 034: no active employee exists to assign this booking to —
     // distinct from a real time conflict, so it gets an honest message
     // instead of "slot already booked".
-    if (apptErr?.message?.includes('no_staff_available')) {
+    if (message.includes('no_staff_available')) {
       return NextResponse.json(
         { error: 'no_staff_available', message: 'This business has no staff available to take bookings right now. Please contact them directly.' },
         { status: 409 }
@@ -215,13 +218,13 @@ export async function POST(req: NextRequest) {
 
     // Trigger 017: the DB raises 'slot_already_booked' when a concurrent
     // request wins the race for the same slot.
-    if (apptErr?.message?.includes('slot_already_booked')) {
+    if (message.includes('slot_already_booked')) {
       return NextResponse.json(
         { error: 'slot_taken', message: 'This time slot was just taken. Please choose another time.' },
         { status: 409 }
       )
     }
-    console.error('[api/book] insert error:', apptErr?.message)
+    console.error('[api/book] insert error:', message)
     return NextResponse.json({ error: 'booking_failed' }, { status: 500 })
   }
 

@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
+import { db, forBusiness } from '@/lib/db'
 
 interface ImportRow {
   name?: string
@@ -22,11 +23,10 @@ export async function POST(req: NextRequest) {
   }
 
   // ── Get business ──────────────────────────────────────────────────────────
-  const { data: business } = await supabase
-    .from('businesses')
-    .select('id')
-    .eq('owner_id', user.id)
-    .maybeSingle()
+  const business = await db.businesses.findFirst({
+    where: { owner_id: user.id },
+    select: { id: true },
+  })
 
   if (!business) {
     return NextResponse.json({ error: 'Business not found' }, { status: 404 })
@@ -78,21 +78,19 @@ export async function POST(req: NextRequest) {
       tags:        [] as string[],
     }))
 
-    const { data, error } = await supabase
-      .from('clients')
-      .upsert(rows, {
-        onConflict: 'business_id,phone',
-        ignoreDuplicates: true,
+    // skipDuplicates is INSERT ... ON CONFLICT DO NOTHING, the same thing the
+    // Supabase upsert with ignoreDuplicates did against (business_id, phone).
+    try {
+      const { count } = await forBusiness(business.id).clients.createMany({
+        data: rows,
+        skipDuplicates: true,
       })
-      .select('id')
-
-    if (error) {
-      console.error('[import] upsert error (with phone):', error.message)
+      imported += count
+      skipped  += withPhone.length - count
+    } catch (err) {
+      console.error('[import] upsert error (with phone):', (err as Error).message)
       return NextResponse.json({ error: 'Database error' }, { status: 500 })
     }
-
-    imported += data?.length ?? 0
-    skipped  += withPhone.length - (data?.length ?? 0)
   }
 
   // Rows without phone — plain insert (no dedup possible)
@@ -106,17 +104,13 @@ export async function POST(req: NextRequest) {
       tags:        [] as string[],
     }))
 
-    const { data, error } = await supabase
-      .from('clients')
-      .insert(rows)
-      .select('id')
-
-    if (error) {
-      console.error('[import] insert error (no phone):', error.message)
+    try {
+      const { count } = await forBusiness(business.id).clients.createMany({ data: rows })
+      imported += count
+    } catch (err) {
+      console.error('[import] insert error (no phone):', (err as Error).message)
       return NextResponse.json({ error: 'Database error' }, { status: 500 })
     }
-
-    imported += data?.length ?? 0
   }
 
   return NextResponse.json({ imported, skipped, errors: [] })

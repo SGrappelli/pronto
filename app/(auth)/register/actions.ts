@@ -60,12 +60,16 @@ export async function register(formData: FormData) {
       owner_id: authData.user.id,
       name: businessName,
       slug,
+      currency: 'EUR',
+      timezone: 'Europe/Brussels',
+      notification_language: 'nl',
+      type: 'barbershop',
     })
     .select('id')
     .single()
 
   if (newBusiness) {
-    await insertOwnerAsEmployee(admin, newBusiness.id, authData.user)
+    await insertOwnerAsEmployee(newBusiness.id, authData.user)
   }
 
   // В selfhosted-режиме: принудительно логиним сразу после регистрации,

@@ -252,7 +252,7 @@
   },
   "pos": {
     "title": "PDV / Caixa",
-    "salesHistory": "Transações",
+    "salesHistory": "Histórico de vendas",
     "categoryOther": "Outro",
     "cart": "Carrinho",
     "clientLabel": "Cliente",
@@ -436,7 +436,10 @@
     },
     "calendar": {
       "today": "Hoje",
-      "publicPage": "Página pública de agendamentos",
+      "week": "Semana",
+      "month": "Mês",
+      "more": "+{count} mais",
+      "publicPage": "Página pública de agendamento",
       "days": [
         "Seg",
         "Ter",
@@ -995,6 +998,7 @@
       "card": "Cartão",
       "transfer": "Transferência",
       "online": "Online",
+      "client": "Cliente",
       "from": "De",
       "to": "Até",
       "clientPlaceholder": "Cliente ou produto...",

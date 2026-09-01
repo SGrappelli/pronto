@@ -252,7 +252,7 @@
   },
   "pos": {
     "title": "POS / Cassa",
-    "salesHistory": "Transazioni",
+    "salesHistory": "Cronologia vendite",
     "categoryOther": "Altro",
     "cart": "Carrello",
     "clientLabel": "Cliente",
@@ -435,6 +435,9 @@
     },
     "calendar": {
       "today": "Oggi",
+      "week": "Settimana",
+      "month": "Mese",
+      "more": "+{count} altri",
       "publicPage": "Pagina di prenotazione pubblica",
       "days": [
         "Lun",
@@ -994,6 +997,7 @@
       "card": "Carta",
       "transfer": "Bonifico",
       "online": "Online",
+      "client": "Cliente",
       "from": "Da",
       "to": "A",
       "clientPlaceholder": "Nome cliente o articolo...",

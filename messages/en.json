@@ -252,7 +252,7 @@
   },
   "pos": {
     "title": "POS / Checkout",
-    "salesHistory": "Transactions",
+    "salesHistory": "Sales history",
     "categoryOther": "Other",
     "cart": "Cart",
     "clientLabel": "Client",
@@ -436,6 +436,9 @@
     },
     "calendar": {
       "today": "Today",
+      "week": "Week",
+      "month": "Month",
+      "more": "+{count} more",
       "publicPage": "Public booking page",
       "days": [
         "Mon",
@@ -995,6 +998,7 @@
       "card": "Card",
       "transfer": "Transfer",
       "online": "Online",
+      "client": "Client",
       "from": "From",
       "to": "To",
       "clientPlaceholder": "Client or item name...",

@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
+import { db, forBusiness } from '@/lib/db'
 
 const clean = (s: string, max = 500) => s?.trim().slice(0, max) ?? ''
 
@@ -28,11 +29,10 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
 
-  const { data: business } = await supabase
-    .from('businesses')
-    .select('id')
-    .eq('owner_id', user.id)
-    .maybeSingle()
+  const business = await db.businesses.findFirst({
+    where: { owner_id: user.id },
+    select: { id: true },
+  })
 
   if (!business) {
     return NextResponse.json({ error: 'Business not found' }, { status: 404 })
@@ -67,16 +67,15 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ imported: 0, skipped: rawRows.length, errors: [] })
   }
 
-  const { data: existing } = await supabase
-    .from('inventory_items')
-    .select('barcode, sku, name')
-    .eq('business_id', business.id)
+  const existing = await forBusiness(business.id).inventory_items.findMany({
+    select: { barcode: true, sku: true, name: true },
+  })
 
   const existingBarcodes = new Set(
-    (existing ?? []).filter((e) => e.barcode).map((e) => e.barcode as string)
+    existing.filter((e) => e.barcode).map((e) => e.barcode as string)
   )
   const existingSkus = new Set(
-    (existing ?? []).filter((e) => e.sku).map((e) => e.sku as string)
+    existing.filter((e) => e.sku).map((e) => e.sku as string)
   )
   const existingNames = new Set(
     (existing ?? [])
@@ -124,17 +123,14 @@ export async function POST(req: NextRequest) {
     low_stock_threshold: 5,
   }))
 
-  const { data: inserted, error: insertError } = await supabase
-    .from('inventory_items')
-    .insert(rows)
-    .select('id')
-
-  if (insertError) {
-    console.error('[inventory/import] insert error:', insertError.message)
+  let imported: number
+  try {
+    const result = await forBusiness(business.id).inventory_items.createMany({ data: rows })
+    imported = result.count
+  } catch (err) {
+    console.error('[inventory/import] insert error:', (err as Error).message)
     return NextResponse.json({ error: 'Database error' }, { status: 500 })
   }
-
-  const imported = inserted?.length ?? 0
   const skipped  = skippedEmpty + skippedDupes + (toInsert.length - imported)
 
   return NextResponse.json({ imported, skipped, errors: [] })

@@ -1,4 +1,4 @@
-import { SupabaseClient } from '@supabase/supabase-js'
+import { forBusiness } from '@/lib/db'
 
 /** Best-effort display name for a newly registered owner, from whatever account data exists at signup time. */
 function deriveOwnerName(user: { email?: string | null; user_metadata?: Record<string, unknown> | null }): string {
@@ -27,15 +27,20 @@ function deriveOwnerName(user: { email?: string | null; user_metadata?: Record<s
  * registrations going forward.
  */
 export async function insertOwnerAsEmployee(
-  admin: SupabaseClient,
   businessId: string,
   user: { email?: string | null; user_metadata?: Record<string, unknown> | null }
 ): Promise<void> {
-  const { error } = await admin.from('employees').insert({
-    business_id: businessId,
-    name: deriveOwnerName(user),
-    email: user.email ?? null,
-    is_active: true,
-  })
-  if (error) console.error('[create-business] failed to auto-create owner employee:', error.message)
+  try {
+    await forBusiness(businessId).employees.create({
+      data: {
+        business_id: businessId,
+        name: deriveOwnerName(user),
+        email: user.email ?? null,
+        is_active: true,
+      },
+    })
+  } catch (err) {
+    // Best-effort, same as before: a failure here must not fail registration.
+    console.error('[create-business] failed to auto-create owner employee:', (err as Error).message)
+  }
 }

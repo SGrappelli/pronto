@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { createClient as createAdminClient } from '@supabase/supabase-js'
+import { db, forBusiness, Prisma } from '@/lib/db'
 import { sendBookingConfirmation, formatEmailDate, formatEmailTime } from '@/lib/email'
 import { buildGCalUrlFromISO } from '@/lib/gcal'
 import { sendTelegramMessage, tplNewBooking, tplReminderClient as tgTplConfirmClient } from '@/lib/telegram'
@@ -14,7 +14,21 @@ function tplConfirmClient(opts: {
   time: string
   businessName: string
   address?: string
+  lang?: string
 }): string {
+  if (opts.lang === 'nl') {
+    const lines = [
+      `✅ <b>Boeking bevestigd!</b>`,
+      ``,
+      `👤 ${opts.clientName}`,
+      `📋 ${opts.serviceName}`,
+      `🕐 ${opts.date} om ${opts.time}`,
+      `🏠 ${opts.businessName}`,
+    ]
+    if (opts.address) lines.push(`📍 ${opts.address}`)
+    lines.push(``, `We sturen je vooraf een herinnering.`)
+    return lines.join('\n')
+  }
   const lines = [
     `✅ <b>Booking confirmed!</b>`,
     ``,
@@ -63,41 +77,36 @@ export async function POST(req: NextRequest) {
     const { appointmentId, formEmail } = await req.json()
     if (!appointmentId) return NextResponse.json({ error: 'missing appointmentId' }, { status: 400 })
 
-    // Используем service role — этот роут вызывается server-to-server (из /api/book),
-    // без cookies пользователя, поэтому анонимный клиент блокировался бы RLS.
-    const supabase = createAdminClient(
-      process.env.NEXT_PUBLIC_SUPABASE_URL!,
-      process.env.SUPABASE_SERVICE_ROLE_KEY!
-    )
+    // This route is called server-to-server (from /api/book), without a user
+    // session and without knowing the business up front — resolve it from the
+    // appointment row first, then scope everything else with forBusiness().
+    const appt = await db.appointments.findUnique({
+      where: { id: appointmentId },
+      select: {
+        id: true, starts_at: true, business_id: true, source: true,
+        services: { select: { name: true, duration_min: true } },
+        employees: { select: { name: true } },
+        clients: { select: { name: true, email: true, whatsapp_number: true, telegram_id: true, viber_user_id: true } },
+      },
+    })
 
-    const { data: appt, error: apptErr } = await supabase
-      .from('appointments')
-      .select('id, starts_at, business_id, source, services(name, duration_min), employees(name), clients(name, email, whatsapp_number, telegram_id, viber_user_id)')
-      .eq('id', appointmentId)
-      .single()
-
-    if (apptErr) console.error('[email/confirm] appointment fetch error:', apptErr.message)
     if (!appt) return NextResponse.json({ error: 'not found' }, { status: 404 })
 
-    const client = appt.clients as unknown as {
-      name: string
-      email: string | null
-      whatsapp_number: string | null
-      telegram_id: string | null
-      viber_user_id: string | null
-    } | null
-    const service = appt.services as unknown as { name: string; duration_min: number } | null
-    const employee = appt.employees as unknown as { name: string } | null
+    const tdb = forBusiness(appt.business_id)
+    const client = appt.clients
+    const service = appt.services
+    const employee = appt.employees
 
-    const { data: biz } = await supabase
-      .from('businesses')
-      .select('name, address, slug, timezone, telegram_bot_token, telegram_chat_id, viber_bot_token, viber_chat_id, meta_whatsapp_phone_number_id, meta_whatsapp_access_token')
-      .eq('id', appt.business_id)
-      .single()
+    const biz = await db.businesses.findUnique({
+      select: { name: true, address: true, slug: true, timezone: true, notification_language: true, telegram_bot_token: true, telegram_chat_id: true, viber_bot_token: true, viber_chat_id: true, meta_whatsapp_phone_number_id: true, meta_whatsapp_access_token: true },
+      where: { id: appt.business_id },
+    })
 
-    const tz = biz?.timezone ?? 'UTC'
-    const date = formatEmailDate(appt.starts_at, tz)
-    const time = formatEmailTime(appt.starts_at, tz)
+    const tz = biz?.timezone ?? 'Europe/Brussels'
+    const notifLang = biz?.notification_language ?? 'nl'
+    const startsAtIso = appt.starts_at.toISOString()
+    const date = formatEmailDate(startsAtIso, tz, notifLang === 'nl' ? 'nl-BE' : 'en-US')
+    const time = formatEmailTime(startsAtIso, tz, notifLang === 'nl' ? 'nl-BE' : 'en-US')
 
     // ── Telegram → владельцу ────────────────────────────────────────────────
     if (biz?.telegram_bot_token && biz?.telegram_chat_id) {
@@ -127,6 +136,7 @@ export async function POST(req: NextRequest) {
           time,
           businessName: biz.name,
           address: biz.address ?? undefined,
+          lang: notifLang,
         })
       )
     }
@@ -193,14 +203,9 @@ export async function POST(req: NextRequest) {
 
     // Check dedup BEFORE sending — log record is written only after a successful send,
     // so a failed send leaves no trace and can be retried freely.
-    const { data: alreadySent } = await supabase
-      .from('notification_log')
-      .select('id')
-      .eq('business_id', appt.business_id)
-      .eq('ref_id', appt.id)
-      .eq('type', 'confirm')
-      .eq('channel', 'email')
-      .maybeSingle()
+    const alreadySent = await tdb.notification_log.findFirst({
+      where: { ref_id: appt.id, type: 'confirm', channel: 'email' },
+    })
 
     if (alreadySent) {
       return NextResponse.json({ sent: true, email: 'skipped: already sent' })
@@ -210,7 +215,7 @@ export async function POST(req: NextRequest) {
       businessName: biz?.name ?? '',
       serviceName: service?.name ?? '',
       employeeName: employee?.name ?? null,
-      startsAt: appt.starts_at,
+      startsAt: startsAtIso,
       durationMin: service?.duration_min ?? 60,
       timezone: tz,
       address: biz?.address ?? null,
@@ -226,17 +231,19 @@ export async function POST(req: NextRequest) {
       employeeName: employee?.name ?? undefined,
       address: biz?.address ?? undefined,
       calendarUrl,
+      lang: notifLang,
     })
 
     // Record only after a confirmed successful send
-    const { error: logErr } = await supabase.from('notification_log').insert({
-      business_id: appt.business_id,
-      ref_id: appt.id,
-      type: 'confirm',
-      channel: 'email',
-    })
-    if (logErr && logErr.code !== '23505') {
-      console.error('[email/confirm] notification_log insert error:', logErr.message)
+    try {
+      await tdb.notification_log.create({
+        data: { business_id: appt.business_id, ref_id: appt.id, type: 'confirm', channel: 'email' },
+      })
+    } catch (err) {
+      const isDuplicate = err instanceof Prisma.PrismaClientKnownRequestError && err.code === 'P2002'
+      if (!isDuplicate) {
+        console.error('[email/confirm] notification_log insert error:', (err as Error).message)
+      }
     }
 
     return NextResponse.json({ sent: true })

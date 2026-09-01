@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { MODULES, ModuleKey } from '@/lib/modules'
+import { db } from '@/lib/db'
 
 const VALID_MODULES = Object.keys(MODULES) as ModuleKey[]
 
@@ -19,12 +20,16 @@ export async function PATCH(req: NextRequest) {
     (m): m is string => typeof m === 'string' && (VALID_MODULES as string[]).includes(m)
   )
 
-  const { error } = await supabase
-    .from('businesses')
-    .update({ enabled_modules: modules })
-    .eq('owner_id', user.id)
-
-  if (error) return NextResponse.json({ error: error.message }, { status: 500 })
+  // Scoped by owner_id, not by business_id — `businesses` is the tenant table
+  // itself, so forBusiness() does not apply to it.
+  try {
+    await db.businesses.updateMany({
+      where: { owner_id: user.id },
+      data: { enabled_modules: modules },
+    })
+  } catch (err) {
+    return NextResponse.json({ error: (err as Error).message }, { status: 500 })
+  }
 
   return NextResponse.json({ ok: true })
 }

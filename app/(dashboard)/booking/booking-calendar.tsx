@@ -5,7 +5,7 @@ import { createClient } from '@/lib/supabase/client'
 import { formatInBusinessTimezone, uses12HourClock } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
 import { DatePicker } from '@/components/ui/date-picker'
-import { ChevronLeft, ChevronRight, ExternalLink, CreditCard, Palette } from 'lucide-react'
+import { ChevronLeft, ChevronRight, ExternalLink, CreditCard, Palette, Plus } from 'lucide-react'
 import { useTranslations } from 'next-intl'
 import { useRouter } from 'next/navigation'
 import {
@@ -156,7 +156,33 @@ export function BookingCalendar({ businessId, slug, timezone, appointments: init
   const supabase = createClient()
   const router = useRouter()
   const t = useTranslations('booking')
+  const [viewMode, setViewMode] = useState<'week' | 'month'>('week')
   const [weekStart, setWeekStart] = useState(() => getMonday(new Date()))
+  const [currentDate, setCurrentDate] = useState(() => new Date())
+  const [now, setNow] = useState(() => new Date())
+
+  // Keep live time updated every 30s
+  useEffect(() => {
+    const timer = setInterval(() => setNow(new Date()), 30000)
+    return () => clearInterval(timer)
+  }, [])
+
+  const nowParts = useMemo(() => {
+    const parts = new Intl.DateTimeFormat('en-US', {
+      timeZone: timezone,
+      year: 'numeric', month: 'numeric', day: 'numeric',
+      hour: 'numeric', minute: 'numeric', hour12: false,
+    }).formatToParts(now)
+    const get = (type: string) => parseInt(parts.find((p) => p.type === type)?.value ?? '0')
+    return {
+      year: get('year'),
+      month: get('month'),
+      day: get('day'),
+      hour: get('hour') % 24,
+      minute: get('minute'),
+    }
+  }, [now, timezone])
+
   const [origin, setOrigin] = useState('')
   useEffect(() => { setOrigin(window.location.origin) }, [])
   const bookingUrl = useMemo(() => {
@@ -187,9 +213,10 @@ export function BookingCalendar({ businessId, slug, timezone, appointments: init
     }
     return Array.from({ length: maxHour - minHour + 1 }, (_, i) => i + minHour)
   }, [businessHours, appointments, timezone])
+
   const [showForm, setShowForm] = useState(false)
   const [formError, setFormError] = useState<string | null>(null)
-  const locale = typeof navigator !== 'undefined' ? navigator.language : 'en-US'
+  const locale = typeof navigator !== 'undefined' ? navigator.language : 'nl-BE'
   const is12h = uses12HourClock(locale)
 
   // hour/minute always stored in 24h internally; period only used when is12h
@@ -328,17 +355,61 @@ export function BookingCalendar({ businessId, slug, timezone, appointments: init
     return d
   })
 
-  async function loadWeek(start: Date) {
-    const end = new Date(start); end.setDate(start.getDate() + 7)
+  const todayColIndex = useMemo(() => {
+    return weekDates.findIndex(
+      (d) => d.getFullYear() === nowParts.year && d.getMonth() + 1 === nowParts.month && d.getDate() === nowParts.day
+    )
+  }, [weekDates, nowParts])
+
+  // 42 days grid for Month view (6 weeks)
+  const monthDays = useMemo(() => {
+    const year = currentDate.getFullYear()
+    const month = currentDate.getMonth()
+    const firstDay = new Date(year, month, 1)
+    const startMonday = getMonday(firstDay)
+    return Array.from({ length: 42 }, (_, i) => {
+      const d = new Date(startMonday)
+      d.setDate(d.getDate() + i)
+      return d
+    })
+  }, [currentDate])
+
+  async function loadAppointments(start: Date, end: Date) {
     const { data } = await supabase.from('appointments')
       .select('id, starts_at, ends_at, status, source, notes, clients(id, name), employees(id, name), services(id, name, price)')
       .eq('business_id', businessId).gte('starts_at', start.toISOString()).lt('starts_at', end.toISOString()).order('starts_at')
-    setAppointments((data as Appointment[]) ?? [])
+    if (data) setAppointments(data as Appointment[])
   }
 
   async function navigate(delta: number) {
-    const next = new Date(weekStart); next.setDate(next.getDate() + delta * 7)
-    setWeekStart(next); await loadWeek(next)
+    if (viewMode === 'week') {
+      const next = new Date(weekStart); next.setDate(next.getDate() + delta * 7)
+      setWeekStart(next)
+      const end = new Date(next); end.setDate(next.getDate() + 7)
+      await loadAppointments(next, end)
+    } else {
+      const next = new Date(currentDate.getFullYear(), currentDate.getMonth() + delta, 1)
+      setCurrentDate(next)
+      const startMonday = getMonday(next)
+      const end = new Date(startMonday); end.setDate(end.getDate() + 42)
+      await loadAppointments(startMonday, end)
+    }
+  }
+
+  async function goToToday() {
+    const today = new Date()
+    setCurrentDate(today)
+    const m = getMonday(today)
+    setWeekStart(m)
+    if (viewMode === 'week') {
+      const end = new Date(m); end.setDate(m.getDate() + 7)
+      await loadAppointments(m, end)
+    } else {
+      const firstDay = new Date(today.getFullYear(), today.getMonth(), 1)
+      const startMonday = getMonday(firstDay)
+      const end = new Date(startMonday); end.setDate(end.getDate() + 42)
+      await loadAppointments(startMonday, end)
+    }
   }
 
   function getApptForCell(dayIndex: number, hour: number) {
@@ -346,6 +417,13 @@ export function BookingCalendar({ businessId, slug, timezone, appointments: init
     return appointments.filter((a) => {
       const p = apptTzParts(a.starts_at, timezone)
       return p.year === day.getFullYear() && p.month === day.getMonth() + 1 && p.day === day.getDate() && p.hour === hour
+    })
+  }
+
+  function getApptsForDay(day: Date) {
+    return appointments.filter((a) => {
+      const p = apptTzParts(a.starts_at, timezone)
+      return p.year === day.getFullYear() && p.month === day.getMonth() + 1 && p.day === day.getDate()
     })
   }
 
@@ -445,18 +523,47 @@ export function BookingCalendar({ businessId, slug, timezone, appointments: init
     <div className="flex-1 flex flex-col min-h-0 p-3 sm:p-6 gap-4">
       {/* Toolbar */}
       <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
-        <div className="flex items-center gap-2">
+        <div className="flex flex-wrap items-center gap-2">
+          {/* View mode switcher */}
+          <div className="flex items-center bg-gray-100 p-0.5 rounded-lg mr-1">
+            <button
+              onClick={() => setViewMode('week')}
+              className={`px-3 py-1 text-xs font-medium rounded-md transition-colors ${
+                viewMode === 'week' ? 'bg-white text-gray-900 shadow-sm' : 'text-gray-500 hover:text-gray-700'
+              }`}
+            >
+              {t('calendar.week')}
+            </button>
+            <button
+              onClick={() => {
+                setViewMode('month')
+                const startMonday = getMonday(new Date(currentDate.getFullYear(), currentDate.getMonth(), 1))
+                const end = new Date(startMonday); end.setDate(end.getDate() + 42)
+                loadAppointments(startMonday, end)
+              }}
+              className={`px-3 py-1 text-xs font-medium rounded-md transition-colors ${
+                viewMode === 'month' ? 'bg-white text-gray-900 shadow-sm' : 'text-gray-500 hover:text-gray-700'
+              }`}
+            >
+              {t('calendar.month')}
+            </button>
+          </div>
+
           <button onClick={() => navigate(-1)} className="p-1.5 rounded-lg hover:bg-gray-100"><ChevronLeft className="w-4 h-4" /></button>
-          <span className="text-sm font-medium text-gray-700 w-40 text-center">
-            {weekDates[0].toLocaleDateString('en-US', { month: 'short', day: 'numeric' })} –{' '}
-            {weekDates[6].toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+          <span className="text-sm font-medium text-gray-700 min-w-[150px] text-center capitalize">
+            {viewMode === 'week' ? (
+              `${weekDates[0].toLocaleDateString(locale, { month: 'short', day: 'numeric' })} – ${weekDates[6].toLocaleDateString(locale, { month: 'short', day: 'numeric', year: 'numeric' })}`
+            ) : (
+              currentDate.toLocaleDateString(locale, { month: 'long', year: 'numeric' })
+            )}
           </span>
           <button onClick={() => navigate(1)} className="p-1.5 rounded-lg hover:bg-gray-100"><ChevronRight className="w-4 h-4" /></button>
-          <button onClick={() => { const m = getMonday(new Date()); setWeekStart(m); loadWeek(m) }}
-            className="text-xs px-2 py-1 rounded-lg bg-gray-100 hover:bg-gray-200 text-gray-600">
+          <button onClick={goToToday}
+            className="text-xs px-2.5 py-1 rounded-lg bg-gray-100 hover:bg-gray-200 text-gray-600 font-medium">
             {t('calendar.today')}
           </button>
         </div>
+
         <div className="flex items-center gap-2 self-end sm:self-auto">
           <a href={bookingUrl} target="_blank" rel="noopener noreferrer"
             className="flex items-center gap-1 text-xs text-blue-600 hover:underline">
@@ -511,97 +618,223 @@ export function BookingCalendar({ businessId, slug, timezone, appointments: init
         </div>
       </div>
 
-      {/* Calendar grid */}
-      <DndContext sensors={sensors} onDragStart={handleDragStart} onDragEnd={handleDragEnd}>
-        <div className="bg-white rounded-xl border border-gray-200 overflow-auto flex-1">
-          <table className="w-full text-xs border-collapse min-w-[700px]">
-            <thead>
-              <tr>
-                <th className="sticky top-0 z-10 w-14 border-b border-r border-gray-100 py-2 text-gray-400 font-normal bg-white" />
-                {weekDates.map((d, i) => {
-                  const isToday = d.toDateString() === new Date().toDateString()
-                  return (
-                    <th key={i} className={`sticky top-0 z-10 border-b border-r border-gray-100 py-2 font-medium text-center ${isToday ? 'bg-blue-50 text-blue-700' : 'text-gray-600 bg-white'}`}>
-                      <div>{days[i]}</div>
-                      <div className={`text-lg font-bold ${isToday ? 'text-blue-600' : 'text-gray-900'}`}>{d.getDate()}</div>
-                    </th>
-                  )
-                })}
-              </tr>
-            </thead>
-            <tbody>
-              {HOURS.map((hour) => (
-                <tr key={hour} className="h-14">
-                  <td className="border-r border-b border-gray-100 text-right pr-2 text-gray-400 text-xs align-top pt-1 w-14">{hour}:00</td>
-                  {weekDates.map((_, di) => {
-                    const cellAppts = getApptForCell(di, hour)
+      {/* Week View Calendar grid */}
+      {viewMode === 'week' ? (
+        <DndContext sensors={sensors} onDragStart={handleDragStart} onDragEnd={handleDragEnd}>
+          <div className="bg-white rounded-xl border border-gray-200 overflow-auto flex-1">
+            <table className="w-full text-xs border-collapse min-w-[700px]">
+              <thead>
+                <tr>
+                  <th className="sticky top-0 z-10 w-14 border-b border-r border-gray-100 py-2 text-gray-400 font-normal bg-white" />
+                  {weekDates.map((d, i) => {
+                    const isToday = d.getFullYear() === nowParts.year && d.getMonth() + 1 === nowParts.month && d.getDate() === nowParts.day
                     return (
-                      <DroppableCell
-                        key={di}
-                        id={`${di}-${hour}`}
-                        className="border-r border-b border-gray-100 align-top p-0.5 hover:bg-gray-50 cursor-pointer"
-                        onClick={() => {
-                          if (cellAppts.length === 0) {
-                            const d = weekDates[di]
-                            const yyyy = d.getFullYear()
-                            const mm = String(d.getMonth() + 1).padStart(2, '0')
-                            const dd = String(d.getDate()).padStart(2, '0')
-                            const hh = String(hour).padStart(2, '0')
-                            openForm({ date: `${yyyy}-${mm}-${dd}`, hour: hh, minute: '00', period: parseInt(hh) < 12 ? 'AM' : 'PM' })
-                          }
-                        }}
-                      >
-                        {cellAppts.map((a) => {
-                          const empColor = getEmployeeColor(a.employees?.id)
-                          const stripe = getStatusStripe(a.status)
-                          return (
-                            <DraggableAppt key={a.id} id={a.id}>
-                              <div
-                                onClick={(e) => { e.stopPropagation(); setSelectedAppt(a) }}
-                                className="rounded px-1 py-0.5 mb-0.5 cursor-grab active:cursor-grabbing text-xs"
-                                style={{ backgroundColor: empColor.bg, color: empColor.text, borderLeft: `5px solid ${stripe}`, borderTop: '1px solid rgba(0,0,0,0.08)', borderRight: '1px solid rgba(0,0,0,0.08)', borderBottom: '1px solid rgba(0,0,0,0.08)' }}
-                              >
-                                <div className="font-semibold truncate">{a.clients?.name ?? (a.source === 'online' ? 'Online' : t('walkIn'))}</div>
-                                <div className="truncate">{a.services?.name} · {formatInBusinessTimezone(a.starts_at, timezone, 'time')}</div>
-                                {a.employees?.name && (
-                                  <div className="truncate text-[10px] opacity-70">{a.employees.name}</div>
-                                )}
-                                {a.source && SOURCE_BADGE[a.source] && (
-                                  <span className={`inline-block mt-0.5 text-[9px] leading-tight px-1 rounded font-medium ${SOURCE_BADGE[a.source].pill}`}>
-                                    {SOURCE_BADGE[a.source].label}
-                                  </span>
-                                )}
-                              </div>
-                            </DraggableAppt>
-                          )
-                        })}
-                      </DroppableCell>
+                      <th key={i} className={`sticky top-0 z-10 border-b border-r border-gray-100 py-2 font-medium text-center ${isToday ? 'bg-blue-50 text-blue-700' : 'text-gray-600 bg-white'}`}>
+                        <div>{days[i]}</div>
+                        <div className={`text-lg font-bold ${isToday ? 'text-blue-600' : 'text-gray-900'}`}>{d.getDate()}</div>
+                      </th>
                     )
                   })}
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+              </thead>
+              <tbody>
+                {HOURS.map((hour) => (
+                  <tr key={hour} className="h-14">
+                    <td className="relative border-r border-b border-gray-100 text-right pr-2 text-gray-400 text-xs align-top pt-1 w-14">
+                      {hour}:00
+                      {hour === nowParts.hour && todayColIndex !== -1 && (
+                        <div
+                          className="absolute right-0 z-20 pointer-events-none flex items-center -translate-y-1/2"
+                          style={{ top: `${(nowParts.minute / 60) * 100}%` }}
+                        >
+                          <span className="bg-red-500 text-white text-[10px] font-bold px-1 py-0.5 rounded-l shadow-sm">
+                            {String(nowParts.hour).padStart(2, '0')}:{String(nowParts.minute).padStart(2, '0')}
+                          </span>
+                        </div>
+                      )}
+                    </td>
+                    {weekDates.map((_, di) => {
+                      const cellAppts = getApptForCell(di, hour)
+                      return (
+                        <DroppableCell
+                          key={di}
+                          id={`${di}-${hour}`}
+                          className="relative border-r border-b border-gray-100 align-top p-0.5 hover:bg-gray-50 cursor-pointer"
+                          onClick={() => {
+                            if (cellAppts.length === 0) {
+                              const d = weekDates[di]
+                              const yyyy = d.getFullYear()
+                              const mm = String(d.getMonth() + 1).padStart(2, '0')
+                              const dd = String(d.getDate()).padStart(2, '0')
+                              const hh = String(hour).padStart(2, '0')
+                              openForm({ date: `${yyyy}-${mm}-${dd}`, hour: hh, minute: '00', period: parseInt(hh) < 12 ? 'AM' : 'PM' })
+                            }
+                          }}
+                        >
+                          {/* Live current time indicator red line */}
+                          {di === todayColIndex && hour === nowParts.hour && (
+                            <div
+                              className="absolute left-0 right-0 z-20 pointer-events-none flex items-center"
+                              style={{ top: `${(nowParts.minute / 60) * 100}%` }}
+                            >
+                              <div className="w-2.5 h-2.5 -ml-1 rounded-full bg-red-500 shadow-sm shrink-0" />
+                              <div className="flex-1 h-[2px] bg-red-500 shadow-sm" />
+                            </div>
+                          )}
 
-        {/* Drag overlay — shown while dragging */}
-        <DragOverlay>
-          {draggedAppt && (() => {
-            const empColor = getEmployeeColor(draggedAppt.employees?.id)
-            const stripe = getStatusStripe(draggedAppt.status)
-            return (
-              <div className="rounded px-2 py-1 text-xs shadow-lg w-28"
-                style={{ backgroundColor: empColor.bg, color: empColor.text, borderLeft: `5px solid ${stripe}`, borderTop: '1px solid rgba(0,0,0,0.08)', borderRight: '1px solid rgba(0,0,0,0.08)', borderBottom: '1px solid rgba(0,0,0,0.08)' }}>
-                <div className="font-semibold truncate">{draggedAppt.clients?.name ?? (draggedAppt.source === 'online' ? 'Online' : t('walkIn'))}</div>
-                <div className="truncate">{draggedAppt.services?.name}</div>
-                {draggedAppt.employees?.name && (
-                  <div className="truncate opacity-70">{draggedAppt.employees.name}</div>
-                )}
-              </div>
-            )
-          })()}
-        </DragOverlay>
-      </DndContext>
+                          {cellAppts.map((a) => {
+                            const empColor = getEmployeeColor(a.employees?.id)
+                            const stripe = getStatusStripe(a.status)
+                            return (
+                              <DraggableAppt key={a.id} id={a.id}>
+                                <div
+                                  onClick={(e) => { e.stopPropagation(); setSelectedAppt(a) }}
+                                  className="rounded px-1 py-0.5 mb-0.5 cursor-grab active:cursor-grabbing text-xs"
+                                  style={{ backgroundColor: empColor.bg, color: empColor.text, borderLeft: `5px solid ${stripe}`, borderTop: '1px solid rgba(0,0,0,0.08)', borderRight: '1px solid rgba(0,0,0,0.08)', borderBottom: '1px solid rgba(0,0,0,0.08)' }}
+                                >
+                                  <div className="font-semibold truncate">{a.clients?.name ?? (a.source === 'online' ? 'Online' : t('walkIn'))}</div>
+                                  <div className="truncate">{a.services?.name} · {formatInBusinessTimezone(a.starts_at, timezone, 'time')}</div>
+                                  {a.employees?.name && (
+                                    <div className="truncate text-[10px] opacity-70">{a.employees.name}</div>
+                                  )}
+                                  {a.source && SOURCE_BADGE[a.source] && (
+                                    <span className={`inline-block mt-0.5 text-[9px] leading-tight px-1 rounded font-medium ${SOURCE_BADGE[a.source].pill}`}>
+                                      {SOURCE_BADGE[a.source].label}
+                                    </span>
+                                  )}
+                                </div>
+                              </DraggableAppt>
+                            )
+                          })}
+                        </DroppableCell>
+                      )
+                    })}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          {/* Drag overlay — shown while dragging */}
+          <DragOverlay>
+            {draggedAppt && (() => {
+              const empColor = getEmployeeColor(draggedAppt.employees?.id)
+              const stripe = getStatusStripe(draggedAppt.status)
+              return (
+                <div className="rounded px-2 py-1 text-xs shadow-lg w-28"
+                  style={{ backgroundColor: empColor.bg, color: empColor.text, borderLeft: `5px solid ${stripe}`, borderTop: '1px solid rgba(0,0,0,0.08)', borderRight: '1px solid rgba(0,0,0,0.08)', borderBottom: '1px solid rgba(0,0,0,0.08)' }}>
+                  <div className="font-semibold truncate">{draggedAppt.clients?.name ?? (draggedAppt.source === 'online' ? 'Online' : t('walkIn'))}</div>
+                  <div className="truncate">{draggedAppt.services?.name}</div>
+                  {draggedAppt.employees?.name && (
+                    <div className="truncate opacity-70">{draggedAppt.employees.name}</div>
+                  )}
+                </div>
+              )
+            })()}
+          </DragOverlay>
+        </DndContext>
+      ) : (
+        /* Month View Grid */
+        <div className="bg-white rounded-xl border border-gray-200 overflow-auto flex-1 flex flex-col min-w-[700px]">
+          {/* Day Names Header */}
+          <div className="grid grid-cols-7 border-b border-gray-200 bg-gray-50 text-xs font-semibold text-gray-600 text-center py-2">
+            {days.map((dayName, i) => (
+              <div key={i}>{dayName}</div>
+            ))}
+          </div>
+
+          {/* 6 Weeks Grid */}
+          <div className="grid grid-cols-7 grid-rows-6 flex-1 divide-x divide-y divide-gray-100 bg-gray-100">
+            {monthDays.map((day, idx) => {
+              const isCurrentMonth = day.getMonth() === currentDate.getMonth()
+              const isToday = day.getFullYear() === nowParts.year && day.getMonth() + 1 === nowParts.month && day.getDate() === nowParts.day
+              const dayAppts = getApptsForDay(day)
+              const yyyy = day.getFullYear()
+              const mm = String(day.getMonth() + 1).padStart(2, '0')
+              const dd = String(day.getDate()).padStart(2, '0')
+              const dateStr = `${yyyy}-${mm}-${dd}`
+
+              return (
+                <div
+                  key={idx}
+                  onClick={() => openForm({ date: dateStr, hour: '09', minute: '00', period: 'AM' })}
+                  className={`min-h-[90px] p-1.5 flex flex-col justify-between transition-colors group cursor-pointer ${
+                    isCurrentMonth ? 'bg-white hover:bg-blue-50/30' : 'bg-gray-50/60 hover:bg-gray-100/60 text-gray-400'
+                  }`}
+                >
+                  {/* Day number header */}
+                  <div className="flex items-center justify-between mb-1">
+                    <span
+                      className={`inline-flex items-center justify-center text-xs font-semibold rounded-full w-6 h-6 ${
+                        isToday
+                          ? 'bg-blue-600 text-white shadow-sm'
+                          : isCurrentMonth
+                          ? 'text-gray-800'
+                          : 'text-gray-400'
+                      }`}
+                    >
+                      {day.getDate()}
+                    </span>
+                    <button
+                      type="button"
+                      onClick={(e) => {
+                        e.stopPropagation()
+                        openForm({ date: dateStr, hour: '09', minute: '00', period: 'AM' })
+                      }}
+                      className="opacity-0 group-hover:opacity-100 p-0.5 text-gray-400 hover:text-blue-600 rounded transition-opacity"
+                    >
+                      <Plus className="w-3.5 h-3.5" />
+                    </button>
+                  </div>
+
+                  {/* Appointments list in month cell */}
+                  <div className="space-y-1 flex-1 overflow-hidden">
+                    {dayAppts.slice(0, 3).map((a) => {
+                      const empColor = getEmployeeColor(a.employees?.id)
+                      const stripe = getStatusStripe(a.status)
+                      return (
+                        <div
+                          key={a.id}
+                          onClick={(e) => {
+                            e.stopPropagation()
+                            setSelectedAppt(a)
+                          }}
+                          className="rounded px-1.5 py-0.5 text-[11px] truncate cursor-pointer hover:brightness-95 transition-all shadow-2xs"
+                          style={{
+                            backgroundColor: empColor.bg,
+                            color: empColor.text,
+                            borderLeft: `4px solid ${stripe}`,
+                          }}
+                          title={`${a.clients?.name ?? t('walkIn')} - ${a.services?.name}`}
+                        >
+                          <span className="font-semibold mr-1">
+                            {formatInBusinessTimezone(a.starts_at, timezone, 'time')}
+                          </span>
+                          <span className="truncate">
+                            {a.clients?.name ?? t('walkIn')}
+                          </span>
+                        </div>
+                      )
+                    })}
+                    {dayAppts.length > 3 && (
+                      <div
+                        className="text-[10px] text-gray-500 font-medium px-1 hover:text-blue-600"
+                        onClick={(e) => {
+                          e.stopPropagation()
+                          setWeekStart(getMonday(day))
+                          setViewMode('week')
+                        }}
+                      >
+                        {t('calendar.more', { count: dayAppts.length - 3 })}
+                      </div>
+                    )}
+                  </div>
+                </div>
+              )
+            })}
+          </div>
+        </div>
+      )}
 
       {/* New appointment modal */}
       {showForm && (

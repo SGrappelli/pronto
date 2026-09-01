@@ -18,7 +18,7 @@
  */
 
 import { NextRequest, NextResponse } from 'next/server'
-import { createClient } from '@supabase/supabase-js'
+import { db, forBusiness } from '@/lib/db'
 import {
   sendReminder,
   sendThankYou,
@@ -66,24 +66,26 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ error: 'unauthorized' }, { status: 401 })
   }
 
-  // Service role — cron запускается без сессии пользователя, RLS должен быть обойдён
-  const supabase = createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.SUPABASE_SERVICE_ROLE_KEY!
-  )
+  // This job deliberately sweeps EVERY business — it runs without a user
+  // session and has no single tenant. That is why the reads below use the
+  // unscoped `db` rather than forBusiness(); writes still go through
+  // forBusiness() with the business_id of the row being processed.
   const now = new Date()
   const results: string[] = []
   const debug: Record<string, unknown> = { now: now.toISOString() }
 
   // ── helper: dedup через notification_log ────────────────────────────────────
   async function logged(businessId: string, refId: string, type: string): Promise<boolean> {
-    const { error } = await supabase.from('notification_log').insert({
-      business_id: businessId,
-      ref_id: refId,
-      type,
-      channel: 'email',
-    })
-    return !error
+    // A duplicate row means this notification already went out: the insert
+    // fails and we skip, exactly as the Supabase version did on error.
+    try {
+      await forBusiness(businessId).notification_log.create({
+        data: { business_id: businessId, ref_id: refId, type, channel: 'email' },
+      })
+      return true
+    } catch {
+      return false
+    }
   }
 
   // ── 1. 24h reminders ────────────────────────────────────────────────────────
@@ -91,15 +93,28 @@ export async function GET(req: NextRequest) {
   const to24   = new Date(now.getTime() + 25 * 3600_000).toISOString()
   debug.window_24h = { from: from24, to: to24 }
 
-  const { data: appts24, error: err24 } = await supabase
-    .from('appointments')
-    .select('id, starts_at, business_id, services(name), employees(name), clients(name, email, whatsapp_number, viber_user_id, telegram_id)')
-    .gte('starts_at', from24)
-    .lte('starts_at', to24)
-    .eq('status', 'confirmed')
-  debug.appts24 = { count: appts24?.length ?? 0, error: err24?.message ?? null }
+  const appts24 = await db.appointments.findMany({
+    select: {
+      id: true,
+      starts_at: true,
+      business_id: true,
+      services: { select: { name: true } },
+      employees: { select: { name: true } },
+      clients: {
+        select: {
+          name: true, email: true, whatsapp_number: true,
+          viber_user_id: true, telegram_id: true,
+        },
+      },
+    },
+    where: {
+      status: 'confirmed',
+      starts_at: { gte: new Date(from24), lte: new Date(to24) },
+    },
+  })
+  debug.appts24 = { count: appts24.length, error: null }
 
-  for (const a of appts24 ?? []) {
+  for (const a of appts24) {
     const client = a.clients as unknown as { name: string; email: string | null; whatsapp_number: string | null; viber_user_id: string | null; telegram_id: string | null } | null
     // Skip without logging if client has no contact channels at all.
     // This prevents burning a notification_log entry for a booking that can never
@@ -107,16 +122,16 @@ export async function GET(req: NextRequest) {
     if (!client?.telegram_id && !client?.email && !client?.viber_user_id && !client?.whatsapp_number) continue
     if (!await logged(a.business_id, a.id, 'reminder_24h')) continue
 
-    const { data: biz } = await supabase
-      .from('businesses')
-      .select('name, address, timezone, telegram_bot_token, telegram_chat_id, viber_bot_token, viber_chat_id, meta_whatsapp_phone_number_id, meta_whatsapp_access_token')
-      .eq('id', a.business_id).single()
+    const biz = await db.businesses.findUnique({
+      select: { name: true, address: true, timezone: true, telegram_bot_token: true, telegram_chat_id: true, viber_bot_token: true, viber_chat_id: true, meta_whatsapp_phone_number_id: true, meta_whatsapp_access_token: true },
+      where: { id: a.business_id },
+    })
 
     const service  = a.services  as unknown as { name: string } | null
     const employee = a.employees as unknown as { name: string } | null
     const tz = biz?.timezone ?? 'UTC'
-    const date = formatEmailDate(a.starts_at, tz)
-    const time = formatEmailTime(a.starts_at, tz)
+    const date = formatEmailDate(a.starts_at.toISOString(), tz)
+    const time = formatEmailTime(a.starts_at.toISOString(), tz)
     const waCredentials = biz?.meta_whatsapp_phone_number_id && biz?.meta_whatsapp_access_token
       ? { phoneNumberId: biz.meta_whatsapp_phone_number_id, accessToken: biz.meta_whatsapp_access_token }
       : undefined
@@ -162,15 +177,28 @@ export async function GET(req: NextRequest) {
   const to1h   = new Date(now.getTime() + 75 * 60_000).toISOString()
   debug.window_1h = { from: from1h, to: to1h }
 
-  const { data: appts1h, error: err1h } = await supabase
-    .from('appointments')
-    .select('id, starts_at, business_id, services(name), employees(name), clients(name, email, whatsapp_number, viber_user_id, telegram_id)')
-    .gte('starts_at', from1h)
-    .lte('starts_at', to1h)
-    .eq('status', 'confirmed')
-  debug.appts1h = { count: appts1h?.length ?? 0, error: err1h?.message ?? null }
+  const appts1h = await db.appointments.findMany({
+    select: {
+      id: true,
+      starts_at: true,
+      business_id: true,
+      services: { select: { name: true } },
+      employees: { select: { name: true } },
+      clients: {
+        select: {
+          name: true, email: true, whatsapp_number: true,
+          viber_user_id: true, telegram_id: true,
+        },
+      },
+    },
+    where: {
+      status: 'confirmed',
+      starts_at: { gte: new Date(from1h), lte: new Date(to1h) },
+    },
+  })
+  debug.appts1h = { count: appts1h.length, error: null }
 
-  for (const a of appts1h ?? []) {
+  for (const a of appts1h) {
     const client = a.clients as unknown as { name: string; email: string | null; whatsapp_number: string | null; viber_user_id: string | null; telegram_id: string | null } | null
     // Skip without logging if client has no contact channels at all.
     // This prevents burning a notification_log entry for a booking that can never
@@ -178,16 +206,16 @@ export async function GET(req: NextRequest) {
     if (!client?.telegram_id && !client?.email && !client?.viber_user_id && !client?.whatsapp_number) continue
     if (!await logged(a.business_id, a.id, 'reminder_1h')) continue
 
-    const { data: biz } = await supabase
-      .from('businesses')
-      .select('name, address, timezone, telegram_bot_token, telegram_chat_id, viber_bot_token, viber_chat_id, meta_whatsapp_phone_number_id, meta_whatsapp_access_token')
-      .eq('id', a.business_id).single()
+    const biz = await db.businesses.findUnique({
+      select: { name: true, address: true, timezone: true, telegram_bot_token: true, telegram_chat_id: true, viber_bot_token: true, viber_chat_id: true, meta_whatsapp_phone_number_id: true, meta_whatsapp_access_token: true },
+      where: { id: a.business_id },
+    })
 
     const service  = a.services  as unknown as { name: string } | null
     const employee = a.employees as unknown as { name: string } | null
     const tz = biz?.timezone ?? 'UTC'
-    const date = formatEmailDate(a.starts_at, tz)
-    const time = formatEmailTime(a.starts_at, tz)
+    const date = formatEmailDate(a.starts_at.toISOString(), tz)
+    const time = formatEmailTime(a.starts_at.toISOString(), tz)
     const waCredentials = biz?.meta_whatsapp_phone_number_id && biz?.meta_whatsapp_access_token
       ? { phoneNumberId: biz.meta_whatsapp_phone_number_id, accessToken: biz.meta_whatsapp_access_token }
       : undefined
@@ -233,21 +261,32 @@ export async function GET(req: NextRequest) {
   const twoHoursAgo = new Date(now.getTime() - 2 * 3600_000).toISOString()
   debug.window_thankyou = { from: twoHoursAgo, to: now.toISOString() }
 
-  const { data: completed, error: errTy } = await supabase
-    .from('appointments')
-    .select('id, business_id, services(name), clients(name, email, whatsapp_number, viber_user_id, telegram_id)')
-    .eq('status', 'completed')
-    .gte('ends_at', twoHoursAgo)
-    .lte('ends_at', now.toISOString())
-  debug.thankyou = { count: completed?.length ?? 0, error: errTy?.message ?? null }
+  const completed = await db.appointments.findMany({
+    select: {
+      id: true,
+      business_id: true,
+      services: { select: { name: true } },
+      clients: {
+        select: {
+          name: true, email: true, whatsapp_number: true,
+          viber_user_id: true, telegram_id: true,
+        },
+      },
+    },
+    where: {
+      status: 'completed',
+      ends_at: { gte: new Date(twoHoursAgo), lte: now },
+    },
+  })
+  debug.thankyou = { count: completed.length, error: null }
 
-  for (const a of completed ?? []) {
+  for (const a of completed) {
     if (!await logged(a.business_id, a.id, 'thankyou')) continue
 
-    const { data: biz } = await supabase
-      .from('businesses')
-      .select('name, slug, telegram_bot_token, telegram_chat_id, viber_bot_token, viber_chat_id, meta_whatsapp_phone_number_id, meta_whatsapp_access_token')
-      .eq('id', a.business_id).single()
+    const biz = await db.businesses.findUnique({
+      select: { name: true, slug: true, telegram_bot_token: true, telegram_chat_id: true, viber_bot_token: true, viber_chat_id: true, meta_whatsapp_phone_number_id: true, meta_whatsapp_access_token: true },
+      where: { id: a.business_id },
+    })
 
     const client  = a.clients  as unknown as { name: string; email: string | null; whatsapp_number: string | null; viber_user_id: string | null; telegram_id: string | null } | null
     const service = a.services as unknown as { name: string } | null
@@ -308,18 +347,20 @@ export async function GET(req: NextRequest) {
 
   debug.window_reactivation = { from: reactivStart.toISOString(), to: reactivEnd.toISOString() }
 
-  const { data: dormant, error: errRe } = await supabase
-    .from('clients')
-    .select('id, name, email, whatsapp_number, viber_user_id, telegram_id, business_id')
-    .gte('last_visit_at', reactivStart.toISOString())
-    .lte('last_visit_at', reactivEnd.toISOString())
-  debug.reactivation = { count: dormant?.length ?? 0, error: errRe?.message ?? null }
+  const dormant = await db.clients.findMany({
+    select: {
+      id: true, name: true, email: true, whatsapp_number: true,
+      viber_user_id: true, telegram_id: true, business_id: true,
+    },
+    where: { last_visit_at: { gte: reactivStart, lte: reactivEnd } },
+  })
+  debug.reactivation = { count: dormant.length, error: null }
 
-  for (const c of dormant ?? []) {
+  for (const c of dormant) {
     if (!c.email && !c.whatsapp_number && !c.viber_user_id && !c.telegram_id) continue
     if (!await logged(c.business_id, c.id, 'reactivation')) continue
 
-    const { data: biz } = await supabase.from('businesses').select('name, slug, telegram_bot_token, telegram_chat_id, viber_bot_token, meta_whatsapp_phone_number_id, meta_whatsapp_access_token').eq('id', c.business_id).single()
+    const biz = await db.businesses.findUnique({ select: { name: true, slug: true, telegram_bot_token: true, telegram_chat_id: true, viber_bot_token: true, meta_whatsapp_phone_number_id: true, meta_whatsapp_access_token: true }, where: { id: c.business_id } })
     const bookingUrl = biz?.slug ? `${APP_URL}/book/${biz.slug}` : undefined
     const waCredentials = biz?.meta_whatsapp_phone_number_id && biz?.meta_whatsapp_access_token
       ? { phoneNumberId: biz.meta_whatsapp_phone_number_id, accessToken: biz.meta_whatsapp_access_token }
@@ -365,21 +406,29 @@ export async function GET(req: NextRequest) {
   // .like() не работает на колонке типа date в PostgREST — фильтруем в JS
   const todayMD = `${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`
 
-  const { data: allClientsWithBday } = await supabase
-    .from('clients')
-    .select('id, name, email, whatsapp_number, viber_user_id, telegram_id, birthday, business_id')
-    .not('birthday', 'is', null)
+  const allClientsWithBday = await db.clients.findMany({
+    select: {
+      id: true, name: true, email: true, whatsapp_number: true,
+      viber_user_id: true, telegram_id: true, birthday: true, business_id: true,
+    },
+    where: { birthday: { not: null } },
+  })
 
-  const bdays = (allClientsWithBday ?? []).filter(
-    (c) => typeof c.birthday === 'string' && c.birthday.slice(5) === todayMD
-  )
+  // birthday is a `date` column, so Prisma hands back a Date at UTC midnight —
+  // the month/day must be read in UTC, not local time, or a client born on the
+  // 1st gets greeted on the 31st in a negative-offset timezone.
+  const bdays = allClientsWithBday.filter((c) => {
+    if (!c.birthday) return false
+    const md = `${String(c.birthday.getUTCMonth() + 1).padStart(2, '0')}-${String(c.birthday.getUTCDate()).padStart(2, '0')}`
+    return md === todayMD
+  })
 
-  for (const c of bdays ?? []) {
+  for (const c of bdays) {
     if (!c.email && !c.whatsapp_number && !c.viber_user_id && !c.telegram_id) continue
     const year = now.getFullYear()
     if (!await logged(c.business_id, `${c.id}_bday_${year}`, 'birthday')) continue
 
-    const { data: biz } = await supabase.from('businesses').select('name, slug, telegram_bot_token, telegram_chat_id, viber_bot_token, meta_whatsapp_phone_number_id, meta_whatsapp_access_token').eq('id', c.business_id).single()
+    const biz = await db.businesses.findUnique({ select: { name: true, slug: true, telegram_bot_token: true, telegram_chat_id: true, viber_bot_token: true, meta_whatsapp_phone_number_id: true, meta_whatsapp_access_token: true }, where: { id: c.business_id } })
     const bookingUrl = biz?.slug ? `${APP_URL}/book/${biz.slug}` : undefined
     const waCredentials = biz?.meta_whatsapp_phone_number_id && biz?.meta_whatsapp_access_token
       ? { phoneNumberId: biz.meta_whatsapp_phone_number_id, accessToken: biz.meta_whatsapp_access_token }

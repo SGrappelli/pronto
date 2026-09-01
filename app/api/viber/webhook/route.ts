@@ -13,7 +13,7 @@
  */
 
 import { NextRequest, NextResponse } from 'next/server'
-import { createClient } from '@supabase/supabase-js'
+import { db, forBusiness } from '@/lib/db'
 import { sendViberMessage } from '@/lib/viber'
 
 export async function POST(req: NextRequest) {
@@ -26,13 +26,14 @@ export async function POST(req: NextRequest) {
 
     if (!event) return NextResponse.json({ status: 0 })
 
-    const supabase = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.SUPABASE_SERVICE_ROLE_KEY!)
+    // businessId arrives as the ?bid= query parameter Viber calls back with.
+    // Every query below is scoped to it via tdb.
+    const biz = await db.businesses.findUnique({
+      select: { id: true, name: true, viber_bot_token: true, viber_chat_id: true },
+      where: { id: businessId },
+    })
 
-    const { data: biz } = await supabase
-      .from('businesses')
-      .select('id, name, viber_bot_token, viber_chat_id')
-      .eq('id', businessId)
-      .single()
+    const tdb = forBusiness(businessId)
 
     if (!biz?.viber_bot_token) return NextResponse.json({ status: 0 })
 
@@ -48,18 +49,17 @@ export async function POST(req: NextRequest) {
         const clientId = context.replace('client_', '')
 
         if (/^[0-9a-f-]{36}$/i.test(clientId)) {
-          const { data: client } = await supabase
-            .from('clients')
-            .select('id, name')
-            .eq('id', clientId)
-            .eq('business_id', businessId)
-            .maybeSingle()
+          const client = await tdb.clients.findFirst({
+            select: { id: true, name: true },
+            where: { id: clientId },
+          })
 
           if (client) {
-            await supabase
-              .from('clients')
-              .update({ viber_user_id: senderId })
-              .eq('id', clientId)
+            // Filtered on id alone before, with RLS doing the tenant check.
+            await tdb.clients.updateMany({
+              where: { id: clientId },
+              data: { viber_user_id: senderId },
+            })
 
             await sendViberMessage(
               biz.viber_bot_token,
@@ -86,10 +86,10 @@ export async function POST(req: NextRequest) {
 
       // Owner connect — first time (no viber_chat_id yet)
       if (!biz.viber_chat_id && senderId) {
-        await supabase
-          .from('businesses')
-          .update({ viber_chat_id: senderId })
-          .eq('id', businessId)
+        await db.businesses.update({
+          where: { id: businessId },
+          data: { viber_chat_id: senderId },
+        })
 
         await sendViberMessage(
           biz.viber_bot_token,
@@ -118,10 +118,10 @@ export async function POST(req: NextRequest) {
 
       // /start — owner re-connect
       if (text.startsWith('/start') && senderId) {
-        await supabase
-          .from('businesses')
-          .update({ viber_chat_id: senderId })
-          .eq('id', businessId)
+        await db.businesses.update({
+          where: { id: businessId },
+          data: { viber_chat_id: senderId },
+        })
 
         await sendViberMessage(
           biz.viber_bot_token,
@@ -135,18 +135,16 @@ export async function POST(req: NextRequest) {
       if (text.startsWith('/link') && senderId) {
         const phone = text.replace('/link', '').trim()
         if (phone) {
-          const { data: client } = await supabase
-            .from('clients')
-            .select('id, name')
-            .eq('business_id', businessId)
-            .eq('phone', phone)
-            .maybeSingle()
+          const client = await tdb.clients.findFirst({
+            select: { id: true, name: true },
+            where: { phone },
+          })
 
           if (client) {
-            await supabase
-              .from('clients')
-              .update({ viber_user_id: senderId })
-              .eq('id', client.id)
+            await tdb.clients.updateMany({
+              where: { id: client.id },
+              data: { viber_user_id: senderId },
+            })
 
             await sendViberMessage(
               biz.viber_bot_token,
@@ -170,13 +168,16 @@ export async function POST(req: NextRequest) {
         const start = new Date(today.setHours(0, 0, 0, 0)).toISOString()
         const end = new Date(today.setHours(23, 59, 59, 999)).toISOString()
 
-        const { data: appts } = await supabase
-          .from('appointments')
-          .select('starts_at, status, clients(name), services(name)')
-          .eq('business_id', businessId)
-          .gte('starts_at', start)
-          .lte('starts_at', end)
-          .order('starts_at')
+        const appts = await tdb.appointments.findMany({
+          select: {
+            starts_at: true,
+            status: true,
+            clients: { select: { name: true } },
+            services: { select: { name: true } },
+          },
+          where: { starts_at: { gte: new Date(start), lte: new Date(end) } },
+          orderBy: { starts_at: 'asc' },
+        })
 
         if (!appts || appts.length === 0) {
           await sendViberMessage(biz.viber_bot_token, senderId, '📅 No appointments today.')

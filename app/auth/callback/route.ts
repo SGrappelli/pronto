@@ -65,7 +65,7 @@ export async function GET(request: Request) {
           .single()
 
         if (newBusiness) {
-          await insertOwnerAsEmployee(admin, newBusiness.id, data.user)
+          await insertOwnerAsEmployee(newBusiness.id, data.user)
         }
 
         return NextResponse.redirect(`${origin}/onboarding`)

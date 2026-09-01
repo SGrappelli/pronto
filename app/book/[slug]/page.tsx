@@ -1,6 +1,6 @@
 export const dynamic = 'force-dynamic'
 
-import { createServiceClient } from '@/lib/supabase/service'
+import { db, forBusiness } from '@/lib/db'
 import { notFound } from 'next/navigation'
 import { PublicBookingForm } from './booking-form'
 import { getTelegramBotInfo } from '@/lib/telegram'
@@ -8,12 +8,10 @@ import { getViberBotInfo } from '@/lib/viber'
 
 export async function generateMetadata(props: { params: Promise<{ slug: string }> }) {
   const params = await props.params;
-  const supabase = createServiceClient()
-  const { data } = await supabase
-    .from('businesses')
-    .select('name')
-    .eq('slug', params.slug)
-    .maybeSingle()
+  const data = await db.businesses.findUnique({
+    select: { name: true },
+    where: { slug: params.slug },
+  })
 
   return {
     title: data ? `Book at ${data.name}` : 'Book appointment',
@@ -22,48 +20,47 @@ export async function generateMetadata(props: { params: Promise<{ slug: string }
 
 export default async function PublicBookingPage(props: { params: Promise<{ slug: string }> }) {
   const params = await props.params;
-  const supabase = createServiceClient()
-
-  // Public data — brand_color included for warm/premium design
-  const { data: business } = await supabase
-    .from('businesses')
-    .select('id, name, type, phone, logo_url, currency, slug, timezone, address, brand_color')
-    .eq('slug', params.slug)
-    .maybeSingle()
+  // Public page: the business is identified by its slug, not by a session.
+  // Everything below is scoped to whatever business that slug resolves to.
+  const business = await db.businesses.findUnique({
+    select: {
+      id: true, name: true, type: true, phone: true, logo_url: true,
+      currency: true, slug: true, timezone: true, address: true, brand_color: true,
+    },
+    where: { slug: params.slug },
+  })
 
   if (!business) notFound()
 
   // Tokens fetched server-side only — never serialised to the client
-  const { data: bizTokens } = await supabase
-    .from('businesses')
-    .select('telegram_bot_token, viber_bot_token')
-    .eq('id', business.id)
-    .maybeSingle()
+  const bizTokens = await db.businesses.findUnique({
+    select: { telegram_bot_token: true, viber_bot_token: true },
+    where: { id: business.id },
+  })
 
-  const [
-    { data: services },
-    { data: employees },
-    { data: businessHours },
-    telegramInfo,
-    viberInfo,
-  ] = await Promise.all([
-    supabase
-      .from('services')
-      .select('id, name, description, price, duration_min, category, capacity')
-      .eq('business_id', business.id)
-      .eq('is_active', true)
-      .order('name'),
-    supabase
-      .from('employees')
-      .select('id, name')
-      .eq('business_id', business.id)
-      .eq('is_active', true)
-      .order('name'),
-    supabase
-      .from('business_hours')
-      .select('day_of_week, is_open, open_time, close_time, break_start, break_end')
-      .eq('business_id', business.id)
-      .order('day_of_week'),
+  const tdb = forBusiness(business.id)
+
+  const [rawServices, employees, businessHours, telegramInfo, viberInfo] = await Promise.all([
+    tdb.services.findMany({
+      select: {
+        id: true, name: true, description: true, price: true,
+        duration_min: true, category: true, capacity: true,
+      },
+      where: { is_active: true },
+      orderBy: { name: 'asc' },
+    }),
+    tdb.employees.findMany({
+      select: { id: true, name: true },
+      where: { is_active: true },
+      orderBy: { name: 'asc' },
+    }),
+    tdb.business_hours.findMany({
+      select: {
+        day_of_week: true, is_open: true, open_time: true, close_time: true,
+        break_start: true, break_end: true,
+      },
+      orderBy: { day_of_week: 'asc' },
+    }),
     bizTokens?.telegram_bot_token
       ? getTelegramBotInfo(bizTokens.telegram_bot_token)
       : Promise.resolve({ ok: false as const }),
@@ -71,6 +68,9 @@ export default async function PublicBookingPage(props: { params: Promise<{ slug:
       ? getViberBotInfo(bizTokens.viber_bot_token)
       : Promise.resolve({ ok: false as const }),
   ])
+
+  // price is a Prisma.Decimal; the client form expects a plain number.
+  const services = rawServices.map((s) => ({ ...s, price: s.price.toNumber() }))
 
   const telegramBotUsername = telegramInfo.ok ? (telegramInfo as { ok: true; result: { username: string } }).result?.username ?? null : null
   const viberBotUri = viberInfo.ok ? (viberInfo as { ok: true; uri?: string }).uri ?? null : null
@@ -107,9 +107,9 @@ export default async function PublicBookingPage(props: { params: Promise<{ slug:
         <div style={{ maxWidth: 448, margin: '0 auto' }}>
           <PublicBookingForm
             business={business}
-            services={services ?? []}
-            employees={employees ?? []}
-            workingHours={businessHours ?? []}
+            services={services}
+            employees={employees}
+            workingHours={businessHours}
             telegramBotUsername={telegramBotUsername}
             viberBotUri={viberBotUri}
           />

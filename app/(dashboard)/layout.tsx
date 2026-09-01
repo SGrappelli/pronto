@@ -1,28 +1,19 @@
-import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
 import { headers } from 'next/headers'
 import { Sidebar } from '@/components/layout/sidebar'
-import { getAuthUser } from '@/lib/auth-user'
+import { getAuthUser, getBusinessDb } from '@/lib/auth-user'
 
 export default async function DashboardLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
-  const supabase = await createClient()
   const user = await getAuthUser()
-
   if (!user) redirect('/login')
 
-  const { data: business } = await supabase
-    .from('businesses')
-    .select('id, name, slug, plan')
-    .eq('owner_id', user.id)
-    .order('created_at', { ascending: true })
-    .limit(1)
-    .maybeSingle()
-
-  if (!business) redirect('/onboarding')
+  const ctx = await getBusinessDb()
+  if (!ctx) redirect('/onboarding')
+  const { business } = ctx
 
   // SaaS: if user is on the main domain, redirect to their subdomain preserving the path.
   // Covers /dashboard, /settings, /pos, /crm, /inventory, /booking — any app route.

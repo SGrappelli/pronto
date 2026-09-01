@@ -10,6 +10,7 @@
 
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
+import { db } from '@/lib/db'
 import { setViberWebhook, getViberBotInfo } from '@/lib/viber'
 
 const APP_URL = process.env.NEXT_PUBLIC_APP_URL ?? ''
@@ -20,11 +21,12 @@ export async function POST(req: NextRequest) {
     const { data: { user } } = await supabase.auth.getUser()
     if (!user) return NextResponse.json({ error: 'unauthorized' }, { status: 401 })
 
-    const { data: biz } = await supabase
-      .from('businesses')
-      .select('id, viber_bot_token')
-      .eq('owner_id', user.id)
-      .single()
+    // findFirst, not findFirstOrThrow: the Supabase .single() errored into a
+    // null `biz`, which the token check below already handles.
+    const biz = await db.businesses.findFirst({
+      where: { owner_id: user.id },
+      select: { id: true, viber_bot_token: true },
+    })
 
     if (!biz?.viber_bot_token) {
       return NextResponse.json(

@@ -86,24 +86,37 @@ export async function sendBookingConfirmation(opts: {
   employeeName?: string
   address?: string
   calendarUrl?: string
+  lang?: string
 }) {
+  const isNl = opts.lang === 'nl'
+  const title = isNl ? 'Boeking bevestigd!' : 'Booking confirmed!'
+  const greeting = isNl
+    ? `Hallo ${firstName(opts.clientName)}, je afspraak is bevestigd.`
+    : `Hi ${firstName(opts.clientName)}, your appointment is confirmed.`
+  const labels = isNl
+    ? { service: 'Dienst', date: 'Datum', time: 'Tijd', employee: 'Medewerker', address: 'Adres', footer: 'Tot snel!', gcal: 'Toevoegen aan Google Agenda' }
+    : { service: 'Service', date: 'Date', time: 'Time', employee: 'Employee', address: 'Address', footer: 'See you soon!', gcal: 'Add to Google Calendar' }
+  const subject = isNl
+    ? `Boeking bevestigd — ${opts.serviceName} om ${opts.time}`
+    : `Booking confirmed — ${opts.serviceName} at ${opts.time}`
+
   const body = `
-    ${h1('Booking confirmed!')}
-    ${p(`Hi ${firstName(opts.clientName)}, your appointment is confirmed.`)}
+    ${h1(title)}
+    ${p(greeting)}
     ${info([
-      ['Service', opts.serviceName],
-      ['Date', opts.date],
-      ['Time', opts.time],
-      ...(opts.employeeName ? [['Employee', opts.employeeName] as [string, string]] : []),
-      ...(opts.address ? [['Address', opts.address] as [string, string]] : []),
+      [labels.service, opts.serviceName],
+      [labels.date, opts.date],
+      [labels.time, opts.time],
+      ...(opts.employeeName ? [[labels.employee, opts.employeeName] as [string, string]] : []),
+      ...(opts.address ? [[labels.address, opts.address] as [string, string]] : []),
     ])}
-    ${p('See you soon!')}
-    ${opts.calendarUrl ? p(`<a href="${opts.calendarUrl}" style="color:#2563eb;">Add to Google Calendar</a>`) : ''}
+    ${p(labels.footer)}
+    ${opts.calendarUrl ? p(`<a href="${opts.calendarUrl}" style="color:#2563eb;">${labels.gcal}</a>`) : ''}
   `
   return sendMail({
     from: getFromAddress(opts.businessName),
     to: opts.to,
-    subject: `Booking confirmed — ${opts.serviceName} at ${opts.time}`,
+    subject,
     html: layout(opts.businessName, body),
   })
 }
@@ -250,8 +263,8 @@ function firstName(name: string): string {
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
-export function formatEmailDate(iso: string, timezone = 'UTC') {
-  return new Date(iso).toLocaleDateString('en-US', {
+export function formatEmailDate(iso: string, timezone = 'Europe/Brussels', locale = 'nl-BE') {
+  return new Date(iso).toLocaleDateString(locale, {
     weekday: 'long',
     day: 'numeric',
     month: 'long',
@@ -259,8 +272,8 @@ export function formatEmailDate(iso: string, timezone = 'UTC') {
   })
 }
 
-export function formatEmailTime(iso: string, timezone = 'UTC') {
-  return new Date(iso).toLocaleTimeString('en-US', {
+export function formatEmailTime(iso: string, timezone = 'Europe/Brussels', locale = 'nl-BE') {
+  return new Date(iso).toLocaleTimeString(locale, {
     hour: '2-digit',
     minute: '2-digit',
     hour12: false,

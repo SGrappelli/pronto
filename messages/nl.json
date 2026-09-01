@@ -252,7 +252,7 @@
   },
   "pos": {
     "title": "Kassa / Afrekenen",
-    "salesHistory": "Transacties",
+    "salesHistory": "Verkoopgeschiedenis",
     "categoryOther": "Overig",
     "cart": "Winkelwagen",
     "clientLabel": "Klant",
@@ -436,6 +436,9 @@
     },
     "calendar": {
       "today": "Vandaag",
+      "week": "Week",
+      "month": "Maand",
+      "more": "+ nog {count}",
       "publicPage": "Publieke boekingspagina",
       "days": [
         "Ma",
@@ -995,6 +998,7 @@
       "card": "Pin / Kaart",
       "transfer": "Overboeking",
       "online": "Online",
+      "client": "Klant",
       "from": "Van",
       "to": "Tot",
       "clientPlaceholder": "Klant of artikelnaam...",

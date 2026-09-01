@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
+import { db, forBusiness } from '@/lib/db'
 
 type Period = 'today' | '7d' | '30d'
 
@@ -44,8 +45,10 @@ export async function GET(req: NextRequest) {
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) return NextResponse.json({ error: 'unauthorized' }, { status: 401 })
 
-  const { data: business } = await supabase
-    .from('businesses').select('id, currency').eq('owner_id', user.id).maybeSingle()
+  const business = await db.businesses.findFirst({
+    where: { owner_id: user.id },
+    select: { id: true, currency: true },
+  })
   if (!business) return NextResponse.json({ error: 'not_found' }, { status: 404 })
 
   const fromParam = req.nextUrl.searchParams.get('from')
@@ -64,19 +67,16 @@ export async function GET(req: NextRequest) {
     startIso = getPeriodStart(period).toISOString()
   }
 
-  let txQuery = supabase
-    .from('transactions')
-    .select('id, created_at, amount, items, receipt_number')
-    .eq('business_id', business.id)
-    .eq('status', 'completed')
-    .gte('created_at', startIso)
-    .order('created_at', { ascending: false })
+  const rows = await forBusiness(business.id).transactions.findMany({
+    select: { id: true, created_at: true, amount: true, items: true, receipt_number: true },
+    where: {
+      status: 'completed',
+      created_at: { gte: new Date(startIso), ...(endIso ? { lte: new Date(endIso) } : {}) },
+    },
+    orderBy: { created_at: 'desc' },
+  })
 
-  if (endIso) txQuery = txQuery.lte('created_at', endIso)
-
-  const { data: rows } = await txQuery
-
-  if (!rows || rows.length === 0) {
+  if (rows.length === 0) {
     return NextResponse.json({
       currency: business.currency,
       revenue: 0,

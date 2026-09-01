@@ -1,4 +1,4 @@
-import { createClient } from '@/lib/supabase/server'
+import { Prisma } from '@/lib/db'
 import { Header } from '@/components/layout/header'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
@@ -7,7 +7,7 @@ import { formatCurrency, formatInBusinessTimezone } from '@/lib/utils'
 import { Plus, Search, Phone, Mail } from 'lucide-react'
 import Link from 'next/link'
 import { getTranslations } from 'next-intl/server'
-import { getAuthUser } from '@/lib/auth-user'
+import { getBusinessDb } from '@/lib/auth-user'
 
 export default async function CRMPage(
   props: {
@@ -15,49 +15,45 @@ export default async function CRMPage(
   }
 ) {
   const searchParams = await props.searchParams;
-  const supabase = await createClient()
   const t = await getTranslations('crm')
-  const user = await getAuthUser()
 
-  const { data: business } = await supabase
-    .from('businesses').select('id, currency, timezone').eq('owner_id', user!.id).maybeSingle()
+  const ctx = await getBusinessDb()
+  if (!ctx) return null
+  const { business, db } = ctx
 
-  if (!business) return null
-
-  let query = supabase.from('clients')
-    .select('id, name, phone, email, tags, created_at')
-    .eq('business_id', business.id)
-    .order('name')
-    .limit(50)
-
+  const where: Prisma.clientsWhereInput = {}
   if (searchParams.q) {
-    query = query.or(`name.ilike.%${searchParams.q}%,phone.ilike.%${searchParams.q}%,email.ilike.%${searchParams.q}%`)
+    const q = { contains: searchParams.q, mode: 'insensitive' as const }
+    where.OR = [{ name: q }, { phone: q }, { email: q }]
   }
   if (searchParams.tag) {
-    query = query.contains('tags', [searchParams.tag])
+    where.tags = { has: searchParams.tag }
   }
 
-  const { data: clients } = await query
+  const clients = await db.clients.findMany({
+    select: { id: true, name: true, phone: true, email: true, tags: true, created_at: true },
+    where,
+    orderBy: { name: 'asc' },
+    take: 50,
+  })
 
   // Compute visits, spent, last visit, and last service name live from transactions
-  const clientIds = (clients ?? []).map((c) => c.id)
-  const statsMap: Record<string, { total_visits: number; total_spent: number; last_visit_at: string | null; lastService: string | null }> = {}
+  const clientIds = clients.map((c) => c.id)
+  const statsMap: Record<string, { total_visits: number; total_spent: number; last_visit_at: Date | null; lastService: string | null }> = {}
   if (clientIds.length > 0) {
-    const { data: txs } = await supabase
-      .from('transactions')
-      .select('client_id, amount, created_at, items')
-      .eq('business_id', business.id)
-      .eq('status', 'completed')
-      .in('client_id', clientIds)
-      .order('created_at', { ascending: false })
-      .limit(500)
-    for (const tx of txs ?? []) {
+    const txs = await db.transactions.findMany({
+      select: { client_id: true, amount: true, created_at: true, items: true },
+      where: { status: 'completed', client_id: { in: clientIds } },
+      orderBy: { created_at: 'desc' },
+      take: 500,
+    })
+    for (const tx of txs) {
       if (!tx.client_id) continue
       if (!statsMap[tx.client_id]) {
         statsMap[tx.client_id] = { total_visits: 0, total_spent: 0, last_visit_at: null, lastService: null }
       }
       statsMap[tx.client_id].total_visits++
-      statsMap[tx.client_id].total_spent += tx.amount
+      statsMap[tx.client_id].total_spent += tx.amount.toNumber()
       if (!statsMap[tx.client_id].last_visit_at) statsMap[tx.client_id].last_visit_at = tx.created_at
       if (!statsMap[tx.client_id].lastService) {
         const items = Array.isArray(tx.items) ? tx.items : []
@@ -91,7 +87,7 @@ export default async function CRMPage(
         </div>
 
         <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
-          {clients?.length === 0 ? (
+          {clients.length === 0 ? (
             <div className="py-16 text-center text-gray-500">
               <div className="text-4xl mb-3">{t('empty.icon')}</div>
               <div className="font-medium">{t('empty.heading')}</div>
@@ -113,7 +109,7 @@ export default async function CRMPage(
                 </tr>
               </thead>
               <tbody>
-                {clients?.map((c) => (
+                {clients.map((c) => (
                   <tr key={c.id} className="border-b border-gray-100 hover:bg-gray-50 transition-colors last:border-0">
                     <td className="px-4 py-3">
                       <Link href={`/crm/${c.id}`} className="font-medium text-gray-900 hover:text-blue-600">{c.name}</Link>

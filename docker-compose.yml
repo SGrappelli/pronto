@@ -1,4 +1,25 @@
 services:
+  # ── Postgres ───────────────────────────────────────────────────────────────
+  # Replaces the hosted Supabase database. docker/init/ runs once on first boot
+  # and creates the auth schema / roles the existing migrations expect.
+  db:
+    image: postgres:17-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: pronto
+      POSTGRES_PASSWORD: pronto
+      POSTGRES_DB: pronto
+    ports:
+      - '127.0.0.1:5434:5432'
+    volumes:
+      - db-data:/var/lib/postgresql/data
+      - ./docker/init:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U pronto -d pronto']
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
   # ── One-shot migration runner ──────────────────────────────────────────────
   # Runs all pending SQL migrations, then exits.
   # The app service will not start until this completes successfully.
@@ -12,7 +33,13 @@ services:
       - .env
     environment:
       - NODE_ENV=production
+      # Inside the compose network the database is reachable as `db`.
+      # Overrides the host-facing localhost:5434 URL in .env.
+      - DATABASE_URL=postgresql://pronto:pronto@db:5432/pronto
     restart: 'no'
+    depends_on:
+      db:
+        condition: service_healthy
 
   # ── Main application ───────────────────────────────────────────────────────
   app:
@@ -31,7 +58,10 @@ services:
       # This prevents accidentally running the open-source build in SaaS billing mode.
       # To run in SaaS mode, remove this line and set NEXT_PUBLIC_DEPLOYMENT_MODE=saas in .env.
       - NEXT_PUBLIC_DEPLOYMENT_MODE=selfhosted
+      - DATABASE_URL=postgresql://pronto:pronto@db:5432/pronto
     depends_on:
+      db:
+        condition: service_healthy
       migrate:
         condition: service_completed_successfully
     healthcheck:
@@ -55,6 +85,9 @@ services:
   #     - ./ssl:/etc/nginx/ssl:ro
   #   depends_on:
   #     - app
+
+volumes:
+  db-data:
 
 networks:
   default:

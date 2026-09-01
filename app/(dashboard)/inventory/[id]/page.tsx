@@ -1,46 +1,59 @@
-import { createClient } from '@/lib/supabase/server'
 import { notFound } from 'next/navigation'
 import { Header } from '@/components/layout/header'
 import { getTranslations } from 'next-intl/server'
 import { InventoryDetailView } from './inventory-detail-view'
 import Link from 'next/link'
 import { ChevronLeft } from 'lucide-react'
-import { getAuthUser } from '@/lib/auth-user'
+import { getBusinessDb } from '@/lib/auth-user'
 
 export default async function InventoryItemPage(props: { params: Promise<{ id: string }> }) {
   const params = await props.params;
-  const supabase = await createClient()
   const t = await getTranslations('inventoryDetail')
-  const user = await getAuthUser()
 
-  const { data: business } = await supabase
-    .from('businesses').select('id, currency, timezone').eq('owner_id', user!.id).maybeSingle()
-  if (!business) return null
+  const ctx = await getBusinessDb()
+  if (!ctx) return null
+  const { business, db } = ctx
 
-  const { data: item } = await supabase
-    .from('inventory_items')
-    .select('id, name, sku, category, unit, quantity, low_stock_threshold, cost_price, sell_price, created_at, updated_at')
-    .eq('id', params.id)
-    .eq('business_id', business.id)
-    .maybeSingle()
+  const item = await db.inventory_items.findUnique({
+    where: { id: params.id },
+    select: {
+      id: true, name: true, sku: true, category: true, unit: true, quantity: true,
+      low_stock_threshold: true, cost_price: true, sell_price: true, created_at: true, updated_at: true,
+    },
+  })
 
   if (!item) notFound()
 
-  const [{ data: movements }, { data: categoryRows }] = await Promise.all([
-    supabase
-      .from('inventory_movements')
-      .select('id, type, quantity, note, created_at')
-      .eq('item_id', item.id)
-      .order('created_at', { ascending: false })
-      .limit(50),
-    supabase
-      .from('inventory_items')
-      .select('category')
-      .eq('business_id', business.id)
-      .not('category', 'is', null),
+  const [movements, categoryRows] = await Promise.all([
+    db.inventory_movements.findMany({
+      select: { id: true, type: true, quantity: true, note: true, created_at: true },
+      where: { item_id: item.id },
+      orderBy: { created_at: 'desc' },
+      take: 50,
+    }),
+    db.inventory_items.findMany({
+      select: { category: true },
+      where: { category: { not: null } },
+    }),
   ])
 
-  const categories = [...new Set((categoryRows ?? []).map((r) => r.category as string))].sort()
+  const categories = [...new Set(categoryRows.map((r) => r.category as string))].sort()
+
+  const itemView = {
+    ...item,
+    quantity: item.quantity.toNumber(),
+    low_stock_threshold: item.low_stock_threshold.toNumber(),
+    cost_price: item.cost_price ? item.cost_price.toNumber() : null,
+    sell_price: item.sell_price ? item.sell_price.toNumber() : null,
+    created_at: item.created_at.toISOString(),
+    updated_at: item.updated_at.toISOString(),
+  }
+
+  const movementsView = movements.map((m) => ({
+    ...m,
+    quantity: m.quantity.toNumber(),
+    created_at: m.created_at.toISOString(),
+  }))
 
   return (
     <>
@@ -53,8 +66,8 @@ export default async function InventoryItemPage(props: { params: Promise<{ id: s
         }
       />
       <InventoryDetailView
-        item={item}
-        movements={(movements ?? []) as any}
+        item={itemView}
+        movements={movementsView as any}
         currency={business.currency}
         timezone={business.timezone}
         businessId={business.id}

@@ -38,7 +38,7 @@ export function OnboardingWizard({ initialSlug, initialName, isSaas, rootDomain 
   const t = useTranslations('onboarding')
   const [step, setStep] = useState<Tab>(0)
   const [bizName, setBizName] = useState(initialName)
-  const [bizType, setBizType] = useState('')
+  const [bizType, setBizType] = useState('barbershop')
   const [service, setService] = useState({ name: '', price: '', duration_min: '60' })
   const [slug, setSlug] = useState(initialSlug)
   const [slugManuallyEdited, setSlugManuallyEdited] = useState(false)
@@ -54,14 +54,8 @@ export function OnboardingWizard({ initialSlug, initialName, isSaas, rootDomain 
   const showDuration = !noDuration.includes(bizType)
 
   const businessTypes = [
-    { value: 'salon', label: t('businessTypes.salon') },
     { value: 'barbershop', label: t('businessTypes.barbershop') },
-    { value: 'auto_repair', label: t('businessTypes.auto_repair') },
-    { value: 'cafe', label: t('businessTypes.cafe') },
-    { value: 'dental', label: t('businessTypes.dental') },
-    { value: 'fitness', label: t('businessTypes.fitness') },
-    { value: 'massage', label: t('businessTypes.massage') },
-    { value: 'other', label: t('businessTypes.other') },
+    { value: 'salon', label: t('businessTypes.salon') },
   ]
 
   const steps = [

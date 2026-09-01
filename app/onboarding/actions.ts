@@ -3,6 +3,7 @@
 import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
 import DOMPurify from 'isomorphic-dompurify'
+import { db, forBusiness } from '@/lib/db'
 
 function sanitize(s: string): string {
   return DOMPurify.sanitize(s, { ALLOWED_TAGS: [] }).trim()
@@ -21,11 +22,10 @@ export async function completeOnboarding(data: {
 
   if (!user) redirect('/login')
 
-  const { data: business } = await supabase
-    .from('businesses')
-    .select('id, slug')
-    .eq('owner_id', user.id)
-    .maybeSingle()
+  const business = await db.businesses.findFirst({
+    where: { owner_id: user.id },
+    select: { id: true, slug: true },
+  })
 
   if (!business) redirect('/login')
 
@@ -45,27 +45,32 @@ export async function completeOnboarding(data: {
     }
   }
 
-  const { error: updateError } = await supabase
-    .from('businesses')
-    .update({
-      ...(data.bizType ? { type: data.bizType } : {}),
-      ...(bizName ? { name: bizName } : {}),
-      ...(data.slug ? { slug: data.slug } : {}),
-      onboarding_completed: true,
+  try {
+    await db.businesses.update({
+      where: { id: business.id },
+      data: {
+        ...(data.bizType ? { type: data.bizType } : {}),
+        ...(bizName ? { name: bizName } : {}),
+        ...(data.slug ? { slug: data.slug } : {}),
+        onboarding_completed: true,
+      },
     })
-    .eq('id', business.id)
-
-  if (updateError) {
-    // Most likely a unique constraint violation on slug
-    throw new Error(updateError.message)
+  } catch (err) {
+    // P2002 is Prisma's unique-violation code — most likely the slug.
+    if ((err as { code?: string }).code === 'P2002') {
+      throw new Error('That slug is already taken.')
+    }
+    throw err
   }
 
   if (serviceName && data.servicePrice) {
-    await supabase.from('services').insert({
-      business_id: business.id,
-      name: serviceName,
-      price: data.servicePrice,
-      duration_min: data.serviceDuration || 60,
+    await forBusiness(business.id).services.create({
+      data: {
+        business_id: business.id,
+        name: serviceName,
+        price: data.servicePrice,
+        duration_min: data.serviceDuration || 60,
+      },
     })
   }
 

@@ -1,29 +1,24 @@
-import { createClient } from '@/lib/supabase/server'
 import { Header } from '@/components/layout/header'
 import { getTranslations } from 'next-intl/server'
 import Link from 'next/link'
 import { ChevronLeft } from 'lucide-react'
 import { NewInventoryForm } from './new-inventory-form'
-import { getAuthUser } from '@/lib/auth-user'
+import { getBusinessDb } from '@/lib/auth-user'
 
 export default async function NewInventoryItemPage() {
-  const supabase = await createClient()
   const t = await getTranslations('newInventoryItem')
-  const user = await getAuthUser()
 
-  const { data: business } = await supabase
-    .from('businesses').select('id').eq('owner_id', user!.id).maybeSingle()
+  const ctx = await getBusinessDb()
+  if (!ctx) return null
+  const { db } = ctx
 
   // Fetch existing categories for the combobox autocomplete
-  const { data: categoryRows } = business
-    ? await supabase
-        .from('inventory_items')
-        .select('category')
-        .eq('business_id', business.id)
-        .not('category', 'is', null)
-    : { data: [] }
+  const categoryRows = await db.inventory_items.findMany({
+    where: { category: { not: null } },
+    select: { category: true },
+  })
 
-  const categories = [...new Set((categoryRows ?? []).map((r) => r.category as string))].sort()
+  const categories = [...new Set(categoryRows.map((r) => r.category as string))].sort()
 
   return (
     <>

@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
+import { db, forBusiness } from '@/lib/db'
 import * as XLSX from 'xlsx'
 
 type Period = 'today' | '7d' | '30d'
@@ -28,11 +29,10 @@ export async function GET(req: NextRequest) {
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 
-  const { data: business } = await supabase
-    .from('businesses')
-    .select('id, currency')
-    .eq('owner_id', user.id)
-    .maybeSingle()
+  const business = await db.businesses.findFirst({
+    where: { owner_id: user.id },
+    select: { id: true, currency: true },
+  })
 
   if (!business) return NextResponse.json({ error: 'Not found' }, { status: 404 })
 
@@ -58,29 +58,33 @@ export async function GET(req: NextRequest) {
     fileTo   = new Date().toISOString().slice(0, 10)
   }
 
-  let txQuery = supabase
-    .from('transactions')
-    .select('id, created_at, receipt_number, payment_method, items, client_id')
-    .eq('business_id', business.id)
-    .eq('status', 'completed')
-    .gte('created_at', startIso)
-    .order('created_at', { ascending: false })
+  const tdb = forBusiness(business.id)
 
-  if (endIso) txQuery = txQuery.lte('created_at', endIso)
-
-  const { data: txRows } = await txQuery
+  const txRows = await tdb.transactions.findMany({
+    select: {
+      id: true, created_at: true, receipt_number: true,
+      payment_method: true, items: true, client_id: true,
+    },
+    where: {
+      status: 'completed',
+      created_at: { gte: new Date(startIso), ...(endIso ? { lte: new Date(endIso) } : {}) },
+    },
+    orderBy: { created_at: 'desc' },
+  })
 
   const clientIds = [...new Set(
-    (txRows ?? []).filter((t) => t.client_id).map((t) => t.client_id as string)
+    txRows.filter((t) => t.client_id).map((t) => t.client_id as string)
   )]
 
   const clientMap: Record<string, string> = {}
   if (clientIds.length > 0) {
-    const { data: clients } = await supabase
-      .from('clients')
-      .select('id, name')
-      .in('id', clientIds)
-    for (const c of clients ?? []) clientMap[c.id] = c.name
+    // The Supabase version filtered on id alone and let RLS keep it in-tenant.
+    // tdb re-adds the business_id filter now that RLS no longer applies.
+    const clients = await tdb.clients.findMany({
+      select: { id: true, name: true },
+      where: { id: { in: clientIds } },
+    })
+    for (const c of clients) clientMap[c.id] = c.name
   }
 
   interface ExportRow {

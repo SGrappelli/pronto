@@ -1,4 +1,3 @@
-import { createClient } from '@/lib/supabase/server'
 import { Header } from '@/components/layout/header'
 import { Button } from '@/components/ui/button'
 import { Plus, AlertTriangle } from 'lucide-react'
@@ -8,7 +7,7 @@ import { InventoryTabs } from './inventory-tabs'
 import { InventoryImportButton } from '@/components/inventory/inventory-import-button'
 import { InventoryExportButton } from '@/components/inventory/inventory-export-button'
 import { InventoryMoreMenu } from '@/components/inventory/inventory-more-menu'
-import { getAuthUser } from '@/lib/auth-user'
+import { getBusinessDb } from '@/lib/auth-user'
 
 export default async function InventoryPage(
   props: {
@@ -16,20 +15,34 @@ export default async function InventoryPage(
   }
 ) {
   const searchParams = await props.searchParams;
-  const supabase = await createClient()
   const t = await getTranslations('inventory')
-  const user = await getAuthUser()
 
-  const { data: business } = await supabase
-    .from('businesses').select('id, currency').eq('owner_id', user!.id).maybeSingle()
+  const ctx = await getBusinessDb()
+  if (!ctx) return null
+  const { business, db } = ctx
 
-  if (!business) return null
+  const rows = await db.inventory_items.findMany({
+    select: {
+      id: true, name: true, sku: true, barcode: true, category: true, unit: true,
+      quantity: true, low_stock_threshold: true, cost_price: true, sell_price: true,
+    },
+    orderBy: { name: 'asc' },
+  })
 
-  const { data: items } = await supabase.from('inventory_items')
-    .select('id, name, sku, barcode, category, unit, quantity, low_stock_threshold, cost_price, sell_price')
-    .eq('business_id', business.id).order('name')
+  const items = rows.map((i) => ({
+    id: i.id,
+    name: i.name,
+    sku: i.sku,
+    barcode: i.barcode,
+    category: i.category,
+    unit: i.unit,
+    quantity: i.quantity.toNumber(),
+    low_stock_threshold: i.low_stock_threshold.toNumber(),
+    cost_price: i.cost_price ? i.cost_price.toNumber() : null,
+    sell_price: i.sell_price ? i.sell_price.toNumber() : null,
+  }))
 
-  const lowStockCount = items?.filter((i) => i.quantity <= i.low_stock_threshold).length ?? 0
+  const lowStockCount = items.filter((i) => i.quantity <= i.low_stock_threshold).length
 
   return (
     <>
@@ -59,7 +72,7 @@ export default async function InventoryPage(
         )}
 
         <InventoryTabs
-          items={items ?? []}
+          items={items}
           currency={business.currency}
           initialFilter={searchParams.filter}
           initialTab={searchParams.tab}

@@ -1,10 +1,10 @@
-import { createClient } from '@/lib/supabase/server'
+import { Prisma } from '@/lib/db'
 import { Header } from '@/components/layout/header'
 import { formatCurrency, formatInBusinessTimezone } from '@/lib/utils'
 import { getTranslations } from 'next-intl/server'
 import Link from 'next/link'
 import { HistoryFilters } from './history-filters'
-import { getAuthUser } from '@/lib/auth-user'
+import { getBusinessDb } from '@/lib/auth-user'
 
 export default async function TransactionHistoryPage(
   props: {
@@ -12,28 +12,23 @@ export default async function TransactionHistoryPage(
   }
 ) {
   const searchParams = await props.searchParams;
-  const supabase = await createClient()
   const t = await getTranslations('transactions')
-  const user = await getAuthUser()
 
-  const { data: business } = await supabase
-    .from('businesses').select('id, currency, timezone').eq('owner_id', user!.id).maybeSingle()
-  if (!business) return null
+  const ctx = await getBusinessDb()
+  if (!ctx) return null
+  const { business, db } = ctx
 
-  let query = supabase
-    .from('transactions')
-    .select('id, receipt_number, amount, payment_method, status, items, created_at, clients(id, name), employees(name)')
-    .eq('business_id', business.id)
-    .eq('status', 'completed')
-    .order('created_at', { ascending: false })
-    .limit(100)
+  const where: Prisma.transactionsWhereInput = { status: 'completed' }
 
-  if (searchParams.method) query = query.eq('payment_method', searchParams.method)
-  if (searchParams.from) query = query.gte('created_at', searchParams.from)
-  if (searchParams.to) {
-    const toDate = new Date(searchParams.to)
-    toDate.setDate(toDate.getDate() + 1)
-    query = query.lt('created_at', toDate.toISOString().slice(0, 10))
+  if (searchParams.method) where.payment_method = searchParams.method
+  if (searchParams.from || searchParams.to) {
+    where.created_at = {}
+    if (searchParams.from) where.created_at.gte = new Date(searchParams.from)
+    if (searchParams.to) {
+      const toDate = new Date(searchParams.to)
+      toDate.setDate(toDate.getDate() + 1)
+      where.created_at.lt = new Date(toDate.toISOString().slice(0, 10))
+    }
   }
 
   // ── Client name filter ──────────────────────────────────────────────────────
@@ -41,33 +36,42 @@ export default async function TransactionHistoryPage(
     const q = searchParams.client.trim()
 
     // Find clients whose name matches the query
-    const { data: matched } = await supabase
-      .from('clients')
-      .select('id')
-      .eq('business_id', business.id)
-      .ilike('name', `%${q}%`)
+    const matched = await db.clients.findMany({
+      select: { id: true },
+      where: { name: { contains: q, mode: 'insensitive' } },
+    })
 
-    const ids = matched?.map((c) => c.id) ?? []
+    const ids = matched.map((c) => c.id)
     const walkInMatch = 'walk-in'.includes(q.toLowerCase()) || q.toLowerCase().includes('walk')
 
     if (ids.length > 0 && walkInMatch) {
       // Matching clients OR walk-ins
-      query = query.or(`client_id.in.(${ids.join(',')}),client_id.is.null`)
+      where.OR = [{ client_id: { in: ids } }, { client_id: null }]
     } else if (ids.length > 0) {
       // Only matching named clients — exclude walk-ins
-      query = query.in('client_id', ids)
+      where.client_id = { in: ids }
     } else if (walkInMatch) {
       // Only walk-ins
-      query = query.is('client_id', null)
+      where.client_id = null
     } else {
       // No matches at all
-      query = query.eq('id', '00000000-0000-0000-0000-000000000000')
+      where.id = '00000000-0000-0000-0000-000000000000'
     }
   }
 
-  const { data: transactions } = await query
+  const transactions = await db.transactions.findMany({
+    select: {
+      id: true, receipt_number: true, amount: true, payment_method: true, status: true,
+      items: true, created_at: true,
+      clients: { select: { id: true, name: true } },
+      employees: { select: { name: true } },
+    },
+    where,
+    orderBy: { created_at: 'desc' },
+    take: 100,
+  })
 
-  const total = transactions?.reduce((sum, tx) => sum + tx.amount, 0) ?? 0
+  const total = transactions.reduce((sum, tx) => sum + tx.amount.toNumber(), 0)
 
   const methods = [
     { value: '', label: t('filters.allMethods') },
@@ -90,7 +94,7 @@ export default async function TransactionHistoryPage(
         />
 
         {/* Total */}
-        {transactions && transactions.length > 0 && (
+        {transactions.length > 0 && (
           <div className="flex justify-end">
             <div className="bg-green-50 border border-green-200 rounded-lg px-4 py-2 text-sm font-semibold text-green-700">
               {t('total')} {formatCurrency(total, business.currency)}
@@ -100,7 +104,7 @@ export default async function TransactionHistoryPage(
 
         {/* Table */}
         <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
-          {!transactions || transactions.length === 0 ? (
+          {transactions.length === 0 ? (
             <div className="py-16 text-center text-gray-500">
               <div className="text-4xl mb-3">🧾</div>
               <div className="font-medium">{t('empty')}</div>
@@ -123,8 +127,8 @@ export default async function TransactionHistoryPage(
                   const items = (Array.isArray(tx.items) ? tx.items : []) as any[]
                   const firstName: string = items[0]?.name ?? ''
                   const extraCount = items.length - 1
-                  const client = tx.clients as { id: string; name: string } | null
-                  const employee = tx.employees as { name: string } | null
+                  const client = tx.clients
+                  const employee = tx.employees
 
                   return (
                     <tr key={tx.id} className="border-b border-gray-100 hover:bg-gray-50 last:border-0">
@@ -146,7 +150,7 @@ export default async function TransactionHistoryPage(
                         <span className="capitalize text-gray-600">{tx.payment_method}</span>
                       </td>
                       <td className="px-4 py-3 text-right font-semibold text-gray-900">
-                        {formatCurrency(tx.amount, business.currency)}
+                        {formatCurrency(tx.amount.toNumber(), business.currency)}
                       </td>
                       <td className="px-4 py-3 text-right text-gray-500 hidden md:table-cell">
                         <div>{formatInBusinessTimezone(tx.created_at, business.timezone)}</div>

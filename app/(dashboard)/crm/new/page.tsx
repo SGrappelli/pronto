@@ -1,21 +1,17 @@
-import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
 import { Header } from '@/components/layout/header'
 import { getTranslations } from 'next-intl/server'
 import Link from 'next/link'
 import { ChevronLeft } from 'lucide-react'
 import { NewClientForm } from './new-client-form'
-import { getAuthUser } from '@/lib/auth-user'
+import { getBusinessDb } from '@/lib/auth-user'
 
 export default async function NewClientPage() {
-  const supabase = await createClient()
   const t = await getTranslations('newClient')
-  const user = await getAuthUser()
-  if (!user) redirect('/login')
 
-  const { data: business } = await supabase
-    .from('businesses').select('id').eq('owner_id', user.id).maybeSingle()
-  if (!business) redirect('/dashboard')
+  const ctx = await getBusinessDb()
+  if (!ctx) redirect('/dashboard')
+  const { business } = ctx
 
   return (
     <>
