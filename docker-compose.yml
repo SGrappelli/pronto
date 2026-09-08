@@ -6,7 +6,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    image: pronto-app:local
+    image: booking-pro-app:local
     command: node /app/scripts/migrate.js
     env_file:
       - .env
@@ -19,7 +19,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    image: pronto-app:local
+    image: booking-pro-app:local
     restart: unless-stopped
     ports:
       - '3000:3000'
@@ -58,4 +58,4 @@ services:
 
 networks:
   default:
-    name: pronto_network
+    name: booking-pro_network

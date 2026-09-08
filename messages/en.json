@@ -1,10 +1,10 @@
 {
   "meta": {
-    "title": "Pronto — Business Management for Service SMBs",
+    "title": "BookingPro — Business Management for Service SMBs",
     "description": "Self-hosted POS, CRM, Inventory & Omnichannel Notifications. Your data, your server. Zero commission. One command install."
   },
   "brand": {
-    "name": "Pronto",
+    "name": "BookingPro",
     "tagline": "Business management · Zero commission"
   },
   "nav": {
@@ -33,7 +33,7 @@
     "pricingSubheading": "Or self-host for free —",
     "pricingSubheadingLink": "clone on GitHub",
     "mostPopular": "Most popular",
-    "footer": "Pronto © 2026 · MIT License",
+    "footer": "BookingPro © 2026 · MIT License",
     "plans": {
       "free": {
         "name": "Free",
@@ -122,7 +122,7 @@
     }
   },
   "onboarding": {
-    "logo": "Pronto",
+    "logo": "BookingPro",
     "intro": "Let's set up your business in 3 steps",
     "steps": {
       "businessType": "Business type",
@@ -147,7 +147,7 @@
       "bizNamePlaceholder": "Maya's Salon",
       "businessTypeLabel": "Type of business",
       "continue": "Continue",
-      "slugLabel": "Your Pronto URL",
+      "slugLabel": "Your BookingPro URL",
       "slugHint": "Lowercase letters, numbers, and hyphens · 3–30 characters",
       "slugChecking": "Checking…",
       "slugAvailable": "Available ✓",
@@ -167,7 +167,7 @@
       "continue": "Continue"
     },
     "checklist": {
-      "title": "Get started with Pronto",
+      "title": "Get started with BookingPro",
       "progress": "{done} of {total} complete",
       "step1": "Business profile created",
       "step2": "Add your first service",
@@ -332,7 +332,7 @@
     "moreActions": "More actions",
     "import": {
       "title": "Import Products",
-      "uploadHint": "Already have a supplier price list in Excel or CSV? Upload it directly — Pronto will detect the columns automatically.",
+      "uploadHint": "Already have a supplier price list in Excel or CSV? Upload it directly — BookingPro will detect the columns automatically.",
       "dropzone": "Drop file here or click to browse",
       "dropzoneFormats": ".xlsx  ·  .xls  ·  .csv",
       "orSeparator": "or",
@@ -927,7 +927,7 @@
   },
   "feedback": {
     "heading": "Share your feedback",
-    "subheading": "Help us improve Pronto",
+    "subheading": "Help us improve BookingPro",
     "placeholder": "What's on your mind?",
     "placeholderGood": "What do you like most?",
     "placeholderBad": "What's not working for you?",
@@ -935,7 +935,7 @@
     "submit": "Submit",
     "sending": "Sending…",
     "thanks": "Thank you for your feedback!",
-    "thanksSub": "It helps us make Pronto better.",
+    "thanksSub": "It helps us make BookingPro better.",
     "close": "Close"
   },
   "clientDetail": {

@@ -1,6 +1,6 @@
 🌍 **English** | [Español](docs/README.es.md) | [Português](docs/README.pt.md)
 
-# Pronto
+# Booking Pro
 
 Open-source business management for service businesses and retail shops.  
 Self-hosted via Docker or cloud at [trypronto.app](https://trypronto.app)
@@ -13,9 +13,9 @@ Self-hosted via Docker or cloud at [trypronto.app](https://trypronto.app)
 
 ---
 
-## What is Pronto?
+## What is Booking Pro?
 
-Pronto replaces Excel and disconnected apps for small service businesses and retail shops.  
+Booking Pro replaces Excel and disconnected apps for small service businesses and retail shops.  
 Your clients book directly with you — no marketplace commission, no vendor lock-in.
 
 **Supported business types:**  
@@ -88,8 +88,8 @@ Toggle modules in **Settings → Modules** — unused tabs disappear from the si
 
 ```bash
 # 1. Clone the repo
-git clone https://github.com/SGrappelli/pronto.git
-cd pronto
+git clone https://github.com/SGrappelli/BookingPro.git
+cd BookingPro
 
 # 2. Copy environment file and fill in your values
 cp .env.example .env
@@ -112,7 +112,7 @@ Open http://localhost:3000
 3. Create a public storage bucket named **`inventory`** in  
    **Supabase Dashboard → Storage → New bucket** (required for product photos)
 4. Copy your project URL and anon/service keys to `.env`
-5. **Customize email templates** (optional) — replace Supabase's defaults with Pronto-branded HTML:
+5. **Customize email templates** (optional) — replace Supabase's defaults with BookingPro-branded HTML:
 
    | Template in Supabase | File |
    |---|---|
@@ -214,7 +214,7 @@ Or use the built-in pg_cron scheduler — edit `supabase/migrations/007_cron_job
 ### Telegram Bot
 
 1. Open [@BotFather](https://t.me/BotFather) → `/newbot` → copy the token
-2. In Pronto: **Settings → Notifications** → paste token → click **Connect**
+2. In BookingPro: **Settings → Notifications** → paste token → click **Connect**
 3. Open your bot in Telegram → send `/start`
 
 Owner commands: `/today` — today's appointments · `/help` — command list
@@ -226,7 +226,7 @@ Clients link their profile by sending `/link +12345678900` to the bot (their boo
 > ⚠️ Since February 2024, new Viber bots require a commercial agreement (~€100/month). This integration works for bots created before February 2024. **For new setups, Telegram is recommended (free).**
 
 1. Sign in to [partners.viber.com](https://partners.viber.com) → copy auth token
-2. In Pronto: **Settings → Notifications** → paste token → click **Connect**
+2. In BookingPro: **Settings → Notifications** → paste token → click **Connect**
 
 Clients link via `/link +12345678900` in the bot.
 
@@ -246,8 +246,8 @@ Clients link via `/link +12345678900` in the bot.
 ### VPS / Server
 
 ```bash
-git clone https://github.com/SGrappelli/pronto.git
-cd pronto
+git clone https://github.com/SGrappelli/BookingPro.git
+cd BookingPro
 cp .env.example .env
 # Edit .env
 docker-compose up -d
@@ -274,7 +274,7 @@ server {
 ## Project Structure
 
 ```
-pronto/
+BookingPro/
 ├── app/
 │   ├── (auth)/          # Login, Register, Check email
 │   ├── (dashboard)/     # POS, CRM, Inventory, Booking, Settings, Dashboard
@@ -348,7 +348,7 @@ pronto/
 
 Need help getting started?
 
-- **Installation & setup** — deploy Pronto on your server, configure all integrations ($100–200)
+- **Installation & setup** — deploy BookingPro on your server, configure all integrations ($100–200)
 - **Customization** — custom features, branding, or integrations for your specific business ($150–400)
 
 Contact: [ukv2179@gmail.com](mailto:ukv2179@gmail.com) or open an issue with the `services` label.

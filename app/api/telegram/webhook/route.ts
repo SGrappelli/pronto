@@ -115,7 +115,7 @@ export async function POST(req: NextRequest) {
         [
           `👋 Hi ${firstName}!`,
           ``,
-          `You are now connected to <b>${biz.name}</b> on Pronto.`,
+          `You are now connected to <b>${biz.name}</b> on BookingPro.`,
           ``,
           `You'll receive notifications here:`,
           `• 📅 New bookings`,
@@ -219,7 +219,7 @@ export async function POST(req: NextRequest) {
         biz.telegram_bot_token,
         chatId,
         [
-          `<b>Pronto Bot — available commands:</b>`,
+          `<b>BookingPro Bot — available commands:</b>`,
           ``,
           `/today — today's appointments (owner only)`,
           `/link {phone} — link your Telegram to your client profile`,

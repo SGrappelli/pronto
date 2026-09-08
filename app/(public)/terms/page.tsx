@@ -1,8 +1,8 @@
 import { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: 'Terms of Service — Pronto',
-  description: 'Terms of Service for Pronto business management software.',
+  title: 'Terms of Service — BookingPro',
+  description: 'Terms of Service for BookingPro business management software.',
 }
 
 export default function TermsPage() {
@@ -17,7 +17,7 @@ export default function TermsPage() {
           <section>
             <h2 className="text-xl font-semibold text-gray-900 mb-3">1. Acceptance of Terms</h2>
             <p>
-              By accessing or using Pronto (&ldquo;Service&rdquo;), operated by Pronto
+              By accessing or using BookingPro (&ldquo;Service&rdquo;), operated by BookingPro
               (&ldquo;Company&rdquo;, &ldquo;we&rdquo;, &ldquo;us&rdquo;, or &ldquo;our&rdquo;),
               you agree to be bound by these Terms of Service (&ldquo;Terms&rdquo;). If you do not
               agree, you may not use the Service.
@@ -27,7 +27,7 @@ export default function TermsPage() {
           <section>
             <h2 className="text-xl font-semibold text-gray-900 mb-3">2. Description of Service</h2>
             <p>
-              Pronto is a cloud-based business management platform for service-oriented small and
+              BookingPro is a cloud-based business management platform for service-oriented small and
               medium businesses. The Service includes point-of-sale (POS), customer relationship
               management (CRM), inventory management, appointment booking, and omnichannel
               notification features accessible at{' '}

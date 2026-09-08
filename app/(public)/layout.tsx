@@ -19,7 +19,7 @@ export default function PublicLayout({ children }: { children: React.ReactNode }
     <div className={`${styles.page} ${bricolage.variable} ${dmSans.variable}`}>
       <nav className={styles.nav}>
         <Link href="/" className={styles.navBrand}>
-          Pronto<span>.</span>
+          BookingPro<span>.</span>
         </Link>
         <div className={styles.navRight}>
           <Link href="/login" className={styles.navLink}>
@@ -43,15 +43,15 @@ export default function PublicLayout({ children }: { children: React.ReactNode }
           EN standard: / · legal · GitHub */}
       <footer className={styles.footer}>
         <div className={styles.footerBrand}>
-          Pronto<span>.</span>
+          BookingPro<span>.</span>
         </div>
-        <div className={styles.footerCopy}>© 2026 Pronto. All rights reserved.</div>
+        <div className={styles.footerCopy}>© 2026 BookingPro. All rights reserved.</div>
         <div className={styles.footerLinks}>
           <Link href="/">Home</Link>
           <Link href="/terms">Terms</Link>
           <Link href="/privacy">Privacy</Link>
           <Link href="/refund">Refund policy</Link>
-          <a href="https://github.com/SGrappelli/pronto" target="_blank" rel="noopener noreferrer">
+          <a href="https://github.com/SGrappelli/BookingPro" target="_blank" rel="noopener noreferrer">
             GitHub
           </a>
         </div>

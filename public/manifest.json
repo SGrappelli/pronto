@@ -1,6 +1,6 @@
 {
-  "name": "Pronto — Business Management",
-  "short_name": "Pronto",
+  "name": "BookingPro — Business Management",
+  "short_name": "BookingPro",
   "description": "POS · CRM · Inventory · Booking for service businesses",
   "start_url": "/",
   "display": "standalone",

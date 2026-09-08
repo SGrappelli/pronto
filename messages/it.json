@@ -1,10 +1,10 @@
 {
   "meta": {
-    "title": "Pronto — Business Management for Service SMBs",
+    "title": "BookingPro — Business Management for Service SMBs",
     "description": "POS, CRM, inventario self-hosted e notifiche omnicanale. I tuoi dati, il tuo server. Zero commissioni. Installazione con un solo comando."
   },
   "brand": {
-    "name": "Pronto",
+    "name": "BookingPro",
     "tagline": "Gestione aziendale · Zero commissioni"
   },
   "nav": {
@@ -33,7 +33,7 @@
     "pricingSubheading": "Oppure ospitalo sul tuo server gratuitamente —",
     "pricingSubheadingLink": "clona su GitHub",
     "mostPopular": "Più popolare",
-    "footer": "Pronto © 2026 · Licenza MIT",
+    "footer": "BookingPro © 2026 · Licenza MIT",
     "plans": {
       "free": {
         "name": "Free",
@@ -122,7 +122,7 @@
     }
   },
   "onboarding": {
-    "logo": "Pronto",
+    "logo": "BookingPro",
     "intro": "Configuriamo la tua attività in 3 passaggi",
     "steps": {
       "businessType": "Tipo di attività",
@@ -147,7 +147,7 @@
       "bizNamePlaceholder": "Salone di Maya",
       "businessTypeLabel": "Tipo di attività",
       "continue": "Continua",
-      "slugLabel": "Il tuo URL Pronto",
+      "slugLabel": "Il tuo URL BookingPro",
       "slugHint": "Lettere minuscole, numeri e trattini · 3–30 caratteri",
       "slugChecking": "Verifica in corso…",
       "slugAvailable": "Disponibile ✓",
@@ -167,7 +167,7 @@
       "continue": "Continua"
     },
     "checklist": {
-      "title": "Inizia con Pronto",
+      "title": "Inizia con BookingPro",
       "progress": "{done} di {total} completati",
       "step1": "Profilo dell'attività creato",
       "step2": "Aggiungi il tuo primo servizio",
@@ -183,8 +183,8 @@
       "openCalendar": "Apri calendario",
       "stepProduct": "Aggiungi il tuo primo prodotto",
       "addProduct": "Aggiungi prodotto",
-      "allDone": "È tutto pronto! 🎉",
-      "upgradeTitle": "È tutto pronto — vuoi passare al piano superiore?",
+      "allDone": "È tutto BookingPro! 🎉",
+      "upgradeTitle": "È tutto BookingPro — vuoi passare al piano superiore?",
       "upgradeSubtitle": "Hai iniziato con il piano {plan}. Ecco cosa sbloccherai:",
       "upgradeCtaButton": "Continua con il pagamento →",
       "upgradeLaterButton": "Forse più tardi, rimani sul piano Free"
@@ -331,7 +331,7 @@
     "export": "Esporta",
     "import": {
       "title": "Importa prodotti",
-      "uploadHint": "Hai già un listino prezzi del fornitore in Excel o CSV? Caricalo direttamente — Pronto rileverà automaticamente le colonne.",
+      "uploadHint": "Hai già un listino prezzi del fornitore in Excel o CSV? Caricalo direttamente — BookingPro rileverà automaticamente le colonne.",
       "dropzone": "Trascina il file qui o clicca per sfogliare",
       "dropzoneFormats": ".xlsx  ·  .xls  ·  .csv",
       "orSeparator": "oppure",
@@ -926,7 +926,7 @@
   },
   "feedback": {
     "heading": "Condividi il tuo feedback",
-    "subheading": "Aiutaci a migliorare Pronto",
+    "subheading": "Aiutaci a migliorare BookingPro",
     "placeholder": "Cosa hai in mente?",
     "placeholderGood": "Cosa ti piace di più?",
     "placeholderBad": "Cosa non funziona per te?",
@@ -934,7 +934,7 @@
     "submit": "Invia",
     "sending": "Invio in corso…",
     "thanks": "Grazie per il tuo feedback!",
-    "thanksSub": "Ci aiuta a rendere Pronto migliore.",
+    "thanksSub": "Ci aiuta a rendere BookingPro migliore.",
     "close": "Chiudi"
   },
   "clientDetail": {

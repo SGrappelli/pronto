@@ -1,7 +1,7 @@
 import { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: 'Privacy Policy — Pronto',
+  title: 'Privacy Policy — BookingPro',
   description: 'Privacy Policy for Pronto business management software.',
 }
 
@@ -17,7 +17,7 @@ export default function PrivacyPage() {
           <section>
             <h2 className="text-xl font-semibold text-gray-900 mb-3">1. Introduction</h2>
             <p>
-              Pronto (&ldquo;Company&rdquo;, &ldquo;we&rdquo;, &ldquo;us&rdquo;, or
+              BookingPro (&ldquo;Company&rdquo;, &ldquo;we&rdquo;, &ldquo;us&rdquo;, or
               &ldquo;our&rdquo;) is committed to protecting your personal data. This Privacy Policy
               explains what data we collect when you use{' '}
               <span className="font-medium">trypronto.app</span> (&ldquo;Service&rdquo;), how we

@@ -37,7 +37,7 @@ function layout(businessName: string, body: string): string {
           <tr>
             <td style="background:#f9fafb;padding:16px 32px;border-top:1px solid #e5e7eb;">
               <p style="margin:0;font-size:12px;color:#9ca3af;">
-                Powered by <a href="${APP_URL}" style="color:#2563eb;text-decoration:none;">Pronto</a>
+                Powered by <a href="${APP_URL}" style="color:#2563eb;text-decoration:none;">BookingPro</a>
               </p>
             </td>
           </tr>

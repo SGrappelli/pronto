@@ -7,7 +7,7 @@ import './globals.css'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'Pronto — Business Management for Service SMBs',
+  title: 'BookingPro — Business Management for Service SMBs',
   description:
     'Self-hosted POS, CRM, Inventory & Omnichannel Notifications. Your data, your server. Zero commission. One command install.',
   keywords: [
@@ -23,7 +23,7 @@ export const metadata: Metadata = {
   appleWebApp: {
     capable: true,
     statusBarStyle: 'default',
-    title: 'Pronto',
+    title: 'BookingPro',
   },
   formatDetection: {
     telephone: false,

@@ -72,7 +72,7 @@ function assembleGCalUrl(
   const details = [
     `Service: ${serviceName}`,
     ...(employeeName ? [`With: ${employeeName}`] : []),
-    `Booked via Pronto`,
+    `Booked via BookingPro`,
   ].join('\n')
 
   const parts = [
