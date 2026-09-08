@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 import { redirect } from 'next/navigation'
 
 export const metadata: Metadata = {
-  title: 'Pronto para Negocios de Servicios — POS, Reservas y CRM Gratis',
+  title: 'BookingPro para Negocios de Servicios — POS, Reservas y CRM Gratis',
   description:
     'Software gratis de POS, CRM y reservas para salones, barberías, talleres de autos, clínicas dentales, gimnasios, spas, cafeterías y cualquier negocio de servicios. Sin comisiones.',
   keywords:
@@ -18,16 +18,16 @@ export const metadata: Metadata = {
   openGraph: {
     type: 'website',
     url: 'https://trypronto.app/es/para',
-    title: 'Pronto para Negocios de Servicios — POS, Reservas y CRM Gratis',
+    title: 'BookingPro para Negocios de Servicios — POS, Reservas y CRM Gratis',
     description:
       'POS, CRM y reservas gratis para cualquier negocio de servicios. Sin comisiones. Self-hosted o en la nube.',
     images: [{ url: 'https://trypronto.app/og-image-es.png' }],
     locale: 'es_ES',
-    siteName: 'Pronto',
+    siteName: 'BookingPro',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Pronto para Negocios de Servicios — POS, Reservas y CRM Gratis',
+    title: 'BookingPro para Negocios de Servicios — POS, Reservas y CRM Gratis',
     description:
       'POS, CRM y reservas gratis para cualquier negocio de servicios. Sin comisiones. Self-hosted o en la nube.',
     images: ['https://trypronto.app/og-image-es.png'],
@@ -38,7 +38,7 @@ const breadcrumbSchema = {
   '@context': 'https://schema.org',
   '@type': 'BreadcrumbList',
   itemListElement: [
-    { '@type': 'ListItem', position: 1, name: 'Pronto', item: 'https://trypronto.app' },
+    { '@type': 'ListItem', position: 1, name: 'BookingPro', item: 'https://trypronto.app' },
     { '@type': 'ListItem', position: 2, name: 'Inicio', item: 'https://trypronto.app/es/' },
     { '@type': 'ListItem', position: 3, name: 'Para negocios', item: 'https://trypronto.app/es/para' },
   ],
@@ -47,7 +47,7 @@ const breadcrumbSchema = {
 const itemListSchema = {
   '@context': 'https://schema.org',
   '@type': 'ItemList',
-  name: 'Pronto para negocios de servicios',
+  name: 'BookingPro para negocios de servicios',
   itemListElement: [
     { '@type': 'ListItem', position: 1, name: 'Salones de belleza', url: 'https://trypronto.app/es/para/salones' },
     { '@type': 'ListItem', position: 2, name: 'Barberías', url: 'https://trypronto.app/es/para/barberia' },
@@ -165,7 +165,7 @@ footer{padding:28px 48px;border-top:1px solid #f0f0f0;display:flex;justify-conte
 
 const pageContent = `
 <nav>
-  <a href="/es/" class="nav-brand">Pronto<span>.</span></a>
+  <a href="/es/" class="nav-brand">BookingPro<span>.</span></a>
   <div class="nav-right">
     <a href="/es/precios" class="nav-link hide-mob">Precios</a>
     <a href="/login" class="nav-link">Iniciar sesi&oacute;n</a>
@@ -175,7 +175,7 @@ const pageContent = `
 </nav>
 
 <div class="breadcrumb">
-  <a href="/">Pronto</a><span>&rsaquo;</span>
+  <a href="/">BookingPro</a><span>&rsaquo;</span>
   <a href="/es/">Inicio</a><span>&rsaquo;</span>
   Para negocios
 </div>
@@ -307,14 +307,14 @@ const pageContent = `
   <h2>&iquest;No sabes cu&aacute;l es el tuyo?</h2>
   <p>Empieza con el plan gratuito en la nube &mdash; funciona para cualquier negocio de servicios, sin configuraci&oacute;n.</p>
   <a href="/register" class="btn-primary">Empezar gratis &mdash; sin tarjeta</a>
-  <a href="https://github.com/SGrappelli/pronto" class="btn-outline">Self-host en GitHub &rarr;</a>
+  <a href="https://github.com/SGrappelli/BookingPro" class="btn-outline">Self-host en GitHub &rarr;</a>
 </section>
 
 </main>
 
 <footer>
-  <div class="footer-brand">Pronto<span>.</span></div>
-  <div class="footer-copy">&copy; 2026 Pronto. Todos los derechos reservados.</div>
+  <div class="footer-brand">BookingPro<span>.</span></div>
+  <div class="footer-copy">&copy; 2026 BookingPro. Todos los derechos reservados.</div>
     <!-- FOOTER — keep in sync with all other pages
        ES standard: /es/ · /es/precios · /es/para · /es/para/salones · legal · GitHub
        EN standard: / · /pricing · /for · /for/salons · legal · GitHub -->
@@ -326,7 +326,7 @@ const pageContent = `
     <a href="/terms">Términos</a>
     <a href="/privacy">Privacidad</a>
     <a href="/refund">Reembolsos</a>
-    <a href="https://github.com/SGrappelli/pronto">GitHub</a>
+    <a href="https://github.com/SGrappelli/BookingPro">GitHub</a>
   </div>
 </footer>
 `

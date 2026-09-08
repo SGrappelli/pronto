@@ -17,9 +17,9 @@ const dmSans = DM_Sans({
 })
 
 export const metadata: Metadata = {
-  title: 'Pronto — Software Gratis de POS, CRM y Reservas para Negocios de Servicios',
+  title: 'BookingPro — Software Gratis de POS, CRM y Reservas para Negocios de Servicios',
   description:
-    'Pronto es un software gratuito y de código abierto para negocios de servicios: POS, CRM, reservas en línea e inventario. Sin comisiones. Instala en tu servidor o usa la nube.',
+    'BookingPro es un software gratuito y de código abierto para negocios de servicios: POS, CRM, reservas en línea e inventario. Sin comisiones. Instala en tu servidor o usa la nube.',
   keywords: [
     'software para salón de belleza',
     'sistema POS gratis',
@@ -43,16 +43,16 @@ export const metadata: Metadata = {
   openGraph: {
     type: 'website',
     url: 'https://trypronto.app/es/',
-    title: 'Pronto — Software Gratis de POS, CRM y Reservas para Negocios de Servicios',
+    title: 'BookingPro — Software Gratis de POS, CRM y Reservas para Negocios de Servicios',
     description:
       'POS, CRM, reservas y notificaciones omnicanal para cualquier negocio de servicios. Sin comisiones. Una sola instalación.',
     images: [{ url: 'https://trypronto.app/og-image-es.png' }],
     locale: 'es_ES',
-    siteName: 'Pronto',
+    siteName: 'BookingPro',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Pronto — Software Gratis de POS, CRM y Reservas para Negocios de Servicios',
+    title: 'BookingPro — Software Gratis de POS, CRM y Reservas para Negocios de Servicios',
     description:
       'POS, CRM, reservas y notificaciones omnicanal para cualquier negocio de servicios. Sin comisiones. Una sola instalación.',
     images: ['https://trypronto.app/og-image-es.png'],
@@ -62,7 +62,7 @@ export const metadata: Metadata = {
 const softwareAppJsonLd = {
   '@context': 'https://schema.org',
   '@type': 'SoftwareApplication',
-  name: 'Pronto',
+  name: 'BookingPro',
   url: 'https://trypronto.app/es/',
   description:
     'Software gratuito y de código abierto para negocios de servicios: POS, CRM, reservas en línea, inventario y notificaciones automáticas por WhatsApp, Telegram, Viber y Email.',
@@ -85,7 +85,7 @@ const faqJsonLd = {
   mainEntity: [
     {
       '@type': 'Question',
-      name: '¿Pronto es realmente gratuito?',
+      name: '¿BookingPro es realmente gratuito?',
       acceptedAnswer: {
         '@type': 'Answer',
         text: 'Sí. La versión self-hosted es gratuita para siempre bajo licencia MIT, sin límites de clientes, empleados ni funciones. La versión en la nube tiene un plan gratuito y planes de pago desde $19 al mes con 14 días de prueba gratis.',
@@ -93,7 +93,7 @@ const faqJsonLd = {
     },
     {
       '@type': 'Question',
-      name: '¿Pronto cobra comisión por las reservas?',
+      name: '¿BookingPro cobra comisión por las reservas?',
       acceptedAnswer: {
         '@type': 'Answer',
         text: 'No. Cero comisión en todas las reservas y ventas. Tus clientes reservan directamente contigo, sin marketplace ni intermediarios.',
@@ -109,7 +109,7 @@ const faqJsonLd = {
     },
     {
       '@type': 'Question',
-      name: '¿Cómo instalo Pronto en mi propio servidor?',
+      name: '¿Cómo instalo BookingPro en mi propio servidor?',
       acceptedAnswer: {
         '@type': 'Answer',
         text: 'Necesitas Docker en cualquier servidor Linux, Windows o macOS con al menos 1 GB de RAM. Ejecuta: docker compose up -d y la aplicación se inicia automáticamente.',
@@ -125,7 +125,7 @@ const faqJsonLd = {
     },
     {
       '@type': 'Question',
-      name: '¿Para qué tipo de negocios sirve Pronto?',
+      name: '¿Para qué tipo de negocios sirve BookingPro?',
       acceptedAnswer: {
         '@type': 'Answer',
         text: 'Para cualquier negocio de servicios: salones de belleza, barberías, talleres de autos, cafeterías, clínicas dentales, gimnasios, spas, estudios de tatuajes y cualquier otro negocio donde los clientes reserven citas o paguen por servicios.',
@@ -137,7 +137,7 @@ const faqJsonLd = {
 const organizationJsonLd = {
   '@context': 'https://schema.org',
   '@type': 'Organization',
-  name: 'Pronto',
+  name: 'BookingPro',
   url: 'https://trypronto.app',
   logo: 'https://trypronto.app/logo.png',
   sameAs: ['https://github.com/SGrappelli/pronto'],
@@ -165,7 +165,7 @@ export default function EsPage() {
 
       <nav className={styles.nav}>
         <Link href="/" className={styles.navBrand}>
-          Pronto<span>.</span>
+          BookingPro<span>.</span>
         </Link>
         <div className={styles.navRight}>
           <Link href="/es/precios" className={`${styles.navLink} ${styles.hideMob}`}>
@@ -359,10 +359,10 @@ export default function EsPage() {
           </div>
         </section>
 
-        {/* DOS FORMAS DE USAR PRONTO */}
+        {/* DOS FORMAS DE USAR BookingPro */}
         <section className={`${styles.sec} ${styles.secWhite}`}>
           <div className={styles.secHead}>
-            <h2>Dos formas de usar Pronto</h2>
+            <h2>Dos formas de usar BookingPro</h2>
             <p>Elige la que mejor se adapte a tu negocio. Cambia cuando quieras.</p>
           </div>
           <div className={styles.twoPaths}>
@@ -554,7 +554,7 @@ export default function EsPage() {
         <div className={styles.faqInner}>
           <h2>Preguntas frecuentes</h2>
           <div className={styles.faqItem}>
-            <div className={styles.faqQ}>¿Pronto es realmente gratuito?</div>
+            <div className={styles.faqQ}>¿BookingPro es realmente gratuito?</div>
             <div className={styles.faqA}>
               Sí. La versión self-hosted es gratuita para siempre bajo licencia MIT, sin límites de
               clientes, empleados ni funciones. La versión en la nube tiene un plan gratuito y
@@ -562,7 +562,7 @@ export default function EsPage() {
             </div>
           </div>
           <div className={styles.faqItem}>
-            <div className={styles.faqQ}>¿Pronto cobra comisión por las reservas?</div>
+            <div className={styles.faqQ}>¿BookingPro cobra comisión por las reservas?</div>
             <div className={styles.faqA}>
               No. Cero comisión en todas las reservas y ventas. Tus clientes reservan directamente
               contigo, sin marketplace ni intermediarios.
@@ -576,7 +576,7 @@ export default function EsPage() {
             </div>
           </div>
           <div className={styles.faqItem}>
-            <div className={styles.faqQ}>¿Cómo instalo Pronto en mi propio servidor?</div>
+            <div className={styles.faqQ}>¿Cómo instalo BookingPro en mi propio servidor?</div>
             <div className={styles.faqA}>
               Necesitas Docker en cualquier servidor Linux, Windows o macOS con al menos 1 GB de
               RAM. Ejecuta{' '}
@@ -600,7 +600,7 @@ export default function EsPage() {
             </div>
           </div>
           <div className={styles.faqItem}>
-            <div className={styles.faqQ}>¿Para qué tipo de negocios sirve Pronto?</div>
+            <div className={styles.faqQ}>¿Para qué tipo de negocios sirve BookingPro?</div>
             <div className={styles.faqA}>
               Para cualquier negocio de servicios: salones de belleza, barberías, talleres de
               autos, cafeterías, clínicas dentales, gimnasios, spas, estudios de tatuajes y
@@ -615,9 +615,9 @@ export default function EsPage() {
           EN standard: / · /pricing · /for · /for/salons · legal · GitHub */}
       <footer className={styles.footer}>
         <div className={styles.footerBrand}>
-          Pronto<span>.</span>
+          BookingPro<span>.</span>
         </div>
-        <div className={styles.footerCopy}>© 2026 Pronto. Todos los derechos reservados.</div>
+        <div className={styles.footerCopy}>© 2026 BookingPro. Todos los derechos reservados.</div>
         <div className={styles.footerLinks}>
           <Link href="/es/">Inicio</Link>
           <Link href="/es/precios">Precios</Link>

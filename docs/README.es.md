@@ -1,6 +1,6 @@
 🌍 [English](../README.md) | **Español** | [Português](README.pt.md)
 
-# Pronto — Sistema de Gestión para Negocios de Servicios
+# BookingPro — Sistema de Gestión para Negocios de Servicios
 
 > POS · CRM · Inventario · Reservas · Notificaciones multicanal. Todo en tu servidor.  
 > Tus datos, tu servidor. Sin comisiones. Instalación con un solo comando.
@@ -12,9 +12,9 @@
 
 ---
 
-## ¿Qué es Pronto?
+## ¿Qué es BookingPro?
 
-Pronto es un sistema de gestión empresarial gratuito y de código abierto, diseñado para negocios de servicios: salones de belleza, talleres mecánicos, cafeterías, clínicas dentales, gimnasios y mucho más.
+BookingPro es un sistema de gestión empresarial gratuito y de código abierto, diseñado para negocios de servicios: salones de belleza, talleres mecánicos, cafeterías, clínicas dentales, gimnasios y mucho más.
 
 Sin cuotas mensuales. Sin comisiones sobre tus ventas. Tus datos se quedan en tu propio servidor.
 
@@ -117,14 +117,14 @@ DATABASE_URL=postgresql://postgres.[ref]:[password]@[host]:5432/postgres
 # ── Email (elige una opción) ──────────────────────────
 # Opción A: Resend (la más fácil — nivel gratuito: 3.000 emails/mes)
 RESEND_API_KEY=re_xxxxxxxxxxxx
-RESEND_FROM_EMAIL=Pronto <noreply@tudominio.com>
+RESEND_FROM_EMAIL=BookingPro <noreply@tudominio.com>
 
 # Opción B: Tu propio servidor SMTP
 # SMTP_HOST=smtp.gmail.com
 # SMTP_PORT=587
 # SMTP_USER=tu@gmail.com
 # SMTP_PASS=tu-contraseña-de-app
-# SMTP_FROM=Pronto <tu@gmail.com>
+# SMTP_FROM=BookingPro <tu@gmail.com>
 
 # ── Cron secret (protege /api/cron/notify) ───────────
 CRON_SECRET=reemplazar-con-cadena-aleatoria
@@ -142,7 +142,7 @@ Consulta `.env.example` para la lista completa, incluyendo Telegram, Viber y con
 2. Copia tu **cadena de conexión a la base de datos** (modo Session, puerto 5432) desde  
    **Project Settings → Database → Connection string** y configúrala como `DATABASE_URL` en `.env`  
    Las migraciones se aplican automáticamente al ejecutar `docker-compose up`
-3. **Personaliza las plantillas de email** — reemplaza los correos predeterminados de Supabase con los de Pronto:
+3. **Personaliza las plantillas de email** — reemplaza los correos predeterminados de Supabase con los de BookingPro:
    - Ve a **Authentication → Email Templates** en tu Supabase Dashboard
    - Para cada plantilla, abre el archivo, copia el HTML y pégalo en Supabase:
 
@@ -153,7 +153,7 @@ Consulta `.env.example` para la lista completa, incluyendo Telegram, Viber y con
    | Change Email Address | `supabase/email-templates/email-change.html` |
 
 4. **Configura el remitente** — en **Authentication → Email Settings**:
-   - **Sender name**: `Pronto` (o el nombre de tu marca)
+   - **Sender name**: `BookingPro` (o el nombre de tu marca)
    - **Reply-to**: tu email de soporte
 5. Ve a **Authentication → Providers** y activa **Email** (opcionalmente Google OAuth)
 6. Copia la URL de tu proyecto y las claves API a `.env`
@@ -168,7 +168,7 @@ Después de desplegar, entra al dashboard de tu proyecto de Supabase y revisa **
 
 ## Eventos de Notificación
 
-Pronto envía notificaciones automáticas por todos los canales configurados.
+BookingPro envía notificaciones automáticas por todos los canales configurados.
 
 | Disparador | Destinatario | Canal |
 |---|---|---|
@@ -198,7 +198,7 @@ O usa el scheduler integrado pg_cron — ver [Configurar notificaciones cron](#c
 ## Bot de Telegram
 
 1. Abre [@BotFather](https://t.me/BotFather) → `/newbot` → copia el token
-2. En Pronto: **Configuración → Notificaciones** → pega el token → haz clic en **Conectar**
+2. En BookingPro: **Configuración → Notificaciones** → pega el token → haz clic en **Conectar**
 3. Abre tu bot en Telegram → envía `/start`
 
 Comandos disponibles (para el dueño):
@@ -228,7 +228,7 @@ Notificaciones automáticas para el dueño:
 > ⚠️ **Importante:** Desde febrero de 2024, Viber requiere un acuerdo comercial para crear nuevos chatbots (~€100/mes). Esta integración funciona con bots creados antes de esa fecha o si tienes un acuerdo vigente. **Para nuevas instalaciones, se recomienda Telegram (gratuito).**
 
 1. Inicia sesión en [partners.viber.com](https://partners.viber.com) con tu cuenta de bot → copia el token
-2. En Pronto: **Configuración → Notificaciones** → pega el token de Viber → haz clic en **Conectar**
+2. En BookingPro: **Configuración → Notificaciones** → pega el token de Viber → haz clic en **Conectar**
 3. Busca tu bot en Viber e inicia una conversación — recibirás un mensaje de bienvenida
 
 Se entregan las mismas notificaciones que Telegram a través de Viber (nuevas reservas, recordatorios, stock bajo, visitas completadas).
@@ -261,7 +261,7 @@ A diferencia de Telegram/Viber (que notifican al *dueño del negocio*), los mens
 5. Reinicia el servidor — Configuración → Notificaciones mostrará un badge verde "Conectado"
 6. Agrega los números de WhatsApp de los clientes en **CRM → ficha del cliente → WhatsApp** — recibirán mensajes automáticamente
 
-**Formato del número:** ingresa con o sin `+` — Pronto lo normaliza automáticamente (ej. `+52 55 1234 5678` → `525512345678`).
+**Formato del número:** ingresa con o sin `+` — BookingPro lo normaliza automáticamente (ej. `+52 55 1234 5678` → `525512345678`).
 
 > ⚠️ **Límites de mensajería de WhatsApp:** Los mensajes de texto libre (`type: text`) solo funcionan dentro de una **ventana de atención al cliente de 24 horas** que se abre cuando el cliente escribe primero al negocio. Los mensajes iniciados por el negocio — recordatorios, agradecimientos, reactivación, cumpleaños — requieren **Plantillas de Mensaje (HSM) aprobadas previamente** en Meta Business Manager. Sin plantillas aprobadas, estos mensajes son descartados silenciosamente por Meta. Para soporte completo de notificaciones cron vía WhatsApp, crea y envía tus plantillas en [business.facebook.com → Herramientas de cuenta → Plantillas de mensajes](https://business.facebook.com).
 
@@ -386,7 +386,7 @@ pronto/
 
 ¿Necesitas ayuda para empezar? Ofrezco:
 
-- **Instalación y configuración** — instalo Pronto en tu servidor, configuro todas las integraciones y te dejo todo funcionando ($100–200)
+- **Instalación y configuración** — instalo BookingPro en tu servidor, configuro todas las integraciones y te dejo todo funcionando ($100–200)
 - **Personalización** — funciones a medida, branding o integraciones específicas para tu negocio ($150–400)
 - **Hosting administrado** — ¿no quieres gestionar un servidor? Usa la versión en la nube en [trypronto.app](https://trypronto.app) desde $19/mes
 

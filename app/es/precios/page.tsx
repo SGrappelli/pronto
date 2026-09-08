@@ -19,9 +19,9 @@ const dmSans = DM_Sans({
 })
 
 export const metadata: Metadata = {
-  title: 'Precios de Pronto — Software Gratis de Gestión para Negocios de Servicios',
+  title: 'Precios de BookingPro — Software Gratis de Gestión para Negocios de Servicios',
   description:
-    'Pronto tiene un plan gratuito para siempre y planes de pago desde $19 al mes. Sin comisiones, sin contratos. Self-hosted gratis bajo licencia MIT o prueba la nube 14 días gratis.',
+    'BookingPro tiene un plan gratuito para siempre y planes de pago desde $19 al mes. Sin comisiones, sin contratos. Self-hosted gratis bajo licencia MIT o prueba la nube 14 días gratis.',
   keywords: [
     'precios software gestión negocios',
     'software POS precio',
@@ -31,7 +31,7 @@ export const metadata: Metadata = {
     'software para barbería precio',
     'POS gratis código abierto',
     'alternativa gratuita software gestión',
-    'Pronto precios planes',
+    'BookingPro precios planes',
   ],
   alternates: {
     canonical: 'https://trypronto.app/es/precios',
@@ -44,16 +44,16 @@ export const metadata: Metadata = {
   openGraph: {
     type: 'website',
     url: 'https://trypronto.app/es/precios',
-    title: 'Precios de Pronto — Desde $0 al mes. Sin comisiones.',
+    title: 'Precios de BookingPro — Desde $0 al mes. Sin comisiones.',
     description:
       'Plan gratuito para siempre en self-hosted. Planes en la nube desde $19 al mes con 14 días de prueba gratis. Sin tarjeta de crédito.',
     images: [{ url: 'https://trypronto.app/og-pricing-es.png' }],
     locale: 'es_ES',
-    siteName: 'Pronto',
+    siteName: 'BookingPro',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Precios de Pronto — Desde $0 al mes. Sin comisiones.',
+    title: 'Precios de BookingPro — Desde $0 al mes. Sin comisiones.',
     description:
       'Plan gratuito para siempre en self-hosted. Planes en la nube desde $19 al mes con 14 días de prueba gratis. Sin tarjeta de crédito.',
     images: ['https://trypronto.app/og-pricing-es.png'],
@@ -85,7 +85,7 @@ const faqJsonLd = {
       name: '¿Pronto cobra comisión por reservas o ventas?',
       acceptedAnswer: {
         '@type': 'Answer',
-        text: 'No. Pronto nunca cobra comisión por tus reservas ni por tus ventas. Ni en el plan gratuito ni en los de pago. Tus clientes reservan directamente contigo y tú recibes el 100% de tus ingresos.',
+        text: 'No. BookingPro nunca cobra comisión por tus reservas ni por tus ventas. Ni en el plan gratuito ni en los de pago. Tus clientes reservan directamente contigo y tú recibes el 100% de tus ingresos.',
       },
     },
     {
@@ -93,7 +93,7 @@ const faqJsonLd = {
       name: '¿Cuál es la diferencia entre self-hosted y la nube?',
       acceptedAnswer: {
         '@type': 'Answer',
-        text: 'Con self-hosted instalas Pronto en tu propio servidor con un solo comando (docker compose up -d). Es gratis para siempre, sin límites, y tus datos nunca salen de tu máquina. Con la nube en trypronto.app no necesitas servidor: estás listo en 5 minutos y nosotros nos encargamos de las actualizaciones, copias de seguridad y el uptime.',
+        text: 'Con self-hosted instalas BookingPro en tu propio servidor con un solo comando (docker compose up -d). Es gratis para siempre, sin límites, y tus datos nunca salen de tu máquina. Con la nube en trypronto.app no necesitas servidor: estás listo en 5 minutos y nosotros nos encargamos de las actualizaciones, copias de seguridad y el uptime.',
       },
     },
     {
@@ -117,7 +117,7 @@ const faqJsonLd = {
       name: '¿WhatsApp, Telegram y Viber están incluidos en el precio?',
       acceptedAnswer: {
         '@type': 'Answer',
-        text: 'Sí. No hay costo adicional por los canales de notificación. Telegram y WhatsApp están incluidos desde el plan Starter. Viber está incluido en el plan Pro. Cada negocio conecta sus propias credenciales — Pronto no cobra por el uso de mensajería.',
+        text: 'Sí. No hay costo adicional por los canales de notificación. Telegram y WhatsApp están incluidos desde el plan Starter. Viber está incluido en el plan Pro. Cada negocio conecta sus propias credenciales — BookingPro no cobra por el uso de mensajería.',
       },
     },
     {
@@ -135,7 +135,7 @@ const breadcrumbJsonLd = {
   '@context': 'https://schema.org',
   '@type': 'BreadcrumbList',
   itemListElement: [
-    { '@type': 'ListItem', position: 1, name: 'Pronto', item: 'https://trypronto.app' },
+    { '@type': 'ListItem', position: 1, name: 'BookingPro', item: 'https://trypronto.app' },
     { '@type': 'ListItem', position: 2, name: 'Inicio', item: 'https://trypronto.app/es/' },
     { '@type': 'ListItem', position: 3, name: 'Precios', item: 'https://trypronto.app/es/precios' },
   ],
@@ -197,7 +197,7 @@ export default function EsPreciosPage() {
 
       <nav className={styles.nav}>
         <Link href="/es/" className={styles.navBrand}>
-          Pronto<span>.</span>
+          BookingPro<span>.</span>
         </Link>
         <div className={styles.navRight}>
           <Link href="/es/precios" className={`${styles.navLink} ${styles.hideMob}`}>
@@ -312,11 +312,11 @@ export default function EsPreciosPage() {
                   },
                   {
                     q: '¿Pronto cobra comisión por reservas o ventas?',
-                    a: 'No. Pronto nunca cobra comisión por tus reservas ni por tus ventas. Ni en el plan gratuito ni en los de pago. Tus clientes reservan directamente contigo y tú recibes el 100% de tus ingresos.',
+                    a: 'No. BookingPro nunca cobra comisión por tus reservas ni por tus ventas. Ni en el plan gratuito ni en los de pago. Tus clientes reservan directamente contigo y tú recibes el 100% de tus ingresos.',
                   },
                   {
                     q: '¿Cuál es la diferencia entre self-hosted y la nube?',
-                    a: 'Con self-hosted instalas Pronto en tu propio servidor con un solo comando (docker compose up -d). Es gratis para siempre, sin límites, y tus datos nunca salen de tu máquina. Con la nube en trypronto.app no necesitas servidor: estás listo en 5 minutos y nosotros nos encargamos de las actualizaciones, copias de seguridad y el uptime.',
+                    a: 'Con self-hosted instalas BookingPro en tu propio servidor con un solo comando (docker compose up -d). Es gratis para siempre, sin límites, y tus datos nunca salen de tu máquina. Con la nube en trypronto.app no necesitas servidor: estás listo en 5 minutos y nosotros nos encargamos de las actualizaciones, copias de seguridad y el uptime.',
                   },
                   {
                     q: '¿Puedo cambiar de plan en cualquier momento?',
@@ -328,7 +328,7 @@ export default function EsPreciosPage() {
                   },
                   {
                     q: '¿WhatsApp, Telegram y Viber están incluidos en el precio?',
-                    a: 'Sí. No hay costo adicional por los canales de notificación. Telegram y WhatsApp están incluidos desde el plan Starter. Viber está incluido en el plan Pro. Cada negocio conecta sus propias credenciales — Pronto no cobra por el uso de mensajería.',
+                    a: 'Sí. No hay costo adicional por los canales de notificación. Telegram y WhatsApp están incluidos desde el plan Starter. Viber está incluido en el plan Pro. Cada negocio conecta sus propias credenciales — BookingPro no cobra por el uso de mensajería.',
                   },
                   {
                     q: '¿El plan Agency permite manejar varios negocios o sucursales?',
@@ -369,7 +369,7 @@ export default function EsPreciosPage() {
                   Empezar gratis — sin tarjeta
                 </a>
                 <a
-                  href="https://github.com/SGrappelli/pronto"
+                  href="https://github.com/SGrappelli/BookingPro"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="border border-gray-300 text-gray-700 font-semibold px-7 py-3 rounded-xl hover:bg-gray-100 transition-colors text-sm"
@@ -387,9 +387,9 @@ export default function EsPreciosPage() {
           EN standard: / · /pricing · /for · /for/salons · legal · GitHub */}
       <footer className={styles.footer}>
         <div className={styles.footerBrand}>
-          Pronto<span>.</span>
+          BookingPro<span>.</span>
         </div>
-        <div className={styles.footerCopy}>© 2026 Pronto. Todos los derechos reservados.</div>
+        <div className={styles.footerCopy}>© 2026 BookingPro. Todos los derechos reservados.</div>
         <div className={styles.footerLinks}>
           <Link href="/es/">Inicio</Link>
           <Link href="/es/precios">Precios</Link>
@@ -398,7 +398,7 @@ export default function EsPreciosPage() {
           <Link href="/terms">Términos</Link>
           <Link href="/privacy">Privacidad</Link>
           <Link href="/refund">Reembolsos</Link>
-          <a href="https://github.com/SGrappelli/pronto" target="_blank" rel="noopener noreferrer">
+          <a href="https://github.com/SGrappelli/BookingPro" target="_blank" rel="noopener noreferrer">
             GitHub
           </a>
         </div>

@@ -17,9 +17,9 @@ const dmSans = DM_Sans({
 })
 
 export const metadata: Metadata = {
-  title: 'Pronto — Free Open Source POS, CRM & Booking for Service Businesses',
+  title: 'BookingPro — Free Open Source POS, CRM & Booking for Service Businesses',
   description:
-    'Pronto is a free, open-source POS, CRM, and appointment booking system for salons, barbershops, auto repair shops, cafes and any service SMB. Self-hosted or cloud. Zero commission. One command install.',
+    'BookingPro is a free, open-source POS, CRM, and appointment booking system for salons, barbershops, auto repair shops, cafes and any service SMB. Self-hosted or cloud. Zero commission. One command install.',
   keywords: [
     'open source POS',
     'self-hosted CRM',
@@ -38,16 +38,16 @@ export const metadata: Metadata = {
   openGraph: {
     type: 'website',
     url: 'https://trypronto.app/',
-    title: 'Pronto — Free Open Source POS & CRM for Service Businesses',
+    title: 'BookingPro — Free Open Source POS & CRM for Service Businesses',
     description:
       'Self-hosted POS, CRM, Booking and Omnichannel notifications. Zero commission. One command install.',
     images: [{ url: 'https://trypronto.app/og-image.png' }],
     locale: 'en_US',
-    siteName: 'Pronto',
+    siteName: 'BookingPro',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Pronto — Free Open Source POS & CRM for Service Businesses',
+    title: 'BookingPro — Free Open Source POS & CRM for Service Businesses',
     description:
       'Self-hosted POS, CRM, Booking and Omnichannel notifications. Zero commission. One command install.',
     images: ['https://trypronto.app/og-image.png'],
@@ -57,7 +57,7 @@ export const metadata: Metadata = {
 const softwareAppJsonLd = {
   '@context': 'https://schema.org',
   '@type': 'SoftwareApplication',
-  name: 'Pronto',
+  name: 'BookingPro',
   url: 'https://trypronto.app',
   description:
     'Free open-source POS, CRM, inventory and appointment booking for service businesses.',
@@ -79,7 +79,7 @@ const faqJsonLd = {
   mainEntity: [
     {
       '@type': 'Question',
-      name: 'Is Pronto really free?',
+      name: 'Is BookingPro really free?',
       acceptedAnswer: {
         '@type': 'Answer',
         text: 'Yes. The self-hosted version is free forever under MIT license with no limits. The cloud version has a free tier and paid plans from $19/month.',
@@ -87,7 +87,7 @@ const faqJsonLd = {
     },
     {
       '@type': 'Question',
-      name: 'Does Pronto charge commission on bookings?',
+      name: 'Does BookingPro charge commission on bookings?',
       acceptedAnswer: { '@type': 'Answer', text: 'No. Zero commission on all bookings and sales.' },
     },
     {
@@ -100,7 +100,7 @@ const faqJsonLd = {
     },
     {
       '@type': 'Question',
-      name: 'How do I install Pronto?',
+      name: 'How do I install BookingPro?',
       acceptedAnswer: {
         '@type': 'Answer',
         text: 'Run: docker compose up -d. Requires Docker on any Linux, Windows or macOS machine with 1GB RAM.',
@@ -120,10 +120,10 @@ const faqJsonLd = {
 const organizationJsonLd = {
   '@context': 'https://schema.org',
   '@type': 'Organization',
-  name: 'Pronto',
+  name: 'BookingPro',
   url: 'https://trypronto.app',
   logo: 'https://trypronto.app/logo.png',
-  sameAs: ['https://github.com/SGrappelli/pronto'],
+  sameAs: ['https://github.com/SGrappelli/BookingPro'],
 }
 
 export default function RootPage() {
@@ -148,7 +148,7 @@ export default function RootPage() {
 
       <nav className={styles.nav}>
         <Link href="/" className={styles.navBrand}>
-          Pronto<span>.</span>
+          BookingPro<span>.</span>
         </Link>
         <div className={styles.navRight}>
           <Link href="/login" className={styles.navLink}>
@@ -339,10 +339,10 @@ export default function RootPage() {
           </div>
         </section>
 
-        {/* TWO WAYS TO RUN PRONTO */}
+        {/* TWO WAYS TO RUN BookingPro */}
         <section className={`${styles.sec} ${styles.secWhite}`}>
           <div className={styles.secHead}>
-            <h2>Two ways to run Pronto</h2>
+            <h2>Two ways to run BookingPro</h2>
             <p>Pick what fits your business. Switch anytime.</p>
           </div>
           <div className={styles.twoPaths}>
@@ -398,7 +398,7 @@ export default function RootPage() {
               </div>
               <br />
               <a
-                href="https://github.com/SGrappelli/pronto"
+                href="https://github.com/SGrappelli/BookingPro"
                 className={styles.btnOutline}
                 style={{ marginTop: '16px' }}
                 target="_blank"
@@ -524,7 +524,7 @@ export default function RootPage() {
         <div className={styles.faqInner}>
           <h2>Frequently asked questions</h2>
           <div className={styles.faqItem}>
-            <div className={styles.faqQ}>Is Pronto really free?</div>
+            <div className={styles.faqQ}>Is BookingPro really free?</div>
             <div className={styles.faqA}>
               Yes. The self-hosted version is free forever under MIT license — no limits on clients,
               staff, or features. The cloud version has a free tier and paid plans from $19/month
@@ -532,7 +532,7 @@ export default function RootPage() {
             </div>
           </div>
           <div className={styles.faqItem}>
-            <div className={styles.faqQ}>Does Pronto charge commission on bookings?</div>
+            <div className={styles.faqQ}>Does BookingPro charge commission on bookings?</div>
             <div className={styles.faqA}>
               No. Zero commission on all bookings and sales. Clients book directly with your
               business — no marketplace, no middleman.
@@ -571,7 +571,7 @@ export default function RootPage() {
             </div>
           </div>
           <div className={styles.faqItem}>
-            <div className={styles.faqQ}>What types of businesses can use Pronto?</div>
+            <div className={styles.faqQ}>What types of businesses can use BookingPro?</div>
             <div className={styles.faqA}>
               Any service business: beauty salons, barbershops, auto repair shops, cafes, dental
               clinics, fitness clubs, massage and spa — and anything else where clients book
@@ -586,16 +586,16 @@ export default function RootPage() {
           EN standard: / · legal · GitHub */}
       <footer className={styles.footer}>
         <div className={styles.footerBrand}>
-          Pronto<span>.</span>
+          BookingPro<span>.</span>
         </div>
-        <div className={styles.footerCopy}>© 2026 Pronto. All rights reserved.</div>
+        <div className={styles.footerCopy}>© 2026 BookingPro. All rights reserved.</div>
         <div className={styles.footerLinks}>
           <Link href="/">Home</Link>
           <Link href="/terms">Terms</Link>
           <Link href="/privacy">Privacy</Link>
           <Link href="/refund">Refund policy</Link>
           <a
-            href="https://github.com/SGrappelli/pronto"
+            href="https://github.com/SGrappelli/BookingPro"
             target="_blank"
             rel="noopener noreferrer"
           >

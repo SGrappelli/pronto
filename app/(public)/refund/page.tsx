@@ -2,8 +2,8 @@ import { Metadata } from 'next'
 import Link from 'next/link'
 
 export const metadata: Metadata = {
-  title: 'Refund Policy — Pronto',
-  description: 'Refund Policy for Pronto business management software.',
+  title: 'Refund Policy — BookingPro',
+  description: 'Refund Policy for BookingPro business management software.',
 }
 
 export default function RefundPage() {
@@ -18,7 +18,7 @@ export default function RefundPage() {
           <section>
             <h2 className="text-xl font-semibold text-gray-900 mb-3">Overview</h2>
             <p>
-              We want you to be fully satisfied with Pronto. This Refund Policy describes under
+              We want you to be fully satisfied with BookingPro. This Refund Policy describes under
               which conditions you can request a refund, and how to do so. All billing is processed
               by <span className="font-medium">Paddle</span>, our Merchant of Record.
             </p>
@@ -111,7 +111,7 @@ export default function RefundPage() {
             <h2 className="text-xl font-semibold text-gray-900 mb-3">Cancellation</h2>
             <p>
               You can cancel your subscription at any time from{' '}
-              <span className="font-medium">Settings &rarr; Billing</span> in your Pronto account.
+              <span className="font-medium">Settings &rarr; Billing</span> in your BookingPro account.
               Cancellation stops future charges but does not trigger a refund for the current
               billing period (unless the annual 14-day window applies).
             </p>
@@ -123,7 +123,7 @@ export default function RefundPage() {
               If you have questions about our refund policy or need assistance, please reach out:
             </p>
             <div className="mt-3 p-4 rounded-xl bg-gray-50 border border-gray-200 text-sm space-y-1">
-              <p className="font-medium text-gray-900">Pronto Support</p>
+              <p className="font-medium text-gray-900">BookingPro Support</p>
               <p>
                 Email:{' '}
                 <a href="mailto:support@trypronto.app" className="text-blue-600 hover:underline">

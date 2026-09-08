@@ -27,7 +27,7 @@ export async function sendViberMessage(
       body: JSON.stringify({
         receiver: userId,
         min_api_version: 1,
-        sender: { name: 'Pronto' },
+        sender: { name: 'BookingPro' },
         type: 'text',
         text,
       }),

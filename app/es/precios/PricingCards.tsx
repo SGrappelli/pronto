@@ -80,7 +80,7 @@ export function PricingCards() {
         <div className="relative rounded-2xl border border-gray-200 shadow-sm p-6 flex flex-col">
           <div className="mb-4">
             <h2 className="text-lg font-bold text-gray-900">Gratis</h2>
-            <p className="text-sm text-gray-500 mt-1">Perfecto para probar Pronto.</p>
+            <p className="text-sm text-gray-500 mt-1">Perfecto para probar BookingPro.</p>
           </div>
           <div className="mb-6">
             <span className="text-4xl font-extrabold text-gray-900">$0</span>

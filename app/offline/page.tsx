@@ -89,7 +89,7 @@ export default function OfflinePage() {
             </a>
 
             <p style={{ color: '#9ca3af', fontSize: '13px', marginTop: '16px' }}>
-              Pronto — Your data, your server.
+              BookingPro — Your data, your server.
             </p>
           </div>
         </div>

@@ -1,6 +1,6 @@
 🌍 [English](../README.md) | [Español](README.es.md) | **Português**
 
-# Pronto — Sistema de Gestão para Negócios de Serviços
+# BookingPro — Sistema de Gestão para Negócios de Serviços
 
 > PDV · CRM · Estoque · Agendamento · Notificações multicanal. Tudo no seu servidor.  
 > Seus dados, seu servidor. Sem comissões. Instalação com um único comando.
@@ -12,9 +12,9 @@
 
 ---
 
-## O que é o Pronto?
+## O que é o BookingPro?
 
-O Pronto é um sistema de gestão empresarial gratuito e de código aberto, desenvolvido para negócios de serviços: salões de beleza, oficinas mecânicas, cafés, clínicas odontológicas, academias e muito mais.
+O BookingPro é um sistema de gestão empresarial gratuito e de código aberto, desenvolvido para negócios de serviços: salões de beleza, oficinas mecânicas, cafés, clínicas odontológicas, academias e muito mais.
 
 Sem mensalidades. Sem comissões sobre suas vendas. Seus dados ficam no seu próprio servidor.
 
@@ -117,14 +117,14 @@ DATABASE_URL=postgresql://postgres.[ref]:[password]@[host]:5432/postgres
 # ── E-mail (escolha uma opção) ────────────────────────
 # Opção A: Resend (mais fácil — plano gratuito: 3.000 e-mails/mês)
 RESEND_API_KEY=re_xxxxxxxxxxxx
-RESEND_FROM_EMAIL=Pronto <noreply@seudominio.com>
+RESEND_FROM_EMAIL=BookingPro <noreply@seudominio.com>
 
 # Opção B: Seu próprio servidor SMTP
 # SMTP_HOST=smtp.gmail.com
 # SMTP_PORT=587
 # SMTP_USER=seu@gmail.com
 # SMTP_PASS=sua-senha-de-app
-# SMTP_FROM=Pronto <seu@gmail.com>
+# SMTP_FROM=BookingPro <seu@gmail.com>
 
 # ── Cron secret (protege /api/cron/notify) ───────────
 CRON_SECRET=substituir-por-string-aleatoria
@@ -142,7 +142,7 @@ Consulte `.env.example` para a lista completa, incluindo Telegram, Viber e confi
 2. Copie sua **string de conexão com o banco de dados** (modo Session, porta 5432) em  
    **Project Settings → Database → Connection string** e defina como `DATABASE_URL` no `.env`  
    As migrações são aplicadas automaticamente ao executar `docker-compose up`
-3. **Personalize os templates de e-mail** — substitua os e-mails padrão do Supabase pelos do Pronto:
+3. **Personalize os templates de e-mail** — substitua os e-mails padrão do Supabase pelos do BookingPro:
    - Acesse **Authentication → Email Templates** no seu Supabase Dashboard
    - Para cada template, abra o arquivo, copie o HTML e cole no Supabase:
 
@@ -153,7 +153,7 @@ Consulte `.env.example` para a lista completa, incluindo Telegram, Viber e confi
    | Change Email Address | `supabase/email-templates/email-change.html` |
 
 4. **Configure o remetente** — em **Authentication → Email Settings**:
-   - **Sender name**: `Pronto` (ou o nome da sua marca)
+   - **Sender name**: `BookingPro` (ou o nome da sua marca)
    - **Reply-to**: seu e-mail de suporte
 5. Acesse **Authentication → Providers** e ative **Email** (opcionalmente Google OAuth)
 6. Copie a URL do seu projeto e as chaves de API para o `.env`
@@ -168,7 +168,7 @@ Depois de implantar, acesse o dashboard do seu projeto Supabase e confira **Advi
 
 ## Eventos de Notificação
 
-O Pronto envia notificações automáticas por todos os canais configurados.
+O BookingPro envia notificações automáticas por todos os canais configurados.
 
 | Gatilho | Destinatário | Canal |
 |---|---|---|
@@ -198,7 +198,7 @@ Ou use o agendador integrado pg_cron — veja [Configurar notificações cron](#
 ## Bot do Telegram
 
 1. Abra [@BotFather](https://t.me/BotFather) → `/newbot` → copie o token
-2. No Pronto: **Configurações → Notificações** → cole o token → clique em **Conectar**
+2. No BookingPro: **Configurações → Notificações** → cole o token → clique em **Conectar**
 3. Abra seu bot no Telegram → envie `/start`
 
 Comandos disponíveis (para o dono):
@@ -228,7 +228,7 @@ Notificações automáticas para o dono:
 > ⚠️ **Importante:** Desde fevereiro de 2024, o Viber exige um acordo comercial para criar novos chatbots (~€100/mês). Esta integração funciona com bots criados antes dessa data ou com acordo ativo. **Para novas instalações, recomendamos o Telegram (gratuito).**
 
 1. Acesse [partners.viber.com](https://partners.viber.com) com sua conta de bot → copie o token
-2. No Pronto: **Configurações → Notificações** → cole o token do Viber → clique em **Conectar**
+2. No BookingPro: **Configurações → Notificações** → cole o token do Viber → clique em **Conectar**
 3. Encontre seu bot no Viber e inicie uma conversa — você receberá uma mensagem de boas-vindas
 
 As mesmas notificações do Telegram são entregues pelo Viber (novos agendamentos, lembretes, estoque baixo, visitas concluídas).
@@ -261,7 +261,7 @@ Ao contrário do Telegram/Viber (que notificam o *dono do negócio*), as mensage
 5. Reinicie o servidor — Configurações → Notificações exibirá um badge verde "Conectado"
 6. Adicione os números de WhatsApp dos clientes em **CRM → ficha do cliente → WhatsApp** — eles receberão mensagens automaticamente
 
-**Formato do número:** insira com ou sem `+` — o Pronto normaliza automaticamente (ex.: `+55 11 99999-9999` → `5511999999999`).
+**Formato do número:** insira com ou sem `+` — o BookingPro normaliza automaticamente (ex.: `+55 11 99999-9999` → `5511999999999`).
 
 > ⚠️ **Limites de mensagens do WhatsApp:** Mensagens de texto livre (`type: text`) só funcionam dentro de uma **janela de atendimento ao cliente de 24 horas**, aberta quando o cliente escreve primeiro para o negócio. Mensagens iniciadas pelo negócio — lembretes, agradecimentos, reativação, aniversário — exigem **Modelos de Mensagem (HSM) pré-aprovados** no Meta Business Manager. Sem modelos aprovados, essas mensagens são descartadas silenciosamente pelo Meta. Para suporte completo a notificações via cron pelo WhatsApp, crie e envie seus modelos em [business.facebook.com → Ferramentas de conta → Modelos de mensagem](https://business.facebook.com).
 
@@ -386,7 +386,7 @@ pronto/
 
 Precisa de ajuda para começar? Ofereço:
 
-- **Instalação e configuração** — instalo o Pronto no seu servidor, configuro todas as integrações e deixo tudo funcionando ($100–200)
+- **Instalação e configuração** — instalo o BookingPro no seu servidor, configuro todas as integrações e deixo tudo funcionando ($100–200)
 - **Personalização** — funcionalidades sob medida, identidade visual ou integrações específicas para o seu negócio ($150–400)
 - **Hospedagem gerenciada** — não quer gerenciar um servidor? Use a versão na nuvem em [trypronto.app](https://trypronto.app) a partir de $19/mês
 

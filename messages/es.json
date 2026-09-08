@@ -1,10 +1,10 @@
 {
   "meta": {
-    "title": "Pronto — Gestión empresarial para negocios de servicios",
+    "title": "BookingPro — Gestión empresarial para negocios de servicios",
     "description": "POS, CRM, Inventario y Notificaciones omnicanal. Tus datos, tu servidor. Sin comisiones. Instalación en un comando."
   },
   "brand": {
-    "name": "Pronto",
+    "name": "BookingPro",
     "tagline": "Gestión empresarial · Sin comisiones"
   },
   "nav": {
@@ -33,7 +33,7 @@
     "pricingSubheading": "O autoalójalo gratis —",
     "pricingSubheadingLink": "clona en GitHub",
     "mostPopular": "Más popular",
-    "footer": "Pronto © 2026 · Licencia MIT",
+    "footer": "BookingPro © 2026 · Licencia MIT",
     "plans": {
       "free": {
         "name": "Gratis",
@@ -122,7 +122,7 @@
     }
   },
   "onboarding": {
-    "logo": "Pronto",
+    "logo": "BookingPro",
     "intro": "Configura tu negocio en 3 pasos",
     "steps": {
       "businessType": "Tipo de negocio",
@@ -147,7 +147,7 @@
       "bizNamePlaceholder": "Salón de Maya",
       "businessTypeLabel": "Tipo de negocio",
       "continue": "Continuar",
-      "slugLabel": "Tu URL en Pronto",
+      "slugLabel": "Tu URL en BookingPro",
       "slugHint": "Letras minúsculas, números y guiones · 3–30 caracteres",
       "slugChecking": "Verificando…",
       "slugAvailable": "Disponible ✓",
@@ -167,7 +167,7 @@
       "continue": "Continuar"
     },
     "checklist": {
-      "title": "Comenzar con Pronto",
+      "title": "Comenzar con BookingPro",
       "progress": "{done} de {total} completado",
       "step1": "Perfil del negocio creado",
       "step2": "Agrega tu primer servicio",
@@ -332,7 +332,7 @@
     "moreActions": "Más acciones",
     "import": {
       "title": "Importar productos",
-      "uploadHint": "¿Tienes una lista de precios de proveedor en Excel o CSV? Súbela directamente — Pronto detectará las columnas automáticamente.",
+      "uploadHint": "¿Tienes una lista de precios de proveedor en Excel o CSV? Súbela directamente — BookingPro detectará las columnas automáticamente.",
       "dropzone": "Arrastra el archivo aquí o haz clic para buscar",
       "dropzoneFormats": ".xlsx  ·  .xls  ·  .csv",
       "orSeparator": "o",
@@ -837,7 +837,7 @@
     },
     "success": {
       "heading": "¡Reserva confirmada!",
-      "body": "Tu cita está confirmada. ¡Hasta pronto!",
+      "body": "Tu cita está confirmada. ¡Hasta BookingPro!",
       "bookAnother": "Reservar de nuevo",
       "optInHeading": "Recibe recordatorios en tu mensajero",
       "optInSub": "Toca abajo para recibir recordatorios de citas por Telegram o Viber — sin registro.",
@@ -864,7 +864,7 @@
     "messagePlaceholder": "¿Cómo podemos ayudarte?",
     "sendButton": "Enviar mensaje",
     "sending": "Enviando...",
-    "success": "✓ ¡Mensaje enviado! Te responderemos pronto.",
+    "success": "✓ ¡Mensaje enviado! Te responderemos BookingPro.",
     "error": "Algo salió mal. Por favor, inténtalo de nuevo."
   },
   "csvImport": {
@@ -927,7 +927,7 @@
   },
   "feedback": {
     "heading": "Comparte tu opinión",
-    "subheading": "Ayúdanos a mejorar Pronto",
+    "subheading": "Ayúdanos a mejorar BookingPro",
     "placeholder": "¿Qué piensas?",
     "placeholderGood": "¿Qué es lo que más te gusta?",
     "placeholderBad": "¿Qué no está funcionando?",
@@ -935,7 +935,7 @@
     "submit": "Enviar",
     "sending": "Enviando…",
     "thanks": "¡Gracias por tu opinión!",
-    "thanksSub": "Nos ayuda a mejorar Pronto.",
+    "thanksSub": "Nos ayuda a mejorar BookingPro.",
     "close": "Cerrar"
   },
   "clientDetail": {

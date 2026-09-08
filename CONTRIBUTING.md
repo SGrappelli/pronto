@@ -1,4 +1,4 @@
-# Contributing to Pronto
+# Contributing to BookingPro
 
 Thank you for your interest in contributing! This document covers everything you need to get started.
 
@@ -18,7 +18,7 @@ Thank you for your interest in contributing! This document covers everything you
 ```bash
 # 1. Fork and clone the repo
 git clone https://github.com/SGrappelli/pronto.git
-cd pronto
+cd bookingPro
 
 # 2. Install dependencies
 npm install
@@ -113,7 +113,7 @@ Open an issue with the `enhancement` label. Describe:
 
 ### Dual-mode (selfhosted vs saas)
 
-Pronto runs in two modes controlled by `NEXT_PUBLIC_DEPLOYMENT_MODE`:
+BookingPro runs in two modes controlled by `NEXT_PUBLIC_DEPLOYMENT_MODE`:
 
 - `selfhosted` (default) — billing/plan limits are disabled, all features are available
 - `saas` — LemonSqueezy billing is active, plan limits apply
