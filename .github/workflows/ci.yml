@@ -2,38 +2,72 @@ name: CI
 
 on:
   push:
-    branches: [main, dev]
+    branches:
+      - dev
+      - main
+
   pull_request:
-    branches: [main]
+    branches:
+      - dev
+      - main
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
 
 jobs:
-  lint-and-build:
-    name: Lint & Build
+  quality:
+    name: Quality Checks
     runs-on: ubuntu-latest
+    timeout-minutes: 10
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v6
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v7
         with:
           node-version: 20
-          cache: npm
+          cache: yarn
+          cache-dependency-path: yarn.lock
 
       - name: Install dependencies
-        run: npm ci
+        run: yarn install --frozen-lockfile
 
       - name: Run ESLint
-        run: npm run lint
+        run: yarn lint
 
-      - name: Build
-        run: npm run build
-        env:
-          # Minimal stubs so Next.js can build without a real Supabase project
-          NEXT_PUBLIC_SUPABASE_URL: https://placeholder.supabase.co
-          NEXT_PUBLIC_SUPABASE_ANON_KEY: placeholder-anon-key
-          SUPABASE_SERVICE_ROLE_KEY: placeholder-service-role-key
-          NEXT_PUBLIC_APP_URL: http://localhost:3000
-          NEXT_PUBLIC_DEPLOYMENT_MODE: selfhosted
-          CRON_SECRET: ci-secret
+  build:
+    name: Production Build
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    needs: quality
+
+    env:
+      NEXT_PUBLIC_SUPABASE_URL: https://placeholder.supabase.co
+      NEXT_PUBLIC_SUPABASE_ANON_KEY: placeholder-anon-key
+      SUPABASE_SERVICE_ROLE_KEY: placeholder-service-role-key
+      NEXT_PUBLIC_APP_URL: http://localhost:3000
+      NEXT_PUBLIC_DEPLOYMENT_MODE: selfhosted
+      CRON_SECRET: ci-placeholder-secret
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: 20
+          cache: yarn
+          cache-dependency-path: yarn.lock
+
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+
+      - name: Build application
+        run: yarn build
