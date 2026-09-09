@@ -46,26 +46,50 @@ export async function completeOnboarding(data: {
   const serviceName = sanitize(data.serviceName).slice(0, 100)
 
   // Server-side slug validation (defence against bypassed client checks)
-  const finalSlug = data.slug ?? business.slug
   if (data.slug) {
     if (!/^[a-z0-9][a-z0-9-]{1,28}[a-z0-9]$/.test(data.slug)) {
       throw new Error('Invalid slug format')
     }
   }
 
-  const { error: updateError } = await supabase
-    .from('businesses')
-    .update({
-      ...(data.bizType ? { type: data.bizType } : {}),
-      ...(bizName ? { name: bizName } : {}),
-      ...(data.slug ? { slug: data.slug } : {}),
-      onboarding_completed: true,
-    })
-    .eq('id', business.id)
+  const basePatch = {
+    ...(data.bizType ? { type: data.bizType } : {}),
+    ...(bizName ? { name: bizName } : {}),
+    onboarding_completed: true,
+  }
 
-  if (updateError) {
-    // Most likely a unique constraint violation on slug
-    throw new Error(updateError.message)
+  // Resolve the slug. Only touch it if the wizard actually changed it — the
+  // pre-filled value already belongs to this row. If the chosen slug collides
+  // with another business (a legitimately same-named business, or an orphaned
+  // row from a manually-deleted account), transparently fall back to a
+  // suffixed variant instead of failing the whole last onboarding step with a
+  // generic error — same treatment getOrCreateBusiness() gives a slug
+  // collision at registration.
+  let finalSlug = business.slug
+  const chosenSlug = data.slug ?? ''
+
+  if (!chosenSlug || chosenSlug === business.slug) {
+    const { error } = await supabase.from('businesses').update(basePatch).eq('id', business.id)
+    if (error) throw new Error(error.message)
+  } else {
+    let applied = false
+    for (let attempt = 0; attempt < 5; attempt++) {
+      const trySlug = attempt === 0 ? chosenSlug : `${chosenSlug}-${Math.random().toString(36).slice(2, 6)}`
+      const { error } = await supabase
+        .from('businesses')
+        .update({ ...basePatch, slug: trySlug })
+        .eq('id', business.id)
+      if (!error) {
+        finalSlug = trySlug
+        applied = true
+        break
+      }
+      // Anything other than a unique violation is a real failure.
+      if (error.code !== '23505') throw new Error(error.message)
+    }
+    if (!applied) {
+      throw new Error('Could not assign a unique web address for your business — please pick a different name.')
+    }
   }
 
   if (serviceName && data.servicePrice) {
