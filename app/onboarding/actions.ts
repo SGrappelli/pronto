@@ -21,10 +21,18 @@ export async function completeOnboarding(data: {
 
   if (!user) redirect('/login')
 
+  // .order(created_at ASC).limit(1): resolve to the SAME row everything else
+  // does (app/(dashboard)/layout.tsx, lib/business.ts) so onboarding_completed
+  // lands on the row the dashboard will read. Without .limit(1), an install
+  // that still has a duplicate row (pre-migration-036) makes .maybeSingle()
+  // throw here and the whole last onboarding step fails with "Something went
+  // wrong" — refreshing sometimes clears it, sometimes not.
   const { data: business } = await supabase
     .from('businesses')
     .select('id, slug')
     .eq('owner_id', user.id)
+    .order('created_at', { ascending: true })
+    .limit(1)
     .maybeSingle()
 
   if (!business) redirect('/login')
