@@ -8,6 +8,7 @@ import { redirect } from 'next/navigation'
 import { getTranslations } from 'next-intl/server'
 import { OnboardingChecklist } from '@/components/onboarding-checklist'
 import { getAuthUser } from '@/lib/auth-user'
+import { getBusinessForOwner } from '@/lib/business'
 
 const STATUS_STRIPE: Record<string, string> = {
   pending:   '#94a3b8',
@@ -23,13 +24,9 @@ export default async function DashboardPage() {
   const t = await getTranslations('dashboard')
   const user = await getAuthUser()
 
-  const { data: business } = await supabase
-    .from('businesses')
-    .select('id, name, currency, timezone, onboarding_completed, enabled_modules')
-    .eq('owner_id', user!.id)
-    .maybeSingle()
+  const business = await getBusinessForOwner(user!.id)
 
-  if (!business) return null
+  if (!business) redirect('/onboarding')
 
   if (!business.onboarding_completed) redirect('/onboarding')
 

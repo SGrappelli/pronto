@@ -1,11 +1,12 @@
 import { createClient } from '@/lib/supabase/server'
-import { notFound } from 'next/navigation'
+import { notFound, redirect } from 'next/navigation'
 import { Header } from '@/components/layout/header'
 import { getTranslations } from 'next-intl/server'
 import { InventoryDetailView } from './inventory-detail-view'
 import Link from 'next/link'
 import { ChevronLeft } from 'lucide-react'
 import { getAuthUser } from '@/lib/auth-user'
+import { getBusinessForOwner } from '@/lib/business'
 
 export default async function InventoryItemPage(props: { params: Promise<{ id: string }> }) {
   const params = await props.params;
@@ -13,9 +14,8 @@ export default async function InventoryItemPage(props: { params: Promise<{ id: s
   const t = await getTranslations('inventoryDetail')
   const user = await getAuthUser()
 
-  const { data: business } = await supabase
-    .from('businesses').select('id, currency, timezone').eq('owner_id', user!.id).maybeSingle()
-  if (!business) return null
+  const business = await getBusinessForOwner(user!.id)
+  if (!business) redirect('/onboarding')
 
   const { data: item } = await supabase
     .from('inventory_items')

@@ -24,6 +24,8 @@ export async function GET(request: Request) {
     .from('businesses')
     .select('id')
     .eq('owner_id', user.id)
+    .order('created_at', { ascending: true })
+    .limit(1)
     .maybeSingle()
 
   let query = admin

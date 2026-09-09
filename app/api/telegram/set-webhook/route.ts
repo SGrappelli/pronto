@@ -21,6 +21,8 @@ export async function POST(req: NextRequest) {
       .from('businesses')
       .select('id, telegram_bot_token')
       .eq('owner_id', user.id)
+      .order('created_at', { ascending: true })
+      .limit(1)
       .single()
 
     if (!biz?.telegram_bot_token) {

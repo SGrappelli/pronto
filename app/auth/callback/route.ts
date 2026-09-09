@@ -1,7 +1,7 @@
 import { createClient } from '@/lib/supabase/server'
 import { createClient as createAdminClient } from '@supabase/supabase-js'
 import { slugify } from '@/lib/utils'
-import { insertOwnerAsEmployee } from '@/lib/create-business'
+import { getOrCreateBusiness, insertOwnerAsEmployee } from '@/lib/create-business'
 import { NextResponse } from 'next/server'
 
 export async function GET(request: Request) {
@@ -26,10 +26,18 @@ export async function GET(request: Request) {
         process.env.SUPABASE_SERVICE_ROLE_KEY!
       )
 
+      // .order().limit(1): one owner is meant to have exactly one business
+      // row (migration 036). A bare .maybeSingle() over a stray second row
+      // returns nothing, which would send a returning user back through the
+      // "create a business" path. This lookup is only for routing — the
+      // create below goes through getOrCreateBusiness(), which is atomic
+      // against the owner_id constraint.
       const { data: existing } = await admin
         .from('businesses')
         .select('id, onboarding_completed')
         .eq('owner_id', data.user.id)
+        .order('created_at', { ascending: true })
+        .limit(1)
         .maybeSingle()
 
       if (!existing) {
@@ -54,19 +62,17 @@ export async function GET(request: Request) {
           slug = `${baseSlug}-${attempt}`
         }
 
-        const { data: newBusiness } = await admin
-          .from('businesses')
-          .insert({
-            owner_id: data.user.id,
-            name: businessName,
-            slug,
-          })
-          .select('id')
-          .single()
+        const business = await getOrCreateBusiness(admin, {
+          owner_id: data.user.id,
+          name: businessName,
+          slug,
+        })
 
-        if (newBusiness) {
-          await insertOwnerAsEmployee(admin, newBusiness.id, data.user)
+        if (!business) {
+          return NextResponse.redirect(`${origin}/login?error=Account+setup+failed`)
         }
+
+        await insertOwnerAsEmployee(admin, business.id, data.user)
 
         return NextResponse.redirect(`${origin}/onboarding`)
       }

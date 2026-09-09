@@ -32,9 +32,14 @@ export async function GET(req: NextRequest) {
     .from('businesses')
     .select('id, currency')
     .eq('owner_id', user.id)
+    .order('created_at', { ascending: true })
+    .limit(1)
     .maybeSingle()
 
-  if (!business) return NextResponse.json({ error: 'Not found' }, { status: 404 })
+  if (!business) {
+    console.error('[inventory/export-sales] authenticated owner has no business row:', user.id)
+    return NextResponse.json({ error: 'Not found' }, { status: 404 })
+  }
 
   const fromParam = req.nextUrl.searchParams.get('from')
   const toParam   = req.nextUrl.searchParams.get('to')

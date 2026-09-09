@@ -3,7 +3,7 @@
 import { createClient } from '@/lib/supabase/server'
 import { createClient as createAdminClient } from '@supabase/supabase-js'
 import { slugify } from '@/lib/utils'
-import { insertOwnerAsEmployee } from '@/lib/create-business'
+import { getOrCreateBusiness, insertOwnerAsEmployee } from '@/lib/create-business'
 import { redirect } from 'next/navigation'
 
 export async function register(formData: FormData) {
@@ -54,19 +54,22 @@ export async function register(formData: FormData) {
     slug = `${baseSlug}-${attempt}`
   }
 
-  const { data: newBusiness } = await admin
-    .from('businesses')
-    .insert({
-      owner_id: authData.user.id,
-      name: businessName,
-      slug,
-    })
-    .select('id')
-    .single()
+  // get-or-create: a racing second submit (or the confirmation callback
+  // firing first) must not add a second business row for this owner.
+  const business = await getOrCreateBusiness(admin, {
+    owner_id: authData.user.id,
+    name: businessName,
+    slug,
+  })
 
-  if (newBusiness) {
-    await insertOwnerAsEmployee(admin, newBusiness.id, authData.user)
+  if (!business) {
+    // Don't fall through into a working session with no business behind it —
+    // the dashboard ↔ login ↔ onboarding redirect loop is worse than an
+    // explicit retry prompt.
+    redirect(`/register?error=${encodeURIComponent("We couldn't finish setting up your account. Please try again.")}`)
   }
+
+  await insertOwnerAsEmployee(admin, business.id, authData.user)
 
   // В selfhosted-режиме: принудительно логиним сразу после регистрации,
   // чтобы не блокировать владельца сервера подтверждением email.

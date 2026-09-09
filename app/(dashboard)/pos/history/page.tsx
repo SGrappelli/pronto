@@ -4,7 +4,9 @@ import { formatCurrency, formatInBusinessTimezone } from '@/lib/utils'
 import { getTranslations } from 'next-intl/server'
 import Link from 'next/link'
 import { HistoryFilters } from './history-filters'
+import { redirect } from 'next/navigation'
 import { getAuthUser } from '@/lib/auth-user'
+import { getBusinessForOwner } from '@/lib/business'
 
 export default async function TransactionHistoryPage(
   props: {
@@ -16,9 +18,8 @@ export default async function TransactionHistoryPage(
   const t = await getTranslations('transactions')
   const user = await getAuthUser()
 
-  const { data: business } = await supabase
-    .from('businesses').select('id, currency, timezone').eq('owner_id', user!.id).maybeSingle()
-  if (!business) return null
+  const business = await getBusinessForOwner(user!.id)
+  if (!business) redirect('/onboarding')
 
   let query = supabase
     .from('transactions')
