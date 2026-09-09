@@ -119,9 +119,8 @@ BEGIN
       INTO leftover;
 
       IF leftover > 0 THEN
-        RAISE EXCEPTION
-          'migration 036: % child row(s) for owner % overlap the primary business (same client phone / item SKU / barcode) and cannot be merged automatically. Resolve the overlap by hand, then re-run migrations.',
-          leftover, o.owner_id;
+        RAISE EXCEPTION E'This account has two (or more) business profiles with overlapping data\n(for example, the same client phone number exists in both, or the same\ninventory SKU / barcode). They cannot be merged automatically.\n\nWhat to do: contact support, or open Supabase and decide by hand which\nONE business row to keep for this account and delete the other(s).\nThe rest of the migrations will not run until this is resolved.\n\nAccount (businesses.owner_id): %\nBusiness row to keep by default (the oldest, businesses.id): %\nOther business row(s) for the same account (businesses.id): %\n% overlapping child record(s) are what block the automatic merge.',
+          o.owner_id, primary_id, array_to_string(others, ', '), leftover;
       END IF;
 
       DELETE FROM public.businesses WHERE id = ANY(others);
