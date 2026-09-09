@@ -5,7 +5,9 @@ import { getTranslations } from 'next-intl/server'
 import Link from 'next/link'
 import { History } from 'lucide-react'
 import { formatInBusinessTimezone } from '@/lib/utils'
+import { redirect } from 'next/navigation'
 import { getAuthUser } from '@/lib/auth-user'
+import { getBusinessForOwner } from '@/lib/business'
 
 interface SearchParams {
   bookingId?: string
@@ -19,13 +21,9 @@ export default async function POSPage(props: { searchParams: Promise<SearchParam
   const supabase = await createClient()
   const user = await getAuthUser()
 
-  const { data: business } = await supabase
-    .from('businesses')
-    .select('id, currency, timezone')
-    .eq('owner_id', user!.id)
-    .maybeSingle()
+  const business = await getBusinessForOwner(user!.id)
 
-  if (!business) return null
+  if (!business) redirect('/onboarding')
 
   const [{ data: services }, { data: employees }, { data: clients }] = await Promise.all([
     supabase

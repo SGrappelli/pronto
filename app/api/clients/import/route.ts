@@ -26,9 +26,12 @@ export async function POST(req: NextRequest) {
     .from('businesses')
     .select('id')
     .eq('owner_id', user.id)
+    .order('created_at', { ascending: true })
+    .limit(1)
     .maybeSingle()
 
   if (!business) {
+    console.error('[clients/import] authenticated owner has no business row:', user.id)
     return NextResponse.json({ error: 'Business not found' }, { status: 404 })
   }
 

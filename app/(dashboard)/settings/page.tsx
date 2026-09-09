@@ -15,6 +15,8 @@ export default async function SettingsPage() {
     .from('businesses')
     .select('id, name, slug, type, phone, email, address, timezone, currency, plan, plan_expires_at, telegram_bot_token, telegram_chat_id, viber_bot_token, viber_chat_id, owner_whatsapp, email_provider, smtp_host, smtp_port, smtp_user, smtp_pass, smtp_from, resend_api_key, meta_whatsapp_phone_number_id, meta_whatsapp_access_token, wa_template_confirmation, wa_template_reminder, wa_template_thankyou, wa_template_reactivation, wa_template_birthday, wa_template_language, brand_color, notification_language, logo_url, enabled_modules')
     .eq('owner_id', user.id)
+    .order('created_at', { ascending: true })
+    .limit(1)
     .maybeSingle()
 
   if (!business) redirect('/onboarding')

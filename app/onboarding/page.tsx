@@ -11,6 +11,8 @@ export default async function OnboardingPage() {
     .from('businesses')
     .select('id, slug, name, onboarding_completed')
     .eq('owner_id', user.id)
+    .order('created_at', { ascending: true })
+    .limit(1)
     .maybeSingle()
 
   if (!business) redirect('/login')

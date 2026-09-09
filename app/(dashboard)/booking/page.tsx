@@ -1,19 +1,17 @@
+import { redirect } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
 import { Header } from '@/components/layout/header'
 import { BookingCalendar } from './booking-calendar'
 import { getAuthUser } from '@/lib/auth-user'
+import { getBusinessForOwner } from '@/lib/business'
 
 export default async function BookingPage() {
   const supabase = await createClient()
   const user = await getAuthUser()
 
-  const { data: business } = await supabase
-    .from('businesses')
-    .select('id, slug, timezone')
-    .eq('owner_id', user!.id)
-    .maybeSingle()
+  const business = await getBusinessForOwner(user!.id)
 
-  if (!business) return null
+  if (!business) redirect('/onboarding')
 
   const today = new Date()
   const weekStart = new Date(today)

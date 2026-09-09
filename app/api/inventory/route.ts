@@ -7,8 +7,12 @@ export async function POST(request: Request) {
   if (!user) return NextResponse.json({ error: 'unauthorized' }, { status: 401 })
 
   const { data: business } = await supabase
-    .from('businesses').select('id').eq('owner_id', user.id).maybeSingle()
-  if (!business) return NextResponse.json({ error: 'not_found' }, { status: 404 })
+    .from('businesses').select('id').eq('owner_id', user.id)
+    .order('created_at', { ascending: true }).limit(1).maybeSingle()
+  if (!business) {
+    console.error('[inventory] authenticated owner has no business row:', user.id)
+    return NextResponse.json({ error: 'not_found' }, { status: 404 })
+  }
 
   const body = await request.json()
 

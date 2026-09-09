@@ -8,7 +8,9 @@ import { InventoryTabs } from './inventory-tabs'
 import { InventoryImportButton } from '@/components/inventory/inventory-import-button'
 import { InventoryExportButton } from '@/components/inventory/inventory-export-button'
 import { InventoryMoreMenu } from '@/components/inventory/inventory-more-menu'
+import { redirect } from 'next/navigation'
 import { getAuthUser } from '@/lib/auth-user'
+import { getBusinessForOwner } from '@/lib/business'
 
 export default async function InventoryPage(
   props: {
@@ -20,10 +22,9 @@ export default async function InventoryPage(
   const t = await getTranslations('inventory')
   const user = await getAuthUser()
 
-  const { data: business } = await supabase
-    .from('businesses').select('id, currency').eq('owner_id', user!.id).maybeSingle()
+  const business = await getBusinessForOwner(user!.id)
 
-  if (!business) return null
+  if (!business) redirect('/onboarding')
 
   const { data: items } = await supabase.from('inventory_items')
     .select('id, name, sku, barcode, category, unit, quantity, low_stock_threshold, cost_price, sell_price')
