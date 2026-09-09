@@ -137,7 +137,22 @@ export function OnboardingWizard({ initialSlug, initialName, isSaas, rootDomain 
         serviceDuration: showDuration ? (Number(service.duration_min) || 60) : 0,
         ...(isSaas ? { slug } : {}),
       })
-    } catch {
+    } catch (err) {
+      // completeOnboarding() ends in redirect() (to the tenant subdomain in
+      // SaaS mode — an external URL). Next resolves that by REJECTING this
+      // action promise with a redirect error (digest "NEXT_REDIRECT;…") so
+      // <RedirectBoundary> can navigate. A bare `catch` swallows it and shows
+      // a spurious error even though the DB write and the redirect have
+      // already happened. Re-throw redirect errors so the navigation
+      // completes; only surface a real failure (and log the actual cause).
+      if (
+        err && typeof err === 'object' && 'digest' in err &&
+        typeof (err as { digest?: unknown }).digest === 'string' &&
+        (err as { digest: string }).digest.startsWith('NEXT_REDIRECT')
+      ) {
+        throw err
+      }
+      console.error('[onboarding] finish() failed:', err)
       setError(t('step2.error'))
       setSaving(false)
     }
