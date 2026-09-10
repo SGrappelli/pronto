@@ -2,7 +2,12 @@ import type { Metadata, Viewport } from 'next'
 import { Inter } from 'next/font/google'
 import { NextIntlClientProvider } from 'next-intl'
 import { getLocale, getMessages } from 'next-intl/server'
+import enMessages from '../messages/en.json'
 import './globals.css'
+
+// English fallback used only when the request-scoped next-intl config is
+// unavailable (see RootLayout below).
+const FALLBACK_MESSAGES = enMessages as Awaited<ReturnType<typeof getMessages>>
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -57,13 +62,24 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode
 }) {
-  const locale = await getLocale()
-  const messages = await getMessages()
+  // getLocale() / getMessages() read the request-scoped next-intl config. While
+  // Next renders an error page (a not-found, or an exception bubbling to the
+  // root) that scope can be missing and these throw — which would take the
+  // error page down with it, leaving Next to emit a bare "Internal Server
+  // Error". Degrade to English so the layout always renders. (issue #15)
+  let locale = 'en'
+  let messages = FALLBACK_MESSAGES
+  try {
+    locale = await getLocale()
+    messages = await getMessages()
+  } catch (err) {
+    console.error('[RootLayout] next-intl request config unavailable, falling back to en:', err)
+  }
 
   return (
     <html lang={locale}>
       <body className={inter.className}>
-        <NextIntlClientProvider messages={messages}>
+        <NextIntlClientProvider locale={locale} messages={messages}>
           {children}
         </NextIntlClientProvider>
       </body>
