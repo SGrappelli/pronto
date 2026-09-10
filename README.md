@@ -109,8 +109,9 @@ Open http://localhost:3000
 2. Copy your **Database connection string** (Session mode, port 5432) from  
    **Project Settings → Database → Connection string** and set it as `DATABASE_URL` in `.env`  
    Migrations are applied automatically when you run `docker-compose up`
-3. Create a public storage bucket named **`inventory`** in  
-   **Supabase Dashboard → Storage → New bucket** (required for product photos)
+3. Create two **public** storage buckets in **Supabase Dashboard → Storage → New bucket**:
+   - **`inventory`** — required for product photos
+   - **`logos`** — required for the business logo upload (Settings → General)
 4. Copy your project URL and anon/service keys to `.env`
 5. **Customize email templates** (optional) — replace Supabase's defaults with Pronto-branded HTML:
 
@@ -174,7 +175,7 @@ Messenger credentials (Telegram, WhatsApp, Viber) are configured per-business in
 | Backend | Next.js API Routes |
 | Database | Supabase (PostgreSQL) with RLS |
 | Auth | Supabase Auth (Email + Google OAuth) |
-| Storage | Supabase Storage (product photos) |
+| Storage | Supabase Storage (product photos, business logos) |
 | Notifications | Resend/SMTP + Telegram Bot API + Meta WhatsApp Cloud API + Viber Bot API |
 | i18n | next-intl — EN / ES / PT |
 | Deployment | Docker Compose |
