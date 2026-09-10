@@ -372,6 +372,8 @@ export function SettingsTabs({ business: initial, services: initServices, employ
 
   const CURRENCIES: { value: string; label: string }[] = [
     { value: 'USD', label: '🇺🇸 USD — US Dollar' },
+    { value: 'AUD', label: '🇦🇺 AUD — Australian Dollar' },
+    { value: 'NZD', label: '🇳🇿 NZD — New Zealand Dollar' },
     { value: 'EUR', label: '🇪🇺 EUR — Euro' },
     { value: 'GBP', label: '🇬🇧 GBP — British Pound' },
     { value: 'AED', label: '🇦🇪 AED — UAE Dirham' },
@@ -394,54 +396,48 @@ export function SettingsTabs({ business: initial, services: initServices, employ
   ]
 
   const isKnownCurrency = CURRENCIES.some((c) => c.value !== 'other' && c.value === biz.currency)
-  const currencySelectValue = isKnownCurrency ? biz.currency : (biz.currency ? 'other' : 'USD')
+  const [customCurrency, setCustomCurrency] = useState(!isKnownCurrency && !!biz.currency)
+  const currencySelectValue = customCurrency ? 'other' : (isKnownCurrency ? biz.currency : 'USD')
 
-  const TIMEZONES: { value: string; label: string }[] = [
-    { value: 'UTC',                    label: '(UTC+0) UTC' },
-    { value: 'Europe/London',          label: '(UTC+0) London' },
-    { value: 'Europe/Paris',           label: '(UTC+1) Paris' },
-    { value: 'Europe/Berlin',          label: '(UTC+1) Berlin' },
-    { value: 'Europe/Rome',            label: '(UTC+1) Rome' },
-    { value: 'Europe/Madrid',          label: '(UTC+1) Madrid' },
-    { value: 'Europe/Amsterdam',       label: '(UTC+1) Amsterdam' },
-    { value: 'Europe/Brussels',        label: '(UTC+1) Brussels' },
-    { value: 'Europe/Vienna',          label: '(UTC+1) Vienna' },
-    { value: 'Europe/Warsaw',          label: '(UTC+1) Warsaw' },
-    { value: 'Europe/Prague',          label: '(UTC+1) Prague' },
-    { value: 'Europe/Budapest',        label: '(UTC+1) Budapest' },
-    { value: 'Europe/Bucharest',       label: '(UTC+2) Bucharest' },
-    { value: 'Europe/Sofia',           label: '(UTC+2) Sofia' },
-    { value: 'Europe/Athens',          label: '(UTC+2) Athens' },
-    { value: 'Europe/Kiev',            label: '(UTC+2) Kyiv' },
-    { value: 'Europe/Minsk',           label: '(UTC+3) Minsk' },
-    { value: 'Europe/Moscow',          label: '(UTC+3) Moscow' },
-    { value: 'Europe/Istanbul',        label: '(UTC+3) Istanbul' },
-    { value: 'Asia/Dubai',             label: '(UTC+4) Dubai' },
-    { value: 'Asia/Karachi',           label: '(UTC+5) Karachi' },
-    { value: 'Asia/Kolkata',           label: '(UTC+5:30) Kolkata' },
-    { value: 'Asia/Dhaka',             label: '(UTC+6) Dhaka' },
-    { value: 'Asia/Bangkok',           label: '(UTC+7) Bangkok' },
-    { value: 'Asia/Singapore',         label: '(UTC+8) Singapore' },
-    { value: 'Asia/Shanghai',          label: '(UTC+8) Shanghai' },
-    { value: 'Asia/Tokyo',             label: '(UTC+9) Tokyo' },
-    { value: 'Asia/Seoul',             label: '(UTC+9) Seoul' },
-    { value: 'Australia/Sydney',       label: '(UTC+10) Sydney' },
-    { value: 'Australia/Melbourne',    label: '(UTC+10) Melbourne' },
-    { value: 'Pacific/Auckland',       label: '(UTC+12) Auckland' },
-    { value: 'America/New_York',       label: '(UTC-5) New York' },
-    { value: 'America/Toronto',        label: '(UTC-5) Toronto' },
-    { value: 'America/Chicago',        label: '(UTC-6) Chicago' },
-    { value: 'America/Mexico_City',    label: '(UTC-6) Mexico City' },
-    { value: 'America/Denver',         label: '(UTC-7) Denver' },
-    { value: 'America/Los_Angeles',    label: '(UTC-8) Los Angeles' },
-    { value: 'America/Vancouver',      label: '(UTC-8) Vancouver' },
-    { value: 'America/Anchorage',      label: '(UTC-9) Anchorage' },
-    { value: 'Pacific/Honolulu',       label: '(UTC-10) Honolulu' },
-    { value: 'America/Bogota',         label: '(UTC-5) Bogota' },
-    { value: 'America/Lima',           label: '(UTC-5) Lima' },
-    { value: 'America/Sao_Paulo',      label: '(UTC-3) São Paulo' },
-    { value: 'America/Buenos_Aires',   label: '(UTC-3) Buenos Aires' },
-  ]
+  const TIMEZONES: { value: string; label: string }[] = useMemo(() => {
+    const fallback = ['UTC']
+    const supported =
+      typeof Intl.supportedValuesOf === 'function'
+        ? Intl.supportedValuesOf('timeZone')
+        : fallback
+
+    const formatter = new Intl.DateTimeFormat('en', {
+      timeZoneName: 'shortOffset',
+      hour: '2-digit',
+      minute: '2-digit',
+    })
+
+    const offsetFor = (timeZone: string) => {
+      if (timeZone === 'UTC') return 'UTC+0'
+      try {
+        const parts = formatter.formatToParts(new Date())
+        const offset = new Intl.DateTimeFormat('en', {
+          timeZone,
+          timeZoneName: 'shortOffset',
+        })
+          .formatToParts(new Date())
+          .find((part) => part.type === 'timeZoneName')?.value
+
+        return offset?.replace('GMT', 'UTC') ?? 'UTC'
+      } catch {
+        return 'UTC'
+      }
+    }
+
+    const zones = supported.includes('UTC') ? supported : ['UTC', ...supported]
+
+    return zones
+      .map((value) => ({
+        value,
+        label: `(${offsetFor(value)}) ${value.replaceAll('_', ' ')}`,
+      }))
+      .sort((a, b) => a.label.localeCompare(b.label))
+  }, [])
 
   const triggers = [
     t('notifications.triggers.confirmation'),
@@ -491,8 +487,13 @@ export function SettingsTabs({ business: initial, services: initServices, employ
               <label className="text-xs font-medium text-gray-500">{t('general.fields.currency')}</label>
               <select value={currencySelectValue}
                 onChange={(e) => {
-                  if (e.target.value !== 'other') setBiz((b) => ({ ...b, currency: e.target.value }))
-                  else setBiz((b) => ({ ...b, currency: '' }))
+                  if (e.target.value !== 'other') {
+                    setCustomCurrency(false)
+                    setBiz((b) => ({ ...b, currency: e.target.value }))
+                  } else {
+                    setCustomCurrency(true)
+                    setBiz((b) => ({ ...b, currency: '' }))
+                  }
                 }}
                 className="w-full mt-1 border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
                 {CURRENCIES.map((c) => (
