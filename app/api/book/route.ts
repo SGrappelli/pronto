@@ -138,18 +138,31 @@ export async function POST(req: NextRequest) {
   if (phone || email) {
     // BUG-8: search by all provided fields combined — avoids duplicate clients when
     // both phone and email are submitted but each matches a different existing record.
-    const orParts: string[] = []
-    if (phone) orParts.push(`phone.eq.${phone}`)
-    if (email) orParts.push(`email.eq.${email}`)
-
-    const { data: matches } = await supabase
-      .from('clients')
-      .select('id, name, email, telegram_id, viber_user_id')
-      .eq('business_id', businessId)
-      .or(orParts.join(','))
-      .limit(1)
-
-    const existing = matches?.[0] ?? null
+    // Matched via separate parameterized .eq() calls, never a hand-built PostgREST
+    // .or() filter string — comma/parenthesis characters in a submitted phone/email
+    // are structural in that syntax, so a raw filter string built from user input
+    // could be extended into an unrelated OR clause and match a client this
+    // booking has no business touching.
+    type ClientMatch = { id: string; name: string; email: string | null; telegram_id: string | null; viber_user_id: string | null }
+    let existing: ClientMatch | null = null
+    if (phone) {
+      const { data } = await supabase
+        .from('clients')
+        .select('id, name, email, telegram_id, viber_user_id')
+        .eq('business_id', businessId)
+        .eq('phone', phone)
+        .maybeSingle()
+      existing = data
+    }
+    if (!existing && email) {
+      const { data } = await supabase
+        .from('clients')
+        .select('id, name, email, telegram_id, viber_user_id')
+        .eq('business_id', businessId)
+        .eq('email', email)
+        .maybeSingle()
+      existing = data
+    }
 
     if (existing) {
       clientId = existing.id

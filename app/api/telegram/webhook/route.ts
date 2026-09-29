@@ -13,7 +13,7 @@
 
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@supabase/supabase-js'
-import { sendTelegramMessage } from '@/lib/telegram'
+import { sendTelegramMessage, verifyTelegramWebhookSecret } from '@/lib/telegram'
 
 function toTitleCase(name: string): string {
   return name.toLowerCase().replace(/\b\w/g, (c) => c.toUpperCase())
@@ -23,6 +23,16 @@ export async function POST(req: NextRequest) {
   try {
     const businessId = req.nextUrl.searchParams.get('bid')
     if (!businessId) return NextResponse.json({ ok: false }, { status: 400 })
+
+    // businessId is public (it's embedded in the booking-page URL), so without
+    // this check anyone on the internet could POST a forged update straight to
+    // this endpoint — no Telegram account or bot interaction required at all.
+    // Telegram echoes back the secret_token registered in setWebhook via this
+    // header on every real update.
+    const secretHeader = req.headers.get('x-telegram-bot-api-secret-token')
+    if (!verifyTelegramWebhookSecret(businessId, secretHeader)) {
+      return NextResponse.json({ ok: false }, { status: 401 })
+    }
 
     const body = await req.json()
     const message = body?.message
@@ -172,7 +182,11 @@ export async function POST(req: NextRequest) {
     }
 
     // ── /today — appointments today (owner only) ───────────────────────────────
-    if (text.startsWith('/today')) {
+    // chatId must be the already-connected owner chat — otherwise anyone who
+    // messages this bot (or, before the secret_token check above, anyone who
+    // knew the public businessId) could pull the day's schedule (client names
+    // + services) for a business they have no relationship with.
+    if (text.startsWith('/today') && chatId === biz.telegram_chat_id) {
       const today = new Date()
       const start = new Date(today.setHours(0, 0, 0, 0)).toISOString()
       const end = new Date(today.setHours(23, 59, 59, 999)).toISOString()

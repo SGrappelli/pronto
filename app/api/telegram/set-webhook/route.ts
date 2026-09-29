@@ -7,7 +7,7 @@
 
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
-import { setTelegramWebhook, getTelegramBotInfo } from '@/lib/telegram'
+import { setTelegramWebhook, getTelegramBotInfo, telegramWebhookSecretToken } from '@/lib/telegram'
 
 const APP_URL = process.env.NEXT_PUBLIC_APP_URL ?? ''
 
@@ -42,9 +42,17 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Invalid bot token. Check it in @BotFather.' }, { status: 400 })
     }
 
+    let secretToken: string
+    try {
+      secretToken = telegramWebhookSecretToken(biz.id)
+    } catch (err) {
+      console.error('[telegram/set-webhook]', err)
+      return NextResponse.json({ error: 'Server is missing TELEGRAM_WEBHOOK_SECRET.' }, { status: 500 })
+    }
+
     // Регистрируем вебхук
     const webhookUrl = `${APP_URL}/api/telegram/webhook?bid=${biz.id}`
-    const result = await setTelegramWebhook(biz.telegram_bot_token, webhookUrl)
+    const result = await setTelegramWebhook(biz.telegram_bot_token, webhookUrl, secretToken)
 
     if (!result.ok) {
       return NextResponse.json({ error: result.description ?? 'Failed to set webhook' }, { status: 400 })

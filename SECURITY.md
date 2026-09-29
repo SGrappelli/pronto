@@ -18,6 +18,8 @@ We'll verify the report independently and credit you below (if you'd like) once 
 
 Thanks to the following people for responsibly reporting security issues:
 
-- **kta1kri** — reported that `app/api/inventory/[id]/photo/route.ts` used a service-role Supabase
-  client with no authentication check, letting an unauthenticated request overwrite any inventory
-  item's photo on any tenant. Fixed in [#17](https://github.com/SGrappelli/pronto/pull/17).
+- **kta1kri** — reported several issues in one round: an inventory photo-upload endpoint with no
+  authentication check ([#17](https://github.com/SGrappelli/pronto/pull/17)); Telegram/Viber webhook
+  requests that weren't verified as genuinely coming from Telegram/Viber, and a missing owner check
+  on Telegram's `/today` command; and a booking-endpoint filter built from unescaped user input
+  ([#19](https://github.com/SGrappelli/pronto/pull/19)). All fixed.
