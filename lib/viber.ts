@@ -8,7 +8,25 @@
  * В отличие от Telegram, аутентификация через заголовок X-Viber-Auth-Token.
  */
 
+import { createHmac, timingSafeEqual } from 'node:crypto'
+
 const BASE = 'https://chatapi.viber.com/pa'
+
+// ─── Подпись вебхука ───────────────────────────────────────────────────────────
+// Viber подписывает КАЖДЫЙ callback HMAC-SHA256 от сырого тела запроса, ключ —
+// auth-токен бота (тот самый, что уже хранится в businesses.viber_bot_token —
+// отдельного секрета не нужно). Подпись приходит в заголовке
+// X-Viber-Content-Signature. Без сверки businessId (публичный, из ссылки на
+// страницу записи) достаточно, чтобы дёргать /api/viber/webhook от имени любого
+// отправителя — сверка обязательна ДО разбора JSON, по точно тем же байтам,
+// что подписывал Viber.
+export function verifyViberSignature(botToken: string, rawBody: string, signatureHeader: string | null): boolean {
+  if (!signatureHeader) return false
+  const expected = createHmac('sha256', botToken).update(rawBody).digest('hex')
+  const expectedBuf = Buffer.from(expected)
+  const actualBuf = Buffer.from(signatureHeader)
+  return expectedBuf.length === actualBuf.length && timingSafeEqual(expectedBuf, actualBuf)
+}
 
 // ─── Отправить текстовое сообщение ────────────────────────────────────────────
 

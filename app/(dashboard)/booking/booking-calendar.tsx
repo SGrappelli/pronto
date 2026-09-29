@@ -371,11 +371,8 @@ export function BookingCalendar({ businessId, slug, timezone, appointments: init
       setFormError(null)
       setForm({ client_id: '', employee_id: '', service_id: '', date: '', hour: '', minute: '00', period: 'AM', notes: '' })
       router.refresh()
-      fetch('/api/email/confirm', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ appointmentId: data.id }),
-      }).catch(() => {/* non-critical */})
+      fetch(`/api/appointments/${data.id}/confirm`, { method: 'POST' })
+        .catch(() => {/* non-critical */})
     } else if (error) {
       if (error.message?.includes('no_staff_available')) {
         setFormError('No active staff available to take this booking. Add an employee in Settings, or select a specific employee.')

@@ -53,11 +53,15 @@ export async function POST(req: NextRequest) {
   try {
     const authHeader = req.headers.get('authorization')
     const expectedSecret = process.env.INTERNAL_API_SECRET
-    if (expectedSecret && authHeader !== `Bearer ${expectedSecret}`) {
-      return NextResponse.json({ error: 'unauthorized' }, { status: 401 })
-    }
     if (!expectedSecret) {
-      console.warn('[email/confirm] INTERNAL_API_SECRET is not set — endpoint is unprotected. Set it in .env for production.')
+      // Fail closed, not open: this route fans out real client/owner
+      // notifications for whatever appointmentId it's handed, so a missing
+      // secret must block every caller, not silently accept every caller.
+      console.error('[email/confirm] INTERNAL_API_SECRET is not set — refusing all requests. Set it in .env.')
+      return NextResponse.json({ error: 'server_misconfigured' }, { status: 500 })
+    }
+    if (authHeader !== `Bearer ${expectedSecret}`) {
+      return NextResponse.json({ error: 'unauthorized' }, { status: 401 })
     }
 
     const { appointmentId, formEmail } = await req.json()

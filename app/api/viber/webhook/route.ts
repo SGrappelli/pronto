@@ -14,14 +14,22 @@
 
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@supabase/supabase-js'
-import { sendViberMessage } from '@/lib/viber'
+import { sendViberMessage, verifyViberSignature } from '@/lib/viber'
 
 export async function POST(req: NextRequest) {
   try {
     const businessId = req.nextUrl.searchParams.get('bid')
     if (!businessId) return NextResponse.json({ status: 0 })
 
-    const body = await req.json()
+    // Signature check needs the exact raw bytes Viber signed — must read as
+    // text before any JSON.parse.
+    const rawBody = await req.text()
+    let body: any
+    try {
+      body = JSON.parse(rawBody)
+    } catch {
+      return NextResponse.json({ status: 0 }, { status: 400 })
+    }
     const event: string = body?.event ?? ''
 
     if (!event) return NextResponse.json({ status: 0 })
@@ -35,6 +43,14 @@ export async function POST(req: NextRequest) {
       .single()
 
     if (!biz?.viber_bot_token) return NextResponse.json({ status: 0 })
+
+    // businessId is public (embedded in the booking-page URL) — without this,
+    // anyone on the internet could POST a forged event straight to this
+    // endpoint impersonating any sender, no Viber account required.
+    const signatureHeader = req.headers.get('x-viber-content-signature')
+    if (!verifyViberSignature(biz.viber_bot_token, rawBody, signatureHeader)) {
+      return NextResponse.json({ status: 0 }, { status: 401 })
+    }
 
     const senderId: string = body?.sender?.id ?? body?.user?.id ?? ''
     const senderName: string = body?.sender?.name ?? body?.user?.name ?? 'there'

@@ -3,7 +3,42 @@
  * Telegram Bot API — отправка сообщений и регистрация вебхука.
  */
 
+import { createHmac, timingSafeEqual } from 'node:crypto'
+
 const BASE = 'https://api.telegram.org/bot'
+
+// ─── Подпись вебхука ───────────────────────────────────────────────────────────
+// Telegram сам не подписывает апдейты, но setWebhook принимает secret_token —
+// значение, которое Telegram затем кладёт в заголовок
+// X-Telegram-Bot-Api-Secret-Token каждого запроса на этот URL. Без сверки этого
+// значения /api/telegram/webhook?bid=<businessId> принимает POST от кого угодно
+// в интернете (businessId — публичный, уходит на страницу записи), а не только
+// от настоящего Telegram. Секрет выводится детерминированно из businessId +
+// серверного ключа — так set-webhook (при подключении) и webhook (при приёме)
+// всегда согласны, без отдельной колонки в БД.
+function webhookSigningKey(): string {
+  const key = process.env.TELEGRAM_WEBHOOK_SECRET
+  if (!key) throw new Error('TELEGRAM_WEBHOOK_SECRET is not set')
+  return key
+}
+
+/** secret_token для конкретного бизнеса, передаётся в setWebhook. */
+export function telegramWebhookSecretToken(businessId: string): string {
+  // hex — гарантированно укладывается в разрешённый Telegram алфавит A-Z a-z 0-9 _ -
+  return createHmac('sha256', webhookSigningKey()).update(businessId).digest('hex')
+}
+
+/** Сверяет заголовок X-Telegram-Bot-Api-Secret-Token входящего запроса. */
+export function verifyTelegramWebhookSecret(businessId: string, headerValue: string | null): boolean {
+  if (!headerValue) return false
+  try {
+    const expected = Buffer.from(telegramWebhookSecretToken(businessId))
+    const actual = Buffer.from(headerValue)
+    return expected.length === actual.length && timingSafeEqual(expected, actual)
+  } catch {
+    return false
+  }
+}
 
 // ─── Отправить текстовое сообщение ────────────────────────────────────────────
 
@@ -40,13 +75,14 @@ export async function sendTelegramMessage(
 
 export async function setTelegramWebhook(
   token: string,
-  webhookUrl: string
+  webhookUrl: string,
+  secretToken: string
 ): Promise<{ ok: boolean; description?: string }> {
   try {
     const res = await fetch(`${BASE}${token}/setWebhook`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ url: webhookUrl }),
+      body: JSON.stringify({ url: webhookUrl, secret_token: secretToken }),
     })
     return await res.json()
   } catch (err) {
