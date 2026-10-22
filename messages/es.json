@@ -679,7 +679,8 @@
         "connectButton": "Conectar",
         "step1": "Abre <a href=\"https://t.me/BotFather\" target=\"_blank\" rel=\"noopener noreferrer\" class=\"text-blue-600 hover:underline\">@BotFather</a> en Telegram → <code class=\"bg-gray-100 px-1 rounded\">/newbot</code> → copia el token",
         "step2": "Pega el token abajo y haz clic en Conectar",
-        "step3": "Abre tu nuevo bot en Telegram desde la cuenta de tu negocio y envía <code class=\"bg-gray-100 px-1 rounded\">/start</code> — esto registra el chat para recibir notificaciones"
+        "step3": "Toca el botón para abrir tu bot. Pulsa Start y las notificaciones de citas llegarán a este chat. El enlace es válido por 15 minutos.",
+        "newLink": "Obtener un nuevo enlace"
       },
       "viber": {
         "label": "Bot de Viber",
@@ -690,7 +691,9 @@
         "connectButton": "Conectar",
         "step1": "Ve a <a href=\"https://developers.viber.com\" target=\"_blank\" rel=\"noopener noreferrer\" class=\"text-blue-600 hover:underline\">developers.viber.com</a> → crea un bot → copia el token",
         "step2": "Pega el token abajo y haz clic en Conectar",
-        "step3": "Abre tu bot en Viber desde la cuenta de tu negocio y envía <code class=\"bg-gray-100 px-1 rounded\">/start</code> — esto registra el chat para recibir notificaciones"
+        "step3": "Toca el botón para abrir tu bot en Viber. Abre el chat y las notificaciones de citas llegarán a este chat. El enlace es válido por 15 minutos.",
+        "openButton": "Abrir en Viber",
+        "newLink": "Obtener un nuevo enlace"
       },
       "whatsapp": {
         "label": "WhatsApp (Meta Cloud API)",

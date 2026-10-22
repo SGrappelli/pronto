@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, useMemo } from 'react'
+import { useState, useEffect, useMemo, useRef } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 import { Button } from '@/components/ui/button'
@@ -69,6 +69,12 @@ export function SettingsTabs({ business: initial, services: initServices, employ
   const [webhookMsg, setWebhookMsg] = useState('')
   const [viberWebhookStatus, setViberWebhookStatus] = useState<'idle' | 'loading' | 'ok' | 'error'>('idle')
   const [viberWebhookMsg, setViberWebhookMsg] = useState('')
+  // One-time owner links (valid 15 minutes, work once) from /api/business/owner-chat-link; the owner chat is bound ONLY through them.
+  type OwnerLink = { url: string; expired: boolean; botName: string }
+  const [tgLink, setTgLink] = useState<OwnerLink | null>(null)
+  const [viberLink, setViberLink] = useState<OwnerLink | null>(null)
+  const [linkError, setLinkError] = useState<{ telegram: string; viber: string }>({ telegram: '', viber: '' })
+  const linkTimers = useRef<Record<string, ReturnType<typeof setTimeout>>>({})
   const [waStatus, setWaStatus] = useState<'idle' | 'loading' | 'ok' | 'error'>('idle')
   const [waMsg, setWaMsg] = useState('')
   const [biz, setBiz] = useState(initial)
@@ -315,6 +321,56 @@ export function SettingsTabs({ business: initial, services: initServices, employ
     }
   }
 
+  async function requestOwnerLink(ch: 'telegram' | 'viber') {
+    const set = ch === 'telegram' ? setTgLink : setViberLink
+    clearTimeout(linkTimers.current[ch])
+    try {
+      const res = await fetch('/api/business/owner-chat-link', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ channel: ch }),
+      })
+      const json = await res.json().catch(() => ({}))
+      if (!res.ok || !json.url) {
+        set(null)
+        setLinkError((e) => ({ ...e, [ch]: json.error ?? 'Unknown error' }))
+        return
+      }
+      setLinkError((e) => ({ ...e, [ch]: '' }))
+      set({ url: json.url, expired: false, botName: json.botName ?? '' })
+      linkTimers.current[ch] = setTimeout(
+        () => set((l) => (l ? { ...l, expired: true } : l)),
+        Math.max(0, Number(json.expiresIn ?? 0) * 1000 - 5000),
+      )
+    } catch {
+      set(null)
+      setLinkError((e) => ({ ...e, [ch]: 'Unknown error' }))
+    }
+  }
+
+  const ownerLinkBlock = (ch: 'telegram' | 'viber') => {
+    const link = ch === 'telegram' ? tgLink : viberLink
+    const err = linkError[ch]
+    if (!link && !err) return null
+    return (
+      <div className="mt-2 flex flex-wrap items-center gap-2">
+        {link && !link.expired && (
+          <Button asChild size="sm" className="h-auto min-h-8 max-w-full whitespace-normal break-all">
+            <a href={link.url} {...(ch === 'telegram' ? { target: '_blank', rel: 'noopener noreferrer' } : {})}>
+              {ch === 'telegram' ? link.botName || 'Telegram' : t('notifications.viber.openButton')}
+            </a>
+          </Button>
+        )}
+        {link?.expired && (
+          <Button variant="outline" size="sm" onClick={() => void requestOwnerLink(ch)}>
+            {t(`notifications.${ch}.newLink`)}
+          </Button>
+        )}
+        {err && <span className="text-xs text-red-700">{err}</span>}
+      </div>
+    )
+  }
+
   async function connectViber() {
     setViberWebhookStatus('loading')
     setViberWebhookMsg('')
@@ -323,7 +379,8 @@ export function SettingsTabs({ business: initial, services: initServices, employ
     const json = await res.json()
     if (json.ok) {
       setViberWebhookStatus('ok')
-      setViberWebhookMsg(`Connected! Bot: ${json.botName}. Now open your Viber bot and start a conversation.`)
+      setViberWebhookMsg(`Connected! Bot: ${json.botName}.`)
+      void requestOwnerLink('viber')
     } else {
       setViberWebhookStatus('error')
       setViberWebhookMsg(json.error ?? 'Unknown error')
@@ -338,7 +395,8 @@ export function SettingsTabs({ business: initial, services: initServices, employ
     const json = await res.json()
     if (json.ok) {
       setWebhookStatus('ok')
-      setWebhookMsg(`Connected! Bot: @${json.botUsername}. Now open your bot in Telegram and send /start.`)
+      setWebhookMsg(`Connected! Bot: @${json.botUsername}.`)
+      void requestOwnerLink('telegram')
     } else {
       setWebhookStatus('error')
       setWebhookMsg(json.error ?? 'Unknown error')
@@ -999,6 +1057,7 @@ export function SettingsTabs({ business: initial, services: initServices, employ
                   <AlertCircle className="w-3.5 h-3.5 mt-0.5 shrink-0" />{webhookMsg}
                 </div>
               )}
+              {ownerLinkBlock('telegram')}
             </div>
 
             <hr className="border-gray-100" />
@@ -1040,6 +1099,7 @@ export function SettingsTabs({ business: initial, services: initServices, employ
                   <AlertCircle className="w-3.5 h-3.5 mt-0.5 shrink-0" />{viberWebhookMsg}
                 </div>
               )}
+              {ownerLinkBlock('viber')}
             </div>
 
             <hr className="border-gray-100" />

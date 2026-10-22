@@ -201,7 +201,7 @@ Ou use o agendador integrado pg_cron — veja [Configurar notificações cron](#
 
 1. Abra [@BotFather](https://t.me/BotFather) → `/newbot` → copie o token
 2. No Pronto: **Configurações → Notificações** → cole o token → clique em **Conectar**
-3. Abra seu bot no Telegram → envie `/start`
+3. Toque no botão que aparece abaixo de **Conectar** (o nome do seu bot) → ele abre seu bot no Telegram → toque em **Start**. O link funciona uma vez e vale por 15 minutos (ao expirar aparece **Gerar novo link**). Enviar `/start` ao bot por conta própria não o conecta mais: só esse link.
 
 Comandos disponíveis (para o dono):
 - `/today` — compromissos de hoje
@@ -231,7 +231,7 @@ Notificações automáticas para o dono:
 
 1. Acesse [partners.viber.com](https://partners.viber.com) com sua conta de bot → copie o token
 2. No Pronto: **Configurações → Notificações** → cole o token do Viber → clique em **Conectar**
-3. Encontre seu bot no Viber e inicie uma conversa — você receberá uma mensagem de boas-vindas
+3. Toque em **Abrir no Viber** abaixo de **Conectar** → ele abre seu bot (link de uso único, válido por 15 minutos)
 
 As mesmas notificações do Telegram são entregues pelo Viber (novos agendamentos, lembretes, estoque baixo, visitas concluídas).
 

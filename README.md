@@ -218,7 +218,7 @@ Or use the built-in pg_cron scheduler — edit `supabase/migrations/007_cron_job
 
 1. Open [@BotFather](https://t.me/BotFather) → `/newbot` → copy the token
 2. In Pronto: **Settings → Notifications** → paste token → click **Connect**
-3. Open your bot in Telegram → send `/start`
+3. Tap the button that appears under **Connect** (your bot's name) → it opens your bot in Telegram → press **Start**. The link works once and is valid for 15 minutes (**Get a new link** appears when it expires). Sending `/start` to the bot on your own no longer connects it — only that link does.
 
 Owner commands: `/today` — today's appointments · `/help` — command list
 
@@ -230,6 +230,7 @@ Clients link their profile by sending `/link +12345678900` to the bot (their boo
 
 1. Sign in to [partners.viber.com](https://partners.viber.com) → copy auth token
 2. In Pronto: **Settings → Notifications** → paste token → click **Connect**
+3. Tap **Open in Viber** under **Connect** → it opens your bot (one-time link, valid for 15 minutes)
 
 Clients link via `/link +12345678900` in the bot.
 

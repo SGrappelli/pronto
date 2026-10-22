@@ -5,8 +5,9 @@
  *
  * Flows:
  *  conversation_started (context=client_{uuid}) → client opt-in
- *  conversation_started (no context, first time) → owner connects
- *  /start               → owner re-connect
+ *  conversation_started (context=own_{token}) → owner connects: one-time token from Settings → Notifications
+ *  conversation_started (no context) → ignored — opening the bot never claims the owner slot
+ *  /start own_{token}   → owner connect (typed fallback of the same token); a bare /start changes nothing
  *  /link {phone}        → fallback: client links by phone number
  *  /today               → owner: appointments today
  *  /help                → command list
@@ -15,6 +16,8 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@supabase/supabase-js'
 import { sendViberMessage, verifyViberSignature } from '@/lib/viber'
+import { OWNER_LINK_PREFIX, parseStartCommand, classifyStartParam, verifyOwnerLinkToken, claimOwnerChat } from '@/lib/owner-chat-link'
+import { botStrings, fillBotText, resolveBotLocale, settingsNotificationsPath } from '@/lib/owner-link-strings'
 
 export async function POST(req: NextRequest) {
   try {
@@ -38,7 +41,7 @@ export async function POST(req: NextRequest) {
 
     const { data: biz } = await supabase
       .from('businesses')
-      .select('id, name, viber_bot_token, viber_chat_id')
+      .select('id, name, notification_language, viber_bot_token, viber_chat_id')
       .eq('id', businessId)
       .single()
 
@@ -54,6 +57,38 @@ export async function POST(req: NextRequest) {
 
     const senderId: string = body?.sender?.id ?? body?.user?.id ?? ''
     const senderName: string = body?.sender?.name ?? body?.user?.name ?? 'there'
+
+    const currentOwnerChat = biz.viber_chat_id || null
+    const lang = resolveBotLocale(biz.notification_language)
+    const ownerConnectedMessage = () =>
+      [
+        `👋 Hi ${senderName}!`,
+        ``,
+        `You are now connected to ${biz.name} on Pronto.`,
+        ``,
+        `You'll receive notifications here:`,
+        `• 📅 New bookings`,
+        `• 🔔 Appointment reminders`,
+        `• ⚠️ Low-stock alerts`,
+        `• ✅ Visit completions`,
+        ``,
+        `Send /help to see available commands.`,
+      ].join('\n')
+
+    // The only way a chat becomes the owner chat: a valid one-time own_ token from Settings → Notifications
+    // (lib/owner-chat-link.ts). Valid = our signature, not expired, still the chat id it was issued against; the write
+    // is a compare-and-set on that value. Anything else gets the "expired or already used" reply and changes nothing.
+    const connectOwnerChat = async (token: string, sender: string) => {
+      const check = verifyOwnerLinkToken(token, { channel: 'viber', businessId, currentChatId: currentOwnerChat })
+      const claimed =
+        check === 'ok' &&
+        (await claimOwnerChat(supabase, { businessId, column: 'viber_chat_id', expected: currentOwnerChat, chatId: sender }))
+      await sendViberMessage(
+        biz.viber_bot_token!,
+        sender,
+        claimed ? ownerConnectedMessage() : fillBotText(botStrings[lang].ownerLinkExpired, { settingsPath: await settingsNotificationsPath(lang) })
+      )
+    }
 
     // ── conversation_started ───────────────────────────────────────────────────
     if (event === 'conversation_started') {
@@ -100,30 +135,11 @@ export async function POST(req: NextRequest) {
         }
       }
 
-      // Owner connect — first time (no viber_chat_id yet)
-      if (!biz.viber_chat_id && senderId) {
-        await supabase
-          .from('businesses')
-          .update({ viber_chat_id: senderId })
-          .eq('id', businessId)
-
-        await sendViberMessage(
-          biz.viber_bot_token,
-          senderId,
-          [
-            `👋 Hi ${senderName}!`,
-            ``,
-            `You are now connected to ${biz.name} on Pronto.`,
-            ``,
-            `You'll receive notifications here:`,
-            `• 📅 New bookings`,
-            `• 🔔 Appointment reminders`,
-            `• ⚠️ Low-stock alerts`,
-            `• ✅ Visit completions`,
-            ``,
-            `Send /help to see available commands.`,
-          ].join('\n')
-        )
+      // Owner connect by the deep link from Settings → Notifications (context = own_<token>): the same one-time token
+      // as the typed `/start own_<token>` below. Opening the bot (no context) NEVER claims the owner slot — before,
+      // the first person to open an unconnected bot became its owner.
+      if (context.startsWith(OWNER_LINK_PREFIX) && senderId) {
+        await connectOwnerChat(context.split(/\s+/)[0], senderId)
       }
       return NextResponse.json({ status: 0 })
     }
@@ -132,18 +148,23 @@ export async function POST(req: NextRequest) {
     if (event === 'message') {
       const text: string = body?.message?.text ?? ''
 
-      // /start — owner re-connect
-      if (text.startsWith('/start') && senderId) {
-        await supabase
-          .from('businesses')
-          .update({ viber_chat_id: senderId })
-          .eq('id', businessId)
-
-        await sendViberMessage(
-          biz.viber_bot_token,
-          senderId,
-          `✅ Connected to ${biz.name}! You will receive notifications here.`
-        )
+      // /start — the owner connects ONLY with a valid one-time token (`/start own_<token>`, the typed fallback of the
+      // Settings link). A bare /start, `/start@Bot` or `/start <anything else>` changes nothing: the connected owner chat
+      // gets the connection summary back, anyone else is told what this bot is. (`/startfoo` is not the command.)
+      const start = parseStartCommand(text)
+      if (start && senderId) {
+        const intent = classifyStartParam(start.param)
+        if (intent.kind === 'owner') {
+          await connectOwnerChat(intent.token, senderId)
+        } else if (currentOwnerChat && senderId === currentOwnerChat) {
+          await sendViberMessage(biz.viber_bot_token, senderId, ownerConnectedMessage())
+        } else {
+          await sendViberMessage(
+            biz.viber_bot_token,
+            senderId,
+            fillBotText(botStrings[lang].startBare, { business: biz.name, settingsPath: await settingsNotificationsPath(lang) })
+          )
+        }
         return NextResponse.json({ status: 0 })
       }
 
