@@ -164,6 +164,8 @@ Consulta `.env.example` para la lista completa, incluyendo Telegram, Viber y con
 
 Después de desplegar, entra al dashboard de tu proyecto de Supabase y revisa **Advisors → Security Advisor**. Este proyecto sigue las mejores prácticas de RLS de Postgres/Supabase en cada migración, pero el propio advisor de Supabase es la única forma de confirmar el estado real de tu base de datos específica — incluyendo cualquier objeto que ya existiera en tu proyecto antes de ejecutar estas migraciones, o cambios personalizados que hayas hecho tú mismo. Corrige cualquier alerta que aparezca ahí antes de usar esto en producción con datos reales de clientes.
 
+**Actualizar una instalación existente:** `git pull` y luego `docker compose up -d --build`; las migraciones nuevas se aplican solas. Lee antes el [CHANGELOG](../CHANGELOG.md) (en inglés): ahí están los cambios incompatibles (la versión 1.2.0 cierra el acceso directo a las tablas con la clave pública `anon`, lo que importa si construiste tus propios widgets con ella).
+
 ---
 
 ## Eventos de Notificación

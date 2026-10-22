@@ -135,6 +135,8 @@ A few features are cloud-only and not part of the self-hosted core:
 
 After deploying, log into your Supabase project dashboard and check **Advisors → Security Advisor**. This project follows Postgres/Supabase RLS best practices in every migration, but Supabase's own advisor is the only way to confirm the live state of your specific database — including any objects that may have existed in your project before running these migrations, or custom changes you've made yourself. Fix anything flagged there before using this in production with real customer data.
 
+**Updating an existing install:** `git pull`, then `docker compose up -d --build` — new migrations are applied automatically. Read the [CHANGELOG](CHANGELOG.md) first: it lists breaking changes (version 1.2.0 closes direct table access for the public `anon` key, which matters if you built your own widgets on it).
+
 ---
 
 ## Environment Variables
