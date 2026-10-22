@@ -7,6 +7,7 @@
     "build": "next build --webpack",
     "start": "next start",
     "lint": "eslint .",
+    "test": "node --test",
     "db:generate": "supabase gen types typescript --local > lib/supabase/database.types.ts"
   },
   "dependencies": {

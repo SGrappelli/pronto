@@ -27,6 +27,11 @@ jobs:
       - name: Run ESLint
         run: npm run lint
 
+      # Migration rules (every new table has RLS + an explicit GRANT, no default privileges).
+      # The live-database checks inside skip themselves unless DB_GRANTS_TEST_URL is set.
+      - name: Run migration checks
+        run: npm test
+
       - name: Build
         run: npm run build
         env:
