@@ -4,8 +4,9 @@
  * Telegram присылает сюда все сообщения боту.
  *
  * Flows:
- *  /start               → owner connects, saves chat_id to businesses
+ *  /start own_{token}   → owner connects (ONLY way): one-time token from Settings → Notifications, see lib/owner-chat-link.ts
  *  /start client_{uuid} → client opt-in, saves chat_id to clients.telegram_id
+ *  /start (bare / other)→ changes nothing, explains the bot
  *  /link {phone}        → fallback: client links by phone number
  *  /today               → owner: appointments today
  *  /help                → command list
@@ -14,6 +15,8 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@supabase/supabase-js'
 import { sendTelegramMessage, verifyTelegramWebhookSecret } from '@/lib/telegram'
+import { parseStartCommand, classifyStartParam, verifyOwnerLinkToken, claimOwnerChat } from '@/lib/owner-chat-link'
+import { botStrings, fillBotText, escapeHtml, resolveBotLocale, settingsNotificationsPath } from '@/lib/owner-link-strings'
 
 function toTitleCase(name: string): string {
   return name.toLowerCase().replace(/\b\w/g, (c) => c.toUpperCase())
@@ -46,21 +49,22 @@ export async function POST(req: NextRequest) {
 
     const { data: biz } = await supabase
       .from('businesses')
-      .select('id, name, telegram_bot_token, telegram_chat_id')
+      .select('id, name, notification_language, telegram_bot_token, telegram_chat_id')
       .eq('id', businessId)
       .single()
 
     if (!biz?.telegram_bot_token) return NextResponse.json({ ok: true })
 
     // ── /start ────────────────────────────────────────────────────────────────
-    if (text.startsWith('/start')) {
-      const param = text.replace('/start', '').trim()
+    // /start, /start@Bot and /start <param> are the command; /startfoo is not (an unknown command).
+    const start = parseStartCommand(text)
+    if (start) {
+      const intent = classifyStartParam(start.param)
 
       // Client opt-in: /start client_{uuid}
-      if (param.startsWith('client_')) {
-        const clientId = param.replace('client_', '')
-        // Basic UUID format check
-        if (/^[0-9a-f-]{36}$/i.test(clientId)) {
+      if (intent.kind === 'client') {
+        const clientId = intent.clientId
+        {
           const { data: client } = await supabase
             .from('clients')
             .select('id, name, phone, email')
@@ -112,31 +116,66 @@ export async function POST(req: NextRequest) {
           return NextResponse.json({ ok: true })
         }
       }
+      if (intent.kind === 'client_invalid') {
+        // A mangled or hand-typed link: "link not found". Never an owner connect.
+        await sendTelegramMessage(
+          biz.telegram_bot_token,
+          chatId,
+          `❌ Link not found. Please use the link from your booking confirmation.`
+        )
+        return NextResponse.json({ ok: true })
+      }
 
-      // Owner /start — connect business to this chat
-      await supabase
-        .from('businesses')
-        .update({ telegram_chat_id: chatId })
-        .eq('id', businessId)
+      const ownerConnected = [
+        `👋 Hi ${firstName}!`,
+        ``,
+        `You are now connected to <b>${biz.name}</b> on Pronto.`,
+        ``,
+        `You'll receive notifications here:`,
+        `• 📅 New bookings`,
+        `• 🔔 Appointment reminders`,
+        `• ⚠️ Low-stock alerts`,
+        `• ✅ Visit completions`,
+        ``,
+        `Send /help to see available commands.`,
+      ].join('\n')
+      const currentOwnerChat = biz.telegram_chat_id || null
+      const lang = resolveBotLocale(biz.notification_language)
 
-      await sendTelegramMessage(
-        biz.telegram_bot_token,
-        chatId,
-        [
-          `👋 Hi ${firstName}!`,
-          ``,
-          `You are now connected to <b>${biz.name}</b> on Pronto.`,
-          ``,
-          `You'll receive notifications here:`,
-          `• 📅 New bookings`,
-          `• 🔔 Appointment reminders`,
-          `• ⚠️ Low-stock alerts`,
-          `• ✅ Visit completions`,
-          ``,
-          `Send /help to see available commands.`,
-        ].join('\n')
-      )
+      // Owner connect: ONLY with a valid one-time own_ token issued by the dashboard (lib/owner-chat-link.ts).
+      // Valid = our signature, not expired, and still the chat id it was issued against; the write is a
+      // compare-and-set on that value, so a second use or a race cannot rebind the chat.
+      if (intent.kind === 'owner') {
+        const check = verifyOwnerLinkToken(intent.token, { channel: 'telegram', businessId, currentChatId: currentOwnerChat })
+        const claimed =
+          check === 'ok' &&
+          (await claimOwnerChat(supabase, { businessId, column: 'telegram_chat_id', expected: currentOwnerChat, chatId }))
+        if (!claimed) {
+          await sendTelegramMessage(
+            biz.telegram_bot_token,
+            chatId,
+            fillBotText(botStrings[lang].ownerLinkExpired, { settingsPath: await settingsNotificationsPath(lang) })
+          )
+          return NextResponse.json({ ok: true })
+        }
+        await sendTelegramMessage(biz.telegram_bot_token, chatId, ownerConnected)
+        return NextResponse.json({ ok: true })
+      }
 
+      // Bare /start (or one with a parameter we do not know). It changes NOTHING. The connected owner chat gets the
+      // connection summary back; anyone else (most likely a client) is told what this bot is and how to get reminders.
+      if (currentOwnerChat && chatId === currentOwnerChat) {
+        await sendTelegramMessage(biz.telegram_bot_token, chatId, ownerConnected)
+      } else {
+        await sendTelegramMessage(
+          biz.telegram_bot_token,
+          chatId,
+          fillBotText(botStrings[lang].startBare, {
+            business: escapeHtml(biz.name),
+            settingsPath: await settingsNotificationsPath(lang),
+          })
+        )
+      }
       return NextResponse.json({ ok: true })
     }
 

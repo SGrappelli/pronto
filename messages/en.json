@@ -679,7 +679,8 @@
         "connectButton": "Connect",
         "step1": "Open <a href=\"https://t.me/BotFather\" target=\"_blank\" rel=\"noopener noreferrer\" class=\"text-blue-600 hover:underline\">@BotFather</a> in Telegram → <code class=\"bg-gray-100 px-1 rounded\">/newbot</code> → copy the token",
         "step2": "Paste the token below and click Connect",
-        "step3": "Open your new bot in Telegram from your business account and send <code class=\"bg-gray-100 px-1 rounded\">/start</code> — this registers the chat to receive notifications"
+        "step3": "Tap the button to open your bot. Press Start, and appointment notifications will come to this chat. The link is valid for 15 minutes.",
+        "newLink": "Get a new link"
       },
       "viber": {
         "label": "Viber Bot",
@@ -690,7 +691,9 @@
         "connectButton": "Connect",
         "step1": "Go to <a href=\"https://developers.viber.com\" target=\"_blank\" rel=\"noopener noreferrer\" class=\"text-blue-600 hover:underline\">developers.viber.com</a> → create a bot → copy the token",
         "step2": "Paste the token below and click Connect",
-        "step3": "Open your bot in Viber from your business account and send <code class=\"bg-gray-100 px-1 rounded\">/start</code> — this registers the chat to receive notifications"
+        "step3": "Tap the button to open your bot in Viber. Open the chat, and appointment notifications will come to this chat. The link is valid for 15 minutes.",
+        "openButton": "Open in Viber",
+        "newLink": "Get a new link"
       },
       "whatsapp": {
         "label": "WhatsApp (Meta Cloud API)",

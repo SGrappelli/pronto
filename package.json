@@ -8,6 +8,7 @@
     "start": "next start",
     "lint": "eslint .",
     "test": "node --test",
+    "test:unit": "vitest run",
     "db:generate": "supabase gen types typescript --local > lib/supabase/database.types.ts"
   },
   "dependencies": {
@@ -54,7 +55,8 @@
     "pg": "^8.22.0",
     "postcss": "^8",
     "tailwindcss": "^3.4.1",
-    "typescript": "^5"
+    "typescript": "^5",
+    "vitest": "^4.1.11"
   },
   "overrides": {
     "@types/react": "19.2.18",

@@ -32,6 +32,12 @@ jobs:
       - name: Run migration checks
         run: npm test
 
+      # Unit tests (Vitest): the owner-chat link token, the Telegram/Viber webhooks and the link route.
+      - name: Run unit tests
+        run: npm run test:unit
+        env:
+          TELEGRAM_WEBHOOK_SECRET: ci-webhook-secret
+
       - name: Build
         run: npm run build
         env:

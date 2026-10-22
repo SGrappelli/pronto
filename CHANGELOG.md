@@ -5,6 +5,47 @@ All notable changes to Pronto (self-hosted) are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this project
 adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.2.1] - 2026-10-22
+
+### Security
+
+- **Anyone who pressed Start in your salon's Telegram or Viber bot could take over the owner's
+  notifications.** In 1.2.0 and earlier, `/start` sent to the bot — with no parameter or with anything
+  other than a client's own link — connected the sender's chat as the *owner's* chat, replacing the real
+  one. From then on the new chat received every owner notification (new bookings with client names,
+  services and times, reminders, low-stock alerts, visit completions, `/today`), and the real owner
+  stopped receiving them. For Viber the same happened with `/start`, and also to whoever opened an
+  unconnected bot first. The bot's address is not secret (a client gets it in the booking confirmation),
+  so any client could do it.
+- **Fixed: the owner's chat is now connected only by a one-time link from Settings → Notifications.**
+  After you press **Connect** the page shows a button (your bot's name for Telegram, **Open in Viber** for
+  Viber). It opens the bot with a signed token that expires after 15 minutes and works once; **Get a new
+  link** appears when it expires. A bare `/start`, `/start@YourBot`, `/start` with any other text, a client
+  link, or an expired, used or foreign token no longer connects anything — the bot just explains itself
+  (and tells whoever wrote that the owner connects the chat in Settings). Clients still link themselves
+  with their own link or `/link +<phone>`; that is unchanged.
+
+### What you need to do
+
+- **Nothing.** Chats that are already connected keep working exactly as before — nothing is reset, there
+  is no migration and no new setting. `docker compose up -d --build` is enough.
+- The token is signed with `TELEGRAM_WEBHOOK_SECRET` (already required for Telegram). A Viber-only install
+  without it uses a key derived from `SUPABASE_SERVICE_ROLE_KEY`, so no new variable is needed.
+- Moving the notifications to another phone or account: Settings → Notifications → **Connect**, then use
+  the new button. The link replaces the connected chat. If you ever suspect a stranger's chat is the
+  connected one, do the same — it takes over from them.
+
+### Changed
+
+- Step 3 of the Telegram and Viber instructions in Settings → Notifications, the READMEs (EN/ES/PT) and
+  the bot's replies describe the new way to connect. The Italian interface shows the English wording for
+  the new texts until they are translated.
+
+### Added
+
+- `npm run test:unit` (Vitest, a new dev dependency; also run by CI): the owner-link token, both webhooks
+  and the link route are covered by tests (`tests/unit/`). `npm test` still runs the migration checks.
+
 ## [1.2.0] - 2026-10-22
 
 ### Security
