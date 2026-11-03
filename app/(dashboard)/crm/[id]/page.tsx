@@ -3,6 +3,7 @@ import { notFound, redirect } from 'next/navigation'
 import { Header } from '@/components/layout/header'
 import { getTranslations } from 'next-intl/server'
 import { ClientDetailView } from './client-detail-view'
+import { ClientProcedureTabs } from './client-procedure-tabs'
 import Link from 'next/link'
 import { ChevronLeft } from 'lucide-react'
 import { getTelegramBotInfo } from '@/lib/telegram'
@@ -42,6 +43,15 @@ export default async function ClientDetailPage(props: { params: Promise<{ id: st
     .order('starts_at', { ascending: false })
     .limit(20)
 
+  // Procedure tabs need the client's full procedure history, not just the 20 latest visits
+  const { data: procedureAppointments } = await supabase
+    .from('appointments')
+    .select('id, starts_at, ends_at, status, price, services(name), employees(name)')
+    .eq('client_id', client.id)
+    .eq('business_id', business.id)
+    .order('starts_at', { ascending: false })
+    .limit(500)
+
   return (
     <>
       <Header
@@ -52,13 +62,20 @@ export default async function ClientDetailPage(props: { params: Promise<{ id: st
           </Link>
         }
       />
-      <ClientDetailView
-        client={client}
-        appointments={appointments ?? []}
+      <ClientProcedureTabs
+        appointments={procedureAppointments ?? []}
         currency={business.currency}
         timezone={business.timezone}
-        businessId={business.id}
-        telegramBotUsername={telegramBotUsername}
+        general={
+          <ClientDetailView
+            client={client}
+            appointments={appointments ?? []}
+            currency={business.currency}
+            timezone={business.timezone}
+            businessId={business.id}
+            telegramBotUsername={telegramBotUsername}
+          />
+        }
       />
     </>
   )
